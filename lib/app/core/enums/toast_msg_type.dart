@@ -1,0 +1,5 @@
+
+enum MsgType {
+  error ,
+  success ,
+}

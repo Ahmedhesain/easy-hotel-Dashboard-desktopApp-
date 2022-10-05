@@ -1,0 +1,172 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get/get.dart';
+import 'package:toby_bills/app/components/button_widget.dart';
+import 'package:toby_bills/app/components/icon_button_widget.dart';
+import 'package:toby_bills/app/components/text_field_widget.dart';
+import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/core/values/app_colors.dart';
+import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
+import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/get_invoice_reponse.dart';
+import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
+
+import '../../../../components/text_widget.dart';
+
+class SideWidget extends GetView<HomeController> {
+  const SideWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    print(UserManager().id);
+    return Container(
+      width: size.width * .17,
+      height: size.height,
+      color: AppColors.appGreyDark,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _TitleWidget(title: 'الاجمالي', value: controller.totalNet),
+          _TitleWidget(title: 'خصم الهالالات', value: controller.discountHalala),
+          _TitleWidget(title: 'خصم علي الفاتوره', value: controller.discount),
+          _TitleWidget(title: 'بعد الخصم الكلي', value: controller.totalAfterDiscount),
+          _TitleWidget(title: 'قيمه الضريبه', value: controller.tax),
+          _TitleWidget(title: 'الصافي ضريبيا', value: controller.finalNet, fixedWith: 2),
+          _TitleWidget(title: 'المبلغ المتبقي', value: controller.remain, fixedWith: 2),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: TextFieldWidget(
+              label: "كوبون الخصم",
+              onChanged: (value) {},
+            ),
+          ),
+          const SizedBox(height: 10),
+          ButtonWidget(
+            text: 'تحديث',
+            onPressed: () {},
+            buttonColor: AppColors.colorYellow,
+            expanded: true,
+            fontColor: Colors.black,
+          ),
+          const SizedBox(height: 10),
+          ButtonWidget(
+            text: 'تنزيل عرض',
+            onPressed: () {},
+            buttonColor: AppColors.colorYellow,
+            expanded: true,
+            fontColor: Colors.black,
+          ),
+          const SizedBox(height: 10),
+          TypeAheadFormField<FindCustomerResponse>(
+              itemBuilder: (context, client) {
+                return SizedBox(
+                  height: 50,
+                  child: Center(
+                    child: Text("${client.name} ${client.code}"),
+                  ),
+                );
+              },
+              suggestionsCallback: (filter) => controller.customers,
+              onSuggestionSelected: controller.getInvoiceListForCustomer,
+              textFieldConfiguration: TextFieldConfiguration(
+                textInputAction: TextInputAction.next,
+                controller: controller.findSideCustomerController,
+                focusNode: controller.findSideCustomerFieldFocusNode,
+                onEditingComplete: () => controller.getCustomersByCode(),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    // disabledBorder: InputBorder.none,
+                    // enabledBorder: InputBorder.none,
+                    // focusedBorder: InputBorder.none,
+                    hintText: "ابحث عن فاتورة لعميل معين",
+                    isDense: true,
+                    hintMaxLines: 2,
+                    contentPadding: EdgeInsets.all(5),
+                    suffixIconConstraints: BoxConstraints(maxWidth: 50),
+                    suffixIcon: IconButtonWidget(
+                      icon: Icons.search,
+                      onPressed: () {
+                        controller.getCustomersByCode();
+                      },
+                    )),
+              )),
+          const SizedBox(height: 10),
+          TypeAheadFormField<InvoiceList>(
+              itemBuilder: (context, inv) {
+                return SizedBox(
+                  height: 50,
+                  child: Center(
+                    child: Text((inv.id).toString()),
+                  ),
+                );
+              },
+              suggestionsCallback: (filter) {
+                return (controller.findCustomerBalanceResponse != null)
+                    ? controller.findCustomerBalanceResponse!.invoicesList
+                    : [];
+              },
+              onSuggestionSelected: (value) {
+                controller.searchForInvoiceById(value.id.toString());
+              },
+              textFieldConfiguration: TextFieldConfiguration(
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      isDense: true,
+                      hintText: "ابحث عن رقم الفاتورة",
+                      // contentPadding: EdgeInsets.symmetric(horizontal: 5)
+                  ),
+                  controller: controller.searchedInvoiceController)),
+          const SizedBox(height: 10),
+          ButtonWidget(
+            text: "بحث",
+            expanded: true,
+            isOutlined: true,
+            buttonColor: Colors.black54,
+            fontColor: Colors.black54,
+            onPressed: () => controller.searchForInvoiceById(controller.searchedInvoiceController.text),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _TitleWidget extends StatelessWidget {
+  const _TitleWidget({Key? key, required this.title, required this.value, this.fixedWith = 5}) : super(key: key);
+  final String title;
+  final RxNum value;
+  final int fixedWith;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: TextWidget(
+                title,
+                // style: smallTextStyleNormal(size),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Center(child: Obx(() {
+              return TextWidget(value.toStringAsFixed(fixedWith));
+            })),
+          ),
+        ],
+      ),
+    );
+  }
+}
