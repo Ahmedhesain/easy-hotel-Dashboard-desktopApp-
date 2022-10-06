@@ -48,7 +48,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                         item.itemData = itemData;
                         final newDetail = detail.assignItem(item);
                         details[index](newDetail);
-                        controller.calcSideValues();
+                        controller.calcInvoiceValues();
                       }),
                       itemBuilder: (context, item) {
                         return Center(
@@ -273,7 +273,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                         item.itemData = itemData;
                         final newDetail = detail.assignItem(item);
                         details[index](newDetail);
-                        controller.calcSideValues();
+                        controller.calcInvoiceValues();
                       });
                     },
                     selectedItem: controller.inventories.singleWhere((element) => element.id == detail.inventoryId),
@@ -290,7 +290,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   child: IconButtonWidget(
                     onPressed: () {
                       controller.invoiceDetails.removeAt(index);
-                      controller.calcSideValues();
+                      controller.calcInvoiceValues();
                     },
                     icon: Icons.clear,
                   ),

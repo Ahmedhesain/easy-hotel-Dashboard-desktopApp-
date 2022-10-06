@@ -64,7 +64,7 @@ class SideWidget extends GetView<HomeController> {
                           .toList(),
                       onChanged: (value){
                         controller.selectedDiscountType(value);
-                        controller.calcSideValues();
+                        controller.calcInvoiceValues();
                       },
                       // value: provider.priceTypeSelected,
                     );
@@ -102,7 +102,7 @@ class SideWidget extends GetView<HomeController> {
                         if (controller.invoiceDiscountController.text.parseToNum > 100) {
                           controller.invoiceDiscountController.text = "100";
                         }
-                        controller.calcSideValues();
+                        controller.calcInvoiceValues();
                       },
                     );
                   }),

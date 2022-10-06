@@ -353,7 +353,7 @@ class HomeController extends GetxController {
         isRemains: isItemRemains.value ? 1 : 0).obs;
 
       invoiceDetails.insert(0, detail);
-      calcSideValues();
+      calcInvoiceValues();
       _clearItemFields();
       itemNameFocusNode.requestFocus();
   }
@@ -377,10 +377,10 @@ class HomeController extends GetxController {
     selectedCustomer.value = null;
     invoiceDetails.clear();
     invoiceCustomerController.clear();
-    calcSideValues();
+    calcInvoiceValues();
   }
 
-  calcSideValues(){
+  calcInvoiceValues(){
     num net = 0;
     for (final invoiceDetailsModel in invoiceDetails) {
       net += invoiceDetailsModel.value.net!;
@@ -388,15 +388,16 @@ class HomeController extends GetxController {
     totalNet(net);
     num discount = 0;
     if(selectedDiscountType.value == 0){
-      discount = invoiceDiscountController.text.parseToNum;
+      discount = invoiceDiscountController.text.tryToParseToNum ?? 0;
     } else {
-      discount = net * (invoiceDiscountController.text.parseToNum / 100);
+      discount = net * ((invoiceDiscountController.text.tryToParseToNum ?? 0) / 100);
     }
     totalAfterDiscount(net - discountHalala.value - discount);
     tax(totalAfterDiscount.value * 0.15);
     finalNet((totalAfterDiscount.value + tax.value ).fixed(2));
-    // payed = glPayDTOList.fold<num>(0, (p, e) => p+(e.value??0));
-    remain(finalNet.value);
+    // num payed = glPayDTOList.fold<num>(0, (p, e) => p+(e.value??0));
+    num payed = 0;
+    remain(finalNet.value - payed);
   }
 
   _addItemFieldsListener(){
@@ -478,7 +479,7 @@ class HomeController extends GetxController {
       });
     }
     invoiceDetails.assignAll(details);
-    calcSideValues();
+    calcInvoiceValues();
   }
 
 }
