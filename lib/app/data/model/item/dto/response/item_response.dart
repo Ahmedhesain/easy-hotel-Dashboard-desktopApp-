@@ -1,3 +1,5 @@
+import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
+
 class ItemResponse {
   ItemResponse({
     required this.atrributesList,
@@ -32,34 +34,35 @@ class ItemResponse {
   });
 
   List<dynamic>? atrributesList;
-  int ?branchId;
+  int? branchId;
   String code;
-  int ?companyId;
-  num ?costAverage;
+  int? companyId;
+  num? costAverage;
   // num ?discountrate;
-  int ?groupId;
-  int ?id;
-  int ?isInventoryItem;
-  int ?itemType;
-  num ?maxPriceMen;
-  num ?maxPriceYoung;
-  num ?minPriceMen;
-  num ?minPriceYoung;
+  int? groupId;
+  int id;
+  int? isInventoryItem;
+  int? itemType;
+  num? maxPriceMen;
+  num? maxPriceYoung;
+  num? minPriceMen;
+  num? minPriceYoung;
   String name;
-  num ?numberMetersFreeMen;
-  num ?numberMetersFreeYoung;
+  num? numberMetersFreeMen;
+  num? numberMetersFreeYoung;
   num? numberMetersMen;
   num? numberMetersYoung;
-  num ?price;
-  int ?proGroupId;
+  num? price;
+  int? proGroupId;
   String? remarks;
-  num ?sellPrice;
+  num? sellPrice;
   String? supplierId;
-  int ?unitId;
+  int? unitId;
   String? unitName;
   int? typeShow;
   num? lastCost;
   List<dynamic>? variationsList;
+  ItemDataResponse? itemData;
 
   static List<ItemResponse> getList(List<dynamic> json) => List<ItemResponse>.from(json.map((e) => ItemResponse.fromJson(e)));
 

@@ -1,9 +1,11 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_field_widget.dart';
+import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
@@ -18,7 +20,9 @@ class SideWidget extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery
+        .of(context)
+        .size;
     print(UserManager().id);
     return Container(
       width: size.width * .17,
@@ -30,7 +34,83 @@ class SideWidget extends GetView<HomeController> {
         children: [
           _TitleWidget(title: 'الاجمالي', value: controller.totalNet),
           _TitleWidget(title: 'خصم الهالالات', value: controller.discountHalala),
-          _TitleWidget(title: 'خصم علي الفاتوره', value: controller.discount),
+          Padding(
+            padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
+            child: Row(
+              children: [
+                const Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Text("نوع الخصم"),
+                    )),
+                Expanded(
+                  child: Obx(() {
+                    return DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(10),
+                        isDense: true,
+                      ),
+                      dropdownColor: AppColors.appGreyLight,
+                      value: controller.selectedDiscountType.value,
+                      elevation: 0,
+                      items: controller.discountType.entries
+                          .map((e) =>
+                          DropdownMenuItem<int>(
+                            value: e.key,
+                            child: Text(e.value),
+                          ))
+                          .toList(),
+                      onChanged: (value){
+                        controller.selectedDiscountType(value);
+                        controller.calcSideValues();
+                      },
+                      // value: provider.priceTypeSelected,
+                    );
+                  }),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
+            child: Row(
+              children: [
+                const Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Text("خصم على الفاتورة"),
+                    )),
+                Expanded(
+                  child: Obx(() {
+                    final isDiscountValue = controller.selectedDiscountType.value == 0;
+                    return TextFormField(
+                      controller: controller.invoiceDiscountController,
+                      focusNode: controller.invoiceDiscountFieldFocusNode,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.only(bottom: 5),
+                        isDense: true,
+                        suffixIcon: Text(!isDiscountValue?"%":""),
+                        suffixIconConstraints: const BoxConstraints(minHeight: 10)
+                      ),
+                      onChanged: (value){
+                        if (value.isEmpty || num.tryParse(value) == null) {
+                          controller.invoiceDiscountController.text = "0";
+                        }
+                        if (controller.invoiceDiscountController.text.parseToNum > 100) {
+                          controller.invoiceDiscountController.text = "100";
+                        }
+                        controller.calcSideValues();
+                      },
+                    );
+                  }),
+                )
+              ],
+            ),
+          ),
+          // _TitleWidget(title: 'خصم علي الفاتوره', value: controller.discount),
           _TitleWidget(title: 'بعد الخصم الكلي', value: controller.totalAfterDiscount),
           _TitleWidget(title: 'قيمه الضريبه', value: controller.tax),
           _TitleWidget(title: 'الصافي ضريبيا', value: controller.finalNet, fixedWith: 2),
@@ -106,19 +186,17 @@ class SideWidget extends GetView<HomeController> {
                 );
               },
               suggestionsCallback: (filter) {
-                return (controller.findCustomerBalanceResponse != null)
-                    ? controller.findCustomerBalanceResponse!.invoicesList
-                    : [];
+                return (controller.findCustomerBalanceResponse != null) ? controller.findCustomerBalanceResponse!.invoicesList : [];
               },
               onSuggestionSelected: (value) {
                 controller.searchForInvoiceById(value.id.toString());
               },
               textFieldConfiguration: TextFieldConfiguration(
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                      hintText: "ابحث عن رقم الفاتورة",
-                      // contentPadding: EdgeInsets.symmetric(horizontal: 5)
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    hintText: "ابحث عن رقم الفاتورة",
+                    // contentPadding: EdgeInsets.symmetric(horizontal: 5)
                   ),
                   controller: controller.searchedInvoiceController)),
           const SizedBox(height: 10),

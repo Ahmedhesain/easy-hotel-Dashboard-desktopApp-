@@ -35,22 +35,27 @@ class IconButtonWidget extends StatelessWidget {
     } else if(icon != null){
       child = Icon(icon,color: iconColor ?? Theme.of(context).appBarTheme.foregroundColor,size: iconSize,key: Key(icon!.codePoint.toString()),textDirection: textDirection,);
     }
-    return Padding(
-      padding: margin,
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(50),
-        child: Container(
-          decoration: BoxDecoration(
-            color: color ?? Colors.transparent,
-            shape: BoxShape.circle
-          ),
-          padding: padding,
-          alignment: Alignment.center,
-          child: AnimatedSwitcher(
-            duration: Duration(milliseconds: 200),
-            transitionBuilder: (child, animation) => ScaleTransition(scale: animation,child: child,),
-            child: child,
+    return UnconstrainedBox(
+      child: Material(
+        color: Colors.transparent,
+        child: Padding(
+          padding: margin,
+          child: InkWell(
+            onTap: onPressed,
+            borderRadius: BorderRadius.circular(50),
+            child: Container(
+              decoration: BoxDecoration(
+                color: color ?? Colors.transparent,
+                shape: BoxShape.circle
+              ),
+              padding: padding,
+              alignment: Alignment.center,
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 200),
+                transitionBuilder: (child, animation) => ScaleTransition(scale: animation,child: child,),
+                child: child,
+              ),
+            ),
           ),
         ),
       ),

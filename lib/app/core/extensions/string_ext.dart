@@ -8,4 +8,13 @@ extension Slash on String {
     }
     return value;
   }
+
+  num get parseToNum{
+    return num.parse(this);
+  }
+
+  num? get tryToParseToNum{
+    return num.tryParse(this);
+  }
+
 }

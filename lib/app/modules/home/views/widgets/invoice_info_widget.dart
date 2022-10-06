@@ -27,12 +27,13 @@ class InvoiceInfoWidget extends GetView<HomeController> {
           child: Row(
             children: [
               TextWidget(controller.invoice?.id.toString() ?? ""),
-              const SizedBox(width: 15),
-              const Expanded(child: Text('الحالة')),
+              const SizedBox(width: 10),
+              const Text('الحالة:'),
               const SizedBox(width: 5),
               Expanded(flex: 2, child: Text(controller.invoice?.status.toString() ?? "")),
-              const SizedBox(width: 25),
-              const Expanded(child: Text('تحديد السعر')),
+              const SizedBox(width: 10),
+              const Text('تحديد السعر:'),
+              const SizedBox(width: 5),
               Expanded(
                 flex: 2,
                 child: Obx(() {
@@ -48,37 +49,54 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                     // style: smallTextStyleNormal(size, color: Colors.black),
                     elevation: 0,
                     items: controller.priceTypes.entries
-                        .map((e) => DropdownMenuItem<int>(
-                              value: e.key,
-                              child: Text(e.value),
-                            ))
+                        .map((e) =>
+                        DropdownMenuItem<int>(
+                          value: e.key,
+                          child: Text(e.value),
+                        ))
                         .toList(),
-                    onChanged: (value) async {
-                      // await provider.setPriceTypeSelected(int.parse(value.toString()), context);
-                      // setState(() {});
-                    },
+                    onChanged: controller.changePriceType,
                     // value: provider.priceTypeSelected,
                   );
                 }),
               ),
-              const SizedBox(width: 25),
-              const Expanded(child: Text('التاريخ')),
+              const SizedBox(width: 10),
+              const Text('التاريخ:'),
+              const SizedBox(width: 5),
               Expanded(
                 flex: 2,
-                child: Text(
-                  DateFormat("dd-MM-yyyy").format(DateTime.now()),
-                  textAlign: TextAlign.center,
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(
+                    DateFormat("dd-MM-yyyy").format(DateTime.now()),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-              const SizedBox(width: 25),
-              const Expanded(child: Text('تاريخ التسليم')),
+              const SizedBox(width: 10),
+              const Text('تاريخ التسليم:'),
+              const SizedBox(width: 5),
               Expanded(
                 flex: 2,
-                child: Text(
-                  controller.dueDate == null ? "" : DateFormat("dd-MM-yyyy").format(controller.dueDate!.dueDate),
-                  textAlign: TextAlign.center,
-                ),
+                child: Obx(() {
+                  return Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      controller.dueDate.value == null ? "" : DateFormat("dd-MM-yyyy").format(controller.dueDate.value!.dueDate),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                }),
               ),
+              const SizedBox(width: 10),
+              const Text('إرسال رسالة:'),
+              const SizedBox(width: 5),
+              Obx(() {
+                return Checkbox(
+                  value: controller.checkSendSms.value,
+                  onChanged: controller.checkSendSms,
+                );
+              })
             ],
           ),
         ),
@@ -161,7 +179,9 @@ class InvoiceInfoWidget extends GetView<HomeController> {
               const Text('مده التسليم:'),
               const SizedBox(width: 5),
               Expanded(
-                child: Text(controller.dueDate?.dayNumber.toString() ?? ""),
+                child: Obx(() {
+                  return Text(controller.dueDate.value?.dayNumber.toString() ?? "");
+                }),
               ),
               const SizedBox(width: 25),
               const Text('بروفة:'),
@@ -186,7 +206,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                   items: [],
                   onChanged: print,
                   dropdownDecoratorProps:
-                      DropDownDecoratorProps(dropdownSearchDecoration: InputDecoration(isDense: true, contentPadding: EdgeInsets.zero, border: OutlineInputBorder())),
+                  DropDownDecoratorProps(dropdownSearchDecoration: InputDecoration(isDense: true, contentPadding: EdgeInsets.zero, border: OutlineInputBorder())),
                 ),
               ),
               const SizedBox(width: 10),

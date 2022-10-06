@@ -23,12 +23,12 @@ class FindCustomerResponse {
   String code;
   num discount;
   int gallaryIdApi;
-  num length;
+  num? length;
   String mobile;
   String name;
   String offerCompanyName;
-  num shoulder;
-  num step;
+  num? shoulder;
+  num? step;
   num? balanceLimit;
 
   factory FindCustomerResponse.fromJson(Map<String, dynamic> json) => FindCustomerResponse(

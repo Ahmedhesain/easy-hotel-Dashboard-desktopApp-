@@ -7,4 +7,9 @@ extension Comma on num{
     return numberFormat.format(this);
   }
 
+  num fixed(int count){
+    final string = toStringAsFixed(count);
+    return num.parse(string);
+  }
+
 }

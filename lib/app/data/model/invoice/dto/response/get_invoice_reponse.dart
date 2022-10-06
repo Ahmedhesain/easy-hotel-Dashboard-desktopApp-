@@ -1,4 +1,5 @@
 import '../../../common/sales_statement_for_the_period.dart';
+import '../../invoice_detail_model.dart';
 
 class InvoiceResponse {
   InvoiceResponse({
@@ -33,7 +34,7 @@ class InvoiceResponse {
     required this.invInventoryId,
     required this.invInventoryName,
     required this.invoiceDate,
-    required this.invoiceDetailApiList,
+    required this.details,
     required this.invoiceNumber,
     required this.length,
     required this.noticeCredit,
@@ -87,7 +88,7 @@ class InvoiceResponse {
   final int invInventoryId;
   final String invInventoryName;
   final DateTime invoiceDate;
-  final List<InvoiceDetailApiList> invoiceDetailApiList;
+  final List<InvoiceDetailsModel> details;
   final String invoiceNumber;
   final num length;
   final int noticeCredit;
@@ -141,7 +142,7 @@ class InvoiceResponse {
     invInventoryId: json["invInventoryId"],
     invInventoryName: json["invInventoryName"],
     invoiceDate: DateTime.parse(json["invoiceDate"]),
-    invoiceDetailApiList: List<InvoiceDetailApiList>.from(json["invoiceDetailApiList"].map((x) => InvoiceDetailApiList.fromJson(x))),
+    details: List<InvoiceDetailsModel>.from(json["invoiceDetailApiList"].map((x) => InvoiceDetailsModel.fromJson(x))),
     invoiceNumber: json["invoiceNumber"],
     length: json["length"],
     noticeCredit: json["noticeCredit"],
@@ -196,7 +197,7 @@ class InvoiceResponse {
     "invInventoryId": invInventoryId,
     "invInventoryName": invInventoryName,
     "invoiceDate": invoiceDate.toIso8601String(),
-    "invoiceDetailApiList": List<dynamic>.from(invoiceDetailApiList.map((x) => x.toJson())),
+    "invoiceDetailApiList": List<dynamic>.from(details.map((x) => x.toJson())),
     "invoiceNumber": invoiceNumber,
     "length": length,
     "noticeCredit": noticeCredit,
@@ -217,77 +218,5 @@ class InvoiceResponse {
     "taxvalue": taxvalue,
     "totalNet": totalNet,
     "totalNetAfterDiscount": totalNetAfterDiscount,
-  };
-}
-
-class InvoiceDetailApiList {
-  InvoiceDetailApiList({
-    required this.id,
-    required this.code,
-    required this.discount,
-    required this.groupId,
-    required this.inventoryCode,
-    required this.inventoryId,
-    required this.inventoryName,
-    required this.name,
-    required this.net,
-    required this.number,
-    required this.price,
-    required this.proof,
-    required this.quantity,
-    required this.quantityOfOneUnit,
-    required this.unitName,
-  });
-
-  final int id;
-  final String code;
-  final num discount;
-  final int groupId;
-  final String inventoryCode;
-  final int inventoryId;
-  final String inventoryName;
-  final String name;
-  final num net;
-  final num number;
-  final num price;
-  final int proof;
-  final num quantity;
-  final num quantityOfOneUnit;
-  final String unitName;
-
-  factory InvoiceDetailApiList.fromJson(Map<String, dynamic> json) => InvoiceDetailApiList(
-    id: json["id"],
-    code: json["code"],
-    discount: json["discount"],
-    groupId: json["groupId"],
-    inventoryCode: json["inventoryCode"],
-    inventoryId: json["inventoryId"],
-    inventoryName: json["inventoryName"],
-    name: json["name"],
-    net: json["net"],
-    number: json["number"],
-    price: json["price"],
-    proof: json["proof"],
-    quantity: json["quantity"].toDouble(),
-    quantityOfOneUnit: json["quantityOfOneUnit"].toDouble(),
-    unitName: json["unitName"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "code": code,
-    "discount": discount,
-    "groupId": groupId,
-    "inventoryCode": inventoryCode,
-    "inventoryId": inventoryId,
-    "inventoryName": inventoryName,
-    "name": name,
-    "net": net,
-    "number": number,
-    "price": price,
-    "proof": proof,
-    "quantity": quantity,
-    "quantityOfOneUnit": quantityOfOneUnit,
-    "unitName": unitName,
   };
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:toby_bills/app/core/utils/common.dart';
+import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/core/values/app_constants.dart';
 
 class ButtonWidget extends StatelessWidget {
@@ -73,7 +74,7 @@ class ButtonWidget extends StatelessWidget {
                     onPressed: onPressed,
                     style: OutlinedButton.styleFrom(
                         foregroundColor: fontColor,
-                        side: BorderSide(color: buttonColor ?? Theme.of(context).primaryColor,width: 2),
+                        side: BorderSide(color: buttonColor ?? AppColors.colorYellow,width: 2),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(radius)
                         ),
@@ -86,8 +87,8 @@ class ButtonWidget extends StatelessWidget {
               return ElevatedButton(
                   onPressed: onPressed,
                   style: ElevatedButton.styleFrom(
-                      foregroundColor: fontColor,
-                      backgroundColor: buttonColor,
+                      foregroundColor: fontColor ?? Colors.black,
+                      backgroundColor: buttonColor ?? AppColors.colorYellow,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(radius)
                       ),

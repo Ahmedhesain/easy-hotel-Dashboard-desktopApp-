@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:toby_bills/app/core/extensions/num_extension.dart';
+import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/app_storage.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
@@ -20,7 +22,10 @@ import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_reques
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_invoice_reponse.dart';
+import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
+import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
+import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
@@ -33,53 +38,62 @@ class HomeController extends GetxController {
 
   final isLoading = false.obs;
   final isProof = false.obs;
+  final checkSendSms = false.obs;
   final isItemProof = false.obs;
+  final isItemRemains = false.obs;
   final totalNet = RxNum(0.0);
   final discountHalala = RxNum(0.0);
-  final discount = RxNum(0.0);
   final totalAfterDiscount = RxNum(0.0);
   final tax = RxNum(0.0);
   final finalNet = RxNum(0.0);
   final remain = RxNum(0.0);
   final itemAvailableQuantity = RxnNum();
   final itemNet = RxnNum();
-  final itemDiscount = RxnNum();
-  final itemQuantity = RxnNum();
+  final itemTotalQuantity = RxnNum();
+  num itemNetWithoutDiscount = 0;
 
   Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
   Rxn<DelegatorResponse> selectedDelegator = Rxn();
   Rxn<String> selectedInvoiceType = Rxn("مبيعات");
   Rxn<int> selectedPriceType = Rxn(0);
+  Rxn<int> selectedDiscountType = Rxn(0);
   Rxn<FindCustomerResponse> selectedCustomer = Rxn();
   Rxn<InventoryResponse> selectedInventory = Rxn();
   Rxn<ItemResponse> selectedItem = Rxn();
   FindCustomerBalanceResponse? findCustomerBalanceResponse;
 
   final findSideCustomerController = TextEditingController();
-  final invoiceCustomerController = TextEditingController();
   final searchedInvoiceController = TextEditingController();
+  final invoiceCustomerController = TextEditingController();
+  final invoiceDiscountController = TextEditingController();
   final invoiceRemarkController = TextEditingController();
   final itemNameController = TextEditingController();
   final itemNotesController = TextEditingController();
   final itemPriceController = TextEditingController();
   final itemQuantityController = TextEditingController();
   final itemNumberController = TextEditingController();
+  final itemDiscountController = TextEditingController();
+  final itemDiscountValueController = TextEditingController();
 
   final findSideCustomerFieldFocusNode = FocusNode();
   final invoiceCustomerFieldFocusNode = FocusNode();
+  final invoiceDiscountFieldFocusNode = FocusNode();
   final itemNameFocusNode = FocusNode();
   final itemNotesFocusNode = FocusNode();
   final itemPriceFocusNode = FocusNode();
   final itemQuantityFocusNode = FocusNode();
   final itemNumberFocusNode = FocusNode();
+  final itemDiscountFocusNode = FocusNode();
+  final itemDiscountValueFocusNode = FocusNode();
 
   final customers = <FindCustomerResponse>[];
   final deliveryPlaces = <DeliveryPlaceResposne>[];
   final delegators = <DelegatorResponse>[];
   final inventories = <InventoryResponse>[];
   final items = <ItemResponse>[];
+  final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
   List<String> invoiceTypeList = ["مبيعات", "مانيكنات الفروع", "مانيكنات القماشين", "علاقات عامه", "تفصيل القماشين", "موظفي الفروع", "تعديلات", "اخري"];
-  GetDueDateResponse? dueDate;
+  Rxn<GetDueDateResponse> dueDate = Rxn();
   InvoiceResponse? invoice;
 
   Map<int, String> priceTypes = {
@@ -87,17 +101,23 @@ class HomeController extends GetxController {
     1: "رجالي",
   };
 
+  Map<int, String> discountType = {
+    0: "قيمة",
+    1: "نسبة",
+  };
+
 
   @override
   void onInit() async {
     super.onInit();
     isLoading(true);
-    await Future.wait([getDueDate(), getDeliveryPlaces(), getDelegators(), getInventories()])
-        .whenComplete(() => isLoading(false));
+    _addItemFieldsListener();
     items.addAll(_getItemsFromStorage());
     if(items.isEmpty){
       getItems();
     }
+    Future.wait([getDueDate(), getDeliveryPlaces(), getDelegators(), getInventories()])
+        .whenComplete(() => isLoading(false));
   }
 
   getCustomersByCode() {
@@ -130,7 +150,7 @@ class HomeController extends GetxController {
 
   Future<void> getDueDate() => InvoiceRepository().findDueDateDTOAPI(
         GetDueDateRequest(branchId: UserManager().branchId, id: UserManager().id),
-        onSuccess: (data) => dueDate = data,
+        onSuccess: (data) => dueDate(data),
         onError: (error) => showPopupText(text: error.toString()),
       );
 
@@ -147,7 +167,7 @@ class HomeController extends GetxController {
 
   Future<void> getDelegators() => InvoiceRepository().findDelegatorByInventory(
         DelegatorRequest(gallaryId: UserManager().galleryId),
-        onSuccess: (data) => delegators.assignAll(data),
+        onSuccess: (data) => {delegators.assignAll(data), if(delegators.isNotEmpty) selectedDelegator(delegators.first)},
         onError: (error) => showPopupText(text: error.toString()),
       );
 
@@ -184,7 +204,7 @@ class HomeController extends GetxController {
         onSuccess: (data) {
           invoice = data;
           selectedPriceType(data.pricetype);
-          dueDate!.dueDate = data.dueDate;
+          dueDate.value!.dueDate = data.dueDate;
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
@@ -218,27 +238,247 @@ class HomeController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-
   List<ItemResponse> filterItems(String filter) {
     return items.where((element) => element.code.toString().contains(filter) || element.name.toString().contains(filter) ).toList();
   }
 
-  void selectItem(ItemResponse first) {
+  _clearItemFields(){
+    selectedItem.value = null;
+    itemNameController.clear();
+    itemNumberController.clear();
+    itemQuantityController.clear();
+    itemPriceController.clear();
+    itemNotesController.clear();
+    itemDiscountController.clear();
+    itemDiscountValueController.clear();
+    isItemProof(false);
+    isItemRemains(false);
+    itemAvailableQuantity.value = null;
+    itemNet.value = null;
+    itemTotalQuantity.value = null;
+    selectedInventory(inventories.first);
+  }
+  void selectItem(ItemResponse item) {
+    if(selectedCustomer.value == null){
+      showPopupText(text: "يرجى اختيار عميل أولاً");
+      return;
+    }
+    if(selectedInventory.value == null){
+      showPopupText(text: "يرجى اختيار مستودع أولاً");
+      return;
+    }
+    getItemData(itemId: item.id,
+        onSuccess: (data) {
+          if(data.availableQuantity != null && data.availableQuantity == 0){
+            showPopupText(text: "لا يوجد كمية متاحة");
+            itemNameController.clear();
+            itemNameFocusNode.requestFocus();
+            return;
+          }
+          selectedItem(item..itemData = data);
+          itemNameController.text = "${item.name} ${item.code}";
+          itemNumberController.text = "1.0";
+          itemQuantityController.text = data.quantityOfUnit.toString();
+          itemPriceController.text = data.sellPrice.toString();
+          itemDiscountController.text = data.discountRow.toString();
+          itemDiscountValueController.text = "0";
+          itemAvailableQuantity(data.availableQuantity);
+          itemNumberFocusNode.requestFocus();
+          calcItemData();
+        });
 
   }
 
+  getItemData({required int itemId,required void Function(ItemDataResponse itemDataResponse) onSuccess, int? inventoryId}) async {
+    final customer = selectedCustomer.value!;
+    if ((customer.step??-1) <= 0.0 && (customer.shoulder??-1) <= 0.0 && (customer.length??-1) <= 0.0) {
+      showPopupText(text: "يجب تعديل بيانات العميل");
+      return;
+    }
+    isLoading(true);
+    final manager = UserManager();
+    final request = ItemDataRequest(id: itemId, customerId: customer.id, priceType: selectedPriceType.value!, inventoryId: inventoryId ?? selectedInventory.value!.id, invNameGallary: manager.galleryType);
+    await ItemRepository().getItemData(request,
+        onSuccess: onSuccess,
+        onError: (error) => {showPopupText(text: error.toString()),_clearItemFields()},
+        onComplete: () => isLoading(false));
+  }
+
+  void calcItemData() {
+    final item = selectedItem.value!;
+    final number = num.parse(itemNumberController.text);
+    itemTotalQuantity((item.itemData!.quantityOfUnit * number).fixed(2));
+    itemNetWithoutDiscount = ((item.itemData!.sellPrice) * number).fixed(2);
+    final discount = itemDiscountController.text.tryToParseToNum ?? 0;
+    final discountValue = itemDiscountValueController.text.tryToParseToNum ?? 0;
+    itemNet((itemNetWithoutDiscount - (itemNetWithoutDiscount * (discount / 100)) - discountValue).fixed(2));
+  }
 
   void selectInventory(InventoryResponse? value) {
-
+    selectedInventory(value);
+    if(selectedItem.value != null){
+      selectItem(selectedItem.value!);
+    }
   }
 
   addNewInvoiceDetail() {
+    if(selectedItem.value == null) return;
+    final item = selectedItem.value!;
+    final detail = InvoiceDetailsModel(
+        progroupId: item.proGroupId,
+        typeShow: item.typeShow,
+        lastCost: item.lastCost,
+        remark: itemNotesController.text,
+        name: item.name,
+        number: itemNumberController.text.parseToNum,
+        quantityOfOneUnit: item.itemData?.quantityOfUnit,
+        code: item.code,
+        minPriceMen: item.minPriceMen,
+        minPriceYoung: item.minPriceYoung,
+        maxPriceMen: item.maxPriceMen,
+        maxPriceYoung: item.maxPriceYoung,
+        quantity: itemTotalQuantity.value,
+        net: itemNet.value,
+        availableQuantityRow: itemAvailableQuantity.value,
+        price: itemPriceController.text.parseToNum,
+        unitName: item.unitName,
+        discount: itemDiscountController.text.parseToNum,
+        discountValue: itemDiscountValueController.text.parseToNum,
+        inventoryName: selectedInventory.value!.name,
+        inventoryCode: selectedInventory.value!.code,
+        inventoryId: selectedInventory.value!.id,
+        itemId: item.id,
+        proof: isItemProof.value ? 1 : 0,
+        netWithoutDiscount: itemNetWithoutDiscount,
+        isRemains: isItemRemains.value ? 1 : 0).obs;
 
-  }
-
-  void onChangeItemQuantity(String value) {
+      invoiceDetails.insert(0, detail);
+      calcSideValues();
+      _clearItemFields();
+      itemNameFocusNode.requestFocus();
   }
 
   void onItemNumberFieldSubmitted(String value) {
+    itemQuantityFocusNode.requestFocus();
   }
+
+  saveInvoice() {
+
+  }
+
+  newInvoice() {
+    _clearItemFields();
+    selectedPriceType(priceTypes.keys.first);
+    selectedDeliveryPlace(deliveryPlaces.first);
+    selectedInvoiceType(invoiceTypeList.first);
+    selectedDelegator(delegators.first);
+    isProof(false);
+    invoiceRemarkController.clear();
+    selectedCustomer.value = null;
+    invoiceDetails.clear();
+    invoiceCustomerController.clear();
+    calcSideValues();
+  }
+
+  calcSideValues(){
+    num net = 0;
+    for (final invoiceDetailsModel in invoiceDetails) {
+      net += invoiceDetailsModel.value.net!;
+    }
+    totalNet(net);
+    num discount = 0;
+    if(selectedDiscountType.value == 0){
+      discount = invoiceDiscountController.text.parseToNum;
+    } else {
+      discount = net * (invoiceDiscountController.text.parseToNum / 100);
+    }
+    totalAfterDiscount(net - discountHalala.value - discount);
+    tax(totalAfterDiscount.value * 0.15);
+    finalNet((totalAfterDiscount.value + tax.value ).fixed(2));
+    // payed = glPayDTOList.fold<num>(0, (p, e) => p+(e.value??0));
+    remain(finalNet.value);
+  }
+
+  _addItemFieldsListener(){
+    itemNumberFocusNode.addListener(_itemNumberListener);
+    itemQuantityFocusNode.addListener(_itemQuantityListener);
+    itemPriceFocusNode.addListener(_itemPriceListener);
+  }
+
+  _removeItemFieldsListener(){
+    itemNumberFocusNode.removeListener(_itemNumberListener);
+    itemQuantityFocusNode.removeListener(_itemQuantityListener);
+    itemPriceFocusNode.removeListener(_itemPriceListener);
+  }
+
+  bool _isQuantityValid(){
+    final number = itemNumberController.text.tryToParseToNum;
+    final quantity = itemQuantityController.text.tryToParseToNum;
+    if(number == null || quantity == null) return true;
+    return !(itemAvailableQuantity.value != null && itemAvailableQuantity.value! < (number * quantity));
+  }
+
+  _itemNumberListener(){
+    if((!itemNumberFocusNode.hasFocus) && !_isQuantityValid()){
+      showPopupText(text: "لا يمكن ادخال هذا العدد");
+      itemNumberController.text = "1.0";
+    }
+    if(itemNumberController.text.tryToParseToNum != null) {
+      itemTotalQuantity(itemNumberController.text.parseToNum * itemQuantityController.text.parseToNum);
+    }
+  }
+
+  _itemQuantityListener(){
+    if((!itemQuantityFocusNode.hasFocus) && !_isQuantityValid()){
+      showPopupText(text: "لا يمكن ادخال هذه الكمية");
+      itemQuantityController.text = "1.0";
+    }
+    if(itemNumberController.text.tryToParseToNum != null) {
+      itemTotalQuantity(itemNumberController.text.parseToNum * itemQuantityController.text.parseToNum);
+    }
+  }
+
+  _itemPriceListener(){
+    if(!itemPriceFocusNode.hasFocus){
+      final price = itemPriceController.text.tryToParseToNum;
+      if(price == null) return;
+      final item = selectedItem.value!;
+      if(selectedPriceType.value == 1 && price < item.minPriceMen!){
+        showPopupText(text: "السعر غير ممكن");
+        itemPriceController.text = item.minPriceMen.toString();
+      } else if(selectedPriceType.value == 1 && price > item.maxPriceMen!){
+        showPopupText(text: "السعر غير ممكن");
+        itemPriceController.text = item.maxPriceMen.toString();
+      } else if(selectedPriceType.value == 0 && price < item.minPriceYoung!){
+        showPopupText(text: "السعر غير ممكن");
+        itemPriceController.text = item.minPriceYoung.toString();
+      } else if(selectedPriceType.value == 0 && price > item.maxPriceYoung!){
+        showPopupText(text: "السعر غير ممكن");
+        itemPriceController.text = item.maxPriceYoung.toString();
+      }
+    }
+
+  }
+
+  @override
+  void onClose() {
+    _removeItemFieldsListener();
+    super.onClose();
+  }
+
+  void changePriceType(int? value) async {
+    selectedPriceType(value);
+    final details = <Rx<InvoiceDetailsModel>>[];
+    for(final detail in invoiceDetails){
+      final item = items.singleWhere((element) => element.id == detail.value.itemId);
+      await getItemData(itemId: item.id, onSuccess: (itemData){
+        item.itemData = itemData;
+        final newDetail = detail.value.assignItem(item);
+        details.add(Rx(newDetail));
+      });
+    }
+    invoiceDetails.assignAll(details);
+    calcSideValues();
+  }
+
 }

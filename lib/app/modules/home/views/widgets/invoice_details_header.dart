@@ -1,9 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
+import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/double_filter.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
@@ -20,8 +20,8 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
       width: double.infinity,
       child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(children: [
-            Row(
+          child: Obx(() {
+            return Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Expanded(
@@ -38,12 +38,8 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
                         child: TypeAheadField<ItemResponse>(
                           suggestionsCallback: (filter) => controller.filterItems(filter),
                           onSuggestionSelected: controller.selectItem,
@@ -57,6 +53,12 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                               textAlignVertical: TextAlignVertical.center,
                               focusNode: controller.itemNameFocusNode,
                               controller: controller.itemNameController,
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white70,
+                              ),
                               onEditingComplete: () {
                                 final items = controller.filterItems(controller.itemNameController.text);
                                 if (controller.itemNameController.text.isNotEmpty) {
@@ -82,24 +84,28 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
                         child: TextFormField(
-                          textDirection: TextDirection.rtl,
+                          textDirection: TextDirection.ltr,
                           keyboardType: TextInputType.number,
                           focusNode: controller.itemNumberFocusNode,
+                          enabled: controller.selectedItem.value != null,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            fillColor: Colors.white70,
                           ),
                           textAlign: TextAlign.center,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [doubleInputFilter],
                           controller: controller.itemNumberController,
                           onFieldSubmitted: controller.onItemNumberFieldSubmitted,
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              controller.itemNumberController.text = "0";
+                            }
+                          },
                         ),
                       ),
                     ],
@@ -119,22 +125,28 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
                         child: TextFormField(
+                          textDirection: TextDirection.ltr,
                           focusNode: controller.itemQuantityFocusNode,
                           textAlign: TextAlign.center,
-                          decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                          enabled: !(controller.selectedItem.value == null || (controller.selectedItem.value != null && controller.selectedItem.value!.proGroupId == 1)),
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            fillColor: Colors.white70,
+                          ),
                           /////////////quantity
                           onEditingComplete: () => controller.itemPriceFocusNode.requestFocus(),
                           controller: controller.itemQuantityController,
-                          readOnly: controller.selectedItem.value != null && controller.selectedItem.value!.proGroupId == 1,
                           inputFormatters: [doubleInputFilter],
-                          onChanged: controller.onChangeItemQuantity,
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              controller.itemQuantityController.text = "0";
+                            }
+                          },
                         ),
                       ),
                     ],
@@ -161,77 +173,145 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Center(child: Obx(() {
-                            return Text(controller.itemQuantity.value?.toString() ?? "");
+                            return Text(controller.itemTotalQuantity.value?.toString() ?? "");
                           }))),
                     ],
                   ),
                 ),
                 separator,
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.only(end: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const Center(
-                          child: Text(
-                            "السعر",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Center(
+                        child: Text(
+                          "السعر",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
                           ),
                         ),
-                        Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white70,
-                            borderRadius: BorderRadius.circular(5),
+                      ),
+                      SizedBox(
+                        height: 30,
+                        child: TextFormField(
+                          focusNode: controller.itemPriceFocusNode,
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.ltr,
+                          enabled: controller.selectedItem.value != null,
+                          inputFormatters: [doubleInputFilter],
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            fillColor: Colors.white70,
                           ),
-                          child: TextFormField(
-                            focusNode: controller.itemPriceFocusNode,
-                            textAlign: TextAlign.center,
-                            decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                            controller: controller.itemPriceController,
-                            onEditingComplete: () {
-                              controller.itemNotesFocusNode.requestFocus();
-                            },
-                          ),
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              controller.itemPriceController.text = "0";
+                            }
+                          },
+                          controller: controller.itemPriceController,
+                          onEditingComplete: () {
+                            controller.itemDiscountFocusNode.requestFocus();
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 separator,
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.only(end: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const Center(
-                          child: Text(
-                            " الخصم",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Center(
+                        child: Text(
+                          " الخصم",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
                           ),
                         ),
-                        Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white70,
-                            borderRadius: BorderRadius.circular(5),
+                      ),
+                      SizedBox(
+                        height: 30,
+                        child: TextFormField(
+                          focusNode: controller.itemDiscountFocusNode,
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.ltr,
+                          inputFormatters: [doubleInputFilter],
+                          enabled: controller.selectedItem.value != null,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            fillColor: Colors.white70,
                           ),
-                          child: Center(
-                            child: Obx(() {
-                              return Text(controller.itemDiscount.value?.toString() ?? "");
-                            }),
+                          onChanged: (value) {
+                            if (value.isEmpty || value.tryToParseToNum == null) {
+                              controller.itemDiscountController.text = "0";
+                            }
+                            if (controller.itemDiscountController.text.parseToNum > 100) {
+                              controller.itemDiscountController.text = "100";
+                            }
+                            controller.itemDiscountValueController.text = "0";
+                            controller.calcItemData();
+                          },
+                          controller: controller.itemDiscountController,
+                          onEditingComplete: () {
+                            controller.itemDiscountValueFocusNode.requestFocus();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                separator,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Center(
+                        child: Text(
+                          "خ قيمة",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                        child: TextFormField(
+                          focusNode: controller.itemDiscountValueFocusNode,
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.ltr,
+                          inputFormatters: [doubleInputFilter],
+                          enabled: controller.selectedItem.value != null,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            fillColor: Colors.white70,
+                          ),
+                          onChanged: (value) {
+                            if (value.isEmpty || value.tryToParseToNum == null) {
+                              controller.itemDiscountValueController.text = "0";
+                            }
+                            if ((controller.itemDiscountValueController.text.tryToParseToNum??0) > controller.itemNetWithoutDiscount) {
+                              controller.itemDiscountValueController.text = controller.itemNetWithoutDiscount.toString();
+                            }
+                            controller.itemDiscountController.text = "0";
+                            controller.calcItemData();
+                          },
+                          controller: controller.itemDiscountValueController,
+                          onEditingComplete: () {
+                            controller.itemNotesFocusNode.requestFocus();
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 separator,
@@ -255,11 +335,10 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Center(
-                          child: Obx(() {
-                            return Text(
-                              controller.itemNet.value?.toString() ?? "",
-                            );
-                          }),
+                          child: Obx(() =>
+                              Text(
+                                controller.itemNet.value?.toString() ?? "",
+                              )),
                         ),
                       ),
                     ],
@@ -310,17 +389,18 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
                         child: TextFormField(
                           controller: controller.itemNotesController,
                           focusNode: controller.itemNotesFocusNode,
                           onEditingComplete: () => controller.addNewInvoiceDetail(),
-                          decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                            filled: true,
+                            fillColor: Colors.white70,
+                          ),
                         ),
                       ),
                     ],
@@ -343,7 +423,38 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                       SizedBox(
                         height: 30,
                         child: Obx(() {
-                          return Checkbox(value: controller.isItemProof.value, activeColor: Colors.green, onChanged: controller.isItemProof);
+                          return Checkbox(
+                            value: controller.isItemProof.value,
+                            activeColor: Colors.green,
+                            onChanged: controller.isItemProof,
+                          );
+                        }),
+                      )
+                    ],
+                  ),
+                ),
+                separator,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Center(
+                        child: Text(
+                          "تصفية",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                        child: Obx(() {
+                          return Checkbox(
+                            value: controller.isItemRemains.value,
+                            activeColor: Colors.green,
+                            onChanged: controller.isItemRemains,
+                          );
                         }),
                       )
                     ],
@@ -364,34 +475,43 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                      Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white70,
-                            borderRadius: BorderRadius.circular(5),
+                      Obx(() {
+                        return DropdownSearch<InventoryResponse>(
+                          // showSearchBox: true,
+                          items: controller.inventories,
+                          itemAsString: (InventoryResponse e) => e.code,
+                          onChanged: controller.selectInventory,
+                          selectedItem: controller.selectedInventory.value,
+                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                border: OutlineInputBorder(),
+                                fillColor: Colors.white70,
+                                isDense: true,
+                                filled: true,
+                                suffixIconConstraints: BoxConstraints(maxHeight: 30)),
                           ),
-                          child: Obx(() {
-                            return DropdownSearch<InventoryResponse>(
-                              // showSearchBox: true,
-                              items: controller.inventories,
-                              itemAsString: (InventoryResponse e) => e.code,
-                              onChanged: controller.selectInventory,
-                              selectedItem: controller.selectedInventory.value,
-                            );
-                          })),
+                        );
+                      }),
                     ],
                   ),
                 ),
                 separator,
                 Expanded(
-                  child: controller.selectedItem.value == null
-                      ? const SizedBox.shrink()
-                      : IconButtonWidget(onPressed: () => controller.addNewInvoiceDetail(), icon: Icons.done_rounded),
+                  child: Obx(() {
+                    if (controller.selectedItem.value == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return IconButtonWidget(
+                      onPressed: () => controller.addNewInvoiceDetail(),
+                      icon: Icons.done_rounded,
+                    );
+                  }),
                 ),
                 separator,
               ],
-            ),
-          ])),
+            );
+          })),
     );
   }
 }

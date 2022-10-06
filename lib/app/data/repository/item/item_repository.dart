@@ -5,6 +5,8 @@ import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_res
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_invoice_reponse.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
+import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
+import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
 import '../../model/customer/dto/request/find_customer_request.dart';
@@ -27,6 +29,20 @@ class ItemRepository {
         data: getItemRequest.toJson(),
         onError: onError,
         convertor: ItemResponse.getList,
+    );
+
+  getItemData(
+      ItemDataRequest itemDataRequest, {
+        Function()? onComplete,
+        Function(ItemDataResponse data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<ItemDataResponse,Map<String,dynamic>>('items/findItemData',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: itemDataRequest.toJson(),
+        onError: onError,
+        convertor: ItemDataResponse.fromJson,
     );
 
 
