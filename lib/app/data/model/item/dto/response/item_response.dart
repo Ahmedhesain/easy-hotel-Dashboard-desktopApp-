@@ -64,6 +64,9 @@ class ItemResponse {
   List<dynamic>? variationsList;
   ItemDataResponse? itemData;
 
+  num tempQuantity = 1;
+  num tempNumber = 1;
+
   static List<ItemResponse> getList(List<dynamic> json) => List<ItemResponse>.from(json.map((e) => ItemResponse.fromJson(e)));
 
   factory ItemResponse.fromJson(Map<String, dynamic> json) => ItemResponse(

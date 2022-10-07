@@ -36,11 +36,13 @@ class InvoiceDetailsModel {
     this.unitId,
     this.quantityOfOneUnit,
     this.netWithoutDiscount,
-  }) : numberFocus = FocusNode(), quantityFocus = FocusNode(), priceFocus = FocusNode();
+  }) : numberFocus = FocusNode(), quantityFocus = FocusNode(), priceFocus = FocusNode(), discountFocus = FocusNode(), discountValueFocus = FocusNode();
 
   FocusNode numberFocus;
   FocusNode quantityFocus;
   FocusNode priceFocus;
+  FocusNode discountFocus;
+  FocusNode discountValueFocus;
 
   int? unitId;
   String name;
@@ -74,10 +76,23 @@ class InvoiceDetailsModel {
   int? typeShow;
   num? lastCost;
 
-
-  final numberFocusNode = FocusNode();
-  final quantityFocusNode = FocusNode();
-  final priceFocusNode = FocusNode();
+  bool isValidPrice(int priceType) {
+    bool isValid = true;
+    if(priceType == 1 && price! < minPriceMen!){
+      price = minPriceMen;
+      isValid = false;
+    } else if(priceType == 1 && price! > maxPriceMen!){
+      price = maxPriceMen;
+      isValid = false;
+    } else if(priceType == 0 && price! < minPriceYoung!){
+      price = minPriceYoung;
+      isValid = false;
+    } else if(priceType == 0 && price! > maxPriceYoung!){
+      price = maxPriceYoung;
+      isValid = false;
+    }
+    return isValid;
+  }
 
 
   InvoiceDetailsModel assignItem(ItemResponse item) {
@@ -95,7 +110,7 @@ class InvoiceDetailsModel {
         availableQuantityRow: item.itemData?.availableQuantity,
         price: item.itemData?.sellPrice,
         unitName: item.unitName,
-        discount: discount,
+        discount: item.itemData!.discountRow,
         inventoryName: inventoryName,
         inventoryCode: inventoryCode,
         inventoryId: inventoryId,
@@ -113,14 +128,14 @@ class InvoiceDetailsModel {
         netWithoutDiscount: netWithoutDiscount,
         quantity: unitId);
 
-    instance._calcData(item);
+    instance._calcData();
     return instance;
   }
+  num get totalQuantity => ((number??0) * (quantity??0)).fixed(2);
 
-  void _calcData(ItemResponse item) {
-    quantity = (item.itemData!.quantityOfUnit * number!).fixed(2);
-    final net = ((item.itemData!.sellPrice) * number!).fixed(2);
-    this.net = (net - (net * (item.itemData!.discountRow / 100)) - (discountValue??0)).fixed(2);
+  void _calcData() {
+    netWithoutDiscount = (price! * totalQuantity).fixed(2);
+    net = (netWithoutDiscount! - (netWithoutDiscount! * (discount! / 100)) - (discountValue??0)).fixed(2);
   }
 
   InvoiceDetailsModel copyWith({
@@ -154,8 +169,9 @@ class InvoiceDetailsModel {
     num? minPriceYoung,
     int? unitId,
     num? quantityOfOneUnit,
-  }) =>
-      InvoiceDetailsModel(
+    num? netWithoutDiscount,
+  }) {
+    final instance =  InvoiceDetailsModel(
         name: name ?? this.name,
         code: code ?? this.code,
         serial: serial ?? this.serial,
@@ -180,6 +196,7 @@ class InvoiceDetailsModel {
         minPriceYoung: minPriceYoung ?? this.minPriceYoung,
         number: number ?? this.number,
         progroupId: progroupId ?? this.progroupId,
+        netWithoutDiscount: netWithoutDiscount ?? this.netWithoutDiscount,
         proof: proof ?? this.proof,
         quantityOfOneUnit: quantityOfOneUnit ?? this.quantityOfOneUnit,
         remark: remark ?? this.remark,
@@ -187,6 +204,9 @@ class InvoiceDetailsModel {
         unitId: unitId ?? this.unitId,
         unitName: unitName ?? this.unitName,
       );
+    instance._calcData();
+    return instance;
+  }
 
   factory InvoiceDetailsModel.fromJson(Map<String, dynamic> json) => InvoiceDetailsModel(
         id: json["id"],

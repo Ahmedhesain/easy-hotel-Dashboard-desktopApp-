@@ -39,12 +39,13 @@ class SideWidget extends GetView<HomeController> {
             child: Row(
               children: [
                 const Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5),
                       child: Text("نوع الخصم"),
                     )),
                 Expanded(
+                  flex: 2,
                   child: Obx(() {
                     return DropdownButtonFormField(
                       decoration: const InputDecoration(
@@ -78,32 +79,36 @@ class SideWidget extends GetView<HomeController> {
             child: Row(
               children: [
                 const Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5),
                       child: Text("خصم على الفاتورة"),
                     )),
                 Expanded(
+                  flex: 2,
                   child: Obx(() {
                     final isDiscountValue = controller.selectedDiscountType.value == 0;
-                    return TextFormField(
-                      controller: controller.invoiceDiscountController,
-                      focusNode: controller.invoiceDiscountFieldFocusNode,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(bottom: 5),
-                        isDense: true,
-                        suffixIcon: Text(!isDiscountValue?"%":""),
-                        suffixIconConstraints: const BoxConstraints(minHeight: 10)
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: TextFormField(
+                        controller: controller.invoiceDiscountController,
+                        focusNode: controller.invoiceDiscountFieldFocusNode,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(bottom: 5),
+                          isDense: true,
+                          suffixIcon: Text(!isDiscountValue?"%":""),
+                          suffixIconConstraints: const BoxConstraints(minHeight: 10)
+                        ),
+                        onChanged: (value){
+                          if (value.isEmpty || num.tryParse(value) == null) {
+                            controller.invoiceDiscountController.text = "0";
+                          }
+                          if (controller.invoiceDiscountController.text.parseToNum > 100) {
+                            controller.invoiceDiscountController.text = "100";
+                          }
+                          controller.calcInvoiceValues();
+                        },
                       ),
-                      onChanged: (value){
-                        if (value.isEmpty || num.tryParse(value) == null) {
-                          controller.invoiceDiscountController.text = "0";
-                        }
-                        if (controller.invoiceDiscountController.text.parseToNum > 100) {
-                          controller.invoiceDiscountController.text = "100";
-                        }
-                        controller.calcInvoiceValues();
-                      },
                     );
                   }),
                 )
@@ -228,7 +233,7 @@ class _TitleWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: TextWidget(
@@ -239,6 +244,7 @@ class _TitleWidget extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
+            flex: 2,
             child: Center(child: Obx(() {
               return TextWidget(value.toStringAsFixed(fixedWith));
             })),

@@ -4,9 +4,11 @@ import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_reques
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_invoice_reponse.dart';
+import 'package:toby_bills/app/data/model/item/dto/request/get_item_price_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
+import 'package:toby_bills/app/data/model/item/dto/response/item_price_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
 import '../../model/customer/dto/request/find_customer_request.dart';
@@ -43,6 +45,20 @@ class ItemRepository {
         data: itemDataRequest.toJson(),
         onError: onError,
         convertor: ItemDataResponse.fromJson,
+    );
+
+  getItemPrice(
+      ItemPriceRequest itemPriceRequest, {
+        Function()? onComplete,
+        Function(ItemPriceResponse data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<ItemPriceResponse,Map<String,dynamic>>('items/findItemPrice',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: itemPriceRequest.toJson(),
+        onError: onError,
+        convertor: ItemPriceResponse.fromJson,
     );
 
 

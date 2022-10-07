@@ -23,6 +23,7 @@ import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_res
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_invoice_reponse.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
+import 'package:toby_bills/app/data/model/item/dto/request/get_item_price_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
@@ -275,15 +276,19 @@ class HomeController extends GetxController {
             itemNameFocusNode.requestFocus();
             return;
           }
-          selectedItem(item..itemData = data);
           itemNameController.text = "${item.name} ${item.code}";
+          if(data.availableQuantity != null){
+            item.tempNumber = (data.availableQuantity! / data.quantityOfUnit).fixed(2);
+          }
           itemNumberController.text = "1.0";
           itemQuantityController.text = data.quantityOfUnit.toString();
+          // item.quantity = data.quantityOfUnit;
           itemPriceController.text = data.sellPrice.toString();
           itemDiscountController.text = data.discountRow.toString();
           itemDiscountValueController.text = "0";
           itemAvailableQuantity(data.availableQuantity);
           itemNumberFocusNode.requestFocus();
+          selectedItem(item..itemData = data);
           calcItemData();
         });
 
@@ -305,10 +310,10 @@ class HomeController extends GetxController {
   }
 
   void calcItemData() {
-    final item = selectedItem.value!;
-    final number = num.parse(itemNumberController.text);
-    itemTotalQuantity((item.itemData!.quantityOfUnit * number).fixed(2));
-    itemNetWithoutDiscount = ((item.itemData!.sellPrice) * number).fixed(2);
+    final number = itemNumberController.text.parseToNum;
+    final quantity = itemQuantityController.text.parseToNum;
+    itemTotalQuantity((quantity * number).fixed(2));
+    itemNetWithoutDiscount = ((itemPriceController.text.parseToNum) * itemTotalQuantity.value!).fixed(2);
     final discount = itemDiscountController.text.tryToParseToNum ?? 0;
     final discountValue = itemDiscountValueController.text.tryToParseToNum ?? 0;
     itemNet((itemNetWithoutDiscount - (itemNetWithoutDiscount * (discount / 100)) - discountValue).fixed(2));
@@ -316,7 +321,8 @@ class HomeController extends GetxController {
 
   void selectInventory(InventoryResponse? value) {
     selectedInventory(value);
-    if(selectedItem.value != null){
+    if(selectedItem.value != null && selectedItem.value!.isInventoryItem == 1){
+      // _getItemPrice();
       selectItem(selectedItem.value!);
     }
   }
@@ -337,7 +343,7 @@ class HomeController extends GetxController {
         minPriceYoung: item.minPriceYoung,
         maxPriceMen: item.maxPriceMen,
         maxPriceYoung: item.maxPriceYoung,
-        quantity: itemTotalQuantity.value,
+        quantity: itemQuantityController.text.parseToNum,
         net: itemNet.value,
         availableQuantityRow: itemAvailableQuantity.value,
         price: itemPriceController.text.parseToNum,
@@ -358,8 +364,28 @@ class HomeController extends GetxController {
       itemNameFocusNode.requestFocus();
   }
 
+  _getItemPrice(){
+    isLoading(true);
+    final item = selectedItem.value!;
+    final request = ItemPriceRequest(id: item.id,inventoryId: selectedInventory.value!.id,customerId: selectedCustomer.value!.id,priceType: selectedPriceType.value!,quantityOfUnit: itemQuantityController.text.parseToNum,invNameGallary: UserManager().galleryType);
+    ItemRepository().getItemPrice(request,
+      onSuccess: (data){
+        selectedItem.value!.sellPrice = data.sellPrice;
+        itemPriceController.text = data.sellPrice.toString();
+        calcItemData();
+      },
+      onError: (error) => showPopupText(text: error.toString()),
+      onComplete: () => isLoading(false)
+    );
+  }
+
   void onItemNumberFieldSubmitted(String value) {
-    itemQuantityFocusNode.requestFocus();
+    if(selectedItem.value != null && selectedItem.value!.proGroupId == 1){
+      itemPriceFocusNode.requestFocus();
+    } else {
+      itemQuantityFocusNode.requestFocus();
+
+    }
   }
 
   saveInvoice() {
@@ -420,22 +446,37 @@ class HomeController extends GetxController {
   }
 
   _itemNumberListener(){
-    if((!itemNumberFocusNode.hasFocus) && !_isQuantityValid()){
-      showPopupText(text: "لا يمكن ادخال هذا العدد");
-      itemNumberController.text = "1.0";
-    }
-    if(itemNumberController.text.tryToParseToNum != null) {
-      itemTotalQuantity(itemNumberController.text.parseToNum * itemQuantityController.text.parseToNum);
+    if(!itemNumberFocusNode.hasFocus){
+      if(selectedItem.value == null || itemNumberController.text.tryToParseToNum == selectedItem.value!.tempNumber) return;
+      if(!_isQuantityValid()){
+        showPopupText(text: "لا يمكن ادخال هذا العدد");
+        itemNumberController.text = selectedItem.value!.tempNumber.toString();
+      } else {
+        selectedItem.value!.tempNumber = itemNumberController.text.parseToNum;
+      }
+      // if(itemNumberController.text.tryToParseToNum != null) {
+        itemTotalQuantity(itemNumberController.text.parseToNum * itemQuantityController.text.parseToNum);
+      // }
+      calcItemData();
     }
   }
 
   _itemQuantityListener(){
-    if((!itemQuantityFocusNode.hasFocus) && !_isQuantityValid()){
-      showPopupText(text: "لا يمكن ادخال هذه الكمية");
-      itemQuantityController.text = "1.0";
-    }
-    if(itemNumberController.text.tryToParseToNum != null) {
-      itemTotalQuantity(itemNumberController.text.parseToNum * itemQuantityController.text.parseToNum);
+    if(!itemQuantityFocusNode.hasFocus){
+      if(selectedItem.value == null || itemQuantityController.text.tryToParseToNum == selectedItem.value!.tempQuantity) return;
+      if(!_isQuantityValid()){
+        showPopupText(text: "لا يمكن ادخال هذه الكمية");
+        itemQuantityController.text = selectedItem.value!.tempQuantity.toString();
+      } else {
+        if(selectedItem.value!.isInventoryItem == 1) {
+          _getItemPrice();
+        }
+        selectedItem.value!.tempQuantity = itemQuantityController.text.parseToNum;
+      }
+      // if(itemQuantityController.text.tryToParseToNum != null) {
+        itemTotalQuantity(itemNumberController.text.parseToNum * itemQuantityController.text.parseToNum);
+      // }
+      calcItemData();
     }
   }
 
