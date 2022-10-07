@@ -23,6 +23,7 @@ class FindCustomerBalanceResponse {
 class InvoiceList {
   InvoiceList({
     required this.id,
+    required this.serial,
     required this.date,
     required this.net,
     required this.remarks,
@@ -30,6 +31,7 @@ class InvoiceList {
   });
 
   final int id;
+  final int? serial;
   final DateTime date;
   final num net;
   final String remarks;
@@ -37,6 +39,7 @@ class InvoiceList {
 
   factory InvoiceList.fromJson(Map<String, dynamic> json) => InvoiceList(
     id: json["id"],
+    serial: json["serial"],
     date: DateTime.parse(json["date"]),
     net: json["net"],
     remarks: json["remarks"],
@@ -45,6 +48,7 @@ class InvoiceList {
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "serial": serial,
     "date": date.toIso8601String(),
     "net": net,
     "remarks": remarks,

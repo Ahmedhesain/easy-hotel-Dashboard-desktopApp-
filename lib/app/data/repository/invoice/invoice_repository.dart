@@ -1,9 +1,10 @@
+import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/create_invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_invoice_reponse.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
 import '../../model/customer/dto/request/find_customer_request.dart';
 import '../../model/customer/dto/response/find_customer_response.dart';
@@ -78,6 +79,34 @@ class InvoiceRepository {
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: getInvoiceRequest.toJson(),
+        onError: onError,
+        convertor: InvoiceResponse.fromJson,
+    );
+
+  saveInvoice(
+      CreateInvoiceRequest createInvoiceRequest, {
+        Function()? onComplete,
+        Function(InvoiceResponse data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<InvoiceResponse,Map<String, dynamic>>('sales/saveDeskTop',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: createInvoiceRequest.toJson(),
+        onError: onError,
+        convertor: InvoiceResponse.fromJson,
+    );
+
+  saveTarhil(
+      CreateInvoiceRequest createInvoiceRequest, {
+        Function()? onComplete,
+        Function(InvoiceResponse data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<InvoiceResponse,Map<String, dynamic>>('sales/saveDeskTop',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: createInvoiceRequest.toJson(),
         onError: onError,
         convertor: InvoiceResponse.fromJson,
     );

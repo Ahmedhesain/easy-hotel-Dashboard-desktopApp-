@@ -10,7 +10,6 @@ import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_invoice_reponse.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
 import '../../../../components/text_widget.dart';
@@ -127,7 +126,7 @@ class SideWidget extends GetView<HomeController> {
             padding: const EdgeInsets.all(5.0),
             child: TextFieldWidget(
               label: "كوبون الخصم",
-              onChanged: (value) {},
+              onChanged: (value) => controller.offerCoupon = value,
             ),
           ),
           const SizedBox(height: 10),
@@ -186,15 +185,15 @@ class SideWidget extends GetView<HomeController> {
                 return SizedBox(
                   height: 50,
                   child: Center(
-                    child: Text((inv.id).toString()),
+                    child: Text((inv.serial).toString()),
                   ),
                 );
               },
               suggestionsCallback: (filter) {
-                return (controller.findCustomerBalanceResponse != null) ? controller.findCustomerBalanceResponse!.invoicesList : [];
+                return (controller.findCustomerBalanceResponse != null) ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null).toList() : [];
               },
               onSuggestionSelected: (value) {
-                controller.searchForInvoiceById(value.id.toString());
+                controller.searchForInvoiceById(value.serial.toString());
               },
               textFieldConfiguration: TextFieldConfiguration(
                   decoration: const InputDecoration(

@@ -3,15 +3,12 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/icon_button_widget.dart';
-import 'package:toby_bills/app/components/text_field_widget.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
-import 'package:toby_bills/app/data/model/customer/dto/request/create_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import '../../../../core/utils/validator.dart';
 import '../../../../core/values/app_colors.dart';
 
 class InvoiceInfoWidget extends GetView<HomeController> {
@@ -24,81 +21,85 @@ class InvoiceInfoWidget extends GetView<HomeController> {
         const SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            children: [
-              TextWidget(controller.invoice?.id.toString() ?? ""),
-              const SizedBox(width: 10),
-              const Text('الحالة:'),
-              const SizedBox(width: 5),
-              Expanded(flex: 2, child: Text(controller.invoice?.status.toString() ?? "")),
-              const SizedBox(width: 10),
-              const Text('تحديد السعر:'),
-              const SizedBox(width: 5),
-              Expanded(
-                flex: 2,
-                child: Obx(() {
-                  return DropdownButtonFormField(
-                    // menuMaxHeight: size.height * .2,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.all(10),
-                      isDense: true,
-                    ),
-                    dropdownColor: AppColors.appGreyLight,
-                    value: controller.selectedPriceType.value,
-                    // style: smallTextStyleNormal(size, color: Colors.black),
-                    elevation: 0,
-                    items: controller.priceTypes.entries
-                        .map((e) =>
-                        DropdownMenuItem<int>(
-                          value: e.key,
-                          child: Text(e.value),
-                        ))
-                        .toList(),
-                    onChanged: controller.changePriceType,
-                    // value: provider.priceTypeSelected,
-                  );
-                }),
-              ),
-              const SizedBox(width: 10),
-              const Text('التاريخ:'),
-              const SizedBox(width: 5),
-              Expanded(
-                flex: 2,
-                child: Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text(
-                    DateFormat("dd-MM-yyyy").format(DateTime.now()),
-                    textAlign: TextAlign.center,
-                  ),
+          child: Obx(() {
+            return Row(
+              children: [
+                if(controller.invoice.value?.id != null)
+                  TextWidget(controller.invoice.value!.id.toString() ?? ""),
+                if(controller.invoice.value?.id != null)
+                  const SizedBox(width: 10),
+                const Text('الحالة:'),
+                const SizedBox(width: 5),
+                Expanded(flex: 2, child: Text(controller.invoice.value?.status?.toString() ?? "")),
+                const SizedBox(width: 10),
+                const Text('تحديد السعر:'),
+                const SizedBox(width: 5),
+                Expanded(
+                  flex: 2,
+                  child: Obx(() {
+                    return DropdownButtonFormField(
+                      // menuMaxHeight: size.height * .2,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(10),
+                        isDense: true,
+                      ),
+                      dropdownColor: AppColors.appGreyLight,
+                      value: controller.selectedPriceType.value,
+                      // style: smallTextStyleNormal(size, color: Colors.black),
+                      elevation: 0,
+                      items: controller.priceTypes.entries
+                          .map((e) =>
+                          DropdownMenuItem<int>(
+                            value: e.key,
+                            child: Text(e.value),
+                          ))
+                          .toList(),
+                      onChanged: controller.changePriceType,
+                      // value: provider.priceTypeSelected,
+                    );
+                  }),
                 ),
-              ),
-              const SizedBox(width: 10),
-              const Text('تاريخ التسليم:'),
-              const SizedBox(width: 5),
-              Expanded(
-                flex: 2,
-                child: Obx(() {
-                  return Align(
+                const SizedBox(width: 10),
+                const Text('التاريخ:'),
+                const SizedBox(width: 5),
+                Expanded(
+                  flex: 2,
+                  child: Align(
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
-                      controller.dueDate.value == null ? "" : DateFormat("dd-MM-yyyy").format(controller.dueDate.value!.dueDate),
+                      DateFormat("dd-MM-yyyy").format(DateTime.now()),
                       textAlign: TextAlign.center,
                     ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                const Text('تاريخ التسليم:'),
+                const SizedBox(width: 5),
+                Expanded(
+                  flex: 2,
+                  child: Obx(() {
+                    return Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(
+                        controller.dueDate.value?.dueDate == null ? "" : DateFormat("dd-MM-yyyy").format(controller.dueDate.value!.dueDate!),
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(width: 10),
+                const Text('إرسال رسالة:'),
+                const SizedBox(width: 5),
+                Obx(() {
+                  return Checkbox(
+                    value: controller.checkSendSms.value,
+                    onChanged: controller.checkSendSms,
                   );
-                }),
-              ),
-              const SizedBox(width: 10),
-              const Text('إرسال رسالة:'),
-              const SizedBox(width: 5),
-              Obx(() {
-                return Checkbox(
-                  value: controller.checkSendSms.value,
-                  onChanged: controller.checkSendSms,
-                );
-              })
-            ],
-          ),
+                })
+              ],
+            );
+          }),
         ),
         const SizedBox(height: 10),
         Padding(

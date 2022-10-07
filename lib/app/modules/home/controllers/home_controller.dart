@@ -15,13 +15,14 @@ import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_ba
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delegator_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/create_invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_invoice_reponse.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_item_price_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
@@ -52,6 +53,7 @@ class HomeController extends GetxController {
   final itemNet = RxnNum();
   final itemTotalQuantity = RxnNum();
   num itemNetWithoutDiscount = 0;
+  String? offerCoupon;
 
   Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
   Rxn<DelegatorResponse> selectedDelegator = Rxn();
@@ -95,7 +97,7 @@ class HomeController extends GetxController {
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
   List<String> invoiceTypeList = ["مبيعات", "مانيكنات الفروع", "مانيكنات القماشين", "علاقات عامه", "تفصيل القماشين", "موظفي الفروع", "تعديلات", "اخري"];
   Rxn<GetDueDateResponse> dueDate = Rxn();
-  InvoiceResponse? invoice;
+  Rxn<InvoiceResponse> invoice = Rxn();
 
   Map<int, String> priceTypes = {
     0: "اولادي",
@@ -106,6 +108,7 @@ class HomeController extends GetxController {
     0: "قيمة",
     1: "نسبة",
   };
+
 
 
   @override
@@ -133,8 +136,6 @@ class HomeController extends GetxController {
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
   }
-
-
 
   getCustomersByCodeForInvoice() {
     isLoading(true);
@@ -199,13 +200,21 @@ class HomeController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  void searchForInvoiceById(String id) {
+  void searchForInvoiceById(String id) async {
     isLoading(true);
-    InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: UserManager().galleryId),
+    await InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: UserManager().galleryId),
         onSuccess: (data) {
-          invoice = data;
+          invoice(data);
           selectedPriceType(data.pricetype);
           dueDate.value!.dueDate = data.dueDate;
+          dueDate.value!.dayNumber = data.dueperiod;
+          selectedPriceType(data.pricetype);
+          selectedDeliveryPlace(deliveryPlaces.singleWhere((element) => element.name == data.deliveryPlaceName));
+          selectedInvoiceType(invoiceTypeList[data.invoiceType==null ?0 : data.invoiceType! + 1]);
+          selectedDelegator(delegators.singleWhere((element) => element.id == data.invDelegatorId));
+          isProof(data.proof == 1);
+          invoiceRemarkController.text = data.remarks;
+          invoiceDetails.assignAll((data.invoiceDetailApiList??[]).map((e) => Rx(e)).toList().obs);
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
@@ -220,7 +229,6 @@ class HomeController extends GetxController {
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
   }
-
 
   List<ItemResponse> _getItemsFromStorage() {
     List<dynamic> items = AppStorage.read("items") ?? [];
@@ -259,6 +267,7 @@ class HomeController extends GetxController {
     itemTotalQuantity.value = null;
     selectedInventory(inventories.first);
   }
+
   void selectItem(ItemResponse item) {
     if(selectedCustomer.value == null){
       showPopupText(text: "يرجى اختيار عميل أولاً");
@@ -389,7 +398,47 @@ class HomeController extends GetxController {
   }
 
   saveInvoice() {
-
+    if(invoiceDetails.isEmpty){
+      showPopupText(text: "يجب إضافة اصناف");
+      return;
+    }
+    final request = CreateInvoiceRequest(
+      customerId: selectedCustomer.value!.id,
+      customerCode: selectedCustomer.value!.code,
+      customerMobile: selectedCustomer.value!.mobile,
+      customerName: selectedCustomer.value!.name,
+      discountHalala: discountHalala.value,
+      dueDate: dueDate.value,
+      dueperiod: dueDate.value?.dayNumber,
+      finalNet: finalNet.value,
+      gallaryDeliveryId: selectedDeliveryPlace.value?.id,
+      gallaryDeliveryName: selectedDeliveryPlace.value?.name,
+      gallaryName: UserManager().galleryName,
+      branchId: UserManager().branchId,
+      gallaryId: UserManager().galleryId,
+      date: DateTime.now(),
+      checkSendSms: checkSendSms.value?1:0,
+      companyId: UserManager().companyId,
+      createdBy: UserManager().id,
+      createdDate: DateTime.now(),
+      glPayDTOList: [],
+      invDelegatorId: selectedDelegator.value?.id,
+      invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(),
+      invoiceType: invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0?null:invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
+      pricetype: selectedPriceType.value,
+      proof: isProof.value?1:0,
+      remarks: invoiceRemarkController.text,
+      taxvalue: tax.value,
+      totalNetAfterDiscount: totalAfterDiscount.value,
+      offerCopoun: offerCoupon,
+      invInventoryId: 45,
+    );
+    isLoading(true);
+    InvoiceRepository().saveInvoice(request,
+      onSuccess: (data) => invoice(data),
+      onError: (e) => showPopupText(text: e.toString()),
+      onComplete: ()=>isLoading(false)
+    );
   }
 
   newInvoice() {
@@ -404,6 +453,7 @@ class HomeController extends GetxController {
     invoiceDetails.clear();
     invoiceCustomerController.clear();
     calcInvoiceValues();
+    invoice.value = null;
   }
 
   calcInvoiceValues(){

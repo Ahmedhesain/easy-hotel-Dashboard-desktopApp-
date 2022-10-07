@@ -1,9 +1,3 @@
-import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_invoice_reponse.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_item_price_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
@@ -11,10 +5,6 @@ import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.d
 import 'package:toby_bills/app/data/model/item/dto/response/item_price_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
-import '../../model/customer/dto/request/find_customer_request.dart';
-import '../../model/customer/dto/response/find_customer_response.dart';
-import '../../model/invoice/dto/request/get_delegator_request.dart';
-import '../../model/invoice/dto/response/get_delivery_place_response.dart';
 
 class ItemRepository {
 

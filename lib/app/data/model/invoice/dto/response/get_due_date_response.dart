@@ -6,8 +6,8 @@ class GetDueDateResponse {
   });
 
   final String type;
-  final int dayNumber;
-  DateTime dueDate;
+  int dayNumber;
+  DateTime? dueDate;
 
   factory GetDueDateResponse.fromJson(Map<String, dynamic> json) => GetDueDateResponse(
     type: json["type"],
@@ -18,6 +18,6 @@ class GetDueDateResponse {
   Map<String, dynamic> toJson() => {
     "type": type,
     "dayNumber": dayNumber,
-    "dueDate": dueDate.toIso8601String(),
+    "dueDate": dueDate?.toIso8601String(),
   };
 }
