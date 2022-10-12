@@ -16,15 +16,17 @@ class CreateInvoiceRequest {
   final int? invoiceType;
   final int? dueperiod;
   final String? remarks;
+  final int? id;
   final int? customerId;
   final String? customerName;
   final String? customerCode;
   final String? customerMobile;
   final List<InvoiceDetailsModel>? invoiceDetailApiList;
+  List<InvoiceDetailsModel>? invoiceDetailApiListDeleted = [];
   final List<GlPayDTO>? glPayDTOList;
-  final int? createdBy;
   final int? companyId;
   final int? branchId;
+  final int? createdBy;
   final DateTime? createdDate;
   final int? proof;
   final int? invInventoryId;
@@ -33,10 +35,12 @@ class CreateInvoiceRequest {
   final num? finalNet;
   final num? taxvalue;
   final int? checkSendSms;
+  final int? serial;
 
   CreateInvoiceRequest({
     this.discountHalala,
     this.offerCopoun,
+    this.serial,
     this.invDelegatorId,
     this.pricetype,
     this.date,
@@ -48,10 +52,12 @@ class CreateInvoiceRequest {
     this.dueperiod,
     this.remarks,
     this.customerId,
+    this.id,
     this.customerName,
     this.customerCode,
     this.customerMobile,
     this.invoiceDetailApiList,
+    this.invoiceDetailApiListDeleted,
     this.glPayDTOList,
     this.createdBy,
     this.companyId,
@@ -83,7 +89,7 @@ class CreateInvoiceRequest {
     "createdBy": createdBy,
     // "createdByName": createdByName == null ? null : createdByName,
     "createdDate": createdDate?.toIso8601String(),
-    // "id": id == null ? null : id,
+    "id": id == null ? null : id,
     // "index": index == null ? null : index,
     // "markEdit": markEdit == null ? null : markEdit,
     // "serial": serial == null ? null : serial,
@@ -107,7 +113,8 @@ class CreateInvoiceRequest {
     // "invInventoryName": invInventoryName == null ? null : invInventoryName,
     // "invoiceDate": invoiceDate == null ? null : invoiceDate!.toIso8601String(),
     "invoiceDetailApiList": invoiceDetailApiList?.map((e) => e.toJson()).toList(),
-    // "invoiceDetailApiListDeleted": invoiceDetailApiListDeleted == null ? null : List<dynamic>.from(invoiceDetailApiListDeleted!.map((x) => x)),
+    "invoiceDetailApiListDeleted": invoiceDetailApiListDeleted?.map((e) => e.toJson()).toList(),
+
     "glPayDTOList": glPayDTOList?.map((e) => e.toJson()).toList(),
     // "invoiceNumber": invoiceNumber == null ? null : invoiceNumber,
     // "length": length == null ? null : length,
@@ -125,6 +132,7 @@ class CreateInvoiceRequest {
     "totalNetAfterDiscount": totalNetAfterDiscount,
     "finalNet": finalNet,
     "taxvalue": taxvalue,
+    "serial": serial,
     // "payed": payed,
     "branchId": branchId,
     // "salesStatementForThePeriod": salesStatementForThePeriod == null ? null : salesStatementForThePeriod!.toJson(),

@@ -10,6 +10,6 @@ class LoginRequest {
   Map<String, dynamic> toJson() => {
     "userName": userName,
     "password": password,
-    "version": "1.0",
+    "version": "2.0",
   };
 }

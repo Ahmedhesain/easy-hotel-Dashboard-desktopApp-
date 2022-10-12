@@ -27,6 +27,8 @@ class InvoiceDetailsModel {
     this.remnants,
     this.unitName,
     this.progroupId,
+    this.createdBy,
+    this.createdDate,
     this.typeShow,
     this.lastCost,
     this.maxPriceMen,
@@ -75,6 +77,8 @@ class InvoiceDetailsModel {
   int? progroupId;
   int? typeShow;
   num? lastCost;
+  int? createdBy;
+  DateTime? createdDate;
 
   bool isValidPrice(int priceType) {
     bool isValid = true;
@@ -125,8 +129,10 @@ class InvoiceDetailsModel {
         number: number,
         remark: remark,
         unitId: unitId,
+        createdBy: createdBy,
+        createdDate: createdDate,
         netWithoutDiscount: netWithoutDiscount,
-        quantity: unitId);
+        quantity: quantity);
 
     instance._calcData();
     return instance;
@@ -162,6 +168,8 @@ class InvoiceDetailsModel {
     String? unitName,
     int? progroupId,
     int? typeShow,
+    int? createdBy,
+    DateTime? createdDate,
     num? lastCost,
     num? maxPriceMen,
     num? maxPriceYoung,
@@ -182,6 +190,8 @@ class InvoiceDetailsModel {
         quantity: quantity ?? this.quantity,
         image: image ?? this.image,
         net: net ?? this.net,
+        createdBy: createdBy ?? this.createdBy,
+        createdDate: createdDate ?? this.createdDate,
         price: price ?? this.price,
         itemId: itemId ?? this.itemId,
         groupId: groupId ?? this.groupId,
@@ -222,6 +232,8 @@ class InvoiceDetailsModel {
         inventoryName: json["inventoryName"],
         inventoryCode: json["inventoryCode"],
         price: json["price"],
+        createdDate: json["createdDate"] == null ? null : DateTime.parse(json["createdDate"]),
+        createdBy: json["createdBy"],
         proof: json["proof"],
         quantity: json["quantity"],
         remnants: json["remnants"],
@@ -242,6 +254,7 @@ class InvoiceDetailsModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "serial": serial,
         "quantityOfOneUnit": quantityOfOneUnit,
         "quantity": quantity,
@@ -270,5 +283,7 @@ class InvoiceDetailsModel {
         "maxPriceYoung": maxPriceYoung,
         "minPriceMen": minPriceMen,
         "minPriceYoung": minPriceYoung,
+        "createdDate": createdDate?.toIso8601String(),
+        "createdBy": createdBy,
       };
 }

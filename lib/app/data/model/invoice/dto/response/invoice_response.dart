@@ -27,6 +27,7 @@ class InvoiceResponse {
       required this.taxvalue,
       required this.totalNetAfterDiscount,
       required this.invoiceDetailApiList,
+      required this.invoiceDetailApiListDeleted,
       required this.createdByName,
       required this.index,
       required this.serial,
@@ -80,6 +81,7 @@ class InvoiceResponse {
   num taxvalue;
   num totalNetAfterDiscount;
   List<InvoiceDetailsModel>? invoiceDetailApiList;
+  List<InvoiceDetailsModel> invoiceDetailApiListDeleted;
 
   String? createdByName;
   int? index;
@@ -148,6 +150,7 @@ class InvoiceResponse {
         segilValue: json["segilValue"],
         taxvalue: json["taxvalue"],
         invoiceDetailApiList: List<InvoiceDetailsModel>.from((json["invoiceDetailApiList"] ?? []).map((e) => InvoiceDetailsModel.fromJson(e))),
+        invoiceDetailApiListDeleted: List<InvoiceDetailsModel>.from((json["invoiceDetailApiListDeleted"] ?? []).map((e) => InvoiceDetailsModel.fromJson(e))),
         totalNetAfterDiscount: json["totalNetAfterDiscount"],
         step: json["step"],
         status: json["status"],
@@ -203,5 +206,7 @@ class InvoiceResponse {
         "segilValue": segilValue,
         "taxvalue": taxvalue,
         "totalNetAfterDiscount": totalNetAfterDiscount,
+        "invoiceDetailApiList": invoiceDetailApiList?.map((e) => e.toJson()).toList(),
+        "invoiceDetailApiListDeleted": invoiceDetailApiListDeleted?.map((e) => e.toJson()).toList(),
       };
 }
