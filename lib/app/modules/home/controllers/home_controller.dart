@@ -196,14 +196,16 @@ class HomeController extends GetxController {
     await InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: UserManager().galleryId),
         onSuccess: (data) {
           invoice(data);
+          invoiceDiscountController.text = data.discount.toString();
+          selectedDiscountType(data.discountType);
           selectedPriceType(data.pricetype);
           dueDate.value!.dueDate = data.dueDate;
           dueDate.value!.dayNumber = data.dueperiod;
-          selectedPriceType(data.pricetype);
           selectedDeliveryPlace(deliveryPlaces.singleWhere((element) => element.name == data.deliveryPlaceName));
           selectedInvoiceType(invoiceTypeList[data.invoiceType == null ? 0 : data.invoiceType! + 1]);
           selectedDelegator(delegators.singleWhere((element) => element.id == data.invDelegatorId));
           isProof(data.proof == 1);
+          checkSendSms(data.checkSendSms == 1);
           invoiceRemarkController.text = data.remarks;
           invoiceDetails.assignAll((data.invoiceDetailApiList ?? []).map((e) => Rx(e)).toList().obs);
           selectedCustomer(FindCustomerResponse(
@@ -249,6 +251,24 @@ class HomeController extends GetxController {
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
+  }
+
+  void changePriceType(int? value) async {
+    selectedPriceType(value);
+    final details = <Rx<InvoiceDetailsModel>>[];
+    for (final detail in invoiceDetails) {
+      final item = items.singleWhere((element) => element.id == detail.value.itemId);
+      await getItemData(
+          itemId: item.id,
+          onSuccess: (itemData) {
+            item.itemData = itemData;
+            final newDetail = detail.value.assignItem(item);
+            details.add(Rx(newDetail));
+          },
+          inventoryId: detail.value.inventoryId);
+    }
+    invoiceDetails.assignAll(details);
+    calcInvoiceValues();
   }
 
   List<ItemResponse> filterItems(String filter) {
@@ -456,6 +476,8 @@ class HomeController extends GetxController {
       totalNetAfterDiscount: totalAfterDiscount.value,
       offerCopoun: offerCoupon,
       invInventoryId: 45,
+      discount: invoiceDiscountController.text.tryToParseToNum,
+      discountType: selectedDiscountType.value
     );
     isLoading(true);
     InvoiceRepository().saveInvoice(request,
@@ -484,6 +506,7 @@ class HomeController extends GetxController {
     selectedDeliveryPlace(deliveryPlaces.first);
     selectedInvoiceType(invoiceTypeList.first);
     selectedDelegator(delegators.first);
+    invoiceDiscountController.clear();
     isProof(false);
     checkSendSms(false);
     invoiceRemarkController.clear();
@@ -595,21 +618,4 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  void changePriceType(int? value) async {
-    selectedPriceType(value);
-    final details = <Rx<InvoiceDetailsModel>>[];
-    for (final detail in invoiceDetails) {
-      final item = items.singleWhere((element) => element.id == detail.value.itemId);
-      await getItemData(
-          itemId: item.id,
-          onSuccess: (itemData) {
-            item.itemData = itemData;
-            final newDetail = detail.value.assignItem(item);
-            details.add(Rx(newDetail));
-          },
-          inventoryId: detail.value.inventoryId);
-    }
-    invoiceDetails.assignAll(details);
-    calcInvoiceValues();
-  }
 }

@@ -45,6 +45,7 @@ class InvoiceResponse {
       required this.invoiceDate,
       required this.invoiceNumber,
       required this.length,
+      required this.checkSendSms,
       required this.noticeCredit,
       required this.noticeDebit,
       required this.proof,
@@ -102,6 +103,7 @@ class InvoiceResponse {
   int? noticeCredit;
   int? noticeDebit;
   int? proof;
+  int? checkSendSms;
   num? remain;
   num? returnPurchaseValue;
   num? serialTax;
@@ -153,6 +155,7 @@ class InvoiceResponse {
         status: json["status"],
         shoulder: json["shoulder"],
         serialTax: json["serialTax"],
+        checkSendSms: json["checkSendSms"],
         returnPurchaseValue: json["returnPurchaseValue"],
         remain: json["remain"],
         totalNet: json["totalNet"],
@@ -199,9 +202,12 @@ class InvoiceResponse {
         "payed": payed,
         "pricetype": pricetype,
         "qrCode": qrCode,
+        "checkSendSms": checkSendSms,
         "remarks": remarks,
         "segilValue": segilValue,
         "taxvalue": taxvalue,
+        "invoiceType": invoiceType,
+        "proof": proof,
         "totalNetAfterDiscount": totalNetAfterDiscount,
       };
 }
