@@ -13,30 +13,28 @@ class NavigationBarWidget extends GetView<HomeController> {
       padding: const EdgeInsets.all(5.0),
       child: SizedBox(
         width: double.infinity,
-        child: Obx(() {
-          return Wrap(
-            alignment: WrapAlignment.center,
-            runSpacing: 10,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: AppColors.appGreyDark
-                ),
-                padding: const EdgeInsets.all(5),
-                margin: const EdgeInsets.symmetric(horizontal: 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ButtonWidget(text: "حفظ", onPressed: () => controller.saveInvoice()),
-                    const SizedBox(width: 5),
-                    ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
-                  ],
-                ),
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          runSpacing: 10,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: AppColors.appGreyDark
               ),
-            ],
-          );
-        }),
+              padding: const EdgeInsets.all(5),
+              margin: const EdgeInsets.symmetric(horizontal: 5),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ButtonWidget(text: "حفظ", onPressed: () => controller.saveInvoice()),
+                  const SizedBox(width: 5),
+                  ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

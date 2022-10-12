@@ -77,7 +77,7 @@ class ApiProvider {
       if (handleRemoteError(response)) {
         if (onSuccess != null) {
           final data = convertor(response.data);
-          onSuccess(data);
+          await onSuccess(data);
         }
       }
     } on DioError catch (e, s) {

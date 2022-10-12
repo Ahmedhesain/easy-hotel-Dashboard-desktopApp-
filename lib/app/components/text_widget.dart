@@ -32,7 +32,7 @@ class TextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text.rich(
+    return SelectableText.rich(
       TextSpan(text: text,
           children: (children??[])
               .map((e) => TextSpan(text: e.text,style: TextStyle(
@@ -56,7 +56,7 @@ class TextWidget extends StatelessWidget {
           decoration: (showUnderline??false) ? TextDecoration.underline : (showInline??false)?TextDecoration.lineThrough:null
       ),
       maxLines: maxLines,
-      overflow: maxLines==null?null:TextOverflow.ellipsis,
+      // overflow: maxLines==null?null:TextOverflow.ellipsis,
     );
   }
 }

@@ -320,6 +320,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                 Expanded(
                   flex: 2,
                   child: DropdownSearch<InventoryResponse>(
+                    key: UniqueKey(),
                     items: controller.inventories,
                     itemAsString: (InventoryResponse inventory) => inventory.code,
                     onChanged: (InventoryResponse? inventory) {
@@ -329,9 +330,9 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                         return;
                       }
                       controller.getItemData(itemId: item.id, inventoryId: inventory!.id, onSuccess: (itemData) {
-                        if(item.itemData!.availableQuantity != null && item.itemData!.availableQuantity == 0){
+                        if(itemData.availableQuantity != null && itemData.availableQuantity == 0){
                           showPopupText(text: "لايوجد كمية متاحة");
-                          details[index](detail.copyWith(inventoryId: detail.inventoryId));
+                          details[index](detail.copyWith(inventoryId: detail.inventoryId,inventoryCode: detail.inventoryCode,inventoryName: detail.inventoryName));
                           return;
                         }
                         item.itemData = itemData;
