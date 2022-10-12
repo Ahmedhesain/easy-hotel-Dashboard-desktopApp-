@@ -28,10 +28,8 @@ class NavigationBarWidget extends GetView<HomeController> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if(controller.invoice.value == null)
-                      ButtonWidget(text: "حفظ", onPressed: () => controller.saveInvoice()),
-                    if(controller.invoice.value == null)
-                      const SizedBox(width: 5),
+                    ButtonWidget(text: "حفظ", onPressed: () => controller.saveInvoice()),
+                    const SizedBox(width: 5),
                     ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
                   ],
                 ),

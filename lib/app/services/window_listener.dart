@@ -12,7 +12,7 @@ class MyWindowListener with WindowListener{
     if (isPreventClose) {
       Get.dialog(ContentDialog(
         title: const TextWidget('تأكيد الإغلاق', weight: FontWeight.bold,size: 20),
-        content: const TextWidget('هل انت متأكد انك تريد اغلاق هذه الشاشة'),
+        content: const TextWidget('هل انت متأكد انك تريد اغلاق البرنامج'),
         actions: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(

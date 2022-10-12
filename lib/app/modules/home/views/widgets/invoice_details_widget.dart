@@ -122,7 +122,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           controller: TextEditingController(text: detail.quantity?.toString()),
                           textDirection: TextDirection.ltr,
                           textAlign: TextAlign.center,
-                          enabled: detail.progroupId! != 1,
+                          enabled: (detail.progroupId??1) != 1,
                           onChanged: (value) => detail.quantity = value.tryToParseToNum ?? 0,
                           focusNode: detail.quantityFocus..addListener(() {
                             if(!detail.quantityFocus.hasFocus) {
@@ -164,15 +164,15 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                       builder: (context) {
                         num? oldValue = detail.price;
                         return TextFormField(
-                          controller: TextEditingController(text: detail.price.toString()),
+                          controller: TextEditingController(text: detail.price?.toStringAsFixed(2)),
                           textAlign: TextAlign.center,
                           textDirection: TextDirection.ltr,
                           onChanged: (value) => detail.price = value.tryToParseToNum ?? 0,
                           focusNode: detail.priceFocus..addListener(() {
                             if(!detail.priceFocus.hasFocus){
-                              showPopupText(text: "لايمكن إدخال هذا السعر");
                               if(!detail.isValidPrice(controller.selectedPriceType.value!)){
-                                details[index](detail.copyWith());
+                                showPopupText(text: "لايمكن إدخال هذا السعر");
+                                details[index](detail.copyWith(price: oldValue));
                               } else {
                                 details[index](detail.copyWith(price: detail.price));
                               }
@@ -308,10 +308,10 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   child: SizedBox(
                     height: 30,
                     child: Checkbox(
-                      value: detail.isRemains == 1,
+                      value: detail.remnants == 1,
                       activeColor: Colors.green,
                       onChanged: (value){
-                        details[index](detail.copyWith(isRemains: value!?1:0));
+                        details[index](detail.copyWith(remnants: value!?1:0));
                       },
                     ),
                   ),

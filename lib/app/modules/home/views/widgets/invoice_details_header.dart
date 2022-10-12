@@ -440,7 +440,7 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                     children: [
                       const Center(
                         child: Text(
-                          "تصفية",
+                          "بواقي",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,

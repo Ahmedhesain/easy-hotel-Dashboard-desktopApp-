@@ -200,7 +200,7 @@ class HomeController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  void searchForInvoiceById(String id) async {
+  searchForInvoiceById(String id) async {
     isLoading(true);
     await InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: UserManager().galleryId),
         onSuccess: (data) {
@@ -215,12 +215,25 @@ class HomeController extends GetxController {
           isProof(data.proof == 1);
           invoiceRemarkController.text = data.remarks;
           invoiceDetails.assignAll((data.invoiceDetailApiList??[]).map((e) => Rx(e)).toList().obs);
+          selectedCustomer(FindCustomerResponse(
+            id: data.customerId,
+            mobile: data.customerMobile,
+            name: data.customerName,
+            code: data.customerCode,
+            balanceLimit: data.customerBalance,
+            email: data.customerEmail,
+            shoulder: data.shoulder,
+            step: data.step,
+            length: data.length,
+          ));
+          invoiceCustomerController.text = "${data.customerName} ${data.customerCode}";
+          calcInvoiceValues();
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
   }
 
-  void getCustomerBalance(int id) {
+  getCustomerBalance(int id) {
     isLoading(true);
     CustomerRepository().getCustomerBalance(FindCustomerBalanceRequest(id: id),
         onSuccess: (data) {
@@ -236,7 +249,7 @@ class HomeController extends GetxController {
     return itemsList;
   }
 
-  void getItems() {
+  getItems() {
     isLoading(true);
     ItemRepository().getAllItems(GetItemRequest(branchId: UserManager().branchId),
         onSuccess: (data) {
@@ -268,7 +281,7 @@ class HomeController extends GetxController {
     selectedInventory(inventories.first);
   }
 
-  void selectItem(ItemResponse item) {
+  selectItem(ItemResponse item) {
     if(selectedCustomer.value == null){
       showPopupText(text: "يرجى اختيار عميل أولاً");
       return;
@@ -318,7 +331,7 @@ class HomeController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  void calcItemData() {
+  calcItemData() {
     final number = itemNumberController.text.parseToNum;
     final quantity = itemQuantityController.text.parseToNum;
     itemTotalQuantity((quantity * number).fixed(2));
@@ -328,7 +341,7 @@ class HomeController extends GetxController {
     itemNet((itemNetWithoutDiscount - (itemNetWithoutDiscount * (discount / 100)) - discountValue).fixed(2));
   }
 
-  void selectInventory(InventoryResponse? value) {
+  selectInventory(InventoryResponse? value) {
     selectedInventory(value);
     if(selectedItem.value != null && selectedItem.value!.isInventoryItem == 1){
       // _getItemPrice();
@@ -365,7 +378,7 @@ class HomeController extends GetxController {
         itemId: item.id,
         proof: isItemProof.value ? 1 : 0,
         netWithoutDiscount: itemNetWithoutDiscount,
-        isRemains: isItemRemains.value ? 1 : 0).obs;
+        remnants: isItemRemains.value ? 1 : 0).obs;
 
       invoiceDetails.insert(0, detail);
       calcInvoiceValues();
@@ -388,7 +401,7 @@ class HomeController extends GetxController {
     );
   }
 
-  void onItemNumberFieldSubmitted(String value) {
+  onItemNumberFieldSubmitted(String value) {
     if(selectedItem.value != null && selectedItem.value!.proGroupId == 1){
       itemPriceFocusNode.requestFocus();
     } else {

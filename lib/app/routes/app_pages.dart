@@ -11,7 +11,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static String get initialRoute => UserManager().isLoggedIn ? Routes.HOME : Routes.LOGIN;
+  static String get initialRoute => Routes.LOGIN;
 
   static final routes = [
     GetPage(

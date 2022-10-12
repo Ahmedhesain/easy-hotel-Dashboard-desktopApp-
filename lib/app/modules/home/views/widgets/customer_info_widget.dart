@@ -249,19 +249,19 @@ class CustomerInfoWidget extends GetView<HomeController> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Obx(() {
-                    if (controller.selectedCustomer.value == null) return const SizedBox.shrink();
-                    return Material(
-                      color: Colors.transparent,
-                      child: IconButtonWidget(
-                        icon: Icons.edit,
-                        onPressed: () {
-
-                        },
-                      ),
-                    );
-                  })
+                  // const SizedBox(width: 10),
+                  // Obx(() {
+                  //   if (controller.selectedCustomer.value == null) return const SizedBox.shrink();
+                  //   return Material(
+                  //     color: Colors.transparent,
+                  //     child: IconButtonWidget(
+                  //       icon: Icons.edit,
+                  //       onPressed: () {
+                  //
+                  //       },
+                  //     ),
+                  //   );
+                  // })
                 ],
               );
             })));

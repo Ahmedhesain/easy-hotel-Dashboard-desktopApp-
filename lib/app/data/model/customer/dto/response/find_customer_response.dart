@@ -1,32 +1,32 @@
 class FindCustomerResponse {
   FindCustomerResponse({
-    required this.type,
-    required this.email,
     required this.id,
-    required this.accountIdApi,
-    required this.code,
-    required this.discount,
-    required this.gallaryIdApi,
-    required this.length,
-    required this.mobile,
-    required this.name,
-    required this.offerCompanyName,
-    required this.shoulder,
-    required this.step,
-    required this.balanceLimit,
+    this.type,
+    this.email,
+    this.accountIdApi,
+    this.code,
+    this.discount,
+    this.gallaryIdApi,
+    this.length,
+    this.mobile,
+    this.name,
+    this.offerCompanyName,
+    this.shoulder,
+    this.step,
+    this.balanceLimit,
   });
 
-  String type;
+  String? type;
   String? email;
   int id;
-  int accountIdApi;
-  String code;
-  num discount;
-  int gallaryIdApi;
+  int? accountIdApi;
+  String? code;
+  num? discount;
+  int? gallaryIdApi;
   num? length;
-  String mobile;
-  String name;
-  String offerCompanyName;
+  String? mobile;
+  String? name;
+  String? offerCompanyName;
   num? shoulder;
   num? step;
   num? balanceLimit;

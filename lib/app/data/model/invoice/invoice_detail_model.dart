@@ -24,7 +24,7 @@ class InvoiceDetailsModel {
     this.discountValue,
     this.number,
     this.proof,
-    this.isRemains,
+    this.remnants,
     this.unitName,
     this.progroupId,
     this.typeShow,
@@ -71,7 +71,7 @@ class InvoiceDetailsModel {
   num? discountValue;
   num? discount;
   int? proof;
-  int? isRemains;
+  int? remnants;
   int? progroupId;
   int? typeShow;
   num? lastCost;
@@ -116,7 +116,7 @@ class InvoiceDetailsModel {
         inventoryId: inventoryId,
         itemId: item.id,
         proof: proof,
-        isRemains: isRemains,
+        remnants: remnants,
         id: id,
         serial: serial,
         image: image,
@@ -158,7 +158,7 @@ class InvoiceDetailsModel {
     num? discountValue,
     num? number,
     int? proof,
-    int? isRemains,
+    int? remnants,
     String? unitName,
     int? progroupId,
     int? typeShow,
@@ -188,7 +188,7 @@ class InvoiceDetailsModel {
         availableQuantityRow: availableQuantityRow ?? this.availableQuantityRow,
         discount: discount ?? this.discount,
         discountValue: discountValue ?? this.discountValue,
-        isRemains: isRemains ?? this.isRemains,
+        remnants: remnants ?? this.remnants,
         lastCost: lastCost ?? this.lastCost,
         maxPriceMen: maxPriceMen ?? this.maxPriceMen,
         maxPriceYoung: maxPriceYoung ?? this.maxPriceYoung,
@@ -224,7 +224,7 @@ class InvoiceDetailsModel {
         price: json["price"],
         proof: json["proof"],
         quantity: json["quantity"],
-        isRemains: json["isRemains"],
+        remnants: json["remnants"],
         itemId: json["itemId"],
         quantityOfOneUnit: json["quantityOfOneUnit"],
         number: json["number"],
@@ -260,7 +260,7 @@ class InvoiceDetailsModel {
         "inventoryId": inventoryId,
         "image": image,
         "lastCost": lastCost,
-        "isRemains": isRemains,
+        "remnants": remnants,
         "typeShow": typeShow,
         "progroupId": progroupId,
         "name": name,
