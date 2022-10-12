@@ -16,8 +16,8 @@ class ApiProvider {
         followRedirects: false,
         validateStatus: (status) => true,
         baseUrl: apiUrl,
-        receiveTimeout: 60 * 1000,
-        connectTimeout: 100 * 1000,
+        receiveTimeout: 1000 * 1000,
+        connectTimeout: 1000 * 1000,
       ),
     );
     _dio.interceptors.add(
@@ -32,8 +32,8 @@ class ApiProvider {
 
   static String get apiUrl {
     if (kDebugMode) {
-      // return  "http://localhost:9090/toby/rest/";
-      return "http://134.122.57.181:8080/debug/rest/";
+      return  "http://localhost:9090/toby/rest/";
+      // return "http://134.122.57.181:8080/debug/rest/";
     } else {
       // return  "http://localhost:9090/toby/rest/";
       // return  "http://192.168.1.22:9090/toby/rest/";

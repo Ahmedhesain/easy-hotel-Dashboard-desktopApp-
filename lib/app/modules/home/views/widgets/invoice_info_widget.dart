@@ -25,7 +25,12 @@ class InvoiceInfoWidget extends GetView<HomeController> {
             return Row(
               children: [
                 if(controller.invoice.value?.id != null)
-                  TextWidget(controller.invoice.value!.id.toString() ?? ""),
+                  GetBuilder<HomeController>(
+                    id: HomeController.getBuilderSerial,
+                    builder: (context) {
+                      return TextWidget(controller.invoice.value?.serial?.toString() ?? "");
+                    }
+                  ),
                 if(controller.invoice.value?.id != null)
                   const SizedBox(width: 10),
                 const Text('الحالة:'),

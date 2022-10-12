@@ -89,14 +89,19 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           keyboardType: TextInputType.number,
                           onChanged: (value) => detail.number = value.tryToParseToNum ?? 0,
                           focusNode: detail.numberFocus..addListener(() {
-                            if(!detail.numberFocus.hasFocus){
-                              if(detail.availableQuantityRow != null && detail.availableQuantityRow! < detail.number! * detail.quantity!){
-                                showPopupText(text: "لايمكن إضافة هذا العدد");
-                                details[index](detail.copyWith(number: oldValue));
-                              } else{
-                                details[index](detail.copyWith(number: detail.number));
+                            if(detail.number == oldValue) return;
+                            controller.getItemData(itemId: detail.itemId!, onSuccess: (itemData){
+                              detail.availableQuantityRow = itemData.availableQuantity;
+                              if(!detail.numberFocus.hasFocus){
+                                if(detail.availableQuantityRow != null && detail.availableQuantityRow! < detail.number! * detail.quantity!){
+                                  showPopupText(text: "لايمكن إضافة هذا العدد");
+                                  details[index](detail.copyWith(number: oldValue));
+                                } else{
+                                  details[index](detail.copyWith(number: detail.number));
+                                }
                               }
-                            }
+
+                            });
                           }),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -125,14 +130,19 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           enabled: (detail.progroupId??1) != 1,
                           onChanged: (value) => detail.quantity = value.tryToParseToNum ?? 0,
                           focusNode: detail.quantityFocus..addListener(() {
-                            if(!detail.quantityFocus.hasFocus) {
-                              if (detail.availableQuantityRow != null && detail.availableQuantityRow! < detail.number! * detail.quantity!) {
-                                showPopupText(text: "لايمكن إضافة هذه الكمية");
-                                details[index](detail.copyWith(quantity: oldValue));
-                              } else {
-                                details[index](detail.copyWith(quantity: detail.quantity));
+                            if(oldValue == detail.quantity) return;
+                            controller.getItemData(itemId: detail.itemId!, onSuccess: (itemData){
+                              detail.availableQuantityRow = itemData.availableQuantity;
+                              if(!detail.quantityFocus.hasFocus) {
+                                if (detail.availableQuantityRow != null && detail.availableQuantityRow! < detail.number! * detail.quantity!) {
+                                  showPopupText(text: "لايمكن إضافة هذه الكمية");
+                                  details[index](detail.copyWith(quantity: oldValue));
+                                } else {
+                                  details[index](detail.copyWith(quantity: detail.quantity));
+                                }
                               }
-                            }
+
+                            });
                           }),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -354,7 +364,10 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                 Expanded(
                   child: IconButtonWidget(
                     onPressed: () {
-                      controller.invoiceDetails.removeAt(index);
+                      final deleted = controller.invoiceDetails.removeAt(index);
+                      if(controller.invoice.value?.id != null){
+                        controller.invoice.value!.invoiceDetailApiListDeleted.add(deleted.value);
+                      }
                       controller.calcInvoiceValues();
                     },
                     icon: Icons.clear,
