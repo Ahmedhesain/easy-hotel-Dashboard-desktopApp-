@@ -140,7 +140,7 @@ class InvoiceDetailsModel {
   num get totalQuantity => ((number??0) * (quantity??0)).fixed(2);
 
   void _calcData() {
-    netWithoutDiscount = (price! * totalQuantity).fixed(2);
+    netWithoutDiscount = (price! * (number??0)).fixed(2);
     net = (netWithoutDiscount! - (netWithoutDiscount! * (discount! / 100)) - (discountValue??0)).fixed(2);
   }
 

@@ -61,6 +61,10 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                               ),
                               onEditingComplete: () {
                                 final items = controller.filterItems(controller.itemNameController.text);
+                                if(controller.selectedItem.value != null){
+                                  controller.itemNumberFocusNode.requestFocus();
+                                  return;
+                                }
                                 if (controller.itemNameController.text.isNotEmpty) {
                                   controller.selectItem(items.first);
                                 }

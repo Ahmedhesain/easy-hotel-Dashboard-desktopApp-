@@ -23,11 +23,11 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
       final details = controller.invoiceDetails;
       return ListView.separated(
         itemCount: details.length,
-        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-        separatorBuilder: (_,__) => const Divider(),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        separatorBuilder: (_, __) => const Divider(),
         itemBuilder: (context, index) {
           return Obx(() {
-            InvoiceDetailsModel detail = details[index].value;
+            Rx<InvoiceDetailsModel> detail = details[index];
             return Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -37,36 +37,34 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                     height: 30,
                     child: TypeAheadField<ItemResponse>(
                       suggestionsCallback: (filter) => controller.filterItems(filter),
-                      onSuggestionSelected: (item) => controller.getItemData(itemId: item.id, onSuccess: (itemData) {
-                        if(item.itemData!.availableQuantity != null && item.itemData!.availableQuantity == 0){
-                          showPopupText(text: "لايوجد كمية متاحة");
-                          details[index](detail.copyWith(
-                            name: detail.name,
-                            code: detail.code
-                          ));
-                          return;
-                        }
-                        item.itemData = itemData;
-                        final newDetail = detail.assignItem(item);
-                        details[index](newDetail);
-                        controller.calcInvoiceValues();
-                      }),
+                      onSuggestionSelected: (item) => controller.getItemData(
+                          itemId: item.id,
+                          onSuccess: (itemData) {
+                            if (item.itemData!.availableQuantity != null && item.itemData!.availableQuantity == 0) {
+                              showPopupText(text: "لايوجد كمية متاحة");
+                              detail(detail.value.copyWith(name: detail.value.name, code: detail.value.code));
+                              return;
+                            }
+                            item.itemData = itemData;
+                            final newDetail = detail.value.assignItem(item);
+                            detail(newDetail);
+                            controller.calcInvoiceValues();
+                          }),
                       itemBuilder: (context, item) {
                         return Center(
                           child: Text("${item.name} ${item.code}"),
                         );
                       },
                       textFieldConfiguration: TextFieldConfiguration(
-                          controller: TextEditingController(text: "${detail.name} ${detail.code}"),
+                          controller: TextEditingController(text: "${detail.value.name} ${detail.value.code}"),
                           textInputAction: TextInputAction.next,
                           textAlignVertical: TextAlignVertical.center,
                           enabled: false,
                           decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                            border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                              border: OutlineInputBorder(),
                               filled: true,
-                              fillColor: Colors.white70
-                          ),
+                              fillColor: Colors.white70),
                           onSubmitted: (value) {
                             final items = controller.filterItems(value);
                             if (controller.itemNameController.text.isNotEmpty) {
@@ -80,80 +78,72 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                 Expanded(
                   child: SizedBox(
                     height: 30,
-                    child: Builder(
-                      builder: (context) {
-                        num? oldValue = detail.number;
-                        return TextFormField(
-                          controller: TextEditingController(text: detail.number?.toString()),
-                          textDirection: TextDirection.ltr,
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) => detail.number = value.tryToParseToNum ?? 0,
-                          focusNode: detail.numberFocus..addListener(() {
-                            if(detail.number == oldValue) return;
-                            controller.getItemData(itemId: detail.itemId!, onSuccess: (itemData){
-                              detail.availableQuantityRow = itemData.availableQuantity;
-                              if(!detail.numberFocus.hasFocus){
-                                if(detail.availableQuantityRow != null && detail.availableQuantityRow! < detail.number! * detail.quantity!){
-                                  showPopupText(text: "لايمكن إضافة هذا العدد");
-                                  details[index](detail.copyWith(number: oldValue));
-                                } else{
-                                  details[index](detail.copyWith(number: detail.number));
-                                }
-                              }
-
-                            });
+                    child: Builder(builder: (context) {
+                      num? oldValue = detail.value.number;
+                      return TextFormField(
+                        controller: TextEditingController(text: detail.value.number?.toString()),
+                        textDirection: TextDirection.ltr,
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) => detail.value.number = value.tryToParseToNum ?? 0,
+                        focusNode: detail.value.numberFocus
+                          ..addListener(() {
+                            if (detail.value.number == oldValue) return;
+                            controller.getItemData(
+                                itemId: detail.value.itemId!,
+                                onSuccess: (itemData) {
+                                  detail.value.availableQuantityRow = itemData.availableQuantity;
+                                  if (!detail.value.numberFocus.hasFocus) {
+                                    if (detail.value.availableQuantityRow != null && detail.value.availableQuantityRow! < detail.value.number! * detail.value.quantity!) {
+                                      showPopupText(text: "لايمكن إضافة هذا العدد");
+                                      detail(detail.value.copyWith(number: oldValue));
+                                    } else {
+                                      detail(detail.value.copyWith(number: detail.value.number));
+                                    }
+                                  }
+                                });
                           }),
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.zero,
-                              filled: true,
-                              fillColor: Colors.white70
-                          ),
-                          textAlign: TextAlign.center,
-                          inputFormatters: [doubleInputFilter],
-                        );
-                      }
-                    ),
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
+                        textAlign: TextAlign.center,
+                        inputFormatters: [doubleInputFilter],
+                      );
+                    }),
                   ),
                 ),
                 separator,
                 Expanded(
                   child: SizedBox(
                     height: 30,
-                    child: Builder(
-                      builder: (context) {
-                        num? oldValue = detail.quantity;
-                        return TextFormField(
-                          controller: TextEditingController(text: detail.quantity?.toString()),
-                          textDirection: TextDirection.ltr,
-                          textAlign: TextAlign.center,
-                          enabled: (detail.progroupId??1) != 1,
-                          onChanged: (value) => detail.quantity = value.tryToParseToNum ?? 0,
-                          focusNode: detail.quantityFocus..addListener(() {
-                            if(oldValue == detail.quantity) return;
-                            controller.getItemData(itemId: detail.itemId!, onSuccess: (itemData){
-                              detail.availableQuantityRow = itemData.availableQuantity;
-                              if(!detail.quantityFocus.hasFocus) {
-                                if (detail.availableQuantityRow != null && detail.availableQuantityRow! < detail.number! * detail.quantity!) {
-                                  showPopupText(text: "لايمكن إضافة هذه الكمية");
-                                  details[index](detail.copyWith(quantity: oldValue));
-                                } else {
-                                  details[index](detail.copyWith(quantity: detail.quantity));
-                                }
-                              }
-
-                            });
+                    child: Builder(builder: (context) {
+                      num? oldValue = detail.value.quantity;
+                      return TextFormField(
+                        controller: TextEditingController(text: detail.value.quantity?.toString()),
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        enabled: (detail.value.progroupId ?? 1) != 1,
+                        onChanged: (value) => detail.value.quantity = value.tryToParseToNum ?? 0,
+                        focusNode: detail.value.quantityFocus
+                          ..addListener(() {
+                            if (oldValue == detail.value.quantity) return;
+                            controller.getItemData(
+                                itemId: detail.value.itemId!,
+                                onSuccess: (itemData) {
+                                  detail.value.availableQuantityRow = itemData.availableQuantity;
+                                  if (!detail.value.quantityFocus.hasFocus) {
+                                    if (detail.value.availableQuantityRow != null && detail.value.availableQuantityRow! < detail.value.number! * detail.value.quantity!) {
+                                      showPopupText(text: "لايمكن إضافة هذه الكمية");
+                                      detail(detail.value.copyWith(quantity: oldValue));
+                                    } else {
+                                      detail(detail.value.copyWith(quantity: detail.value.quantity));
+                                    }
+                                  }
+                                });
                           }),
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.zero,
-                              filled: true,
-                              fillColor: Colors.white70
-                          ),
-                          inputFormatters: [doubleInputFilter],
-                        );
-                      }
-                    ),
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
+                        inputFormatters: [doubleInputFilter],
+                      );
+                    }),
                   ),
                 ),
                 separator,
@@ -164,39 +154,60 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                         color: Colors.white70,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Center(child: Text(detail.totalQuantity.toString()))),
+                      child: Center(child: Text(detail.value.totalQuantity.toString()))),
                 ),
                 separator,
                 Expanded(
                   child: SizedBox(
                     height: 30,
-                    child: Builder(
-                      builder: (context) {
-                        num? oldValue = detail.price;
-                        return TextFormField(
-                          controller: TextEditingController(text: detail.price?.toStringAsFixed(2)),
-                          textAlign: TextAlign.center,
-                          textDirection: TextDirection.ltr,
-                          onChanged: (value) => detail.price = value.tryToParseToNum ?? 0,
-                          focusNode: detail.priceFocus..addListener(() {
-                            if(!detail.priceFocus.hasFocus){
-                              if(!detail.isValidPrice(controller.selectedPriceType.value!)){
+                    child: Builder(builder: (context) {
+                      num? oldValue = detail.value.price;
+                      return TextFormField(
+                        controller: TextEditingController(text: detail.value.price?.toStringAsFixed(2)),
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.ltr,
+                        onChanged: (value) => detail.value.price = value.tryToParseToNum ?? 0,
+                        focusNode: detail.value.priceFocus
+                          ..addListener(() {
+                            if (!detail.value.priceFocus.hasFocus) {
+                              if (!detail.value.isValidPrice(controller.selectedPriceType.value!)) {
                                 showPopupText(text: "لايمكن إدخال هذا السعر");
-                                details[index](detail.copyWith(price: oldValue));
+                                detail(detail.value.copyWith(price: oldValue));
                               } else {
-                                details[index](detail.copyWith(price: detail.price));
+                                detail(detail.value.copyWith(price: detail.value.price));
                               }
                             }
                           }),
-                          inputFormatters: [doubleInputFilter],
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.zero,
-                            filled: true,
-                            fillColor: Colors.white70
-                          ),
-                        );
-                      }
+                        inputFormatters: [doubleInputFilter],
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
+                      );
+                    }),
+                  ),
+                ),
+                separator,
+                Expanded(
+                  child: SizedBox(
+                    height: 30,
+                    child: TextFormField(
+                      controller: TextEditingController(text: detail.value.discount.toString()),
+                      textAlign: TextAlign.center,
+                      textDirection: TextDirection.ltr,
+                      onChanged: (value) => detail.value.discount = value.tryToParseToNum ?? 0,
+                      focusNode: detail.value.discountFocus
+                        ..addListener(() {
+                          if (!detail.value.discountFocus.hasFocus) {
+                            detail.value.discount ??= 0;
+                            if (detail.value.discount! > 100) {
+                              detail.value.discount = 100;
+                            }
+                            detail(
+                                detail.value.copyWith(discount: detail.value.discount, discountValue: detail.value.discount! > 0 ? 0 : null));
+                          }
+                        }),
+                      inputFormatters: [doubleInputFilter],
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
                     ),
                   ),
                 ),
@@ -205,54 +216,24 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   child: SizedBox(
                     height: 30,
                     child: TextFormField(
-                      controller: TextEditingController(text: detail.discount.toString()),
-                      textAlign: TextAlign.center,
-                      textDirection: TextDirection.ltr,
-                      onChanged: (value) => detail.discount = value.tryToParseToNum ?? 0,
-                      focusNode: detail.discountFocus..addListener(() {
-                        if(!detail.discountFocus.hasFocus) {
-                            detail.discount ??= 0;
-                            if (detail.discount! > 100) {
-                              detail.discount = 100;
-                            }
-                            details[index](detail.copyWith(discount: detail.discount, discountValue: detail.discount! > 0 ? 0 : null));
-                          }
-                        }),
-                      inputFormatters: [doubleInputFilter],
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.zero,
-                          filled: true,
-                          fillColor: Colors.white70
-                      ),
-                    ),
-                  ),
-                ),
-                separator,
-                Expanded(
-                  child: SizedBox(
-                    height: 30,
-                    child: TextFormField(
-                      controller: TextEditingController(text: detail.discountValue.toString()),
+                      controller: TextEditingController(text: detail.value.discountValue.toString()),
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.ltr,
                       inputFormatters: [doubleInputFilter],
-                      onChanged: (value) => detail.discountValue = value.tryToParseToNum ?? 0,
-                      focusNode: detail.discountValueFocus..addListener(() {
-                        if(!detail.discountValueFocus.hasFocus) {
-                            detail.discountValue ??= 0;
-                            if (detail.discountValue! > detail.netWithoutDiscount!) {
-                              detail.discountValue = detail.netWithoutDiscount!;
+                      onChanged: (value) => detail.value.discountValue = value.tryToParseToNum ?? 0,
+                      focusNode: detail.value.discountValueFocus
+                        ..addListener(() {
+                          if (!detail.value.discountValueFocus.hasFocus) {
+                            detail.value.discountValue ??= 0;
+                            if (detail.value.discountValue! > detail.value.netWithoutDiscount!) {
+                              detail.value.discountValue = detail.value.netWithoutDiscount!;
                             }
-                            details[index](detail.copyWith(discountValue: detail.discountValue, discount: detail.discountValue! > 0 ? 0 : null));
+                            detail(
+                                detail.value.copyWith(discountValue: detail.value.discountValue, discount: detail.value.discountValue! > 0 ? 0 : null));
                           }
                         }),
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.zero,
-                          filled: true,
-                          fillColor: Colors.white70
-                      ),
+                          border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
                     ),
                   ),
                 ),
@@ -266,7 +247,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Center(
-                      child: Text(detail.net?.toString() ?? ""),
+                      child: Text(detail.value.net?.toString() ?? ""),
                     ),
                   ),
                 ),
@@ -279,7 +260,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Center(
-                      child: Text(detail.availableQuantityRow?.toString() ?? "--"),
+                      child: Text(detail.value.availableQuantityRow?.toString() ?? "--"),
                     ),
                   ),
                 ),
@@ -289,14 +270,13 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   child: SizedBox(
                     height: 30,
                     child: TextFormField(
-                      controller: TextEditingController(text: detail.remark),
+                      controller: TextEditingController(text: detail.value.remark),
                       onEditingComplete: () {},
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
                           filled: true,
-                          fillColor: Colors.white70
-                      ),
+                          fillColor: Colors.white70),
                     ),
                   ),
                 ),
@@ -305,10 +285,10 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   child: SizedBox(
                     height: 30,
                     child: Checkbox(
-                      value: detail.proof == 1,
+                      value: detail.value.proof == 1,
                       activeColor: Colors.green,
-                      onChanged: (value){
-                        details[index](detail.copyWith(proof: value!?1:0));
+                      onChanged: (value) {
+                        detail(detail.value.copyWith(proof: value! ? 1 : 0));
                       },
                     ),
                   ),
@@ -318,10 +298,10 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   child: SizedBox(
                     height: 30,
                     child: Checkbox(
-                      value: detail.remnants == 1,
+                      value: detail.value.remnants == 1,
                       activeColor: Colors.green,
-                      onChanged: (value){
-                        details[index](detail.copyWith(remnants: value!?1:0));
+                      onChanged: (value) {
+                        details[index](detail.value.copyWith(remnants: value! ? 1 : 0));
                       },
                     ),
                   ),
@@ -334,24 +314,34 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                     items: controller.inventories,
                     itemAsString: (InventoryResponse inventory) => inventory.code,
                     onChanged: (InventoryResponse? inventory) {
-                      final item = controller.items.singleWhere((element) => element.id == detail.itemId);
-                      if(item.isInventoryItem == 0){
-                        details[index](detail.copyWith(inventoryId: inventory!.id,inventoryCode: inventory.code, inventoryName: inventory.name));
+                      final item = controller.items.singleWhere((element) => element.id == detail.value.itemId);
+                      if (item.isInventoryItem == 0) {
+                        details[index](detail.value.copyWith(inventoryId: inventory!.id, inventoryCode: inventory.code, inventoryName: inventory.name));
                         return;
                       }
-                      controller.getItemData(itemId: item.id, inventoryId: inventory!.id, onSuccess: (itemData) {
-                        if(itemData.availableQuantity != null && itemData.availableQuantity == 0){
-                          showPopupText(text: "لايوجد كمية متاحة");
-                          details[index](detail.copyWith(inventoryId: detail.inventoryId,inventoryCode: detail.inventoryCode,inventoryName: detail.inventoryName));
-                          return;
-                        }
-                        item.itemData = itemData;
-                        final newDetail = detail.assignItem(item);
-                        details[index](newDetail);
-                        controller.calcInvoiceValues();
-                      });
+                      controller.getItemData(
+                          itemId: item.id,
+                          inventoryId: inventory!.id,
+                          onSuccess: (itemData) {
+                            bool haveToChangeNumber = false;
+                            if (itemData.availableQuantity != null) {
+                              if (itemData.availableQuantity == 0) {
+                                showPopupText(text: "لايوجد كمية متاحة");
+                                detail(detail.value.copyWith(
+                                    inventoryId: detail.value.inventoryId, inventoryCode: detail.value.inventoryCode, inventoryName: detail.value.inventoryName));
+                                return;
+                              } else if(itemData.availableQuantity! < detail.value.totalQuantity){
+                                showPopupText(text: "الكمية الكلية اكبر من الكمية المتاحة");
+                                haveToChangeNumber = true;
+                              }
+                            }
+                            item.itemData = itemData;
+                            final newDetail = detail.value.assignItem(item);
+                            detail(newDetail.copyWith(inventoryId: inventory.id, inventoryCode: inventory.code, inventoryName: inventory.name,number: haveToChangeNumber?1:null));
+                            controller.calcInvoiceValues();
+                          });
                     },
-                    selectedItem: controller.inventories.singleWhere((element) => element.id == detail.inventoryId),
+                    selectedItem: controller.inventories.singleWhere((element) => element.id == detail.value.inventoryId),
                     dropdownDecoratorProps: const DropDownDecoratorProps(
                         dropdownSearchDecoration: InputDecoration(
                             isDense: true,
@@ -365,7 +355,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   child: IconButtonWidget(
                     onPressed: () {
                       final deleted = controller.invoiceDetails.removeAt(index);
-                      if(controller.invoice.value?.id != null){
+                      if (controller.invoice.value?.id != null) {
                         controller.invoice.value!.invoiceDetailApiListDeleted.add(deleted.value);
                       }
                       controller.calcInvoiceValues();

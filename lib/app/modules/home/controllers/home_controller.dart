@@ -61,7 +61,7 @@ class HomeController extends GetxController {
   Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
   Rxn<DelegatorResponse> selectedDelegator = Rxn();
   Rxn<String> selectedInvoiceType = Rxn("مبيعات");
-  Rxn<int> selectedPriceType = Rxn(0);
+  Rxn<int> selectedPriceType = Rxn(1);
   Rxn<int> selectedDiscountType = Rxn(0);
   Rxn<GalleryResponse> selectedGallery = Rxn();
   Rxn<FindCustomerResponse> selectedCustomer = Rxn();
@@ -104,8 +104,8 @@ class HomeController extends GetxController {
   Rxn<InvoiceResponse> invoice = Rxn();
 
   Map<int, String> priceTypes = {
-    0: "اولادي",
     1: "رجالي",
+    0: "اولادي",
   };
 
   Map<int, String> discountType = {
@@ -385,7 +385,7 @@ class HomeController extends GetxController {
     final number = itemNumberController.text.parseToNum;
     final quantity = itemQuantityController.text.parseToNum;
     itemTotalQuantity((quantity * number).fixed(2));
-    itemNetWithoutDiscount = ((itemPriceController.text.parseToNum) * itemTotalQuantity.value!).fixed(2);
+    itemNetWithoutDiscount = ((itemPriceController.text.parseToNum) * number).fixed(2);
     final discount = itemDiscountController.text.tryToParseToNum ?? 0;
     final discountValue = itemDiscountValueController.text.tryToParseToNum ?? 0;
     itemNet((itemNetWithoutDiscount - (itemNetWithoutDiscount * (discount / 100)) - discountValue).fixed(2));
@@ -438,7 +438,7 @@ class HomeController extends GetxController {
             remnants: isItemRemains.value ? 1 : 0)
         .obs;
 
-    invoiceDetails.insert(0, detail);
+    invoiceDetails.add(detail);
     calcInvoiceValues();
     _clearItemFields();
     itemNameFocusNode.requestFocus();
