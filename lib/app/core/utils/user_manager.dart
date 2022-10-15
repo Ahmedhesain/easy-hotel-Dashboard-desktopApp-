@@ -28,9 +28,18 @@ class UserManager{
   LoginResponse get user => LoginResponse.fromJson(AppStorage.read(AppStorage.USER));
 
   void changeGallery(GalleryResponse? galleryResponse){
-    user.galleryId = galleryResponse!.id!;
-    user.galleryName = galleryResponse.name!;
-    AppStorage.write(AppStorage.USER, user.toJson());
+    LoginResponse newUser = LoginResponse(
+        accountIdApi: user.accountIdApi,
+        branchSelected: user.branchSelected,
+        companySelected: user.companySelected,
+        galleryId:  galleryResponse?.id ?? user.galleryId,
+        galleryName: galleryResponse?.name?? user.galleryName,
+        galleryType: galleryResponse?.invName ?? user.galleryType,
+        id: user.id,
+        name:user. name
+    );
+    final userData = newUser.toJson();
+    AppStorage.write(AppStorage.USER, userData);
   }
 
   login(LoginResponse data) {
