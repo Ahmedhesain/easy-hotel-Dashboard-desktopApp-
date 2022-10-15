@@ -28,6 +28,10 @@ class NavigationBarWidget extends GetView<HomeController> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  ButtonWidget(text: "تنزيل عرض", onPressed: () {}),
+                  const SizedBox(width: 5),
+                  ButtonWidget(text: "تحديث", onPressed: () => controller.getItems()),
+                  const SizedBox(width: 5),
                   Obx(() {
                       return ButtonWidget(text: controller.invoice.value != null?"تعديل":"حفظ", onPressed: () => controller.saveInvoice());
                     }

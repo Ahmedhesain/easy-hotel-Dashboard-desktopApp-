@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../data/model/customer/dto/response/find_customer_response.dart';
+import '../../data/model/invoice/dto/response/gallery_response.dart';
 import '../../data/model/login/dto/response/login_response.dart';
 import 'app_storage.dart';
 
@@ -24,20 +25,17 @@ class UserManager{
 
   int get accountIdAPI  => user.accountIdApi;
 
-  // String get token => AppStorage.read(AppStorage.TOKEN_KEY) ?? '';
-  // String get rToken => AppStorage.read(AppStorage.REFRESH_TOKEN_KEY) ?? '';
-  // bool get isTokenExpired => DateTime.tryParse(AppStorage.read(AppStorage.TOKEN_EXPIRE_TIME_KEY)??'')?.isBefore(DateTime.now()) ?? false;
-
-  // String? get userId => user?.id;
   LoginResponse get user => LoginResponse.fromJson(AppStorage.read(AppStorage.USER));
 
+  void changeGallery(GalleryResponse? galleryResponse){
+    user.galleryId = galleryResponse!.id!;
+    user.galleryName = galleryResponse.name!;
+    AppStorage.write(AppStorage.USER, user.toJson());
+  }
 
   login(LoginResponse data) {
     AppStorage.write(AppStorage.IS_LOGGED_IN, true);
     AppStorage.write(AppStorage.USER, data.toJson());
-    // AppStorage.write(AppStorage.TOKEN_KEY, data);
-    // AppStorage.write(AppStorage.REFRESH_TOKEN_KEY, data.tokenInfo!.refreshToken);
-    // AppStorage.write(AppStorage.TOKEN_EXPIRE_TIME_KEY, data.tokenInfo!.expireDate.toIso8601String());
   }
 
   logout(){

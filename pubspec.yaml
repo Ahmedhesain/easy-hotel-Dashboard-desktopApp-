@@ -31,3 +31,12 @@ dev_dependencies:
 flutter: 
   uses-material-design: true
 
+  fonts:
+    - family: CairoBold
+      fonts:
+        - asset: assets/fonts/Cairo-Bold.ttf
+          weight: 600
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Light.ttf
+          weight: 500

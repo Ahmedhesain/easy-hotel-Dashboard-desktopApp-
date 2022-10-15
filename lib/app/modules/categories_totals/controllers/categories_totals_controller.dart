@@ -15,12 +15,18 @@ class CategoriesTotalsController extends GetxController {
   final isLoading = true.obs;
   final dateFrom = DateTime.now().obs;
   final dateTo = DateTime.now().obs;
-  final tobAndKhiata = false.obs;
   String? error;
   int? invoiceTypeSelected;
   final symbols = <GroupListResponse>[].obs;
   final selectedSymbols = <GroupListResponse>[].obs;
   final salesReports = <CategoriesTotalsResponse>[].obs;
+
+  @override
+  onInit(){
+    super.onInit();
+    getGroupList();
+  }
+
 
   getReports() {
     isLoading(true);
@@ -30,6 +36,7 @@ class CategoriesTotalsController extends GetxController {
       branchId: manager.branchId,
       dateFrom: dateFrom.value,
       dateTo: dateTo.value,
+      symbolDtoapiList: selectedSymbols.where((e) => e.id != -1).map((e) => SymbolDtoapiList(e.id!)).toList()
     );
     ReportsRepository().getCategoriesTotals(
       request,
@@ -44,7 +51,13 @@ class CategoriesTotalsController extends GetxController {
     final request = GroupListRequest(branchId: manager.branchId, id: manager.id);
     ReportsRepository().getGroupList(
       request,
-      onSuccess: (data) => symbols.assignAll(data),
+      onSuccess: (data) {
+        symbols.assignAll(data);
+        if(symbols.isNotEmpty){
+          symbols.insert(0, const GroupListResponse(name: "تحديد الكل", id: -1));
+        }
+        selectedSymbols.assignAll(symbols);
+      },
       onError: (e) => showPopupText(text: e.toString()),
       onComplete: () => isLoading(false),
     );

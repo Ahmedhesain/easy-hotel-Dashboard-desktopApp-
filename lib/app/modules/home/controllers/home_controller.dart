@@ -16,10 +16,12 @@ import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_re
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delegator_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
@@ -61,6 +63,7 @@ class HomeController extends GetxController {
   Rxn<String> selectedInvoiceType = Rxn("مبيعات");
   Rxn<int> selectedPriceType = Rxn(0);
   Rxn<int> selectedDiscountType = Rxn(0);
+  Rxn<GalleryResponse> selectedGallery = Rxn();
   Rxn<FindCustomerResponse> selectedCustomer = Rxn();
   Rxn<InventoryResponse> selectedInventory = Rxn();
   Rxn<ItemResponse> selectedItem = Rxn();
@@ -95,6 +98,7 @@ class HomeController extends GetxController {
   final delegators = <DelegatorResponse>[];
   final inventories = <InventoryResponse>[];
   final items = <ItemResponse>[];
+  final galleries = <GalleryResponse>[];
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
   Rxn<GetDueDateResponse> dueDate = Rxn();
   Rxn<InvoiceResponse> invoice = Rxn();
@@ -120,14 +124,14 @@ class HomeController extends GetxController {
     if (items.isEmpty) {
       getItems();
     }
+    await getGalleries();
     Future.wait([getDueDate(), getDeliveryPlaces(), getDelegators(), getInventories()]).whenComplete(() => isLoading(false));
   }
 
   getCustomersByCode() {
     isLoading(true);
     findSideCustomerFieldFocusNode.unfocus();
-    final request =
-        FindCustomerRequest(code: findSideCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
+    final request = FindCustomerRequest(code: findSideCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
@@ -140,8 +144,7 @@ class HomeController extends GetxController {
   getCustomersByCodeForInvoice() {
     isLoading(true);
     invoiceCustomerFieldFocusNode.unfocus();
-    final request =
-        FindCustomerRequest(code: invoiceCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
+    final request = FindCustomerRequest(code: invoiceCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
@@ -151,38 +154,60 @@ class HomeController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  Future<void> getDueDate() => InvoiceRepository().findDueDateDTOAPI(
-        GetDueDateRequest(branchId: UserManager().branchId, id: UserManager().id),
-        onSuccess: (data) => dueDate(data),
-        onError: (error) => showPopupText(text: error.toString()),
-      );
+  Future<void> getDueDate() {
+    return InvoiceRepository().findDueDateDTOAPI(
+      GetDueDateRequest(branchId: UserManager().branchId, id: UserManager().id),
+      onSuccess: (data) => dueDate(data),
+      onError: (error) => showPopupText(text: error.toString()),
+    );
+  }
 
-  Future<void> getDeliveryPlaces() => InvoiceRepository().findInventoryByBranch(
-        DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
+  Future<void> getGalleries() {
+    return InvoiceRepository().getGalleries(
+      GalleryRequest(branchId: UserManager().branchId, id: UserManager().id),
+      onSuccess: (data) {
+        galleries.assignAll(data);
+        if(galleries.any((element) => element.id == UserManager().galleryId)){
+          selectedGallery(galleries.singleWhere((element) => element.id == UserManager().galleryId));
+        } else if (galleries.isNotEmpty) {
+          selectedGallery(galleries.first);
+        }
+      },
+      onError: (error) => showPopupText(text: error.toString()),
+    );
+  }
+
+  Future<void> getDeliveryPlaces() {
+    return InvoiceRepository().findInventoryByBranch(
+      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
+      onSuccess: (data) {
+        deliveryPlaces.assignAll(data);
+        if (deliveryPlaces.isNotEmpty) {
+          selectedDeliveryPlace(deliveryPlaces.first);
+        }
+      },
+      onError: (error) => showPopupText(text: error.toString()),
+    );
+  }
+
+  Future<void> getDelegators() {
+    return InvoiceRepository().findDelegatorByInventory(
+      DelegatorRequest(gallaryId: UserManager().galleryId),
+      onSuccess: (data) => {delegators.assignAll(data), if (delegators.isNotEmpty) selectedDelegator(delegators.first)},
+      onError: (error) => showPopupText(text: error.toString()),
+    );
+  }
+
+  Future<void> getInventories() {
+    return InventoryRepository().getAllInventories(GetInventoriesRequest(branchId: UserManager().branchId, id: UserManager().id),
         onSuccess: (data) {
-          deliveryPlaces.assignAll(data);
-          if (deliveryPlaces.isNotEmpty) {
-            selectedDeliveryPlace(deliveryPlaces.first);
+          inventories.assignAll(data);
+          if (inventories.isNotEmpty) {
+            selectedInventory(inventories.first);
           }
         },
-        onError: (error) => showPopupText(text: error.toString()),
-      );
-
-  Future<void> getDelegators() => InvoiceRepository().findDelegatorByInventory(
-        DelegatorRequest(gallaryId: UserManager().galleryId),
-        onSuccess: (data) => {delegators.assignAll(data), if (delegators.isNotEmpty) selectedDelegator(delegators.first)},
-        onError: (error) => showPopupText(text: error.toString()),
-      );
-
-  Future<void> getInventories() =>
-      InventoryRepository().getAllInventories(GetInventoriesRequest(branchId: UserManager().branchId, id: UserManager().id),
-          onSuccess: (data) {
-            inventories.assignAll(data);
-            if (inventories.isNotEmpty) {
-              selectedInventory(inventories.first);
-            }
-          },
-          onError: (error) => showPopupText(text: error.toString()));
+        onError: (error) => showPopupText(text: error.toString()));
+  }
 
   void createCustomer(CreateCustomerRequest newCustomer) {
     isLoading(true);
@@ -194,53 +219,59 @@ class HomeController extends GetxController {
     findSideCustomerController.text = "${value.name} ${value.code}";
     isLoading(true);
     CustomerRepository().findCustomerInvoicesData(FindCustomerBalanceRequest(id: value.id),
-        onSuccess: (data) => findCustomerBalanceResponse = data,
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
+        onSuccess: (data) => findCustomerBalanceResponse = data, onError: (error) => showPopupText(text: error.toString()), onComplete: () => isLoading(false));
   }
 
   searchForInvoiceById(String id) async {
     newInvoice();
     isLoading(true);
-    await InvoiceRepository()
-        .findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: UserManager().galleryId),
-            onSuccess: (data) {
-              invoice(data);
-              selectedPriceType(data.pricetype);
-              dueDate.value!.dueDate = data.dueDate;
-              dueDate.value!.dayNumber = data.dueperiod;
-              selectedDeliveryPlace(deliveryPlaces.singleWhere((element) => element.name == data.deliveryPlaceName));
-              selectedInvoiceType(AppConstants.invoiceTypeList[data.invoiceType == null ? 0 : data.invoiceType! + 1]);
-              selectedDelegator(delegators.singleWhere((element) => element.id == data.invDelegatorId));
-              isProof(data.proof == 1);
-              invoiceDiscountController.text = data.discount.toString();
-              selectedDiscountType(data.discountType);
-              checkSendSms(data.checkSendSms == 1);
-              invoiceRemarkController.text = data.remarks;
-              for (final detail in data.invoiceDetailApiList!) {
-                final item = items.singleWhere((element) => element.id == detail.itemId);
-                detail.maxPriceMen = item.maxPriceMen;
-                detail.maxPriceYoung = item.maxPriceYoung;
-                detail.minPriceMen = item.minPriceMen;
-                detail.minPriceYoung = item.minPriceYoung;
-              }
-              invoiceDetails.assignAll((data.invoiceDetailApiList ?? []).map((e) => Rx(e)).toList().obs);
-              selectedCustomer(FindCustomerResponse(
-                id: data.customerId,
-                mobile: data.customerMobile,
-                name: data.customerName,
-                code: data.customerCode,
-                balanceLimit: data.customerBalance,
-                email: data.customerEmail,
-                shoulder: data.shoulder,
-                step: data.step,
-                length: data.length,
-              ));
-              invoiceCustomerController.text = "${data.customerName} ${data.customerCode}";
-              calcInvoiceValues();
-            },
-            onError: (error) => showPopupText(text: error.toString()),
-            onComplete: () => isLoading(false));
+    await InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null),
+        onSuccess: (data) {
+          invoice(data);
+          selectedPriceType(data.pricetype);
+          if(galleries.any((element) => element.id == data.gallaryId)) {
+            selectedGallery(galleries.singleWhere((element) => element.id == data.gallaryId));
+          } else {
+            selectedGallery.value = null;
+          }
+          dueDate.value!.dueDate = data.dueDate;
+          dueDate.value!.dayNumber = data.dueperiod;
+          selectedDeliveryPlace(deliveryPlaces.singleWhere((element) => element.name == data.deliveryPlaceName));
+          selectedInvoiceType(AppConstants.invoiceTypeList[data.invoiceType == null ? 0 : data.invoiceType! + 1]);
+          if (delegators.any((element) => element.id == data.invDelegatorId)) {
+            selectedDelegator(delegators.singleWhere((element) => element.id == data.invDelegatorId));
+          } else {
+            selectedDelegator(null);
+          }
+          isProof(data.proof == 1);
+          invoiceDiscountController.text = data.discount.toString();
+          selectedDiscountType(data.discountType);
+          checkSendSms(data.checkSendSms == 1);
+          invoiceRemarkController.text = data.remarks;
+          for (final detail in data.invoiceDetailApiList!) {
+            final item = items.singleWhere((element) => element.id == detail.itemId);
+            detail.maxPriceMen = item.maxPriceMen;
+            detail.maxPriceYoung = item.maxPriceYoung;
+            detail.minPriceMen = item.minPriceMen;
+            detail.minPriceYoung = item.minPriceYoung;
+          }
+          invoiceDetails.assignAll((data.invoiceDetailApiList ?? []).map((e) => Rx(e)).toList().obs);
+          selectedCustomer(FindCustomerResponse(
+            id: data.customerId,
+            mobile: data.customerMobile,
+            name: data.customerName,
+            code: data.customerCode,
+            balanceLimit: data.customerBalance,
+            email: data.customerEmail,
+            shoulder: data.shoulder,
+            step: data.step,
+            length: data.length,
+          ));
+          invoiceCustomerController.text = "${data.customerName} ${data.customerCode}";
+          calcInvoiceValues();
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
   }
 
   getCustomerBalance(int id) {
@@ -345,8 +376,8 @@ class HomeController extends GetxController {
         priceType: selectedPriceType.value!,
         inventoryId: inventoryId ?? selectedInventory.value!.id,
         invNameGallary: manager.galleryType);
-    await ItemRepository().getItemData(request,
-        onSuccess: onSuccess, onError: (error) => {showPopupText(text: error.toString()), _clearItemFields()}, onComplete: () => isLoading(false));
+    await ItemRepository()
+        .getItemData(request, onSuccess: onSuccess, onError: (error) => {showPopupText(text: error.toString()), _clearItemFields()}, onComplete: () => isLoading(false));
   }
 
   calcItemData() {
@@ -469,10 +500,10 @@ class HomeController extends GetxController {
       glPayDTOList: [],
       invDelegatorId: selectedDelegator.value?.id,
       invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(),
-      invoiceDetailApiListDeleted:  invoice.value?.invoiceDetailApiListDeleted.map((element) => element).toList(),
+      invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted.map((element) => element).toList(),
       invoiceType: AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0 ? null : AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
       pricetype: selectedPriceType.value,
-      proof: isProof.value ? 1 : 0 ,
+      proof: isProof.value ? 1 : 0,
       remarks: invoiceRemarkController.text,
       taxvalue: tax.value,
       totalNetAfterDiscount: totalAfterDiscount.value,
@@ -493,7 +524,7 @@ class HomeController extends GetxController {
             invoice.value!.segilValue = data.segilValue;
             showPopupText(text: isEdit ? "تم تعديل الفاتورة بنجاح" : "تم حفظ الفاتورة بنجاح", type: MsgType.success);
             update([getBuilderSerial]);
-            },
+          },
           onError: (e) {
             showPopupText(text: e.toString());
           },
@@ -507,6 +538,8 @@ class HomeController extends GetxController {
   newInvoice() {
     _clearItemFields();
     selectedPriceType(priceTypes.keys.first);
+    selectedDiscountType(discountType.keys.first);
+    invoiceDiscountController.clear();
     selectedDeliveryPlace(deliveryPlaces.first);
     selectedInvoiceType(AppConstants.invoiceTypeList.first);
     selectedDelegator(delegators.first);

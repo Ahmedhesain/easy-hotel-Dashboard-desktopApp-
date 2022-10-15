@@ -130,22 +130,6 @@ class SideWidget extends GetView<HomeController> {
             ),
           ),
           const SizedBox(height: 10),
-          ButtonWidget(
-            text: 'تحديث',
-            onPressed: () {},
-            buttonColor: AppColors.colorYellow,
-            expanded: true,
-            fontColor: Colors.black,
-          ),
-          const SizedBox(height: 10),
-          ButtonWidget(
-            text: 'تنزيل عرض',
-            onPressed: () {},
-            buttonColor: AppColors.colorYellow,
-            expanded: true,
-            fontColor: Colors.black,
-          ),
-          const SizedBox(height: 10),
           TypeAheadFormField<FindCustomerResponse>(
               itemBuilder: (context, client) {
                 return SizedBox(

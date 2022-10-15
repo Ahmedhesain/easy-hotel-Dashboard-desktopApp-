@@ -10,14 +10,14 @@ LoginResponse({
     required this.name,
   });
 
-  final int accountIdApi;
-  final int branchSelected;
-  final int companySelected;
-  final int galleryId;
-  final String galleryName;
-  final int galleryType;
-  final int id;
-  final String name;
+  int accountIdApi;
+  int branchSelected;
+  int companySelected;
+  int galleryId;
+  String galleryName;
+  int galleryType;
+  int id;
+  String name;
 
   factory LoginResponse.fromJson(Map<String, dynamic> data) {
     Map<String, dynamic> json = data.containsKey("data")?data["data"]:data;

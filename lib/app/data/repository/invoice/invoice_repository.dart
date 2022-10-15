@@ -1,7 +1,9 @@
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
@@ -58,9 +60,9 @@ class InvoiceRepository {
 
   findDelegatorByInventory(
       DelegatorRequest delegatorRequest, {
-        Function()? onComplete,
-        Function(List<DelegatorResponse> data)? onSuccess,
-        Function(dynamic error)? onError,
+      Function()? onComplete,
+      Function(List<DelegatorResponse> data)? onSuccess,
+      Function(dynamic error)? onError,
       }) =>
     ApiProvider().post<List<DelegatorResponse>,List<dynamic>>('delegator/findDelegatorByInventory',
         onComplete: onComplete,
@@ -68,6 +70,20 @@ class InvoiceRepository {
         data: delegatorRequest.toJson(),
         onError: onError,
         convertor: DelegatorResponse.getList,
+    );
+
+  getGalleries(
+      GalleryRequest galleryRequest, {
+      Function()? onComplete,
+      Function(List<GalleryResponse> data)? onSuccess,
+      Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<List<GalleryResponse>,List<dynamic>>('inventory/findAllGallaryByUser',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: galleryRequest.toJson(),
+        onError: onError,
+        convertor: GalleryResponse.fromList,
     );
 
   findInvPurchaseInvoiceBySerial(
@@ -111,6 +127,7 @@ class InvoiceRepository {
         onError: onError,
         convertor: SaveTarhilResponse.fromJson,
     );
+
 
 
 }

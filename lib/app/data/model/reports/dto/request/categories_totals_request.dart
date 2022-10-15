@@ -6,6 +6,7 @@ class CategoriesTotalsRequest {
     this.tobAndKhiata,
     this.dateTo,
     this.invoiceType,
+    this.symbolDtoapiList,
   });
 
   int? gallaryId;
@@ -13,7 +14,7 @@ class CategoriesTotalsRequest {
   DateTime? dateFrom;
   int? tobAndKhiata;
   DateTime? dateTo;
-  List<SymbolDtoapiList> symbolDtoapiList = [];
+  List<SymbolDtoapiList>? symbolDtoapiList;
   int? invoiceType;
 
   Map<String, dynamic> toJson() => {
@@ -22,7 +23,7 @@ class CategoriesTotalsRequest {
     "dateFrom": dateFrom?.toIso8601String(),
     "tobAndKhiata": tobAndKhiata,
     "dateTo": dateTo?.toIso8601String(),
-    "symbolDTOAPIList": List<dynamic>.from(symbolDtoapiList.map((x) => x.toJson())),
+    "symbolDTOAPIList": List<dynamic>.from((symbolDtoapiList??[]).map((x) => x.toJson())),
     "invoiceType": invoiceType,
   };
 }

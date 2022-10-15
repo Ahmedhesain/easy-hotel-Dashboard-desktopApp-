@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
+import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_constants.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
@@ -25,15 +27,13 @@ class InvoiceInfoWidget extends GetView<HomeController> {
           child: Obx(() {
             return Row(
               children: [
-                if(controller.invoice.value?.id != null)
+                if (controller.invoice.value?.id != null)
                   GetBuilder<HomeController>(
-                    id: HomeController.getBuilderSerial,
-                    builder: (context) {
-                      return TextWidget(controller.invoice.value?.serial?.toString() ?? "");
-                    }
-                  ),
-                if(controller.invoice.value?.id != null)
-                  const SizedBox(width: 10),
+                      id: HomeController.getBuilderSerial,
+                      builder: (context) {
+                        return TextWidget(controller.invoice.value?.serial?.toString() ?? "");
+                      }),
+                if (controller.invoice.value?.id != null) const SizedBox(width: 10),
                 const Text('الحالة:'),
                 const SizedBox(width: 5),
                 Expanded(flex: 2, child: Text(controller.invoice.value?.status?.toString() ?? "")),
@@ -55,11 +55,10 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                       // style: smallTextStyleNormal(size, color: Colors.black),
                       elevation: 0,
                       items: controller.priceTypes.entries
-                          .map((e) =>
-                          DropdownMenuItem<int>(
-                            value: e.key,
-                            child: Text(e.value),
-                          ))
+                          .map((e) => DropdownMenuItem<int>(
+                                value: e.key,
+                                child: Text(e.value),
+                              ))
                           .toList(),
                       onChanged: controller.changePriceType,
                       // value: provider.priceTypeSelected,
@@ -206,18 +205,27 @@ class InvoiceInfoWidget extends GetView<HomeController> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
-              Text('اختيار العرض:'),
+              const Text('اختيار المعرض:'),
               const SizedBox(width: 5),
               Expanded(
-                child: DropdownSearch<String>(
-                  items: [],
-                  onChanged: print,
-                  dropdownDecoratorProps:
-                  DropDownDecoratorProps(dropdownSearchDecoration: InputDecoration(isDense: true, contentPadding: EdgeInsets.zero, border: OutlineInputBorder())),
-                ),
+                child: Obx(() {
+                  return DropdownSearch<GalleryResponse>(
+                    items: controller.galleries,
+                    selectedItem: controller.selectedGallery.value,
+                    onChanged: UserManager().changeGallery,
+                    itemAsString: (gallery) => gallery.name ?? "",
+                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                      dropdownSearchDecoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  );
+                }),
               ),
               const SizedBox(width: 10),
-              Text('ملاحظات:'),
+              const Text('ملاحظات:'),
               const SizedBox(width: 5),
               Expanded(
                 flex: 2,

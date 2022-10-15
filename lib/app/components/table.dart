@@ -61,7 +61,7 @@ class _TableWidgetState extends State<TableWidget> {
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
                         itemBuilder: (context, index) => MouseRegion(
-                          cursor: SystemMouseCursors.click,
+                          // cursor: SystemMouseCursors.click,
                           child: SizedBox(
                             height: widget.rowHeight,
                             child: ColoredBox(
