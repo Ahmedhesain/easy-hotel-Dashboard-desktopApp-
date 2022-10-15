@@ -132,7 +132,7 @@ class SideWidget extends GetView<HomeController> {
           const SizedBox(height: 10),
           ButtonWidget(
             text: 'تحديث',
-            onPressed: () {},
+            onPressed: () => controller.getItems(),
             buttonColor: AppColors.colorYellow,
             expanded: true,
             fontColor: Colors.black,

@@ -212,7 +212,7 @@ class HomeController extends GetxController {
     newInvoice();
     isLoading(true);
     await InvoiceRepository()
-        .findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: UserManager().galleryId),
+        .findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null),
             onSuccess: (data) {
               invoice(data);
               selectedPriceType(data.pricetype);
@@ -220,7 +220,11 @@ class HomeController extends GetxController {
               dueDate.value!.dayNumber = data.dueperiod;
               selectedDeliveryPlace(deliveryPlaces.singleWhere((element) => element.name == data.deliveryPlaceName));
               selectedInvoiceType(invoiceTypeList[data.invoiceType == null ? 0 : data.invoiceType! + 1]);
-              selectedDelegator(delegators.singleWhere((element) => element.id == data.invDelegatorId));
+              if(delegators.any((element) => element.id == data.invDelegatorId)){
+                selectedDelegator(delegators.singleWhere((element) => element.id == data.invDelegatorId));
+              } else {
+                selectedDelegator(null);
+              }
               isProof(data.proof == 1);
               invoiceDiscountController.text = data.discount.toString();
               selectedDiscountType(data.discountType);
@@ -516,6 +520,8 @@ class HomeController extends GetxController {
   newInvoice() {
     _clearItemFields();
     selectedPriceType(priceTypes.keys.first);
+    selectedDiscountType(discountType.keys.first);
+    invoiceDiscountController.clear();
     selectedDeliveryPlace(deliveryPlaces.first);
     selectedInvoiceType(invoiceTypeList.first);
     selectedDelegator(delegators.first);
@@ -656,4 +662,5 @@ class HomeController extends GetxController {
     invoiceDetails.assignAll(details);
     calcInvoiceValues();
   }
+
 }
