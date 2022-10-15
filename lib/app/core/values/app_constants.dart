@@ -9,5 +9,14 @@ abstract class AppConstants {
   static const EdgeInsets PAGE_PADDING = EdgeInsets.all(15);
   static const Duration ANIMATION_DURATION = Duration(milliseconds: 400);
   static const appName = "";
-
+  static const List<String> invoiceTypeList = [
+    "مبيعات",
+    "مانيكنات الفروع",
+    "مانيكنات القماشين",
+    "علاقات عامه",
+    "تفصيل القماشين",
+    "موظفي الفروع",
+    "تعديلات",
+    "اخري"
+  ];
 }

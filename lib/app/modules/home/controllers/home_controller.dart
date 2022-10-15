@@ -35,6 +35,7 @@ import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
 
 import '../../../core/enums/toast_msg_type.dart';
+import '../../../core/values/app_constants.dart';
 import '../../../data/model/invoice/dto/response/get_delivery_place_response.dart';
 
 class HomeController extends GetxController {
@@ -95,16 +96,6 @@ class HomeController extends GetxController {
   final inventories = <InventoryResponse>[];
   final items = <ItemResponse>[];
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
-  List<String> invoiceTypeList = [
-    "مبيعات",
-    "مانيكنات الفروع",
-    "مانيكنات القماشين",
-    "علاقات عامه",
-    "تفصيل القماشين",
-    "موظفي الفروع",
-    "تعديلات",
-    "اخري"
-  ];
   Rxn<GetDueDateResponse> dueDate = Rxn();
   Rxn<InvoiceResponse> invoice = Rxn();
 
@@ -219,7 +210,7 @@ class HomeController extends GetxController {
               dueDate.value!.dueDate = data.dueDate;
               dueDate.value!.dayNumber = data.dueperiod;
               selectedDeliveryPlace(deliveryPlaces.singleWhere((element) => element.name == data.deliveryPlaceName));
-              selectedInvoiceType(invoiceTypeList[data.invoiceType == null ? 0 : data.invoiceType! + 1]);
+              selectedInvoiceType(AppConstants.invoiceTypeList[data.invoiceType == null ? 0 : data.invoiceType! + 1]);
               selectedDelegator(delegators.singleWhere((element) => element.id == data.invDelegatorId));
               isProof(data.proof == 1);
               invoiceDiscountController.text = data.discount.toString();
@@ -479,7 +470,7 @@ class HomeController extends GetxController {
       invDelegatorId: selectedDelegator.value?.id,
       invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(),
       invoiceDetailApiListDeleted:  invoice.value?.invoiceDetailApiListDeleted.map((element) => element).toList(),
-      invoiceType: invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0 ? null : invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
+      invoiceType: AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0 ? null : AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
       pricetype: selectedPriceType.value,
       proof: isProof.value ? 1 : 0 ,
       remarks: invoiceRemarkController.text,
@@ -517,7 +508,7 @@ class HomeController extends GetxController {
     _clearItemFields();
     selectedPriceType(priceTypes.keys.first);
     selectedDeliveryPlace(deliveryPlaces.first);
-    selectedInvoiceType(invoiceTypeList.first);
+    selectedInvoiceType(AppConstants.invoiceTypeList.first);
     selectedDelegator(delegators.first);
     isProof(false);
     checkSendSms(false);

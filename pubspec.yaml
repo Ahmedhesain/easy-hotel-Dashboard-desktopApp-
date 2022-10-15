@@ -14,10 +14,14 @@ dependencies:
   flutter_styled_toast: ^2.1.3
   get_storage: ^2.0.3
   dio: ^4.0.6
-  flutter_svg: ^1.1.5
   flutter_typeahead: ^4.1.1
   intl: ^0.17.0
   dropdown_search: ^5.0.3
+  excel: ^2.0.0-null-safety-3
+  pdf: ^3.8.3
+  path_provider: ^2.0.11
+  printing: ^5.9.3
+  multiselect: ^0.0.7
 
 dev_dependencies: 
   flutter_lints: ^2.0.0

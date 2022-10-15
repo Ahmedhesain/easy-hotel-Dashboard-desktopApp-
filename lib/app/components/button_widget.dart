@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:toby_bills/app/core/utils/common.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
@@ -52,14 +51,12 @@ class ButtonWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
       children: [
-        if(svgPath != null)
-          SvgPicture.asset(svgPath!),
         if(icon != null)
           Icon(icon),
         if((svgPath != null || icon != null) && text != null)
-          const SizedBox(width: 10,),
+          const SizedBox(width: 10),
         if(text != null)
-          Text(text!.tr,style: TextStyle(fontSize: fontSize,height: 1),),
+          Text(text!.tr,style: TextStyle(fontSize: fontSize,height: 1)),
       ],
     );
     return SizedBox(

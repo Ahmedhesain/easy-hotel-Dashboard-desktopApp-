@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class IconButtonWidget extends StatelessWidget {
 
   const IconButtonWidget({
     Key? key,
-    this.svg,
     this.icon,
     this.onPressed,
     this.color,
@@ -14,10 +12,9 @@ class IconButtonWidget extends StatelessWidget {
     this.margin = EdgeInsets.zero,
     this.iconSize = 25,
     this.textDirection,
-  }) : assert(!(svg != null && icon != null)),
+  }) : assert(icon != null),
         super(key: key);
 
-  final String? svg;
   final IconData? icon;
   final double? iconSize;
   final Color? iconColor;
@@ -29,12 +26,8 @@ class IconButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget? child;
-    if(svg != null){
-      child = SvgPicture.asset(svg!,color: iconColor ?? Theme.of(context).appBarTheme.foregroundColor,width: iconSize,height: iconSize,fit: BoxFit.contain,);
-    } else if(icon != null){
-      child = Icon(icon,color: iconColor ?? Theme.of(context).appBarTheme.foregroundColor,size: iconSize,key: Key(icon!.codePoint.toString()),textDirection: textDirection,);
-    }
+    Widget? child = Icon(icon,color: iconColor ?? Theme.of(context).appBarTheme.foregroundColor,size: iconSize,key: Key(icon!.codePoint.toString()),textDirection: textDirection,);
+
     return UnconstrainedBox(
       child: Material(
         color: Colors.transparent,
@@ -51,7 +44,7 @@ class IconButtonWidget extends StatelessWidget {
               padding: padding,
               alignment: Alignment.center,
               child: AnimatedSwitcher(
-                duration: Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 200),
                 transitionBuilder: (child, animation) => ScaleTransition(scale: animation,child: child,),
                 child: child,
               ),

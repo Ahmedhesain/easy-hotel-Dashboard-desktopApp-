@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
+import 'package:toby_bills/app/core/values/app_constants.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
@@ -141,7 +142,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                     return DropdownSearch<String>(
                       key: UniqueKey(),
                       selectedItem: controller.selectedInvoiceType.value,
-                      items: controller.invoiceTypeList,
+                      items: AppConstants.invoiceTypeList,
                       onChanged: (value) {
                         controller.selectedInvoiceType(value);
                         // if (value == context.read<InvoiceProvider>().invoiceTypeList.first) {
