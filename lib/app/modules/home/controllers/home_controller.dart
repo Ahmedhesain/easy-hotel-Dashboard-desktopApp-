@@ -231,6 +231,7 @@ class HomeController extends GetxController {
           selectedPriceType(data.pricetype);
           if(galleries.any((element) => element.id == data.gallaryId)) {
             selectedGallery(galleries.singleWhere((element) => element.id == data.gallaryId));
+            UserManager().changeGallery(selectedGallery.value);
           } else {
             selectedGallery.value = null;
           }
