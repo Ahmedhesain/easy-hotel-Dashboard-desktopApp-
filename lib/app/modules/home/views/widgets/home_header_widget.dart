@@ -39,6 +39,8 @@ class HomeHeaderWidget extends GetView<HomeController> {
                   ),
                   const SizedBox(width: 5),
                   ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
+                  const SizedBox(width: 5),
+                  ButtonWidget(text: "حذف هللة", onPressed: () => controller.removeHalala()),
                 ],
               ),
             ),

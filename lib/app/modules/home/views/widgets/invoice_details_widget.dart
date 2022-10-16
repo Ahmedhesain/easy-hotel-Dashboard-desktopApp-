@@ -61,10 +61,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           textAlignVertical: TextAlignVertical.center,
                           enabled: false,
                           decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white70),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 10), border: OutlineInputBorder(), filled: true, fillColor: Colors.white70),
                           onSubmitted: (value) {
                             final items = controller.filterItems(value);
                             if (controller.itemNameController.text.isNotEmpty) {
@@ -103,7 +100,11 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                                 });
                           }),
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.zero,
+                          filled: true,
+                          fillColor: Colors.white70,
+                        ),
                         textAlign: TextAlign.center,
                         inputFormatters: [doubleInputFilter],
                       );
@@ -120,7 +121,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                         controller: TextEditingController(text: detail.value.quantity?.toString()),
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
-                        enabled: (detail.value.progroupId ?? 1) != 1,
+                        // enabled: (detail.value.progroupId ?? 1) != 1,
                         onChanged: (value) => detail.value.quantity = value.tryToParseToNum ?? 0,
                         focusNode: detail.value.quantityFocus
                           ..addListener(() {
@@ -139,8 +140,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                                   }
                                 });
                           }),
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
+                        decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
                         inputFormatters: [doubleInputFilter],
                       );
                     }),
@@ -179,8 +179,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                             }
                           }),
                         inputFormatters: [doubleInputFilter],
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
+                        decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
                       );
                     }),
                   ),
@@ -201,13 +200,12 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                             if (detail.value.discount! > 100) {
                               detail.value.discount = 100;
                             }
-                            detail(
-                                detail.value.copyWith(discount: detail.value.discount, discountValue: detail.value.discount! > 0 ? 0 : null));
+                            detail(detail.value.copyWith(discount: detail.value.discount, discountValue: detail.value.discount! > 0 ? 0 : null));
+                            controller.calcInvoiceValues();
                           }
                         }),
                       inputFormatters: [doubleInputFilter],
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
+                      decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
                     ),
                   ),
                 ),
@@ -228,12 +226,11 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                             if (detail.value.discountValue! > detail.value.netWithoutDiscount!) {
                               detail.value.discountValue = detail.value.netWithoutDiscount!;
                             }
-                            detail(
-                                detail.value.copyWith(discountValue: detail.value.discountValue, discount: detail.value.discountValue! > 0 ? 0 : null));
+                            detail(detail.value.copyWith(discountValue: detail.value.discountValue, discount: detail.value.discountValue! > 0 ? 0 : null));
+                            controller.calcInvoiceValues();
                           }
                         }),
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
+                      decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
                     ),
                   ),
                 ),
@@ -273,10 +270,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                       controller: TextEditingController(text: detail.value.remark),
                       onEditingComplete: () {},
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          filled: true,
-                          fillColor: Colors.white70),
+                          border: OutlineInputBorder(), contentPadding: EdgeInsets.symmetric(horizontal: 10), filled: true, fillColor: Colors.white70),
                     ),
                   ),
                 ),
@@ -330,14 +324,15 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                                 detail(detail.value.copyWith(
                                     inventoryId: detail.value.inventoryId, inventoryCode: detail.value.inventoryCode, inventoryName: detail.value.inventoryName));
                                 return;
-                              } else if(itemData.availableQuantity! < detail.value.totalQuantity){
+                              } else if (itemData.availableQuantity! < detail.value.totalQuantity) {
                                 showPopupText(text: "الكمية الكلية اكبر من الكمية المتاحة");
                                 haveToChangeNumber = true;
                               }
                             }
                             item.itemData = itemData;
                             final newDetail = detail.value.assignItem(item);
-                            detail(newDetail.copyWith(inventoryId: inventory.id, inventoryCode: inventory.code, inventoryName: inventory.name,number: haveToChangeNumber?1:null));
+                            detail(newDetail.copyWith(
+                                inventoryId: inventory.id, inventoryCode: inventory.code, inventoryName: inventory.name, number: haveToChangeNumber ? 1 : null));
                             controller.calcInvoiceValues();
                           });
                     },

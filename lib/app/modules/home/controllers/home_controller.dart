@@ -550,13 +550,14 @@ class HomeController extends GetxController {
     selectedCustomer.value = null;
     invoiceDetails.clear();
     invoiceCustomerController.clear();
+    discountHalala(0);
     calcInvoiceValues();
     invoice.value = null;
   }
 
   calcInvoiceValues() {
     num net = 0;
-    for (final invoiceDetailsModel in invoiceDetails) {
+    for(final invoiceDetailsModel in invoiceDetails) {
       net += invoiceDetailsModel.value.net!;
     }
     totalNet(net);
@@ -572,6 +573,14 @@ class HomeController extends GetxController {
     // num payed = glPayDTOList.fold<num>(0, (p, e) => p+(e.value??0));
     num payed = 0;
     remain(finalNet.value - payed);
+  }
+
+
+  removeHalala() {
+    int number = finalNet.value.toInt();
+    num remain = finalNet.value - number;
+    discountHalala(remain / 1.15);
+    calcInvoiceValues();
   }
 
   _addItemFieldsListener() {
@@ -681,4 +690,6 @@ class HomeController extends GetxController {
     invoiceDetails.assignAll(details);
     calcInvoiceValues();
   }
+
+
 }
