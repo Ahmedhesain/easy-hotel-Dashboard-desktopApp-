@@ -3,10 +3,12 @@ import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.da
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/invoice_status_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_status_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/save_tarhil_response.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
 import '../../model/customer/dto/request/find_customer_request.dart';
@@ -126,6 +128,20 @@ class InvoiceRepository {
         data: invoiceModel.toJson(),
         onError: onError,
         convertor: SaveTarhilResponse.fromJson,
+    );
+
+  getInvoiceStatus(
+      InvoiceStatusRequest invoiceStatusRequest, {
+        Function()? onComplete,
+        Function(List<InvoiceStatusResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<List<InvoiceStatusResponse>, List<dynamic>>('proproductionreport/invoiceMovementReport',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: invoiceStatusRequest.toJson(),
+        onError: onError,
+        convertor: InvoiceStatusResponse.fromList,
     );
 
 

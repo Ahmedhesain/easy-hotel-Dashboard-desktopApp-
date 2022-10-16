@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:toby_bills/app/core/extensions/num_extension.dart';
@@ -57,6 +56,7 @@ class HomeController extends GetxController {
   final itemTotalQuantity = RxnNum();
   num itemNetWithoutDiscount = 0;
   String? offerCoupon;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
   Rxn<DelegatorResponse> selectedDelegator = Rxn();

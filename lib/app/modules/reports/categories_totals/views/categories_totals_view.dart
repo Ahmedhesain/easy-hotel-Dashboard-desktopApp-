@@ -8,10 +8,10 @@ import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_constants.dart';
 
-import '../../../components/app_loading_overlay.dart';
-import '../../../components/table.dart';
-import '../../../core/utils/excel_helper.dart';
-import '../../../core/utils/printing_methods_helper.dart';
+import '../../../../components/app_loading_overlay.dart';
+import '../../../../components/table.dart';
+import '../../../../core/utils/excel_helper.dart';
+import '../../../../core/utils/printing_methods_helper.dart';
 import '../controllers/categories_totals_controller.dart';
 
 class CategoriesTotalsView extends GetView<CategoriesTotalsController> {

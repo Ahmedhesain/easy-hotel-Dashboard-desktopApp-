@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-
-import 'package:toby_bills/app/core/utils/user_manager.dart';
-import 'package:toby_bills/app/modules/categories_totals/bindings/categories_totals_binding.dart';
-import 'package:toby_bills/app/modules/categories_totals/views/categories_totals_view.dart';
+import 'package:toby_bills/app/modules/reports/categories_totals/bindings/categories_totals_binding.dart';
+import 'package:toby_bills/app/modules/reports/categories_totals/views/categories_totals_view.dart';
 import 'package:toby_bills/app/modules/home/bindings/home_binding.dart';
 import 'package:toby_bills/app/modules/home/views/home_view.dart';
+import 'package:toby_bills/app/modules/reports/invoice_status/bindings/invoice_status_binding.dart';
+import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_status_view.dart';
 import 'package:toby_bills/app/modules/login/bindings/login_binding.dart';
 import 'package:toby_bills/app/modules/login/views/login_view.dart';
 
@@ -28,8 +28,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CATEGORIES_TOTALS,
-      page: () => CategoriesTotalsView(),
+      page: () => const CategoriesTotalsView(),
       binding: CategoriesTotalsBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICE_STATUS,
+      page: () => const InvoiceStatusView(),
+      binding: InvoiceStatusBinding(),
     ),
   ];
 }
