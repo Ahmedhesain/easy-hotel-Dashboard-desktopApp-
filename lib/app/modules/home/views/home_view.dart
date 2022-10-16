@@ -16,55 +16,60 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return AppLoadingOverlay(
-        isLoading: controller.isLoading.value,
-        child: Scaffold(
-          key: controller.scaffoldKey,
-          endDrawer: const HomeDrawerWidget(),
-          drawerScrimColor: Colors.transparent,
-          body: Stack(
-            children: [
-              Row(
-                children: [
-                  const SideWidget(),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        const HomeHeaderWidget(),
-                        Expanded(
-                          child: Container(
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white, border: Border.all(color: Colors.grey)),
-                              margin: const EdgeInsets.all(20).copyWith(top: 0),
-                              child: Column(
-                                children: const [
-                                  InvoiceInfoWidget(),
-                                  SizedBox(height: 10),
-                                  CustomerInfoWidget(),
-                                  InvoiceDetailsHeaderWidget(),
-                                  Expanded(
-                                    child: InvoiceDetailsWidget(),
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              Positioned(
-                top: 5,
-                left: 10,
-                child: IconButtonWidget(
-                  icon: Icons.menu,
-                  onPressed: () => controller.scaffoldKey.currentState!.openEndDrawer(),
+    return GestureDetector(
+      onSecondaryTap: (){
+        controller.scaffoldKey.currentState!.openEndDrawer();
+      },
+      child: Obx(() {
+        return AppLoadingOverlay(
+          isLoading: controller.isLoading.value,
+          child: Scaffold(
+            key: controller.scaffoldKey,
+            endDrawer: const HomeDrawerWidget(),
+            drawerScrimColor: Colors.transparent,
+            body: Stack(
+              children: [
+                Row(
+                  children: [
+                    const SideWidget(),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const HomeHeaderWidget(),
+                          Expanded(
+                            child: Container(
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white, border: Border.all(color: Colors.grey)),
+                                margin: const EdgeInsets.all(20).copyWith(top: 0),
+                                child: Column(
+                                  children: const [
+                                    InvoiceInfoWidget(),
+                                    SizedBox(height: 10),
+                                    CustomerInfoWidget(),
+                                    InvoiceDetailsHeaderWidget(),
+                                    Expanded(
+                                      child: InvoiceDetailsWidget(),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
+                Positioned(
+                  top: 5,
+                  left: 10,
+                  child: IconButtonWidget(
+                    icon: Icons.menu,
+                    onPressed: () => controller.scaffoldKey.currentState!.openEndDrawer(),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 }

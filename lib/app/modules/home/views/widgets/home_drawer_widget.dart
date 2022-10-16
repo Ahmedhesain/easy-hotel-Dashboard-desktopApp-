@@ -56,6 +56,16 @@ class HomeDrawerWidget extends GetView<HomeController> {
                 Get.toNamed(Routes.INVOICE_STATUS);
               },
             ),
+            _Tile(
+              title: "كشف حساب",
+              onTap: () {
+                if(Get.find<HomeController>().selectedCustomer.value == null) {
+                  showPopupText(text: "يجب اختيار عميل اولاً");
+                  return;
+                }
+                Get.toNamed(Routes.ACCOUNT_STATEMENT);
+              },
+            ),
           ],
         ),
       ),

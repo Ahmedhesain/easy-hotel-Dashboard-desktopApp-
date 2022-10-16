@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/table.dart';
+import 'package:toby_bills/app/core/utils/excel_helper.dart';
+import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import '../controllers/invoice_status_controller.dart';
 
 class InvoiceStatusView extends GetView<InvoiceStatusController> {
@@ -33,7 +35,7 @@ class InvoiceStatusView extends GetView<InvoiceStatusController> {
                   child: ElevatedButton(
                     child: const Text("طباعة"),
                     onPressed: () {
-                      // PrintingHelper().movementSalesReports(context, provider.reports);
+                      PrintingHelper().movementSalesReports(context, controller.reports);
                     },
                   ),
                 ),
@@ -42,7 +44,7 @@ class InvoiceStatusView extends GetView<InvoiceStatusController> {
                   child: ElevatedButton(
                     child: const Text("تصدير الى اكسل"),
                     onPressed: () {
-                      // ExcelHelper.movementSalesReportsExcel(provider.reports, context);
+                      ExcelHelper.movementSalesReportsExcel(controller.reports, context);
                     },
                   ),
                 ),

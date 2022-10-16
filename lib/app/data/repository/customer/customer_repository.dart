@@ -1,5 +1,7 @@
+import 'package:toby_bills/app/data/model/customer/dto/request/account_statement_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/create_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_balance_request.dart';
+import 'package:toby_bills/app/data/model/customer/dto/response/account_statement_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
 import '../../model/customer/dto/request/find_customer_request.dart';
@@ -61,6 +63,20 @@ class CustomerRepository {
         data: findCustomerBalanceRequest.toJson(),
         onError: onError,
         convertor: (Map<String,dynamic> json) => json["value"],
+    );
+
+  getCustomerAccountStatement(
+        AccountStatementRequest accountStatementRequest, {
+        Function()? onComplete,
+        Function(List<AccountStatementResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<List<AccountStatementResponse>,List<dynamic>>('customer/statementForOrganizationSite',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: accountStatementRequest.toJson(),
+        onError: onError,
+        convertor: AccountStatementResponse.fromList,
     );
 
 

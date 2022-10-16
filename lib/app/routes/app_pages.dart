@@ -1,12 +1,15 @@
 import 'package:get/get.dart';
-import 'package:toby_bills/app/modules/reports/categories_totals/bindings/categories_totals_binding.dart';
-import 'package:toby_bills/app/modules/reports/categories_totals/views/categories_totals_view.dart';
+
+import 'package:toby_bills/app/modules/account_statement/bindings/account_statement_binding.dart';
+import 'package:toby_bills/app/modules/account_statement/views/account_statement_view.dart';
 import 'package:toby_bills/app/modules/home/bindings/home_binding.dart';
 import 'package:toby_bills/app/modules/home/views/home_view.dart';
-import 'package:toby_bills/app/modules/reports/invoice_status/bindings/invoice_status_binding.dart';
-import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_status_view.dart';
 import 'package:toby_bills/app/modules/login/bindings/login_binding.dart';
 import 'package:toby_bills/app/modules/login/views/login_view.dart';
+import 'package:toby_bills/app/modules/reports/categories_totals/bindings/categories_totals_binding.dart';
+import 'package:toby_bills/app/modules/reports/categories_totals/views/categories_totals_view.dart';
+import 'package:toby_bills/app/modules/reports/invoice_status/bindings/invoice_status_binding.dart';
+import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_status_view.dart';
 
 part 'app_routes.dart';
 
@@ -35,6 +38,11 @@ class AppPages {
       name: _Paths.INVOICE_STATUS,
       page: () => const InvoiceStatusView(),
       binding: InvoiceStatusBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_STATEMENT,
+      page: () => AccountStatementView(),
+      binding: AccountStatementBinding(),
     ),
   ];
 }
