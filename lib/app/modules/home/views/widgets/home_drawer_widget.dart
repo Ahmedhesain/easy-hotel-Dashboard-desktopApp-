@@ -66,6 +66,16 @@ class HomeDrawerWidget extends GetView<HomeController> {
                 Get.toNamed(Routes.ACCOUNT_STATEMENT);
               },
             ),
+            _Tile(
+              title: "مراحل الانتاج",
+              onTap: () {
+                if(Get.find<HomeController>().invoice.value == null) {
+                  showPopupText(text: "يجب اختيار فاتورة اولاً");
+                  return;
+                }
+                Get.toNamed(Routes.PRODUCTION_STAGES);
+              },
+            ),
           ],
         ),
       ),

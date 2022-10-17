@@ -9,6 +9,7 @@ abstract class Routes {
   static const CATEGORIES_TOTALS = _Paths.CATEGORIES_TOTALS;
   static const INVOICE_STATUS = _Paths.INVOICE_STATUS;
   static const ACCOUNT_STATEMENT = _Paths.ACCOUNT_STATEMENT;
+  static const PRODUCTION_STAGES = _Paths.PRODUCTION_STAGES;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const CATEGORIES_TOTALS = '/categories-totals';
   static const INVOICE_STATUS = '/invoice-status';
   static const ACCOUNT_STATEMENT = '/account-statement';
+  static const PRODUCTION_STAGES = '/production-stages';
 }

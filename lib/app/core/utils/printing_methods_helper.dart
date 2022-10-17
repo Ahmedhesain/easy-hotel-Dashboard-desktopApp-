@@ -5,7 +5,9 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/account_statement_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_status_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
 
 import '../../data/model/reports/dto/response/categories_totals_response.dart';
 
@@ -1091,254 +1093,254 @@ class PrintingHelper {
           );
         });
   }
-  //
-  // void products(m.BuildContext context, List<Product> data, InvoiceModel invoiceModel) async {
-  //   final doc = Document();
-  //   const PdfColor grey = PdfColors.grey400;
-  //   final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
-  //   final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
-  //   final ttfBold = Font.ttf(font);
-  //   final ttfLight = Font.ttf(fontLight);
-  //   final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
-  //   final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
-  //   final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
-  //   // final dm = Barcode.dataMatrix();
-  //   //
-  //   // final svg = dm.toSvg('114625', width: 80, height: 25);
-  //   // final List<int> bytes = svg.codeUnits;
-  //   // final im.Image? image = im.decodePng(bytes);
-  //   doc.addPage(MultiPage(
-  //       pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, margin: EdgeInsets.all(10)),
-  //       build: (Context context) {
-  //         return [
-  //           SizedBox(height: 50),
-  //           SizedBox(
-  //             child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               children: [
-  //                 Padding(
-  //                   padding: EdgeInsets.all(2),
-  //                   child: Text(
-  //                     invoiceModel.serial.toString(),
-  //                     style: boldStyle,
-  //                     textDirection: TextDirection.rtl,
-  //                   ),
-  //                 ),
-  //                 Padding(
-  //                   padding: EdgeInsets.all(2),
-  //                   child: Text(
-  //                     "مراحل الانتاج لفاتورة ذات رقم",
-  //                     style: boldStyle,
-  //                     textDirection: TextDirection.rtl,
-  //                   ),
-  //                 )
-  //               ],
-  //             ),
-  //           ),
-  //           SizedBox(height: 20.5),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               //customer data and date
-  //               SizedBox(
-  //                 width: 200,
-  //                 child: Column(
-  //                   children: [
-  //                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                       Text(
-  //                         invoiceModel.customerName ?? "",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ),
-  //                       Spacer(),
-  //                       Text(
-  //                         "اسم العميل",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ),
-  //                     ],),
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Text(
-  //                           invoiceModel.customerCode ?? "",
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                         Spacer(),
-  //                         Text(
-  //                           "كود العميل",
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //               // seller data
-  //               SizedBox(
-  //                 width: 180,
-  //                 child: Column(
-  //                   children: [
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Text(
-  //                           invoiceModel.date == null ? "" : DateFormat("dd/MM/yyyy").format(invoiceModel.date!),
-  //                           style: boldStyle.copyWith(fontSize: 10),
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                         Spacer(),
-  //                         Text(
-  //                           "تاريخ الفاتورة",
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Text(
-  //                           invoiceModel.dueDate == null ? "" : DateFormat("dd/MM/yyyy").format(invoiceModel.dueDate!),
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                         Spacer(),
-  //                         Text(
-  //                           "تاريخ التسليم",
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ],
-  //                     )
-  //                   ],
-  //                 ),
-  //               )
-  //             ],
-  //           ),
-  //           SizedBox(height: 15),
-  //           SizedBox(height: 50.5),
-  //           Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max, children: [
-  //             TableRow(children: [
-  //               Container(
-  //                   color: grey,
-  //                   width: 45,
-  //                   child: Center(
-  //                       child: Text("الموظف",
-  //                           style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 45,
-  //                   child: Center(
-  //                       child: Text("المرحلة",
-  //                           style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 55,
-  //                   child: Center(
-  //                       child: Text("الكمية",
-  //                           style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 60,
-  //                   child: Center(
-  //                       child: Text("اسم الصنف",
-  //                           style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 40,
-  //                   child: Center(
-  //                       child: Text("التاريخ",
-  //                           style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 40,
-  //                   child: Center(
-  //                       child:
-  //                       Text("#", style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //             ]),
-  //             //table content
-  //             for (int i = 0; i < data.length; i++)
-  //               TableRow(children: [
-  //                 Container(
-  //                     width: 55,
-  //                     child: Center(
-  //                         child: Text(
-  //                           data[i].empName ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 45,
-  //                     child: Center(
-  //                         child: Text(
-  //                           data[i].stage ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 55,
-  //                     child: Center(
-  //                         child: Text(
-  //                           data[i].quantity?.toStringAsFixed(2) ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 60,
-  //                     child: Center(
-  //                         child: Text(
-  //                           data[i].productName ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 40,
-  //                     child: Center(
-  //                         child: Text(
-  //                           data[i].date == null ? "" : DateFormat("MM-dd-yyyy").format(data[i].date!),
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 40,
-  //                     child: Center(
-  //                         child: Text(
-  //                           data[i].number?.toStringAsFixed(2) ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //               ]),
-  //           ]),
-  //           SizedBox(height: 5),
-  //         ];
-  //       }));
-  //
-  //   m.showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return PdfPreview(
-  //           actions: [
-  //             m.IconButton(
-  //               onPressed: () => m.Navigator.pop(context),
-  //               icon: const m.Icon(
-  //                 m.Icons.close,
-  //                 color: m.Colors.red,
-  //               ),
-  //             )
-  //           ],
-  //           build: (format) => doc.save(),
-  //         );
-  //       });
-  // }
+
+  void productionStages(m.BuildContext context, List<ProductionStagesResponse> data, InvoiceResponse invoiceModel) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
+    final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
+    // final dm = Barcode.dataMatrix();
+    //
+    // final svg = dm.toSvg('114625', width: 80, height: 25);
+    // final List<int> bytes = svg.codeUnits;
+    // final im.Image? image = im.decodePng(bytes);
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50),
+            SizedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(2),
+                    child: Text(
+                      invoiceModel.serial.toString(),
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2),
+                    child: Text(
+                      "مراحل الانتاج لفاتورة ذات رقم",
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 20.5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                //customer data and date
+                SizedBox(
+                  width: 200,
+                  child: Column(
+                    children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                        Text(
+                          invoiceModel.customerName ?? "",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ),
+                        Spacer(),
+                        Text(
+                          "اسم العميل",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ],),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            invoiceModel.customerCode ?? "",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "كود العميل",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                // seller data
+                SizedBox(
+                  width: 180,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            invoiceModel.date == null ? "" : DateFormat("dd/MM/yyyy").format(invoiceModel.date!),
+                            style: boldStyle.copyWith(fontSize: 10),
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "تاريخ الفاتورة",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            invoiceModel.dueDate == null ? "" : DateFormat("dd/MM/yyyy").format(invoiceModel.dueDate!),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "تاريخ التسليم",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 15),
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max, children: [
+              TableRow(children: [
+                Container(
+                    color: grey,
+                    width: 45,
+                    child: Center(
+                        child: Text("الموظف",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 45,
+                    child: Center(
+                        child: Text("المرحلة",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 55,
+                    child: Center(
+                        child: Text("الكمية",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 60,
+                    child: Center(
+                        child: Text("اسم الصنف",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("التاريخ",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child:
+                        Text("#", style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+              ]),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+                  Container(
+                      width: 55,
+                      child: Center(
+                          child: Text(
+                            data[i].empName ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 45,
+                      child: Center(
+                          child: Text(
+                            data[i].stage ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 55,
+                      child: Center(
+                          child: Text(
+                            data[i].quantity?.toStringAsFixed(2) ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 60,
+                      child: Center(
+                          child: Text(
+                            data[i].productName ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].date == null ? "" : DateFormat("MM-dd-yyyy").format(data[i].date!),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].number?.toStringAsFixed(2) ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return PdfPreview(
+            actions: [
+              m.IconButton(
+                onPressed: () => m.Navigator.pop(context),
+                icon: const m.Icon(
+                  m.Icons.close,
+                  color: m.Colors.red,
+                ),
+              )
+            ],
+            build: (format) => doc.save(),
+          );
+        });
+  }
   //
   // void treasuryStatement(m.BuildContext context, List<TreasuryModel> data, DateTime fromDate, DateTime toDate) async {
   //   final doc = Document();

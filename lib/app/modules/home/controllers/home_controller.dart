@@ -250,6 +250,10 @@ class HomeController extends GetxController {
           checkSendSms(data.checkSendSms == 1);
           invoiceRemarkController.text = data.remarks;
           for (final detail in data.invoiceDetailApiList!) {
+            if(!items.any((element) => element.id == detail.itemId)){
+              showPopupText(text: "يرجى عمل تحديث ثم البحث عن الفاتورة مرة اخرى");
+              return;
+            }
             final item = items.singleWhere((element) => element.id == detail.itemId);
             detail.maxPriceMen = item.maxPriceMen;
             detail.maxPriceYoung = item.maxPriceYoung;
