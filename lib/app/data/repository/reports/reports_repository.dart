@@ -5,14 +5,17 @@ import 'package:toby_bills/app/data/model/reports/dto/request/invoice_statement_
 import 'package:toby_bills/app/data/model/reports/dto/request/production_stages_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/purchases_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/quantity_items_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/safe_account_statement_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_totals_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/group_list_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoice_statement_by_case_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/purchases_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/quantity_items_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/safe_account_statement_response.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/bindings/item_sales_by_customers_binding.dart';
+import 'package:toby_bills/app/modules/reports/safe_account_statement/controllers/safe_account_statement_controller.dart';
 
 import '../../model/invoice/dto/request/gallery_request.dart';
 import '../../model/reports/dto/request/items_sales_request.dart';
@@ -105,5 +108,19 @@ class ReportsRepository {
         data: invoiceStatementByCaseRequest.toJson(),
         onError: onError,
         convertor: InvoiceStatementByCaseResponse.fromList,
+      );
+
+  getSafeAccountStatement(
+      SafeAccountStatementRequest safeAccountStatementRequest, {
+        Function()? onComplete,
+        Function(List<BankStatement> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<BankStatement>,List<dynamic>>('bankBalance/BankBalanceSettlement',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: safeAccountStatementRequest.toJson(),
+        onError: onError,
+        convertor: BankStatement.fromList,
       );
 }
