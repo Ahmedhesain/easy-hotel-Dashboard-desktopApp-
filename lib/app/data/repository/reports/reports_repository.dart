@@ -1,10 +1,20 @@
+import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/categories_totals_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/group_list_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/production_stages_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/purchases_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/quantity_items_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_totals_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/group_list_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/purchases_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/quantity_items_response.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
+import 'package:toby_bills/app/modules/reports/item_sales_by_customers/bindings/item_sales_by_customers_binding.dart';
+
+import '../../model/invoice/dto/request/gallery_request.dart';
+import '../../model/reports/dto/request/items_sales_request.dart';
+import '../../model/reports/dto/response/items_sales_response.dart';
 
 class ReportsRepository {
 
@@ -51,5 +61,33 @@ class ReportsRepository {
         data: productionStagesRequest.toJson(),
         onError: onError,
         convertor: ProductionStagesResponse.fromList,
+      );
+
+  getQuantityItems(
+      QuantityItemsRequest quantityItemsRequest, {
+        Function()? onComplete,
+        Function(List<QuantityItemsResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<QuantityItemsResponse>,List<dynamic>>('items/findItemMinimunLimit',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: quantityItemsRequest.toJson(),
+        onError: onError,
+        convertor: QuantityItemsResponse.fromList,
+      );
+
+  getPurchases(
+      PurchasesRequest purchasesRequest, {
+        Function()? onComplete,
+        Function(List<PurchaseBySupplier> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<PurchaseBySupplier>,List<dynamic>>('purchaseBySupplier/purchaseSearch',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: purchasesRequest.toJson(),
+        onError: onError,
+        convertor: PurchaseBySupplier.fromList,
       );
 }

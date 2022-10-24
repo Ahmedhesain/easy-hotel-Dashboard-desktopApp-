@@ -12,6 +12,11 @@ import 'package:toby_bills/app/modules/reports/categories_totals/bindings/catego
 import 'package:toby_bills/app/modules/reports/categories_totals/views/categories_totals_view.dart';
 import 'package:toby_bills/app/modules/reports/invoice_status/bindings/invoice_status_binding.dart';
 import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_status_view.dart';
+import 'package:toby_bills/app/modules/reports/item_sales_by_customers/bindings/item_sales_by_customers_binding.dart';
+import 'package:toby_bills/app/modules/reports/item_sales_by_customers/views/item_sales_by_customers_view.dart';
+
+import '../modules/reports/items_quantity/bindings/production_stages_binding.dart';
+import '../modules/reports/items_quantity/views/quantity_items_view.dart';
 
 part 'app_routes.dart';
 
@@ -50,6 +55,16 @@ class AppPages {
       name: _Paths.PRODUCTION_STAGES,
       page: () => const ProductionStagesView(),
       binding: ProductionStagesBinding(),
+    ),
+    GetPage(
+      name: _Paths.ITEMS_QUANTITY,
+      page: () => const QuantityItemsView(),
+      binding: QuantityItemsBinding(),
+    ),
+    GetPage(
+      name: _Paths.ITEMS_SALES_BY_CUSTOMERS,
+      page: () => const ItemSalesByCustomersView(),
+      binding: ItemsSalesByCustomersBinding(),
     ),
   ];
 }
