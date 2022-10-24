@@ -4,6 +4,8 @@ import 'package:toby_bills/app/modules/account_statement/bindings/account_statem
 import 'package:toby_bills/app/modules/account_statement/views/account_statement_view.dart';
 import 'package:toby_bills/app/modules/home/bindings/home_binding.dart';
 import 'package:toby_bills/app/modules/home/views/home_view.dart';
+import 'package:toby_bills/app/modules/invoice_statement_by_case/bindings/invoice_statement_by_case_binding.dart';
+import 'package:toby_bills/app/modules/invoice_statement_by_case/views/invoice_statement_by_case_view.dart';
 import 'package:toby_bills/app/modules/login/bindings/login_binding.dart';
 import 'package:toby_bills/app/modules/login/views/login_view.dart';
 import 'package:toby_bills/app/modules/production_stages/bindings/production_stages_binding.dart';
@@ -65,6 +67,11 @@ class AppPages {
       name: _Paths.ITEMS_SALES_BY_CUSTOMERS,
       page: () => const ItemSalesByCustomersView(),
       binding: ItemsSalesByCustomersBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICE_STATEMENT_BY_CASE,
+      page: () => const InvoiceStatementByCaseView(),
+      binding: InvoiceStatementByCaseBinding(),
     ),
   ];
 }
