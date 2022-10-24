@@ -13,6 +13,8 @@ abstract class Routes {
   static const ITEMS_QUANTITY = _Paths.ITEMS_QUANTITY;
   static const ITEMS_SALES = _Paths.ITEMS_SALES;
   static const ITEMS_SALES_BY_CUSTOMERS = _Paths.ITEMS_SALES_BY_CUSTOMERS;
+  static const SAFE_ACCOUNT_SATATMENT = _Paths.SAFE_ACCOUNT_SATATMENT;
+
 
 
 
@@ -28,6 +30,8 @@ abstract class _Paths {
   static const ITEMS_QUANTITY = '/items-quantity';
   static const ITEMS_SALES = '/items-sales';
   static const ITEMS_SALES_BY_CUSTOMERS = '/items-sales-by-customers';
+  static const SAFE_ACCOUNT_SATATMENT = '/safe-account-statement';
+
 
 
 }

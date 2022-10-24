@@ -90,6 +90,10 @@ class HomeDrawerWidget extends GetView<HomeController> {
               title: "مبيعات الأصناف حسب العملاء تفصيلي",
               onTap: () => Get.toNamed(Routes.ITEMS_SALES_BY_CUSTOMERS),
             ),
+            _Tile(
+              title: "كشف حساب خزنة",
+              onTap: () => Get.toNamed(Routes.SAFE_ACCOUNT_SATATMENT),
+            ),
 
           ],
         ),

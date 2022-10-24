@@ -14,6 +14,8 @@ import 'package:toby_bills/app/modules/reports/invoice_status/bindings/invoice_s
 import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_status_view.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/bindings/item_sales_by_customers_binding.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/views/item_sales_by_customers_view.dart';
+import 'package:toby_bills/app/modules/reports/safe_account_statement/bindings/safe_account_statement.dart';
+import 'package:toby_bills/app/modules/reports/safe_account_statement/views/safe_account_statement_view.dart';
 
 import '../modules/reports/items_quantity/bindings/production_stages_binding.dart';
 import '../modules/reports/items_quantity/views/quantity_items_view.dart';
@@ -65,6 +67,11 @@ class AppPages {
       name: _Paths.ITEMS_SALES_BY_CUSTOMERS,
       page: () => const ItemSalesByCustomersView(),
       binding: ItemsSalesByCustomersBinding(),
+    ),
+    GetPage(
+      name: _Paths.SAFE_ACCOUNT_SATATMENT,
+      page: () => const SafeAccountStatementView(),
+      binding: SafeAccountStatementBinding(),
     ),
   ];
 }
