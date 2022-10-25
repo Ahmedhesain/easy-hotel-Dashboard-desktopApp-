@@ -6,7 +6,8 @@ import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/scrollable_row.dart';
 import 'package:toby_bills/app/components/table.dart';
-
+import 'package:toby_bills/app/core/utils/excel_helper.dart';
+import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import '../controllers/invoice_statement_by_case_controller.dart';
 
 class InvoiceStatementByCaseView extends GetView<InvoiceStatementByCaseController> {
@@ -103,9 +104,7 @@ class InvoiceStatementByCaseView extends GetView<InvoiceStatementByCaseControlle
                           return MouseRegion(
                             cursor: SystemMouseCursors.click,
                             child: GestureDetector(
-                                onTap: () {
-                                  controller.pickToDate();
-                                },
+                                onTap: () => controller.pickToDate(),
                                 child: Text(
                                   DateFormat("yyyy-MM-dd").format(controller.dateTo.value),
                                   style: const TextStyle(decoration: TextDecoration.underline),
@@ -118,16 +117,16 @@ class InvoiceStatementByCaseView extends GetView<InvoiceStatementByCaseControlle
                       onPressed: () => controller.getInvoices(context),
                       child: const Text("بحث"),
                     ),
-                    // const SizedBox(width: 15),
-                    // ElevatedButton(
-                    //   onPressed: () => ExcelHelper.galleryInvoicesExcel(provider.invoices, context),
-                    //   child: const Text("التصدير الى اكسل"),
-                    // ),
-                    // const SizedBox(width: 15),
-                    // ElevatedButton(
-                    //   onPressed: () => PrintingHelper().invoicesByStatus(context, provider.invoices),
-                    //   child: const Text("طباعة"),
-                    // ),
+                    const SizedBox(width: 15),
+                    ElevatedButton(
+                      onPressed: () => ExcelHelper.galleryInvoicesExcel(controller.invoices, context),
+                      child: const Text("التصدير الى اكسل"),
+                    ),
+                    const SizedBox(width: 15),
+                    ElevatedButton(
+                      onPressed: () => PrintingHelper().invoicesByStatus(context, controller.invoices),
+                      child: const Text("طباعة"),
+                    ),
                     const SizedBox(width: 15),
                     ElevatedButton(
                       onPressed: () => Get.back(),

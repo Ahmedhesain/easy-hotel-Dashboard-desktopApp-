@@ -38,7 +38,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                     child: TypeAheadField<ItemResponse>(
                       suggestionsCallback: (filter) => controller.filterItems(filter),
                       onSuggestionSelected: (item) => controller.getItemData(
-                          itemId: item.id,
+                          itemId: item.id!,
                           onSuccess: (itemData) {
                             if (item.itemData!.availableQuantity != null && item.itemData!.availableQuantity == 0) {
                               showPopupText(text: "لايوجد كمية متاحة");
@@ -65,7 +65,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           onSubmitted: (value) {
                             final items = controller.filterItems(value);
                             if (controller.itemNameController.text.isNotEmpty) {
-                              controller.getItemData(itemId: items.first.id, onSuccess: (data) {});
+                              controller.getItemData(itemId: items.first.id!, onSuccess: (data) {});
                             }
                           }),
                     ),
@@ -314,7 +314,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                         return;
                       }
                       controller.getItemData(
-                          itemId: item.id,
+                          itemId: item.id!,
                           inventoryId: inventory!.id,
                           onSuccess: (itemData) {
                             bool haveToChangeNumber = false;

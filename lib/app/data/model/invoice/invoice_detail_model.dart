@@ -104,7 +104,7 @@ class InvoiceDetailsModel {
         progroupId: item.proGroupId,
         typeShow: item.typeShow,
         lastCost: item.lastCost,
-        name: item.name,
+        name: item.name!,
         quantityOfOneUnit: item.itemData?.quantityOfUnit,
         code: item.code,
         minPriceMen: item.minPriceMen,

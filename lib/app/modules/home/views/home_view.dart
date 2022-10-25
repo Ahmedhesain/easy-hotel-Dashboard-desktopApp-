@@ -46,9 +46,7 @@ class HomeView extends GetView<HomeController> {
                                     SizedBox(height: 10),
                                     CustomerInfoWidget(),
                                     InvoiceDetailsHeaderWidget(),
-                                    Expanded(
-                                      child: InvoiceDetailsWidget(),
-                                    ),
+                                    Expanded(child: InvoiceDetailsWidget()),
                                   ],
                                 )),
                           ),

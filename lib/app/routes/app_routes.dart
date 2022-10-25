@@ -15,10 +15,7 @@ abstract class Routes {
   static const ITEMS_SALES_BY_CUSTOMERS = _Paths.ITEMS_SALES_BY_CUSTOMERS;
   static const INVOICE_STATEMENT_BY_CASE = _Paths.INVOICE_STATEMENT_BY_CASE;
   static const SAFE_ACCOUNT_SATATMENT = _Paths.SAFE_ACCOUNT_SATATMENT;
-
-
-
-
+  static const ITEMS = _Paths.ITEMS;
 }
 
 abstract class _Paths {
@@ -33,7 +30,5 @@ abstract class _Paths {
   static const ITEMS_SALES_BY_CUSTOMERS = '/items-sales-by-customers';
   static const INVOICE_STATEMENT_BY_CASE = '/invoice-statement-by-case';
   static const SAFE_ACCOUNT_SATATMENT = '/safe-account-statement';
-
-
-
+  static const ITEMS = '/items';
 }

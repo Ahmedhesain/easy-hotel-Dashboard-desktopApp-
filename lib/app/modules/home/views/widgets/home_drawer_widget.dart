@@ -91,14 +91,17 @@ class HomeDrawerWidget extends GetView<HomeController> {
               onTap: () => Get.toNamed(Routes.ITEMS_SALES_BY_CUSTOMERS),
             ),
             _Tile(
-              title: "بيان الفواتير حسب الحالة",
-              onTap: () => Get.toNamed(Routes.INVOICE_STATEMENT_BY_CASE),
-            ),
-            _Tile(
               title: "كشف حساب خزنة",
               onTap: () => Get.toNamed(Routes.SAFE_ACCOUNT_SATATMENT),
             ),
-
+            _Tile(
+              title: "الاصناف",
+              onTap: () => Get.toNamed(Routes.ITEMS),
+            ),
+            _Tile(
+              title: "بيان الفواتير حسب الحالة",
+              onTap: () => Get.toNamed(Routes.INVOICE_STATEMENT_BY_CASE),
+            ),
           ],
         ),
       ),

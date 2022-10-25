@@ -338,7 +338,7 @@ class HomeController extends GetxController {
     }
     itemNameFocusNode.unfocus();
     getItemData(
-        itemId: item.id,
+        itemId: item.id!,
         onSuccess: (data) {
           if (data.availableQuantity != null && data.availableQuantity == 0) {
             if (noQuantity != null) {
@@ -418,7 +418,7 @@ class HomeController extends GetxController {
             typeShow: item.typeShow,
             lastCost: item.lastCost,
             remark: itemNotesController.text,
-            name: item.name,
+            name: item.name!,
             number: itemNumberController.text.parseToNum,
             quantityOfOneUnit: item.itemData?.quantityOfUnit,
             code: item.code,
@@ -452,7 +452,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final item = selectedItem.value!;
     final request = ItemPriceRequest(
-        id: item.id,
+        id: item.id!,
         inventoryId: selectedInventory.value!.id,
         customerId: selectedCustomer.value!.id,
         priceType: selectedPriceType.value!,
@@ -674,7 +674,7 @@ class HomeController extends GetxController {
     for (final detail in invoiceDetails) {
       final item = items.singleWhere((element) => element.id == detail.value.itemId);
       await getItemData(
-          itemId: item.id,
+          itemId: item.id!,
           onSuccess: (itemData) {
             item.itemData = itemData;
             final newDetail = detail.value.assignItem(item);
@@ -684,7 +684,7 @@ class HomeController extends GetxController {
     }
     if (selectedItem.value != null) {
       await getItemData(
-          itemId: selectedItem.value!.id,
+          itemId: selectedItem.value!.id!,
           onSuccess: (itemData) {
             selectedItem.value!.itemData = itemData;
             itemPriceController.text = itemData.sellPrice.toString();
