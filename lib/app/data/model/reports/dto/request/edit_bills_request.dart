@@ -9,21 +9,20 @@ class EditBillsRequest {
 
 
   });
-
+  final int serial;
   final int branchId;
   final DateTime dateFrom;
   final DateTime dateTo;
-  final int serial;
 
 
 
   Map<String, dynamic> toJson(){
     return {
 
-      "serial": branchId,
+      "serial": serial,
+      "branchId": branchId,
       "dateFrom": dateFrom.toIso8601String(),
       "dateTo": dateTo.toIso8601String(),
-      "dataType": serial,
     };
   }
 

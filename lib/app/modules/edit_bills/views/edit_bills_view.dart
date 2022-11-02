@@ -82,7 +82,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                             border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
                                         /////////////quantity
                                         // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                        // controller: numController,
+                                        controller: controller.selectedStatus.value,
                                         // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
                                         // inputFormatters: [doubleFilter],
                                         onChanged: (value)  {
@@ -98,7 +98,8 @@ class EditBillsView extends GetView<EditBillsController> {
                                         , Text('من تاريخ',style: subTitleTextStyle(size)),
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                          child: Container(
+                                          child:
+                                          Container(
                                             width: size.width * .3,
                                             height: size.height * .04,
                                             decoration: BoxDecoration(
@@ -107,24 +108,21 @@ class EditBillsView extends GetView<EditBillsController> {
 
                                             ),child:
 
-                                          Center(child: GestureDetector(
-                                            onTap: (){
-                                              showDatePicker(
-                                                context: context,
-                                                initialDate: startdate,
-                                                firstDate: DateTime(2022),
-                                                lastDate: DateTime(2030),
-                                              ).then((value){
-                                                if(value!= null){
-                                                  // setState(() {
-                                                  //   startdate=value;
-                                                  // });
-                                                }
-                                              });
-                                            },
-                                            child: Text(DateFormat("yyyy-MM-dd").format(startdate)),
-
-                                          )),
+                                          Center(
+                                            child: MouseRegion(
+                                              cursor: SystemMouseCursors.click,
+                                              child: GestureDetector(
+                                                  onTap: () {
+                                                    controller.pickFromDate();
+                                                  },
+                                                  child: Obx(() {
+                                                    return Text(
+                                                      DateFormat("yyyy-MM-dd").format(controller.dateFrom.value),
+                                                      style: const TextStyle(decoration: TextDecoration.underline),
+                                                    );
+                                                  })),
+                                            ),
+                                          ),
 
 
 
@@ -147,24 +145,21 @@ class EditBillsView extends GetView<EditBillsController> {
 
                                             ),child:
 
-                                          Center(child: GestureDetector(
-                                            onTap: (){
-                                              showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime(2022),
-                                                lastDate: DateTime(2030),
-                                              ).then((value){
-                                                if(value!= null){
-                                                  // setState(() {
-                                                  //   enddate=value;
-                                                  // });
-                                                }
-                                              });
-                                            },
-                                            child: Text(DateFormat("yyyy-MM-dd").format(enddate)),
-
-                                          )),
+                                          Center(
+                                            child: MouseRegion(
+                                              cursor: SystemMouseCursors.click,
+                                              child: GestureDetector(
+                                                  onTap: () {
+                                                    controller.pickToDate();
+                                                  },
+                                                  child: Obx(() {
+                                                    return Text(
+                                                      DateFormat("yyyy-MM-dd").format(controller.dateTo.value),
+                                                      style: const TextStyle(decoration: TextDecoration.underline),
+                                                    );
+                                                  })),
+                                            ),
+                                          ),
 
 
 
@@ -306,7 +301,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                       border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
                                                   /////////////quantity
                                                   // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  controller: invoiceController,
+                                                  // controller: invoiceController,
                                                   // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
 
                                                   // inputFormatters: [doubleFilter],
@@ -356,7 +351,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                       border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
                                                   /////////////quantity
                                                   // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  controller: invoiceController,
+                                                  // controller: invoiceController,
                                                   // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
                                                   // inputFormatters: [doubleFilter],
                                                   // onChanged: (value) async {
@@ -391,7 +386,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                       border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
                                                   /////////////quantity
                                                   // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  controller: invoiceController,
+                                                  // controller: invoiceController,
                                                   // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
                                                   // inputFormatters: [doubleFilter],
                                                   // onChanged: (value) async {
@@ -435,7 +430,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                           border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
                                                       /////////////quantity
                                                       // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                      controller: invoiceController,
+                                                      // controller: invoiceController,
                                                       // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
                                                       // inputFormatters: [doubleFilter],
                                                       // onChanged: (value) async {
@@ -471,7 +466,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                       border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
                                                   /////////////quantity
                                                   // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  controller: invoiceController,
+                                                  // controller: invoiceController,
                                                   // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
                                                   // inputFormatters: [doubleFilter],
                                                   // onChanged: (value) async {
