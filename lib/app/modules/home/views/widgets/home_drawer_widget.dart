@@ -102,6 +102,10 @@ class HomeDrawerWidget extends GetView<HomeController> {
               title: "بيان الفواتير حسب الحالة",
               onTap: () => Get.toNamed(Routes.INVOICE_STATEMENT_BY_CASE),
             ),
+            _Tile(
+              title: "تعديل سندات القبض",
+              onTap: () => Get.toNamed(Routes.EDITBILLS),
+            ),
           ],
         ),
       ),

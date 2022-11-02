@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import 'package:toby_bills/app/modules/account_statement/bindings/account_statement_binding.dart';
 import 'package:toby_bills/app/modules/account_statement/views/account_statement_view.dart';
+import 'package:toby_bills/app/modules/edit_bills/bindings/edit_bills_binding.dart';
+import 'package:toby_bills/app/modules/edit_bills/views/edit_bills_view.dart';
 import 'package:toby_bills/app/modules/home/bindings/home_binding.dart';
 import 'package:toby_bills/app/modules/home/views/home_view.dart';
 import 'package:toby_bills/app/modules/invoice_statement_by_case/bindings/invoice_statement_by_case_binding.dart';
@@ -86,6 +88,11 @@ class AppPages {
       name: _Paths.ITEMS,
       page: () => ItemsView(),
       binding: ItemsBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_BILLS,
+      page: () => EditBillsView(),
+      binding: EditBillsBinding(),
     ),
   ];
 }

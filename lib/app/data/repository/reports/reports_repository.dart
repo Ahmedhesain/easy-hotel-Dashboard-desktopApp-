@@ -1,5 +1,6 @@
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/categories_totals_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/group_list_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/invoice_statement_by_case_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/production_stages_request.dart';
@@ -7,6 +8,7 @@ import 'package:toby_bills/app/data/model/reports/dto/request/purchases_request.
 import 'package:toby_bills/app/data/model/reports/dto/request/quantity_items_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/safe_account_statement_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_totals_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/edit_bills_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/group_list_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoice_statement_by_case_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
@@ -122,5 +124,18 @@ class ReportsRepository {
         data: safeAccountStatementRequest.toJson(),
         onError: onError,
         convertor: BankStatement.fromList,
+      );
+  getEditBillsStatement(
+      EditBillsRequest editBillsRequest, {
+        Function()? onComplete,
+        Function(List<EditBillsResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<EditBillsResponse>,List<dynamic>>('glBankTransaction/searchGlBankTransactionNoticerecevable',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: editBillsRequest.toJson(),
+        onError: onError,
+        convertor: EditBillsResponse.fromList,
       );
 }
