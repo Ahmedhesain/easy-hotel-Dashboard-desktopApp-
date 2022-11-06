@@ -106,6 +106,30 @@ class HomeDrawerWidget extends GetView<HomeController> {
               title: "تعديل سندات القبض",
               onTap: () => Get.toNamed(Routes.EDITBILLS),
             ),
+            _Tile(
+              title: "ارباح مبيعات الاصناف",
+              onTap: () => Get.toNamed(Routes.PROFITSOLD),
+            ),
+            _Tile(
+              title: "المبيعات حسب الشركات لفتره",
+              onTap: () => Get.toNamed(Routes.SALES_ITEMS_BY_COMPANY),
+            ),
+            _Tile(
+              title: "رصيد الاصناف",
+              onTap: () => Get.toNamed(Routes.ITEMS_BALANCES_STATEMENT),
+            ),
+            _Tile(
+              title: "فواتير الشركات بدون خياطه",
+              onTap: () => Get.toNamed(Routes.INVOICES_WITHOUT_SWING),
+            ),
+            _Tile(
+              title: "عملاء ليس لديهم حركه",
+              onTap: () => Get.toNamed(Routes.CLIENTS_NO_MOVEMENT),
+            ),
+            _Tile(
+              title: "ارصده العملاء",
+              onTap: () => Get.toNamed(Routes.FIND_CUSTOMER_BALANCE),
+            ),
           ],
         ),
       ),

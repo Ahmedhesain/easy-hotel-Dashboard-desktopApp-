@@ -18,6 +18,16 @@ abstract class Routes {
   static const ITEMS = _Paths.ITEMS;
   static const EDITBILLS = _Paths.EDIT_BILLS;
   static const PROFITSOLD = _Paths.PROFIT_SOLD;
+  static const SALES_ITEMS_BY_COMPANY = _Paths.SALES_ITEMS_BY_COMPANY;
+  static const ITEMS_BALANCES_STATEMENT = _Paths.ITEMS_BALANCES_STATEMENT;
+  static const INVOICES_WITHOUT_SWING = _Paths.INVOICES_WITHOUT_SWING;
+  static const CLIENTS_NO_MOVEMENT = _Paths.CLIENTS_NO_MOVEMENT;
+  static const FIND_CUSTOMER_BALANCE = _Paths.FIND_CUSTOMER_BALANCE;
+
+
+
+
+
 
 
 
@@ -38,6 +48,16 @@ abstract class _Paths {
   static const ITEMS = '/items';
   static const EDIT_BILLS = '/edit-bills';
   static const PROFIT_SOLD = '/profit-sold';
+  static const SALES_ITEMS_BY_COMPANY = '/sales-items-by-company';
+  static const ITEMS_BALANCES_STATEMENT = '/items-balances-statement';
+  static const INVOICES_WITHOUT_SWING = '/invoices-without-swing';
+  static const CLIENTS_NO_MOVEMENT = '/clients-no-movement';
+  static const FIND_CUSTOMER_BALANCE = '/find-customer-balance';
+
+
+
+
+
 
 
 }

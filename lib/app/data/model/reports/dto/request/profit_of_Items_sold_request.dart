@@ -63,3 +63,28 @@ class DtoList {
     "id": id == null ? null : id,
   };
 }
+class AllGroupsRequest {
+  AllGroupsRequest({
+    required this.id,
+    required this.branchId,
+
+
+
+  });
+  final int id;
+  final int branchId;
+
+
+
+
+  Map<String, dynamic> toJson(){
+    return {
+
+      "id": id,
+      "branchId": branchId,
+
+    };
+  }
+
+}
+
