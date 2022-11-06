@@ -121,7 +121,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                   },
                                                   child: Obx(() {
                                                     return Text(
-                                                      DateFormat("yyyy-MM-dd").format(controller.dateFrom == null?DateTime.now():controller.dateFrom.value),
+                                                        controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
                                                       style: const TextStyle(decoration: TextDecoration.underline),
                                                     );
                                                   })),
@@ -158,7 +158,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                   },
                                                   child: Obx(() {
                                                     return Text(
-                                                      DateFormat("yyyy-MM-dd").format(controller.dateTo == null?DateTime.now():controller.dateTo.value),
+                                                      controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
                                                       style: const TextStyle(decoration: TextDecoration.underline),
                                                     );
                                                   })),

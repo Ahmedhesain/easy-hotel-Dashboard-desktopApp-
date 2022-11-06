@@ -1,28 +1,20 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
-import 'package:toby_bills/app/data/model/customer/dto/request/account_statement_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
-import 'package:toby_bills/app/data/model/customer/dto/response/account_statement_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
-import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
-
 import '../../../core/utils/show_popup_text.dart';
 
 class EditBillsController extends GetxController {
 
-
   final List<GlPayDTO> reports = [];
   final isLoading = false.obs;
-  final dateFrom = DateTime.now().obs;
-  final dateTo = DateTime.now().obs;
+  final Rxn<DateTime> dateFrom = Rxn();
+  final Rxn<DateTime> dateTo = Rxn();
   final manager = UserManager();
   final selectedStatus = TextEditingController();
   List<TextEditingController> fieldsControllers=[];
@@ -55,10 +47,12 @@ class EditBillsController extends GetxController {
     final index = reports.indexWhere((e)=>e.id == report.id);
     return nodes[index];
   }
+
   TextEditingController bankController(GlPayDTO report){
     final index = reports.indexWhere((e)=>e.id == report.id);
     return fieldsControllers[index];
   }
+
   FocusNode bankNodes(GlPayDTO report){
     final index = reports.indexWhere((e)=>e.id == report.id);
     return nodes[index];
@@ -66,7 +60,7 @@ class EditBillsController extends GetxController {
   getStatements() async {
     if(int.tryParse(selectedStatus.text) == null) return;
     isLoading(true);
-    final request = EditBillsRequest(serial:int.parse(selectedStatus.text) ,branchId: manager.branchId,dateFrom:null,dateTo: null);
+    final request = EditBillsRequest(serial:int.parse(selectedStatus.text) ,branchId: manager.branchId,dateFrom:dateFrom.value,dateTo: dateTo.value);
     ReportsRepository().getEditBillsStatement(request,
         onSuccess: (data) {
           reports.assignAll(data);
@@ -78,11 +72,11 @@ class EditBillsController extends GetxController {
     );
   }
   pickFromDate() async {
-    dateFrom(await _pickDate(initialDate: dateFrom.value, firstDate: DateTime(2019), lastDate: dateTo.value));
+    dateFrom(await _pickDate(initialDate: dateFrom.value ?? DateTime.now(), firstDate: DateTime(2019), lastDate: dateTo.value ?? DateTime.now()));
   }
 
   pickToDate() async {
-    dateTo(await _pickDate(initialDate: dateTo.value, firstDate: dateFrom.value, lastDate: DateTime.now()));
+    dateTo(await _pickDate(initialDate: dateTo.value ?? DateTime.now(), firstDate: dateFrom.value ?? DateTime.now(), lastDate: DateTime.now()));
   }
 
   _pickDate({required DateTime initialDate, required DateTime firstDate, required DateTime lastDate}) {
@@ -129,6 +123,7 @@ class EditBillsController extends GetxController {
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
   }
+
   editInvoice(List<GlPayDTO> bankSelected,int customerSelected) {
     isLoading(true);
     // findSideCustomerFieldFocusNode.unfocus();
