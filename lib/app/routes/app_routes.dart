@@ -18,9 +18,7 @@ abstract class Routes {
   static const ITEMS = _Paths.ITEMS;
   static const EDITBILLS = _Paths.EDIT_BILLS;
   static const PROFITSOLD = _Paths.PROFIT_SOLD;
-
-
-
+  static const PURCHASE_INVOICES = _Paths.PURCHASE_INVOICES;
 }
 
 abstract class _Paths {
@@ -38,6 +36,5 @@ abstract class _Paths {
   static const ITEMS = '/items';
   static const EDIT_BILLS = '/edit-bills';
   static const PROFIT_SOLD = '/profit-sold';
-
-
+  static const PURCHASE_INVOICES = '/purchase-invoices';
 }
