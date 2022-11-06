@@ -20,6 +20,8 @@ import 'package:toby_bills/app/modules/reports/invoice_status/bindings/invoice_s
 import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_status_view.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/bindings/item_sales_by_customers_binding.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/views/item_sales_by_customers_view.dart';
+import 'package:toby_bills/app/modules/reports/profit_sold/bindings/profit_sold_binding.dart';
+import 'package:toby_bills/app/modules/reports/profit_sold/views/profit_sold_view.dart';
 import 'package:toby_bills/app/modules/reports/safe_account_statement/bindings/safe_account_statement.dart';
 import 'package:toby_bills/app/modules/reports/safe_account_statement/views/safe_account_statement_view.dart';
 
@@ -94,5 +96,11 @@ class AppPages {
       page: () => EditBillsView(),
       binding: EditBillsBinding(),
     ),
+    GetPage(
+      name: _Paths.PROFIT_SOLD,
+      page: () => ProfitSoldView(),
+      binding: ProfitSoldBinding(),
+    ),
+
   ];
 }

@@ -17,6 +17,9 @@ abstract class Routes {
   static const SAFE_ACCOUNT_SATATMENT = _Paths.SAFE_ACCOUNT_SATATMENT;
   static const ITEMS = _Paths.ITEMS;
   static const EDITBILLS = _Paths.EDIT_BILLS;
+  static const PROFITSOLD = _Paths.PROFIT_SOLD;
+
+
 
 }
 
@@ -34,5 +37,7 @@ abstract class _Paths {
   static const SAFE_ACCOUNT_SATATMENT = '/safe-account-statement';
   static const ITEMS = '/items';
   static const EDIT_BILLS = '/edit-bills';
+  static const PROFIT_SOLD = '/profit-sold';
+
 
 }

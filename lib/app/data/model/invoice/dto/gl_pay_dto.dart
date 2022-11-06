@@ -18,6 +18,7 @@ class GlPayDTO {
     this.customerName,
     this.remark,
     this.date,
+    this.serial
   });
 
   Bank? bank;
@@ -32,8 +33,10 @@ class GlPayDTO {
   String? customerName;
   String? remark;
   DateTime? date;
+  int?serial;
 
 
+  static List<GlPayDTO> fromList(List<dynamic> json) => List.from(json.map((e) => GlPayDTO.fromJson(e)));
 
   factory GlPayDTO.fromJson(Map<String, dynamic> json) => GlPayDTO(
     bank: json["bank"] == null ? null : Bank.fromJson(json["bank"]),
@@ -47,7 +50,9 @@ class GlPayDTO {
     customerId: json["customerId"],
     customerName: json["customerName"],
     remark: json["remark"],
-    date: json["date"],
+    date: json["date"] == null ? null : DateTime.parse(json["date"]),
+    serial: json["serial"],
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -62,7 +67,9 @@ class GlPayDTO {
     "customerId": customerId,
     "customerName": customerName,
     "remark": remark,
-    "date": date,
+    "date": date == null ? null : date!.toIso8601String(),
+    "serial": serial,
+
   };
 }
 

@@ -1,14 +1,18 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/intl.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/colors.dart';
+import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/edit_bills_response.dart';
+import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 
 import '../../../components/table.dart';
 import '../controllers/edit_bills_controller.dart';
@@ -82,7 +86,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                             border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
                                         /////////////quantity
                                         // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                        controller: controller.selectedStatus.value,
+                                        controller: controller.selectedStatus,
                                         // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
                                         // inputFormatters: [doubleFilter],
                                         onChanged: (value)  {
@@ -117,7 +121,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                   },
                                                   child: Obx(() {
                                                     return Text(
-                                                      DateFormat("yyyy-MM-dd").format(controller.dateFrom.value),
+                                                      DateFormat("yyyy-MM-dd").format(controller.dateFrom == null?DateTime.now():controller.dateFrom.value),
                                                       style: const TextStyle(decoration: TextDecoration.underline),
                                                     );
                                                   })),
@@ -154,7 +158,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                   },
                                                   child: Obx(() {
                                                     return Text(
-                                                      DateFormat("yyyy-MM-dd").format(controller.dateTo.value),
+                                                      DateFormat("yyyy-MM-dd").format(controller.dateTo == null?DateTime.now():controller.dateTo.value),
                                                       style: const TextStyle(decoration: TextDecoration.underline),
                                                     );
                                                   })),
@@ -184,24 +188,43 @@ class EditBillsView extends GetView<EditBillsController> {
                                             // });
                                           },
 
-                                          child: Container(alignment: Alignment.centerRight,
+                                          child:Row(children: [
 
-                                            height: size.height * .05,
-                                            width: size.width * .1,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(6.00)), color:coloryellow,
-                                            ),
-                                            child: Row(mainAxisAlignment: MainAxisAlignment
-                                                .spaceAround,
-                                              children: [
-                                                Text('بحث',
-                                                  style: smallTextStyleNormal(size,color: Colors.black),),
-                                                Icon(Icons.search,color: Colors.black,)
-                                              ],
-                                            ),
+                                            const SizedBox(width: 10),
+                                            Container(alignment: Alignment.centerRight,
 
-                                          ),
+                                              height: size.height * .05,
+                                              width: size.width * .1,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(6.00)), color:coloryellow,
+                                              ),
+                                              child: Row(mainAxisAlignment: MainAxisAlignment
+                                                  .spaceAround,
+                                                children: [
+                                                  Text('بحث',
+                                                    style: smallTextStyleNormal(size,color: Colors.black),),
+                                                  Icon(Icons.search,color: Colors.black,)
+                                                ],
+                                              ),
+
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Container(
+                                              height: size.height * .048,
+                                              width: size.width * .1,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(6.00)),
+                                                color:coloryellow,
+                                              ),
+                                              child: ElevatedButton(
+                                                child: Text("رجوع"),
+                                                onPressed: () => Get.back(),
+                                              ),
+                                            ),
+                                          ],)
+
                                         ),
                                       ],
                                     ),
@@ -221,7 +244,7 @@ class EditBillsView extends GetView<EditBillsController> {
                             height: size.height*.06,
                             child:
                             Container(width:size.width*.03,
-                                height: size.height*.03,child: Icon(Icons.add_circle_outline)),
+                                height: size.height*.03,child:SizedBox()),
                           ),
                         ),
                         Container(
@@ -275,7 +298,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                       if(controller.reports != null)
 
 
-                                        for(EditBillsResponse kha in controller.reports == null?[]:controller.reports )
+                                        for(GlPayDTO kha in controller.reports??[] )
                                           TableRow(children: [
                                             Column(children: [
                                               Text(
@@ -293,6 +316,8 @@ class EditBillsView extends GetView<EditBillsController> {
                                                 ),
                                                 child:
                                                 TextFormField(
+
+
 
                                                   // focusNode: invoiceFocus,
                                                   initialValue: kha != null?DateFormat("yyyy-MM-dd").format(kha.date!).toString():"",
@@ -337,34 +362,50 @@ class EditBillsView extends GetView<EditBillsController> {
                                             Column(children: [
                                               Container(
                                                 // width: 100,
-                                                height: 30,
+                                                height: 50,
                                                 decoration: BoxDecoration(
                                                   color: Colors.white70,
                                                   borderRadius: BorderRadius.circular(5),
                                                 ),
                                                 child:
-                                                TextFormField(
-                                                  // focusNode: invoiceFocus,
-                                                  initialValue: kha != null?kha.customerName.toString():"",
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  /////////////quantity
-                                                  // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  // controller: invoiceController,
-                                                  // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
-                                                  // inputFormatters: [doubleFilter],
-                                                  // onChanged: (value) async {
-                                                  //   if (value.isEmpty) return;
-                                                  //   provider.quantityOfUnit = num.parse(value);
-                                                  //   provider.sellPrice = await provider.getItemPrice(
-                                                  //       context.read<ClientProvider>().clintSelected!.id!,
-                                                  //       provider.quantityOfUnit!,
-                                                  //       context);
-                                                  //   provider.calcRow();
-                                                  //   setState(() {});
-                                                  // },
-                                                ),
+                                                TypeAheadFormField<FindCustomerResponse>(
+                                                    // initialValue: kha != null?kha.customerName.toString():"",
+                                                    itemBuilder: (context, client) {
+                                                      return SizedBox(
+                                                        height: 50,
+                                                        child: Center(
+                                                          child: Text("${client.name} ${client.code}"),
+                                                        ),
+                                                      );
+                                                    },
+                                                    suggestionsCallback: (filter) => controller.customers,
+                                                    onSuggestionSelected: (value) {
+                                                      print(value.name);
+                                                      controller.reportController(kha).text = "${value.name} ";
+
+                                                    },
+                                                    textFieldConfiguration: TextFieldConfiguration(
+                                                      textInputAction: TextInputAction.next,
+                                                      controller: controller.reportController(kha),
+                                                      focusNode: controller.reportNodes(kha),
+                                                      onEditingComplete: () => controller.getCustomersByCodeForInvoice(controller.reportNodes(kha)),
+                                                      decoration: InputDecoration(
+                                                          border: OutlineInputBorder(),
+                                                          disabledBorder: InputBorder.none,
+                                                          enabledBorder: InputBorder.none,
+                                                          focusedBorder: InputBorder.none,
+                                                          hintText: "ابحث عن فاتورة لعميل معين",
+                                                          isDense: true,
+                                                          hintMaxLines: 1,
+                                                          contentPadding: EdgeInsets.all(5),
+                                                          suffixIconConstraints: BoxConstraints(maxWidth: 50),
+                                                          suffixIcon: IconButtonWidget(
+                                                            icon: Icons.search,
+                                                            onPressed: () {
+                                                              controller.getCustomersByCodeForInvoice(controller.reportNodes(kha));
+                                                            },
+                                                          )),
+                                                    )),
 
                                               ),
                                             ]),
@@ -422,28 +463,83 @@ class EditBillsView extends GetView<EditBillsController> {
                                                       borderRadius: BorderRadius.circular(5),
                                                     ),
                                                     child:
-                                                    TextFormField(
-                                                      // focusNode: invoiceFocus,
-                                                      initialValue: kha != null?kha.bankName:"",
-                                                      textAlign: TextAlign.center,
-                                                      decoration: const InputDecoration(
-                                                          border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                      /////////////quantity
-                                                      // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                      // controller: invoiceController,
-                                                      // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
-                                                      // inputFormatters: [doubleFilter],
-                                                      // onChanged: (value) async {
-                                                      //   if (value.isEmpty) return;
-                                                      //   provider.quantityOfUnit = num.parse(value);
-                                                      //   provider.sellPrice = await provider.getItemPrice(
-                                                      //       context.read<ClientProvider>().clintSelected!.id!,
-                                                      //       provider.quantityOfUnit!,
-                                                      //       context);
-                                                      //   provider.calcRow();
-                                                      //   setState(() {});
-                                                      // },
-                                                    ),
+                                                    TypeAheadFormField<GlPayDTO>(
+                                                      // initialValue: kha != null?kha.customerName.toString():"",
+                                                        itemBuilder: (context, client) {
+                                                          return SizedBox(
+                                                            height: 50,
+                                                            child: Center(
+                                                              child: Text("${client.bankName} ${client.serial}"),
+                                                            ),
+                                                          );
+                                                        },
+                                                        suggestionsCallback: (filter) => controller.allInvoices,
+                                                        onSuggestionSelected: (value) {
+                                                          print(value.bankName);
+                                                          // controller.addinvoice();
+                                                          controller.bankController(kha).text = "${value.bankName} ";
+
+                                                        },
+                                                        textFieldConfiguration: TextFieldConfiguration(
+                                                          textInputAction: TextInputAction.next,
+                                                          controller: controller.bankController(kha),
+                                                          focusNode: controller.bankNodes(kha),
+                                                          // onEditingComplete: () => controller.addinvoice(),
+                                                          decoration: InputDecoration(
+                                                              border: OutlineInputBorder(),
+                                                              disabledBorder: InputBorder.none,
+                                                              enabledBorder: InputBorder.none,
+                                                              focusedBorder: InputBorder.none,
+                                                              // hintText: "ابحث عن فاتورة لعميل معين",
+                                                              isDense: true,
+                                                              hintMaxLines: 1,
+                                                              contentPadding: EdgeInsets.all(5),
+                                                              suffixIconConstraints: BoxConstraints(maxWidth: 50),
+                                                              suffixIcon: IconButtonWidget(
+                                                                icon: Icons.search,
+                                                                onPressed: () {
+                                                                  controller.getCustomersByCodeForInvoice(controller.bankNodes(kha));
+                                                                },
+                                                              )),
+                                                        )),
+
+                                                    //   DropdownSearch<GlPayDTO>(
+                                                    //   // showSearchBox: true,
+                                                    //   items: controller.allInvoices,
+                                                    //   itemAsString: (GlPayDTO e) => e.bankName!,
+                                                    //   // onSaved: controller.getAllInvoices(),
+                                                    //   selectedItem: controller.ivoiceSelected,
+                                                    //
+                                                    //   dropdownDecoratorProps: const DropDownDecoratorProps(
+                                                    //     dropdownSearchDecoration: InputDecoration(
+                                                    //       border: OutlineInputBorder(),
+                                                    //       contentPadding: EdgeInsets.all(10),
+                                                    //       isDense: true,
+                                                    //     ),
+                                                    //   ),
+                                                    // )
+                                                    // TextFormField(
+                                                    //   // focusNode: invoiceFocus,
+                                                    //   initialValue: kha != null?kha.bankName:"",
+                                                    //   textAlign: TextAlign.center,
+                                                    //   decoration: const InputDecoration(
+                                                    //       border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                                                    //   /////////////quantity
+                                                    //   // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
+                                                    //   // controller: invoiceController,
+                                                    //   // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
+                                                    //   // inputFormatters: [doubleFilter],
+                                                    //   // onChanged: (value) async {
+                                                    //   //   if (value.isEmpty) return;
+                                                    //   //   provider.quantityOfUnit = num.parse(value);
+                                                    //   //   provider.sellPrice = await provider.getItemPrice(
+                                                    //   //       context.read<ClientProvider>().clintSelected!.id!,
+                                                    //   //       provider.quantityOfUnit!,
+                                                    //   //       context);
+                                                    //   //   provider.calcRow();
+                                                    //   //   setState(() {});
+                                                    //   // },
+                                                    // ),
 
                                                   ),
                                                 ]),
@@ -495,6 +591,12 @@ class EditBillsView extends GetView<EditBillsController> {
                                                         children: [
                                                           GestureDetector(
                                                             onTap: (){
+                                                              // controller.addinvoice();
+                                                              //
+                                                              // print(controller.allInvoicesSelected);
+
+                                                              controller.editInvoice(controller.allInvoicesSelected,22);
+
                                                               // context.read<TobyPayProvider>().delete(kha);
                                                             },
 
@@ -552,41 +654,42 @@ class EditBillsView extends GetView<EditBillsController> {
                                                         ],
                                                       ),
                                                     ),
-                                                    Padding(
-                                                      padding: EdgeInsets.fromLTRB(0, 2, 2, 0),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          GestureDetector(
-                                                            onTap: (){
-                                                              // context.read<TobyPayProvider>().delete(kha);
-                                                            },
 
-                                                            child: Container(alignment: Alignment.centerRight,
-
-                                                              height: size.height * .03,
-                                                              width: size.width * .045,
-                                                              decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius.all(
-                                                                    Radius.circular(6.00)), color:coloryellow,
-                                                              ),
-                                                              child: Row(mainAxisAlignment: MainAxisAlignment
-                                                                  .spaceAround,
-                                                                children: [
-                                                                  Text('طباعه',
-                                                                    style: smallTextStyleNormal(size,color: Colors.black),),
-                                                                  Icon(Icons.print,color: Colors.black,)
-                                                                ],
-                                                              ),
-
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
 
 
                                                   ],),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(0, 2, 2, 0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: (){
+                                                        // context.read<TobyPayProvider>().delete(kha);
+                                                      },
+
+                                                      child: Container(alignment: Alignment.centerRight,
+
+                                                        height: size.height * .03,
+                                                        width: size.width * .045,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.all(
+                                                              Radius.circular(6.00)), color:coloryellow,
+                                                        ),
+                                                        child: Row(mainAxisAlignment: MainAxisAlignment
+                                                            .spaceAround,
+                                                          children: [
+                                                            Text('طباعه',
+                                                              style: smallTextStyleNormal(size,color: Colors.black),),
+                                                            Icon(Icons.print,color: Colors.black,)
+                                                          ],
+                                                        ),
+
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
 

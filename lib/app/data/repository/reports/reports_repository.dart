@@ -1,17 +1,19 @@
+import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/categories_totals_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/group_list_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/invoice_statement_by_case_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/production_stages_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/purchases_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/quantity_items_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/safe_account_statement_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_totals_response.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/edit_bills_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/group_list_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoice_statement_by_case_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/purchases_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/quantity_items_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/safe_account_statement_response.dart';
@@ -128,14 +130,54 @@ class ReportsRepository {
   getEditBillsStatement(
       EditBillsRequest editBillsRequest, {
         Function()? onComplete,
-        Function(List<EditBillsResponse> data)? onSuccess,
+        Function(List<GlPayDTO> data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-      ApiProvider().post<List<EditBillsResponse>,List<dynamic>>('glBankTransaction/searchGlBankTransactionNoticerecevable',
+      ApiProvider().post<List<GlPayDTO>,List<dynamic>>('glBankTransaction/searchGlBankTransactionNoticerecevable',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: editBillsRequest.toJson(),
         onError: onError,
-        convertor: EditBillsResponse.fromList,
+        convertor: GlPayDTO.fromList,
+      );
+  getAllInvoicesStatement(
+      AllInvoicesRequest allInvoicesRequest, {
+        Function()? onComplete,
+        Function(List<GlPayDTO> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<GlPayDTO>,List<dynamic>>('bank/glPayDTOList',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: allInvoicesRequest.toJson(),
+        onError: onError,
+        convertor: GlPayDTO.fromList,
+      );
+  editInvoicesStatement(
+      GlBankTransactionApi glBankTransactionApi, {
+        Function()? onComplete,
+        Function(List<GlBankTransactionApi> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<GlBankTransactionApi>,List<dynamic>>('glBankTransaction/saveGlBankTransaction',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: glBankTransactionApi.toJson(),
+        onError: onError,
+        convertor: GlBankTransactionApi.fromList,
+      );
+
+  profitSoldStatement(
+      ProfitOfItemsSoldRequest profitOfItemsSoldRequest, {
+        Function()? onComplete,
+        Function(List<ProfitOfItemsSoldResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<ProfitOfItemsSoldResponse>,List<dynamic>>('glBankTransaction/saveGlBankTransaction',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: profitOfItemsSoldRequest.toJson(),
+        onError: onError,
+        convertor: ProfitOfItemsSoldResponse.fromList,
       );
 }
