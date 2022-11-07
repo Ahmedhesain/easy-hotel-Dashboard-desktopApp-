@@ -14,11 +14,13 @@ class SalesOfItemsByCompanyRequest {
     this.dateFrom,
     this.dateTo,
     this.invInventoryDtoList,
+    this.branchId
   });
 
   DateTime? dateFrom;
   DateTime ?dateTo;
   List<DtoList>? invInventoryDtoList;
+  int?branchId;
 
   factory SalesOfItemsByCompanyRequest.fromJson(Map<String, dynamic> json) => SalesOfItemsByCompanyRequest(
     dateFrom: json["dateFrom"] == null ? null : DateTime.parse(json["dateFrom"]),
@@ -28,6 +30,7 @@ class SalesOfItemsByCompanyRequest {
   );
 
   Map<String, dynamic> toJson() => {
+    "branchId": branchId,
     "dateFrom": dateFrom == null ? null : dateFrom?.toIso8601String(),
     "dateTo": dateTo == null ? null : dateTo?.toIso8601String(),
     "invInventoryDTOList": invInventoryDtoList == null ? null : List<dynamic>.from(invInventoryDtoList!.map((x) => x.toJson())),

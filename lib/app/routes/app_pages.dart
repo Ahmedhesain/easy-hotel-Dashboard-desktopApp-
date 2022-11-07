@@ -20,6 +20,12 @@ import 'package:toby_bills/app/modules/reports/clients_no_movement/bindings/clie
 import 'package:toby_bills/app/modules/reports/clients_no_movement/views/clients_no_movement_view.dart';
 import 'package:toby_bills/app/modules/reports/find_customer_balance/bindings/find_custome_balance_binding.dart';
 import 'package:toby_bills/app/modules/reports/find_customer_balance/views/find_custome_balance_view.dart';
+import 'package:toby_bills/app/modules/reports/find_sales_value_added/bindings/find_sales_value_added_binding.dart';
+import 'package:toby_bills/app/modules/reports/find_sales_value_added/views/find_sales_value_added_view.dart';
+import 'package:toby_bills/app/modules/reports/find_sales_value_added_details/bindings/find_sales_value_added_details_binding.dart';
+import 'package:toby_bills/app/modules/reports/find_sales_value_added_details/views/find_sales_value_added_details_view.dart';
+import 'package:toby_bills/app/modules/reports/find_statement_of_bonds_by_branch_report/bindings/find_statement_of_bonds_by_branch_report_binding.dart';
+import 'package:toby_bills/app/modules/reports/find_statement_of_bonds_by_branch_report/views/find_statement_of_bonds_by_branch_report_view.dart';
 import 'package:toby_bills/app/modules/reports/invoice_status/bindings/invoice_status_binding.dart';
 import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_status_view.dart';
 import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/bindings/invoices_without_swing_binding.dart';
@@ -136,6 +142,21 @@ class AppPages {
       name: _Paths.FIND_CUSTOMER_BALANCE,
       page: () => FindCustomerBalanceView(),
       binding: FindCustomerBalanceBinding(),
+    ),
+    GetPage(
+      name: _Paths.FIND_STATEMENT_OF_BONDS_BY_BRANCH,
+      page: () => FindStatementOfBondsByBranchReportView(),
+      binding: FindStatementOfBondsByBranchReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.FIND_VALES_VALUES_ADDED_DETAILS,
+      page: () => FindValesValueAddedDetailsView(),
+      binding: FindValesValueAddedDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.FIND_VALES_VALUES_ADDED,
+      page: () => FindSalesValueAddedView(),
+      binding: FindSalesValueAddedBinding(),
     ),
 
   ];

@@ -19,7 +19,7 @@ class SalesItemsByCompanyController extends GetxController{
 
   final List<SalesOfItemsByCompanyResponse> _allReports = [];
   final reports = <SalesOfItemsByCompanyResponse>[].obs;
-  final isLoading = true.obs;
+  final isLoading = false.obs;
   String query = '';
   final deliveryPlaces = <DeliveryPlaceResposne>[];
   Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
@@ -35,7 +35,7 @@ class SalesItemsByCompanyController extends GetxController{
   void onInit() {
     super.onInit();
     getDeliveryPlaces();
-    getSalesItemsByCompany();
+
 
   }
 
@@ -44,7 +44,10 @@ class SalesItemsByCompanyController extends GetxController{
     final request = SalesOfItemsByCompanyRequest(
       dateTo: dateTo.value,
       dateFrom:dateFrom.value,
-      invInventoryDtoList: [],
+      invInventoryDtoList:    [
+    DtoList(id: selectedDeliveryPlace.value!.id)
+    ],
+    // invInventoryDtoList: deliveryPlaces.map((e) => DtoList(id: e.id)).toList(),,
     );
     ReportsRepository().SalesItemsByCompany(request,
         onSuccess: (data) {

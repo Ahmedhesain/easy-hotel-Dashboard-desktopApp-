@@ -4,26 +4,28 @@
 
 import 'dart:convert';
 
+import 'package:toby_bills/app/data/model/reports/dto/request/clients_no_movement_request.dart';
+
 FindCustomersBalanceRequest profitOfItemsSoldRequestFromJson(String str) => FindCustomersBalanceRequest.fromJson(json.decode(str));
 
 
 class FindCustomersBalanceRequest {
   FindCustomersBalanceRequest({
     this.branchId,
-    this.invInventoryDtoList,
+    this.gallarySellected,
   });
 
   int ?branchId;
-  List<DtoList>? invInventoryDtoList;
+  GallarySellected ?gallarySellected;
 
   factory FindCustomersBalanceRequest.fromJson(Map<String, dynamic> json) => FindCustomersBalanceRequest(
     branchId: json["branchId"] == null ? null : json["branchId"],
-    invInventoryDtoList: json["invInventoryDTOList"] == null ? null : List<DtoList>.from(json["invInventoryDTOList"].map((x) => DtoList.fromJson(x))),
+    gallarySellected: json["gallarySellected"] == null ? null : GallarySellected.fromJson(json["gallarySellected"]),
   );
 
   Map<String, dynamic> toJson() => {
     "branchId": branchId == null ? null : branchId,
-    "invInventoryDTOList": invInventoryDtoList == null ? null : List<dynamic>.from(invInventoryDtoList!.map((x) => x.toJson())),
+    "gallarySellected": gallarySellected == null ? null : gallarySellected!.toJson(),
   };
 }
 

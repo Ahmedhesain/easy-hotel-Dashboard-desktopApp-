@@ -14,14 +14,16 @@ import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_added_details_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
+import 'package:toby_bills/app/modules/reports/find_sales_value_added_details/controllers/find_sales_value_added_details_controller.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
 import 'package:toby_bills/app/modules/reports/sales_items_by_company/controllers/sales_items_by_company_controller.dart';
 
 
-class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
-  const SalesItemsByCompanyView({super.key});
+class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsController> {
+  const FindValesValueAddedDetailsView({super.key});
 
 
 
@@ -214,7 +216,7 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                                 const SizedBox(width: 10),
                                                 GestureDetector(
                                                   onTap: (){
-                                                    controller.getSalesItemsByCompany();
+                                                    controller.FindValesValueAddedDetails();
                                                   },
                                                   child: Container(alignment: Alignment.centerRight,
 
@@ -281,7 +283,7 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                   Container(
                                     margin: EdgeInsets.all(0),
                                     child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .2425),
+                                      defaultColumnWidth: FixedColumnWidth(size.width * .138),
                                       border: TableBorder.all(
                                           borderRadius: BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
@@ -290,16 +292,25 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [Text('المعرض',
+                                          Column(children: [Text('الفاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('كود الشركه',
+                                          Column(children: [Text('التاريخ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اسم الشركه',
+                                          Column(children: [Text('اسم المعرض',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اجمالي المبيعات',
+                                          Column(children: [Text('اسم الموظف',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('الاجمالي قبل الضريبه',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('الاجمالي بعد الضريبه',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('الضريبه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -316,27 +327,41 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                         if(controller.reports != null)
 
 
-                                          for(SalesOfItemsByCompanyResponse kha in controller.reports??[] )
+                                          for(FindSalesValueAddedDetailsResponse kha in controller.reports??[] )
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
-                                                    controller.selectedDeliveryPlace.value!.name,
+                                                    kha.invoiceNumber!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.gallaryId?.toString()??"",
+                                                    DateFormat("yyyy-MM-dd").format(kha.invoiceDate!),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.gallaryName??"",
+                                                    kha.galleryName!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 
+
                                               Column(children: [
                                                 Text(
-                                                    kha.totalSales?.toString()??"",
+                                                    kha.employeeName!,
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.totalBeforeTax!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),Column(children: [
+                                                Text(
+                                                    kha.totalAfterTax!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]), Column(children: [
+                                                Text(
+                                                    kha.tax!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 

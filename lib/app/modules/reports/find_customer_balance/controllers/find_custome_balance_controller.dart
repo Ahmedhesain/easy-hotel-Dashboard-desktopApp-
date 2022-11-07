@@ -25,7 +25,7 @@ class FindCustomerBalanceController extends GetxController{
 
   final List<FindCustomersBalanceResponse> _allReports = [];
   final reports = <FindCustomersBalanceResponse>[].obs;
-  final isLoading = true.obs;
+  final isLoading = false.obs;
   String query = '';
   final deliveryPlaces = <DeliveryPlaceResposne>[];
   Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
@@ -41,15 +41,15 @@ class FindCustomerBalanceController extends GetxController{
   void onInit() {
     super.onInit();
     getDeliveryPlaces();
-    getClientNoMovement();
+
 
   }
 
-  getClientNoMovement() async {
+  getClientBalance() async {
     isLoading(true);
     final request = FindCustomersBalanceRequest(
       branchId: UserManager().branchId,
-      invInventoryDtoList: [],
+      gallarySellected: GallarySellected(id: selectedDeliveryPlace.value!.id),
     );
     ReportsRepository().FindCustomerBalance(request,
         onSuccess: (data) {

@@ -14,14 +14,20 @@ import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_statement_of_bonds_by_branch_report_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/invoices_without_sewing_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/item_balances_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
+import 'package:toby_bills/app/modules/reports/find_statement_of_bonds_by_branch_report/controllers/find_statement_of_bonds_by_branch_report_controller.dart';
+import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/controllers/invoices_without_swing_controller.dart';
+import 'package:toby_bills/app/modules/reports/item_balances_statement/controllers/item_balances_statement_controller.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
 import 'package:toby_bills/app/modules/reports/sales_items_by_company/controllers/sales_items_by_company_controller.dart';
 
 
-class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
-  const SalesItemsByCompanyView({super.key});
+class FindStatementOfBondsByBranchReportView extends GetView<FindStatementOfBondsByBranchReportController> {
+  const FindStatementOfBondsByBranchReportView({super.key});
 
 
 
@@ -74,36 +80,7 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                         child: Row(
                                           children: [
 
-                                             Text('المعرض  ',style: smallTextStyleNormal(size)),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                Obx(() {
-                                                  return DropdownSearch<DeliveryPlaceResposne>(
-                                                    // showSearchBox: true,
-                                                    items: controller.deliveryPlaces,
-                                                    itemAsString: (DeliveryPlaceResposne e) => e.name,
-                                                    onChanged: controller.selectedDeliveryPlace,
-                                                    selectedItem: controller.selectedDeliveryPlace.value,
-                                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                                      dropdownSearchDecoration: InputDecoration(
-                                                        border: OutlineInputBorder(),
-                                                        contentPadding: EdgeInsets.all(10),
-                                                        isDense: true,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }),                                              ),
-                                            ),
-                                            SizedBox(width: size.width*.1,),
+                                            SizedBox(width: size.width*.2,),
 
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
@@ -212,10 +189,9 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                               child:Row(children: [
 
                                                 const SizedBox(width: 10),
-                                                GestureDetector(
-                                                  onTap: (){
-                                                    controller.getSalesItemsByCompany();
-                                                  },
+                                                GestureDetector(onTap: (){
+                                                  controller.FindStatementOfBondsByBranchReport();
+                                                },
                                                   child: Container(alignment: Alignment.centerRight,
 
                                                     height: size.height * .05,
@@ -281,7 +257,7 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                   Container(
                                     margin: EdgeInsets.all(0),
                                     child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .2425),
+                                      defaultColumnWidth: FixedColumnWidth(size.width * .194),
                                       border: TableBorder.all(
                                           borderRadius: BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
@@ -290,16 +266,19 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [Text('المعرض',
+                                          Column(children: [Text("كود الفرع",
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('كود الشركه',
+                                          Column(children: [Text(' الفرع',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اسم الشركه',
+                                          Column(children: [Text('النوع ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اجمالي المبيعات',
+                                          Column(children: [Text(' نوع السداد',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text(' المبلغ ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -316,29 +295,35 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                         if(controller.reports != null)
 
 
-                                          for(SalesOfItemsByCompanyResponse kha in controller.reports??[] )
+                                          for(FindStatementOfBondsByBranchReportResponse kha in controller.reports??[] )
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
-                                                    controller.selectedDeliveryPlace.value!.name,
+                                                    kha.galleryCode!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.gallaryId?.toString()??"",
+                                                    kha.galleryName!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.gallaryName??"",
+                                                    kha.paymentType!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 
                                               Column(children: [
                                                 Text(
-                                                    kha.totalSales?.toString()??"",
+                                                    kha.type!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.totalAmount!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),
+
 
 
 

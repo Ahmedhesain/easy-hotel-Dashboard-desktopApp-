@@ -1,13 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
-import 'package:toby_bills/app/data/model/reports/dto/request/clients_no_movement_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/sales_of_items_by_company_request.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/client_no_movement_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_added_details_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_added_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/quantity_items_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
@@ -17,10 +19,10 @@ import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
 import '../../../../data/model/reports/dto/request/quantity_items_request.dart';
 
-class ClientsNoMovementController extends GetxController{
+class FindSalesValueAddedController extends GetxController{
 
-  final List<ClientsNoMovementResponse> _allReports = [];
-  final reports = <ClientsNoMovementResponse>[].obs;
+  final List<FindSalesValueAddedResponse> _allReports = [];
+  final reports = <FindSalesValueAddedResponse>[].obs;
   final isLoading = false.obs;
   String query = '';
   final deliveryPlaces = <DeliveryPlaceResposne>[];
@@ -33,23 +35,28 @@ class ClientsNoMovementController extends GetxController{
 
 
 
+
   @override
   void onInit() {
     super.onInit();
     getDeliveryPlaces();
 
-
   }
 
-  getClientNoMovement() async {
+  FindValesValueAdded() async {
     isLoading(true);
-    final request = ClientsNoMovementRequest(
-      branchId: UserManager().branchId,
+    final request = SalesOfItemsByCompanyRequest(
+      dateTo: dateTo.value,
       dateFrom:dateFrom.value,
-      gallarySellected: GallarySellected(id: selectedDeliveryPlace.value!.id),
+      invInventoryDtoList: [
+        DtoList(id: selectedDeliveryPlace.value!.id)
+      ],
+        branchId: UserManager().branchId
+
       // invInventoryDtoList: deliveryPlaces.map((e) => DtoList(id: e.id)).toList(),
+
     );
-    ReportsRepository().ClientsNoMovement(request,
+    ReportsRepository().FindValesValueAdded(request,
         onSuccess: (data) {
           reports.assignAll(data);
           _allReports.assignAll(data);
@@ -74,7 +81,9 @@ class ClientsNoMovementController extends GetxController{
     dateFrom(await _pickDate(initialDate: dateFrom.value ?? DateTime.now(), firstDate: DateTime(2019), lastDate: dateTo.value ?? DateTime.now()));
   }
 
-
+  pickToDate() async {
+    dateTo(await _pickDate(initialDate: dateTo.value ?? DateTime.now(), firstDate: dateFrom.value ?? DateTime.now(), lastDate: DateTime.now()));
+  }
   _pickDate({required DateTime initialDate, required DateTime firstDate, required DateTime lastDate}) {
     return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
   }

@@ -130,6 +130,18 @@ class HomeDrawerWidget extends GetView<HomeController> {
               title: "ارصده العملاء",
               onTap: () => Get.toNamed(Routes.FIND_CUSTOMER_BALANCE),
             ),
+            _Tile(
+              title: "بيان بالسندات الصادره حسب الفرع",
+              onTap: () => Get.toNamed(Routes.FIND_STATEMENT_OF_BONDS_BY_BRANCH),
+            ),
+            _Tile(
+              title: "بيان الفواتير حسب الضريبه تفصيلي",
+              onTap: () => Get.toNamed(Routes.FIND_VALES_VALUES_ADDED_DETAILS),
+            ),
+            _Tile(
+              title: "بيان الفواتير حسب الضريبه ",
+              onTap: () => Get.toNamed(Routes.FIND_VALES_VALUES_ADDED),
+            ),
           ],
         ),
       ),

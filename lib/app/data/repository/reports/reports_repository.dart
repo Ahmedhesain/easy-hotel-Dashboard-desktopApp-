@@ -18,6 +18,9 @@ import 'package:toby_bills/app/data/model/reports/dto/request/sales_of_items_by_
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_totals_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/client_no_movement_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/find_customer_balance_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_added_details_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_added_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_statement_of_bonds_by_branch_report_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/group_list_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoice_statement_by_case_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoices_without_sewing_response.dart';
@@ -250,7 +253,7 @@ class ReportsRepository {
         Function(List<ClientsNoMovementResponse> data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-      ApiProvider().post<List<ClientsNoMovementResponse>,List<dynamic>>('ClientNoMovement/findClientNoMovement ',
+      ApiProvider().post<List<ClientsNoMovementResponse>,List<dynamic>>('ClientNoMovement/findClientNoMovement',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: clientsNoMovementRequest.toJson(),
@@ -263,11 +266,50 @@ class ReportsRepository {
         Function(List<FindCustomersBalanceResponse> data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-      ApiProvider().post<List<FindCustomersBalanceResponse>,List<dynamic>>('customerBalance/findCustomerBalance ',
+      ApiProvider().post<List<FindCustomersBalanceResponse>,List<dynamic>>('customerBalance/findCustomerBalance',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: findCustomersBalanceRequest.toJson(),
         onError: onError,
         convertor: FindCustomersBalanceResponse.fromList,
+      );
+  FindStatementOfBondsByBranchReport(
+      ItemsBalancesRequest itemsBalancesRequest, {
+        Function()? onComplete,
+        Function(List<FindStatementOfBondsByBranchReportResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<FindStatementOfBondsByBranchReportResponse>,List<dynamic>>('reports/findStatementOfBondsByBranchReport',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: itemsBalancesRequest.toJson(),
+        onError: onError,
+        convertor: FindStatementOfBondsByBranchReportResponse.fromList,
+      );
+  FindValesValueAddedDetails(
+      SalesOfItemsByCompanyRequest salesOfItemsByCompanyRequest, {
+        Function()? onComplete,
+        Function(List<FindSalesValueAddedDetailsResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<FindSalesValueAddedDetailsResponse>,List<dynamic>>('salesValueAdded/FindSalesValueAddedDetails',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: salesOfItemsByCompanyRequest.toJson(),
+        onError: onError,
+        convertor: FindSalesValueAddedDetailsResponse.fromList,
+      );
+  FindValesValueAdded(
+      SalesOfItemsByCompanyRequest salesOfItemsByCompanyRequest, {
+        Function()? onComplete,
+        Function(List<FindSalesValueAddedResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<FindSalesValueAddedResponse>,List<dynamic>>('salesValueAdded/FindSalesValueAddedDetails',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: salesOfItemsByCompanyRequest.toJson(),
+        onError: onError,
+        convertor: FindSalesValueAddedResponse.fromList,
       );
 }

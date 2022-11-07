@@ -178,23 +178,28 @@ class ClientNoMovementView extends GetView<ClientsNoMovementController> {
                                               child:Row(children: [
 
                                                 const SizedBox(width: 10),
-                                                Container(alignment: Alignment.centerRight,
+                                                GestureDetector(
+                                                  onTap: (){
+                                                    controller. getClientNoMovement();
+                                                  },
+                                                  child: Container(alignment: Alignment.centerRight,
 
-                                                  height: size.height * .05,
-                                                  width: size.width * .1,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(6.00)), color:coloryellow,
-                                                  ),
-                                                  child: Row(mainAxisAlignment: MainAxisAlignment
-                                                      .spaceAround,
-                                                    children: [
-                                                      Text('بحث',
-                                                        style: smallTextStyleNormal(size,color: Colors.black),),
-                                                      Icon(Icons.search,color: Colors.black,)
-                                                    ],
-                                                  ),
+                                                    height: size.height * .05,
+                                                    width: size.width * .1,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.all(
+                                                          Radius.circular(6.00)), color:coloryellow,
+                                                    ),
+                                                    child: Row(mainAxisAlignment: MainAxisAlignment
+                                                        .spaceAround,
+                                                      children: [
+                                                        Text('بحث',
+                                                          style: smallTextStyleNormal(size,color: Colors.black),),
+                                                        Icon(Icons.search,color: Colors.black,)
+                                                      ],
+                                                    ),
 
+                                                  ),
                                                 ),
                                                 const SizedBox(width: 10),
                                                 Container(

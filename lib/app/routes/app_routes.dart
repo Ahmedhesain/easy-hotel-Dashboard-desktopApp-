@@ -23,6 +23,12 @@ abstract class Routes {
   static const INVOICES_WITHOUT_SWING = _Paths.INVOICES_WITHOUT_SWING;
   static const CLIENTS_NO_MOVEMENT = _Paths.CLIENTS_NO_MOVEMENT;
   static const FIND_CUSTOMER_BALANCE = _Paths.FIND_CUSTOMER_BALANCE;
+  static const FIND_STATEMENT_OF_BONDS_BY_BRANCH = _Paths.FIND_STATEMENT_OF_BONDS_BY_BRANCH;
+  static const FIND_VALES_VALUES_ADDED_DETAILS = _Paths.FIND_VALES_VALUES_ADDED_DETAILS;
+  static const FIND_VALES_VALUES_ADDED = _Paths.FIND_VALES_VALUES_ADDED;
+
+
+
 
 
 
@@ -53,6 +59,12 @@ abstract class _Paths {
   static const INVOICES_WITHOUT_SWING = '/invoices-without-swing';
   static const CLIENTS_NO_MOVEMENT = '/clients-no-movement';
   static const FIND_CUSTOMER_BALANCE = '/find-customer-balance';
+  static const FIND_STATEMENT_OF_BONDS_BY_BRANCH = '/find-statement-of-bonds-by-branch';
+  static const FIND_VALES_VALUES_ADDED_DETAILS = '/find-vales-value-added-details';
+  static const FIND_VALES_VALUES_ADDED = '/find-vales-value-added';
+
+
+
 
 
 
