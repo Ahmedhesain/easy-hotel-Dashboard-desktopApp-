@@ -309,51 +309,43 @@ class EditBillsView extends GetView<EditBillsController> {
                                               Container(
 
                                                 // width: 100,
-                                                height: 30,
+                                                height: 40,
                                                 decoration: BoxDecoration(
                                                   color: Colors.white70,
                                                   borderRadius: BorderRadius.circular(5),
                                                 ),
                                                 child:
-                                                TextFormField(
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                  child: Container(
+                                                    width: size.width * .3,
+                                                    height: size.height * .04,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white70,
+                                                      borderRadius: BorderRadius.circular(5),
+
+                                                    ),child:
+
+                                                  Center(
+                                                    child: MouseRegion(
+                                                      cursor: SystemMouseCursors.click,
+                                                      child: GestureDetector(
+                                                          onTap: () {
+                                                            controller.pickEditDate(kha.date!);
+                                                          },
+                                                          child: Obx(() {
+                                                            return Text(
+                                                         DateFormat("yyyy-MM-dd").format(kha.date!),
+                                                              style: const TextStyle(decoration: TextDecoration.underline),
+                                                            ).obs();
+                                                          })),
+                                                    ),
+                                                  ),
 
 
 
-                                                  // focusNode: invoiceFocus,
-                                                  initialValue: kha != null?DateFormat("yyyy-MM-dd").format(kha.date!).toString():"",
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  /////////////quantity
-                                                  // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  // controller: invoiceController,
-                                                  // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
 
-                                                  // inputFormatters: [doubleFilter],
-                                                  onTap: (){
-                                                    showDatePicker(
-                                                      context: context,
-                                                      initialDate: DateTime.now(),
-                                                      firstDate: DateTime(2022),
-                                                      lastDate: DateTime(2030),
-                                                    ).then((value){
-                                                      if(value!= null){
-                                                        // setState(() {
-                                                        //   newdate=value ;
-                                                        //  }
-                                                        // );
-                                                      }
-                                                    });
-                                                  },                                                // onChanged: (value) async {
-                                                  //   if (value.isEmpty) return;
-                                                  //   provider.quantityOfUnit = num.parse(value);
-                                                  //   provider.sellPrice = await provider.getItemPrice(
-                                                  //       context.read<ClientProvider>().clintSelected!.id!,
-                                                  //       provider.quantityOfUnit!,
-                                                  //       context);
-                                                  //   provider.calcRow();
-                                                  //   setState(() {});
-                                                  // },
+                                                  ),
                                                 ),
 
                                               ),
@@ -362,7 +354,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                             Column(children: [
                                               Container(
                                                 // width: 100,
-                                                height: 50,
+                                                height: 40,
                                                 decoration: BoxDecoration(
                                                   color: Colors.white70,
                                                   borderRadius: BorderRadius.circular(5),
@@ -413,8 +405,9 @@ class EditBillsView extends GetView<EditBillsController> {
                                             Column(children: [
                                               Container(
                                                 // width: 100,
-                                                height: 30,
+                                                height: 40,
                                                 decoration: BoxDecoration(
+
                                                   color: Colors.white70,
                                                   borderRadius: BorderRadius.circular(5),
                                                 ),
@@ -448,7 +441,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                             Column(children: [
                                               Container(
                                                 // width: 100,
-                                                height: 30,
+                                                height: 40,
                                                 decoration: BoxDecoration(
                                                   color: Colors.white70,
                                                   borderRadius: BorderRadius.circular(5),
@@ -457,7 +450,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                 Column(children: [
                                                   Container(
                                                     // width: 100,
-                                                    height: 30,
+                                                    height: 40,
                                                     decoration: BoxDecoration(
                                                       color: Colors.white70,
                                                       borderRadius: BorderRadius.circular(5),
@@ -477,7 +470,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                         onSuggestionSelected: (value) {
                                                           print(value.bankName);
                                                           // controller.addinvoice();
-                                                          controller.bankController(kha).text = "${value.bankName} ";
+                                                          controller.bankController(kha).text = "${value.bankName}";
 
                                                         },
                                                         textFieldConfiguration: TextFieldConfiguration(
@@ -503,43 +496,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                               )),
                                                         )),
 
-                                                    //   DropdownSearch<GlPayDTO>(
-                                                    //   // showSearchBox: true,
-                                                    //   items: controller.allInvoices,
-                                                    //   itemAsString: (GlPayDTO e) => e.bankName!,
-                                                    //   // onSaved: controller.getAllInvoices(),
-                                                    //   selectedItem: controller.ivoiceSelected,
-                                                    //
-                                                    //   dropdownDecoratorProps: const DropDownDecoratorProps(
-                                                    //     dropdownSearchDecoration: InputDecoration(
-                                                    //       border: OutlineInputBorder(),
-                                                    //       contentPadding: EdgeInsets.all(10),
-                                                    //       isDense: true,
-                                                    //     ),
-                                                    //   ),
-                                                    // )
-                                                    // TextFormField(
-                                                    //   // focusNode: invoiceFocus,
-                                                    //   initialValue: kha != null?kha.bankName:"",
-                                                    //   textAlign: TextAlign.center,
-                                                    //   decoration: const InputDecoration(
-                                                    //       border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                    //   /////////////quantity
-                                                    //   // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                    //   // controller: invoiceController,
-                                                    //   // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
-                                                    //   // inputFormatters: [doubleFilter],
-                                                    //   // onChanged: (value) async {
-                                                    //   //   if (value.isEmpty) return;
-                                                    //   //   provider.quantityOfUnit = num.parse(value);
-                                                    //   //   provider.sellPrice = await provider.getItemPrice(
-                                                    //   //       context.read<ClientProvider>().clintSelected!.id!,
-                                                    //   //       provider.quantityOfUnit!,
-                                                    //   //       context);
-                                                    //   //   provider.calcRow();
-                                                    //   //   setState(() {});
-                                                    //   // },
-                                                    // ),
+
 
                                                   ),
                                                 ]),
@@ -549,7 +506,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                             Column(children: [
                                               Container(
                                                 // width: 100,
-                                                height: 30,
+                                                height: 40,
                                                 decoration: BoxDecoration(
                                                   color: Colors.white70,
                                                   borderRadius: BorderRadius.circular(5),
@@ -602,7 +559,7 @@ class EditBillsView extends GetView<EditBillsController> {
 
                                                             child: Container(alignment: Alignment.centerRight,
 
-                                                              height: size.height * .03,
+                                                              height: size.height * .045,
                                                               width: size.width * .045,
                                                               decoration: BoxDecoration(
                                                                 borderRadius: BorderRadius.all(
@@ -634,7 +591,7 @@ class EditBillsView extends GetView<EditBillsController> {
 
                                                             child: Container(alignment: Alignment.centerRight,
 
-                                                              height: size.height * .03,
+                                                              height: size.height * .045,
                                                               width: size.width * .04,
                                                               decoration: BoxDecoration(
                                                                 borderRadius: BorderRadius.all(
@@ -655,41 +612,41 @@ class EditBillsView extends GetView<EditBillsController> {
                                                       ),
                                                     ),
 
+                                                    Padding(
+                                                      padding: EdgeInsets.fromLTRB(0, 2, 2, 0),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: (){
+                                                              // context.read<TobyPayProvider>().delete(kha);
+                                                            },
+
+                                                            child: Container(alignment: Alignment.centerRight,
+
+                                                              height: size.height * .045,
+                                                              width: size.width * .045,
+                                                              decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.all(
+                                                                    Radius.circular(6.00)), color:coloryellow,
+                                                              ),
+                                                              child: Row(mainAxisAlignment: MainAxisAlignment
+                                                                  .spaceAround,
+                                                                children: [
+                                                                  Text('طباعه',
+                                                                    style: smallTextStyleNormal(size,color: Colors.black),),
+                                                                  Icon(Icons.print,color: Colors.black,)
+                                                                ],
+                                                              ),
+
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
 
 
                                                   ],),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.fromLTRB(0, 2, 2, 0),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: (){
-                                                        // context.read<TobyPayProvider>().delete(kha);
-                                                      },
-
-                                                      child: Container(alignment: Alignment.centerRight,
-
-                                                        height: size.height * .03,
-                                                        width: size.width * .045,
-                                                        decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.all(
-                                                              Radius.circular(6.00)), color:coloryellow,
-                                                        ),
-                                                        child: Row(mainAxisAlignment: MainAxisAlignment
-                                                            .spaceAround,
-                                                          children: [
-                                                            Text('طباعه',
-                                                              style: smallTextStyleNormal(size,color: Colors.black),),
-                                                            Icon(Icons.print,color: Colors.black,)
-                                                          ],
-                                                        ),
-
-                                                      ),
-                                                    ),
-                                                  ],
                                                 ),
                                               ),
 

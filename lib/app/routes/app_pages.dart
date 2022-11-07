@@ -18,14 +18,31 @@ import 'package:toby_bills/app/modules/purchase_invoices/bindings/purchase_invoi
 import 'package:toby_bills/app/modules/purchase_invoices/views/purchase_invoices_view.dart';
 import 'package:toby_bills/app/modules/reports/categories_totals/bindings/categories_totals_binding.dart';
 import 'package:toby_bills/app/modules/reports/categories_totals/views/categories_totals_view.dart';
+import 'package:toby_bills/app/modules/reports/clients_no_movement/bindings/clients_no_movement_binding.dart';
+import 'package:toby_bills/app/modules/reports/clients_no_movement/views/clients_no_movement_view.dart';
+import 'package:toby_bills/app/modules/reports/find_customer_balance/bindings/find_custome_balance_binding.dart';
+import 'package:toby_bills/app/modules/reports/find_customer_balance/views/find_custome_balance_view.dart';
+import 'package:toby_bills/app/modules/reports/find_sales_value_added/bindings/find_sales_value_added_binding.dart';
+import 'package:toby_bills/app/modules/reports/find_sales_value_added/views/find_sales_value_added_view.dart';
+import 'package:toby_bills/app/modules/reports/find_sales_value_added_details/bindings/find_sales_value_added_details_binding.dart';
+import 'package:toby_bills/app/modules/reports/find_sales_value_added_details/views/find_sales_value_added_details_view.dart';
+import 'package:toby_bills/app/modules/reports/find_statement_of_bonds_by_branch_report/bindings/find_statement_of_bonds_by_branch_report_binding.dart';
+import 'package:toby_bills/app/modules/reports/find_statement_of_bonds_by_branch_report/views/find_statement_of_bonds_by_branch_report_view.dart';
 import 'package:toby_bills/app/modules/reports/invoice_status/bindings/invoice_status_binding.dart';
 import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_status_view.dart';
+import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/bindings/invoices_without_swing_binding.dart';
+import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/views/invoice_without_swing_view.dart';
+import 'package:toby_bills/app/modules/reports/item_balances_statement/bindings/items_balances_statement_binding.dart';
+import 'package:toby_bills/app/modules/reports/item_balances_statement/controllers/item_balances_statement_controller.dart';
+import 'package:toby_bills/app/modules/reports/item_balances_statement/views/item_balances_statement_view.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/bindings/item_sales_by_customers_binding.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/views/item_sales_by_customers_view.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/bindings/profit_sold_binding.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/views/profit_sold_view.dart';
 import 'package:toby_bills/app/modules/reports/safe_account_statement/bindings/safe_account_statement.dart';
 import 'package:toby_bills/app/modules/reports/safe_account_statement/views/safe_account_statement_view.dart';
+import 'package:toby_bills/app/modules/reports/sales_items_by_company/bindings/sales_items_by_company_binding.dart';
+import 'package:toby_bills/app/modules/reports/sales_items_by_company/views/sales_items_by_company_view.dart';
 
 import '../modules/reports/items_quantity/bindings/production_stages_binding.dart';
 import '../modules/reports/items_quantity/views/quantity_items_view.dart';
@@ -103,6 +120,47 @@ class AppPages {
       page: () => ProfitSoldView(),
       binding: ProfitSoldBinding(),
     ),
+    GetPage(
+      name: _Paths.SALES_ITEMS_BY_COMPANY,
+      page: () => SalesItemsByCompanyView(),
+      binding: SalesItemsByCompanyBinding(),
+    ),
+    GetPage(
+      name: _Paths.ITEMS_BALANCES_STATEMENT,
+      page: () => ItemsBalancesStatementView(),
+      binding: ItemsBalancesStatementBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICES_WITHOUT_SWING,
+      page: () => InvoicesWithoutSwingView(),
+      binding: InvoicesWithoutSwingBinding(),
+    ),
+    GetPage(
+      name: _Paths.CLIENTS_NO_MOVEMENT,
+      page: () => ClientNoMovementView(),
+      binding: ClientsNoMovementBinding(),
+    ),
+    GetPage(
+      name: _Paths.FIND_CUSTOMER_BALANCE,
+      page: () => FindCustomerBalanceView(),
+      binding: FindCustomerBalanceBinding(),
+    ),
+    GetPage(
+      name: _Paths.FIND_STATEMENT_OF_BONDS_BY_BRANCH,
+      page: () => FindStatementOfBondsByBranchReportView(),
+      binding: FindStatementOfBondsByBranchReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.FIND_VALES_VALUES_ADDED_DETAILS,
+      page: () => FindValesValueAddedDetailsView(),
+      binding: FindValesValueAddedDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.FIND_VALES_VALUES_ADDED,
+      page: () => FindSalesValueAddedView(),
+      binding: FindSalesValueAddedBinding(),
+    ),
+
     GetPage(
       name: _Paths.PURCHASE_INVOICES,
       page: () => PurchaseInvoicesView(),

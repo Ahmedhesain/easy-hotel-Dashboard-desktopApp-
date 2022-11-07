@@ -14,12 +14,16 @@ import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_added_details_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
+import 'package:toby_bills/app/modules/reports/find_sales_value_added_details/controllers/find_sales_value_added_details_controller.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
+import 'package:toby_bills/app/modules/reports/sales_items_by_company/controllers/sales_items_by_company_controller.dart';
 
 
-class ProfitSoldView extends GetView<ProfitSoldController> {
-  const ProfitSoldView({super.key});
+class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsController> {
+  const FindValesValueAddedDetailsView({super.key});
 
 
 
@@ -61,7 +65,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
-                                height: size.height*.25,
+                                height: size.height*.15,
                                 width: size.width*.95,
                                 child: Column(
                                   children: [
@@ -101,235 +105,98 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                   );
                                                 }),                                              ),
                                             ),
+                                            SizedBox(width: size.width*.1,),
 
-
-                                            SizedBox(width: size.width*.08,)
-                                            ,Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                              child: Text('الحاله',style: smallTextStyleNormal(size)),
-                                            ),
                                             Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                TextFormField(
-                                                  // focusNode: quantityFocus,
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  /////////////quantity
-                                                  // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  controller: controller.categoryController,
-                                                  // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
-                                                  // inputFormatters: [doubleFilter],
-                                                  onChanged: (value)  {
-                                                    controller.categoryController.text =value;
+                                              padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                                              child: Row(
+                                                children: [
 
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: size.width*.05,)
-                                            , Text('الفئه',style: smallTextStyleNormal(size)),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                Obx(() {
-                                                  return DropdownSearch<AllGroupResponse>(
-                                                    // showSearchBox: true,
-                                                    items: controller.groups,
-                                                    itemAsString: (AllGroupResponse e) => e.name!,
-                                                    onChanged: controller.selectedGroup,
-                                                    selectedItem: controller.selectedGroup.value,
-                                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                                      dropdownSearchDecoration: InputDecoration(
-                                                        border: OutlineInputBorder(),
-                                                        contentPadding: EdgeInsets.all(10),
-                                                        isDense: true,
+                                                   Text('من تاريخ',style: smallTextStyleNormal(size)),
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                    child:
+                                                    Container(
+                                                      width: size.width * .2,
+                                                      height: size.height * .04,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white70,
+                                                        borderRadius: BorderRadius.circular(5),
+
+                                                      ),child:
+
+                                                    Center(
+                                                      child: MouseRegion(
+                                                        cursor: SystemMouseCursors.click,
+                                                        child: GestureDetector(
+                                                            onTap: () {
+                                                              controller.pickFromDate();
+                                                            },
+                                                            child: Obx(() {
+                                                              return Text(
+                                                                controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
+                                                                style: const TextStyle(decoration: TextDecoration.underline),
+                                                              );
+                                                            })),
                                                       ),
                                                     ),
-                                                  );
-                                                }),                                              ),
+
+
+
+
+                                                    ),
+                                                  ),
+
+
+                                                  SizedBox(width: size.width*.05,)
+                                                  ,Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                    child: Text('الي تاريخ',style: smallTextStyleNormal(size)),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                    child: Container(
+                                                      width: size.width * .2,
+                                                      height: size.height * .04,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white70,
+                                                        borderRadius: BorderRadius.circular(5),
+
+                                                      ),child:
+
+                                                    Center(
+                                                      child: MouseRegion(
+                                                        cursor: SystemMouseCursors.click,
+                                                        child: GestureDetector(
+                                                            onTap: () {
+                                                              controller.pickToDate();
+                                                            },
+                                                            child: Obx(() {
+                                                              return Text(
+                                                                controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
+                                                                style: const TextStyle(decoration: TextDecoration.underline),
+                                                              );
+                                                            })),
+                                                      ),
+                                                    ),
+
+
+
+
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
+
+
+                                            SizedBox(width: size.width*.05,)
+
                                           ],
                                         ),
                                       ),
                                     ),
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
-                                        child: Row(
-                                          children: [
-
-
-
-
-                                            SizedBox(width: size.width*.1,)
-                                            ,Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                              child: Text('الصنف',style: smallTextStyleNormal(size)),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                TextFormField(
-                                                  // focusNode: quantityFocus,
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  /////////////quantity
-                                                  // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  // controller: controller.selectedStatus,
-                                                  // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
-                                                  // inputFormatters: [doubleFilter],
-                                                  onChanged: (value)  {
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: size.width*.2,)
-                                            ,Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                              child: Text('نوع الفاتوره',style: smallTextStyleNormal(size)),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                TextFormField(
-                                                  // focusNode: quantityFocus,
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  /////////////quantity
-                                                  // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  // controller: controller.selectedStatus,
-                                                  // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
-                                                  // inputFormatters: [doubleFilter],
-                                                  onChanged: (value)  {
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
-                                        child: Row(
-                                          children: [
-
-                                            SizedBox(width: size.width*.1,)
-                                            , Text('من تاريخ',style: smallTextStyleNormal(size)),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child:
-                                              Container(
-                                                width: size.width * .3,
-                                                height: size.height * .04,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white70,
-                                                  borderRadius: BorderRadius.circular(5),
-
-                                                ),child:
-
-                                              Center(
-                                                child: MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: GestureDetector(
-                                                      onTap: () {
-                                                        controller.pickFromDate();
-                                                      },
-                                                      child: Obx(() {
-                                                        return Text(
-                                                          controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
-                                                          style: const TextStyle(decoration: TextDecoration.underline),
-                                                        );
-                                                      })),
-                                                ),
-                                              ),
-
-
-
-
-                                              ),
-                                            ),
-
-
-                                            SizedBox(width: size.width*.1,)
-                                            ,Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                              child: Text('الي تاريخ',style: smallTextStyleNormal(size)),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .3,
-                                                height: size.height * .04,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white70,
-                                                  borderRadius: BorderRadius.circular(5),
-
-                                                ),child:
-
-                                              Center(
-                                                child: MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: GestureDetector(
-                                                      onTap: () {
-                                                        controller.pickToDate();
-                                                      },
-                                                      child: Obx(() {
-                                                        return Text(
-                                                          controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
-                                                          style: const TextStyle(decoration: TextDecoration.underline),
-                                                        );
-                                                      })),
-                                                ),
-                                              ),
-
-
-
-
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
+                                       Padding(
                                       padding: EdgeInsets.fromLTRB(0, size.height * .01, 0, 0),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -347,23 +214,28 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                               child:Row(children: [
 
                                                 const SizedBox(width: 10),
-                                                Container(alignment: Alignment.centerRight,
+                                                GestureDetector(
+                                                  onTap: (){
+                                                    controller.FindValesValueAddedDetails();
+                                                  },
+                                                  child: Container(alignment: Alignment.centerRight,
 
-                                                  height: size.height * .05,
-                                                  width: size.width * .1,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(6.00)), color:coloryellow,
-                                                  ),
-                                                  child: Row(mainAxisAlignment: MainAxisAlignment
-                                                      .spaceAround,
-                                                    children: [
-                                                      Text('بحث',
-                                                        style: smallTextStyleNormal(size,color: Colors.black),),
-                                                      Icon(Icons.search,color: Colors.black,)
-                                                    ],
-                                                  ),
+                                                    height: size.height * .05,
+                                                    width: size.width * .1,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.all(
+                                                          Radius.circular(6.00)), color:coloryellow,
+                                                    ),
+                                                    child: Row(mainAxisAlignment: MainAxisAlignment
+                                                        .spaceAround,
+                                                      children: [
+                                                        Text('بحث',
+                                                          style: smallTextStyleNormal(size,color: Colors.black),),
+                                                        Icon(Icons.search,color: Colors.black,)
+                                                      ],
+                                                    ),
 
+                                                  ),
                                                 ),
                                                 const SizedBox(width: 10),
                                                 Container(
@@ -420,27 +292,28 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [Text('الكود',
+                                          Column(children: [Text('الفاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('الاسم',
+                                          Column(children: [Text('التاريخ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('متوسط التكلفه',
+                                          Column(children: [Text('اسم المعرض',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('كميه المبيعات',
+                                          Column(children: [Text('اسم الموظف',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('عدد المبيعات',
+                                          Column(children: [Text('الاجمالي قبل الضريبه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('الخصم الكلي',
+                                          Column(children: [Text('الاجمالي بعد الضريبه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اجمالي سعر البيع',
+                                          Column(children: [Text('الضريبه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
+
 
 
 
@@ -454,44 +327,44 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                         if(controller.reports != null)
 
 
-                                          for(ProfitOfItemsSoldResponse kha in controller.reports??[] )
+                                          for(FindSalesValueAddedDetailsResponse kha in controller.reports??[] )
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
-                                                    kha.code!,
+                                                    kha.invoiceNumber!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.name!,
+                                                    DateFormat("yyyy-MM-dd").format(kha.invoiceDate!),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.galleryName!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 
+
                                               Column(children: [
                                                 Text(
-                                                    kha.costAverage!.toString(),
+                                                    kha.employeeName!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.costAverage!.toString(),
+                                                    kha.totalBeforeTax!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
-                                              ]),
-                                              Column(children: [
+                                              ]),Column(children: [
                                                 Text(
-                                                    kha.costAverage!.toString(),
+                                                    kha.totalAfterTax!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
-                                              ]),
-                                              Column(children: [
+                                              ]), Column(children: [
                                                 Text(
-                                                    kha.costAverage!.toString(),
+                                                    kha.tax!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
-                                              Column(children: [
-                                                Text(
-                                                    kha.costAverage!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
-                                              ]),
+
 
 
                                             ],

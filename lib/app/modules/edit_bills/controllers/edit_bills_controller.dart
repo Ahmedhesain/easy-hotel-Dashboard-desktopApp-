@@ -15,12 +15,16 @@ class EditBillsController extends GetxController {
   final isLoading = false.obs;
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
+  final Rxn<DateTime> Editdate = Rxn();
+
   final manager = UserManager();
   final selectedStatus = TextEditingController();
   List<TextEditingController> fieldsControllers=[];
   final findSideCustomerController = TextEditingController();
   final invoiceCustomerController = TextEditingController();
   List <FocusNode> nodes = [];
+  List<TextEditingController> banksControllers=[];
+  List <FocusNode> banknodes = [];
 
 
   final customers = <FindCustomerResponse>[];
@@ -49,13 +53,13 @@ class EditBillsController extends GetxController {
   }
 
   TextEditingController bankController(GlPayDTO report){
-    final index = reports.indexWhere((e)=>e.id == report.id);
-    return fieldsControllers[index];
+    final index = reports.indexWhere((e)=>e.bankId == report.bankId);
+    return banksControllers[index];
   }
 
   FocusNode bankNodes(GlPayDTO report){
-    final index = reports.indexWhere((e)=>e.id == report.id);
-    return nodes[index];
+    final index = reports.indexWhere((e)=>e.bankId == report.bankId);
+    return banknodes[index];
   }
   getStatements() async {
     if(int.tryParse(selectedStatus.text) == null) return;
@@ -66,6 +70,9 @@ class EditBillsController extends GetxController {
           reports.assignAll(data);
           fieldsControllers.assignAll(List.generate(reports.length, (index) => TextEditingController(text: reports[index].customerName??"")));
           nodes.assignAll(List.generate(reports.length, (index) => FocusNode()));
+          banksControllers.assignAll(List.generate(reports.length, (index) => TextEditingController(text: reports[index].bankName??"")));
+          banknodes.assignAll(List.generate(reports.length, (index) => FocusNode()));
+
         },
         onError: (e) => showPopupText(text: e.toString()),
         onComplete: () => isLoading(false)
@@ -78,6 +85,10 @@ class EditBillsController extends GetxController {
   pickToDate() async {
     dateTo(await _pickDate(initialDate: dateTo.value ?? DateTime.now(), firstDate: dateFrom.value ?? DateTime.now(), lastDate: DateTime.now()));
   }
+  pickEditDate(DateTime date) async {
+    Editdate(await _pickDate(initialDate: date, firstDate: date , lastDate: DateTime.now()));
+  }
+
 
   _pickDate({required DateTime initialDate, required DateTime firstDate, required DateTime lastDate}) {
     return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);

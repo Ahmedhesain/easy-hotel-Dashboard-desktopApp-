@@ -24,7 +24,7 @@ class SafeAccountStatementRequest {
     return {
       "glYearSelected" : {"id": 73},
       "glBankDTOListSelected" :glBankDTOListSelected.map((e) => {"id" : e.id}).toList(),
-      "serial": branchId,
+      "branchId": branchId,
       "dateFrom": dateFrom.toIso8601String(),
       "dateTo": dateTo.toIso8601String(),
       "invoiceType": invoiceType,
