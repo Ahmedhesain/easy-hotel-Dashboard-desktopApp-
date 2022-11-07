@@ -150,6 +150,10 @@ class HomeDrawerWidget extends GetView<HomeController> {
               title: "الإشعارات",
               onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
             ),
+            _Tile(
+              title: "المدفوعات",
+              onTap: () => Get.toNamed(Routes.PAYMENTS),
+            ),
           ],
         ),
       ),

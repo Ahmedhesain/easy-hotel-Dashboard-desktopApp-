@@ -31,6 +31,7 @@ abstract class Routes {
 
   static const PURCHASE_INVOICES = _Paths.PURCHASE_INVOICES;
   static const NOTIFICATIONS = _Paths.NOTIFICATIONS;
+  static const PAYMENTS = _Paths.PAYMENTS;
 }
 
 abstract class _Paths {
@@ -61,4 +62,5 @@ abstract class _Paths {
 
   static const PURCHASE_INVOICES = '/purchase-invoices';
   static const NOTIFICATIONS = '/notifications';
+  static const PAYMENTS = '/payments';
 }
