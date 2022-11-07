@@ -18,7 +18,7 @@ class FindCustomerResponse {
 
   String? type;
   String? email;
-  int id;
+  int? id;
   int? accountIdApi;
   String? code;
   num? discount;

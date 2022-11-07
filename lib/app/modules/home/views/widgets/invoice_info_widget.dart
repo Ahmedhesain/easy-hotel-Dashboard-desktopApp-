@@ -256,7 +256,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                       onSuggestionSelected: (value) async {
                         controller.invoiceCustomerController.text = "${value.name} ${value.code}";
                         controller.selectedCustomer(value);
-                        controller.getCustomerBalance(value.id);
+                        controller.getCustomerBalance(value.id!);
                         // provider.loading = true;
                         // setState(() {});
                         // try {

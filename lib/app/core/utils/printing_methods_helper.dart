@@ -16,550 +16,899 @@ import '../../data/model/reports/dto/response/categories_totals_response.dart';
 
 class PrintingHelper {
 
-  // void printInvoice(m.BuildContext context, InvoiceModel invoiceModel, {num? value, num? dariba, num? total, num? discount, num? net, num? payed, num? remain}) async {
-  //   // LoginData? user = context.read<AuthProvider>().user ;
-  //   final doc = Document();
-  //   const PdfColor grey = PdfColors.grey400;
-  //   final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
-  //   final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
-  //   final ttfBold = Font.ttf(font);
-  //   final ttfLight = Font.ttf(fontLight);
-  //   final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
-  //   final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
-  //   final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
-  //   // final dm = Barcode.dataMatrix();
-  //   //
-  //   // final svg = dm.toSvg('114625', width: 80, height: 25);
-  //   // final List<int> bytes = svg.codeUnits;
-  //   // final im.Image? image = im.decodePng(bytes);
-  //   doc.addPage(MultiPage(
-  //       // header: (_) => Container(
-  //       //     height: 25,
-  //       //     decoration: const BoxDecoration(),
-  //       //     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //       //       Text(
-  //       //         DateTime.now().toIso8601String().split("T")[0],
-  //       //         style: boldStyle,
-  //       //         textDirection: TextDirection.rtl,
-  //       //       ),
-  //       //       Text(
-  //       //         context.read<AuthProvider>().userModel!.data!.name!,
-  //       //         style: boldStyle,
-  //       //         textDirection: TextDirection.rtl,
-  //       //       ),
-  //       //     ])),
-  //       pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl),
-  //       build: (Context context) {
-  //         return [
-  //
-  //           SizedBox(height: 50.5),
-  //           SizedBox(
-  //               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-  //                 Padding(
-  //                   padding: EdgeInsets.all(2),
-  //                   child: Text(
-  //                     invoiceModel.serial.toString(),
-  //                     style: boldStyle,
-  //                     textDirection: TextDirection.rtl,
-  //                   ),
-  //                 ),
-  //                 Padding(
-  //                   padding: EdgeInsets.all(2),
-  //                   child: Text(
-  //                     "فاتورة ضريبيه مبسطة",
-  //                     style: boldStyle,
-  //                     textDirection: TextDirection.rtl,
-  //                   ),
-  //                 )
-  //               ])),
-  //
-  //           SizedBox(height: 20.5),
-  //           SizedBox(
-  //               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                 //customer data and date
-  //                 SizedBox(
-  //                     width: 120,
-  //                     child: Column(children: [
-  //                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                         Text(
-  //                           DateFormat("dd/MM/yyyy hh:mm aa").format(invoiceModel.date!),
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                         Text(
-  //                           "التاريخ",
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ]),
-  //                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                         Text(
-  //                           invoiceModel.customerName.toString(),
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                         Text(
-  //                           "العميل",
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ]),
-  //                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                         Text(
-  //                           invoiceModel.customerCode.toString(),
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ]),
-  //                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                         Text(
-  //                           invoiceModel.customerMobile.toString(),
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ]),
-  //                     ])),
-  //                 //barcode widget
-  //                 SizedBox(
-  //                     width: 130,
-  //                     height: 50,
-  //                     child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.center, children: [
-  //                       Container(
-  //                           width: 80,
-  //                           height: 25,
-  //                           child: BarcodeWidget(
-  //                             height: 25,
-  //                             width: 80,
-  //                             color: PdfColor.fromHex("#000000"),
-  //                             barcode: Barcode.fromType(BarcodeType.Codabar),
-  //                             drawText: false,
-  //                             data: invoiceModel.serial.toString(),
-  //                           ))
-  //                     ])),
-  //                 // seller data
-  //                 SizedBox(
-  //                     width: 180,
-  //                     child: Column(children: [
-  //                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                         Text(
-  //                           invoiceModel.daribaValue.toString(),
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                         Spacer(),
-  //                         Text(
-  //                           "الرقم الضريبي",
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ]),
-  //                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                         Text(
-  //                           invoiceModel.segilValue.toString(),
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                         Spacer(),
-  //                         Text(
-  //                           "رقم السجل",
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ]),
-  //                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                         Text(
-  //                           invoiceModel.gallaryName.toString(),
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                         Spacer(),
-  //                         Text(
-  //                           "المعرض",
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ]),
-  //                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                         Text(
-  //                           DateFormat("dd/MM/yyyy").format(invoiceModel.dueDate!),
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                         Spacer(),
-  //                         Text(
-  //                           "تاريخ التسليم",
-  //                           style: boldStyle,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ]),
-  //                     ])),
-  //               ])),
-  //           SizedBox(height: 15),
-  //           // m.LayoutBuilder(
-  //           //   builder: (context, c){
-  //           //     return Text(c?.maxWidth.toString()??"");
-  //           //   }
-  //           // ),
-  //           //table headers
-  //           Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max, children: [
-  //             TableRow(children: [
-  //               Container(
-  //                   color: grey,
-  //                   width: 55,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "القيمة",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 45,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "الخصم",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 55,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "السعر",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 60,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "مستودع",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 40,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "كمية",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 40,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "العدد",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 50,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "الوحدة",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 160,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "اسم الصنف",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 70,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "رقم الصنف",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 30,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "م",
-  //                         style: boldStyle,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //             ]),
-  //             //table content
-  //             for (int i = 0; i < invoiceModel.invoiceDetailApiList!.length; i++)
-  //               TableRow(children: [
-  //                 Container(
-  //                     width: 55,
-  //                     child: Center(
-  //                         child: Text(
-  //                           (invoiceModel.invoiceDetailApiList![i].net ?? 0).toStringAsFixed(2),
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 45,
-  //                     child: Center(
-  //                         child: Text(
-  //                           (invoiceModel.invoiceDetailApiList![i].discount ?? 0).toStringAsFixed(2),
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 55,
-  //                     child: Center(
-  //                         child: Text(
-  //                           (invoiceModel.invoiceDetailApiList![i].price ?? 0).toStringAsFixed(2),
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 60,
-  //                     child: Center(
-  //                         child: Text(
-  //                           invoiceModel.invoiceDetailApiList![i].inventoryCode.toString(),
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 40,
-  //                     child: Center(
-  //                         child: Text(
-  //                           invoiceModel.invoiceDetailApiList![i].quantity?.toStringAsFixed(2) ?? '',
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 40,
-  //                     child: Center(
-  //                         child: Text(
-  //                           invoiceModel.invoiceDetailApiList![i].number.toString(),
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 50,
-  //                     child: Center(
-  //                         child: Text(
-  //                           invoiceModel.invoiceDetailApiList![i].unitName.toString(),
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 160,
-  //                     child: Center(
-  //                         child: Text(
-  //                           invoiceModel.invoiceDetailApiList![i].name.toString(),
-  //                           style: boldStyle2,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 70,
-  //                     child: Center(
-  //                         child: Text(
-  //                           invoiceModel.invoiceDetailApiList![i].code.toString(),
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 30,
-  //                     child: Center(
-  //                         child: Text(
-  //                           "${i + 1}",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //               ]),
-  //           ]),
-  //           SizedBox(height: 5),
-  //           SizedBox(
-  //               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
-  //                 SizedBox(
-  //                     width: 120,
-  //                     child: Table(tableWidth: TableWidth.max, border: TableBorder.all(width: 0.5), children: [
-  //                       TableRow(children: [
-  //                         SizedBox(
-  //                             width: 30,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   value!.toStringAsFixed(2),
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                         SizedBox(
-  //                             width: 30,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   "القيمه",
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                       ]),
-  //                       TableRow(children: [
-  //                         SizedBox(
-  //                             width: 30,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   dariba!.toStringAsFixed(2),
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                         SizedBox(
-  //                             width: 30,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   "الضريبة",
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                       ]),
-  //                       TableRow(children: [
-  //                         SizedBox(
-  //                             width: 30,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   total!.toStringAsFixed(2),
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                         SizedBox(
-  //                             width: 30,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   "الاجمالي",
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                       ]),
-  //                       TableRow(children: [
-  //                         SizedBox(
-  //                             width: 30,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   discount!.toStringAsFixed(2),
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                         SizedBox(
-  //                             width: 30,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   "الخصم",
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                       ]),
-  //                       TableRow(children: [
-  //                         SizedBox(
-  //                             width: 30,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   net!.toStringAsFixed(2),
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                         SizedBox(
-  //                             width: 30,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   "الصافي",
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                       ]),
-  //                     ])),
-  //                 SizedBox(
-  //                     width: 145,
-  //                     child: Table(tableWidth: TableWidth.max, border: TableBorder.all(width: 0.5), children: [
-  //                       TableRow(children: [
-  //                         SizedBox(
-  //                             width: 60,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   payed!.toStringAsFixed(2),
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                         SizedBox(
-  //                             width: 80,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   "المبلغ المدفوع",
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                       ]),
-  //                       TableRow(children: [
-  //                         SizedBox(
-  //                             width: 60,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   remain!.toStringAsFixed(2),
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                         SizedBox(
-  //                             width: 80,
-  //                             child: Center(
-  //                                 child: Text(
-  //                                   "المبلغ المتبقي",
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 ))),
-  //                       ]),
-  //                     ])),
-  //                 SizedBox(
-  //                     width: 120,
-  //                     child: Container(
-  //                         width: 80,
-  //                         height: 80,
-  //                         child: BarcodeWidget(
-  //                           color: PdfColor.fromHex("#000000"),
-  //                           barcode: Barcode.fromType(BarcodeType.QrCode),
-  //                           drawText: false,
-  //                           data: invoiceModel.qrCode.toString(),
-  //                         )))
-  //               ]))
-  //         ];
-  //       }));
-  //
-  //   m.showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return m.LayoutBuilder(builder: (context, c) {
-  //           return PdfPreview(
-  //             actions: [
-  //               m.IconButton(
-  //                 onPressed: () => m.Navigator.pop(context),
-  //                 icon: const m.Icon(
-  //                   m.Icons.close,
-  //                   color: m.Colors.red,
-  //                 ),
-  //               )
-  //             ],
-  //             build: (format) => doc.save(),
-  //           );
-  //         });
-  //       });
-  // }
+  void printPurchaseInvoice(m.BuildContext context, InvoiceResponse invoiceModel, {num? value, num? dariba, num? total, num? discount, num? net, num? payed, num? remain}) async {
+    // LoginData? user = context.read<AuthProvider>().user ;
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
+    final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
+    // final dm = Barcode.dataMatrix();
+    //
+    // final svg = dm.toSvg('114625', width: 80, height: 25);
+    // final List<int> bytes = svg.codeUnits;
+    // final im.Image? image = im.decodePng(bytes);
+    doc.addPage(MultiPage(
+        // header: (_) => Container(
+        //     height: 25,
+        //     decoration: const BoxDecoration(),
+        //     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        //       Text(
+        //         DateTime.now().toIso8601String().split("T")[0],
+        //         style: boldStyle,
+        //         textDirection: TextDirection.rtl,
+        //       ),
+        //       Text(
+        //         context.read<AuthProvider>().userModel!.data!.name!,
+        //         style: boldStyle,
+        //         textDirection: TextDirection.rtl,
+        //       ),
+        //     ])),
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Center(
+                child: Text(
+                  "فاتورة مشتريات آجلة",
+                  style: boldStyle,
+                  textDirection: TextDirection.rtl,
+                )),
+            SizedBox(height: 20.5),
+            SizedBox(
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                  //customer data and date
+                  SizedBox(
+                      width: 120,
+                      child: Column(children: [
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.customerName??"--",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Text(
+                            "المورد",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.supplierInvoiceNumber?.toString()??"--",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Text(
+                            "فاتورة المورد",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.supplierDate == null?"--":DateFormat("dd/MM/yyyy").format(invoiceModel.supplierDate!),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Text(
+                            "تاريخها",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                      ])),
+                  // seller data
+                  SizedBox(
+                      width: 180,
+                      child: Column(children: [
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            "مستودع رئيسي",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "الفرع",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.serial?.toString()??"--",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "رقم الفاتورة",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.date == null?"--":DateFormat("dd/MM/yyyy").format(invoiceModel.date!),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "تاريخ التسليم",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.remarks?.toString()??"",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "ملاحظات",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                      ])),
+                ])),
+            SizedBox(height: 15),
+            //table headers
+            Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max, children: [
+              TableRow(decoration: const BoxDecoration(color: grey),children: [
+                Center(
+                    child: Text(
+                      "القيمة",
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    )),
+                Center(
+                    child: Text(
+                      "تكلفة وحدة",
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    )),
+                Center(
+                    child: Text(
+                      "كمية",
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    )),
+                Center(
+                    child: Text(
+                      "الوحدة",
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    )),
+                Center(
+                    child: Text(
+                      "اسم الصنف",
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    )),
+                Center(
+                    child: Text(
+                      "رقم الصنف",
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    )),
+                Center(
+                    child: Text(
+                      "م",
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    )),
+              ]),
+              //table content
+              for (int i = 0; i < invoiceModel.invoiceDetailApiList!.length; i++)
+                TableRow(children: [
+                  Center(
+                      child: Text(
+                        (invoiceModel.invoiceDetailApiList![i].net ?? 0).toStringAsFixed(2),
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        (invoiceModel.invoiceDetailApiList![i].price ?? 0).toStringAsFixed(2),
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        (invoiceModel.invoiceDetailApiList![i].quantity ?? 0).toStringAsFixed(2),
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        invoiceModel.invoiceDetailApiList![i].unitName.toString(),
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        invoiceModel.invoiceDetailApiList![i].name.toString(),
+                        style: boldStyle2,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        invoiceModel.invoiceDetailApiList![i].code.toString(),
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        "${i + 1}",
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                ]),
+            ]),
+            SizedBox(height: 5),
+            SizedBox(
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  SizedBox(
+                      width: 120,
+                      child: Table(tableWidth: TableWidth.max, border: TableBorder.all(width: 0.5), children: [
+                        TableRow(children: [
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    value?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    "القيمه",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    dariba?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    "الضريبة",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    discount?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    "الخصم",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    total?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    "الاجمالي",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                      ])),
+                ]))
+          ];
+        }));
+
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.LayoutBuilder(builder: (context, c) {
+            return PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            );
+          });
+        });
+  }
+
+
+  void printInvoice(m.BuildContext context, InvoiceResponse invoiceModel, {num? value, num? dariba, num? total, num? discount, num? net, num? payed, num? remain}) async {
+    // LoginData? user = context.read<AuthProvider>().user ;
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
+    final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
+    // final dm = Barcode.dataMatrix();
+    //
+    // final svg = dm.toSvg('114625', width: 80, height: 25);
+    // final List<int> bytes = svg.codeUnits;
+    // final im.Image? image = im.decodePng(bytes);
+    doc.addPage(MultiPage(
+      // header: (_) => Container(
+      //     height: 25,
+      //     decoration: const BoxDecoration(),
+      //     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      //       Text(
+      //         DateTime.now().toIso8601String().split("T")[0],
+      //         style: boldStyle,
+      //         textDirection: TextDirection.rtl,
+      //       ),
+      //       Text(
+      //         context.read<AuthProvider>().userModel!.data!.name!,
+      //         style: boldStyle,
+      //         textDirection: TextDirection.rtl,
+      //       ),
+      //     ])),
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl),
+        build: (Context context) {
+          return [
+
+            SizedBox(height: 50.5),
+            SizedBox(
+                child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Padding(
+                    padding: EdgeInsets.all(2),
+                    child: Text(
+                      invoiceModel.serial.toString(),
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2),
+                    child: Text(
+                      "فاتورة ضريبيه مبسطة",
+                      style: boldStyle,
+                      textDirection: TextDirection.rtl,
+                    ),
+                  )
+                ])),
+
+            SizedBox(height: 20.5),
+            SizedBox(
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                  //customer data and date
+                  SizedBox(
+                      width: 120,
+                      child: Column(children: [
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            DateFormat("dd/MM/yyyy hh:mm aa").format(invoiceModel.date!),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Text(
+                            "التاريخ",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.customerName.toString(),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Text(
+                            "العميل",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.customerCode.toString(),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.customerMobile.toString(),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                      ])),
+                  //barcode widget
+                  SizedBox(
+                      width: 130,
+                      height: 50,
+                      child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                        Container(
+                            width: 80,
+                            height: 25,
+                            child: BarcodeWidget(
+                              height: 25,
+                              width: 80,
+                              color: PdfColor.fromHex("#000000"),
+                              barcode: Barcode.fromType(BarcodeType.Codabar),
+                              drawText: false,
+                              data: invoiceModel.serial.toString(),
+                            ))
+                      ])),
+                  // seller data
+                  SizedBox(
+                      width: 180,
+                      child: Column(children: [
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.daribaValue.toString(),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "الرقم الضريبي",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.segilValue.toString(),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "رقم السجل",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.gallaryName.toString(),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "المعرض",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Text(
+                            invoiceModel.dueDate == null?"--":DateFormat("dd/MM/yyyy").format(invoiceModel.dueDate!),
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                          Spacer(),
+                          Text(
+                            "تاريخ التسليم",
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ]),
+                      ])),
+                ])),
+            SizedBox(height: 15),
+            // m.LayoutBuilder(
+            //   builder: (context, c){
+            //     return Text(c?.maxWidth.toString()??"");
+            //   }
+            // ),
+            //table headers
+            Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max, children: [
+              TableRow(children: [
+                Container(
+                    color: grey,
+                    width: 55,
+                    child: Center(
+                        child: Text(
+                          "القيمة",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    color: grey,
+                    width: 45,
+                    child: Center(
+                        child: Text(
+                          "الخصم",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    color: grey,
+                    width: 55,
+                    child: Center(
+                        child: Text(
+                          "السعر",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    color: grey,
+                    width: 60,
+                    child: Center(
+                        child: Text(
+                          "مستودع",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text(
+                          "كمية",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text(
+                          "العدد",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    color: grey,
+                    width: 50,
+                    child: Center(
+                        child: Text(
+                          "الوحدة",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    color: grey,
+                    width: 160,
+                    child: Center(
+                        child: Text(
+                          "اسم الصنف",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    color: grey,
+                    width: 70,
+                    child: Center(
+                        child: Text(
+                          "رقم الصنف",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    color: grey,
+                    width: 30,
+                    child: Center(
+                        child: Text(
+                          "م",
+                          style: boldStyle,
+                          textDirection: TextDirection.rtl,
+                        ))),
+              ]),
+              //table content
+              for (int i = 0; i < invoiceModel.invoiceDetailApiList!.length; i++)
+                TableRow(children: [
+                  Container(
+                      width: 55,
+                      child: Center(
+                          child: Text(
+                            (invoiceModel.invoiceDetailApiList![i].net ?? 0).toStringAsFixed(2),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 45,
+                      child: Center(
+                          child: Text(
+                            (invoiceModel.invoiceDetailApiList![i].discount ?? 0).toStringAsFixed(2),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 55,
+                      child: Center(
+                          child: Text(
+                            (invoiceModel.invoiceDetailApiList![i].price ?? 0).toStringAsFixed(2),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 60,
+                      child: Center(
+                          child: Text(
+                            invoiceModel.invoiceDetailApiList![i].inventoryCode.toString(),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            invoiceModel.invoiceDetailApiList![i].quantity?.toStringAsFixed(2) ?? '',
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            invoiceModel.invoiceDetailApiList![i].number.toString(),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 50,
+                      child: Center(
+                          child: Text(
+                            invoiceModel.invoiceDetailApiList![i].unitName.toString(),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 160,
+                      child: Center(
+                          child: Text(
+                            invoiceModel.invoiceDetailApiList![i].name.toString(),
+                            style: boldStyle2,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 70,
+                      child: Center(
+                          child: Text(
+                            invoiceModel.invoiceDetailApiList![i].code.toString(),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 30,
+                      child: Center(
+                          child: Text(
+                            "${i + 1}",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                ]),
+            ]),
+            SizedBox(height: 5),
+            SizedBox(
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  SizedBox(
+                      width: 120,
+                      child: Table(tableWidth: TableWidth.max, border: TableBorder.all(width: 0.5), children: [
+                        TableRow(children: [
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    value?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    "القيمه",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    dariba?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    "الضريبة",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    total?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    "الاجمالي",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    discount?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    "الخصم",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    net?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 30,
+                              child: Center(
+                                  child: Text(
+                                    "الصافي",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                      ])),
+                  SizedBox(
+                      width: 145,
+                      child: Table(tableWidth: TableWidth.max, border: TableBorder.all(width: 0.5), children: [
+                        TableRow(children: [
+                          SizedBox(
+                              width: 60,
+                              child: Center(
+                                  child: Text(
+                                    payed?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 80,
+                              child: Center(
+                                  child: Text(
+                                    "المبلغ المدفوع",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(
+                              width: 60,
+                              child: Center(
+                                  child: Text(
+                                    remain?.toStringAsFixed(2)??"--",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                          SizedBox(
+                              width: 80,
+                              child: Center(
+                                  child: Text(
+                                    "المبلغ المتبقي",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  ))),
+                        ]),
+                      ])),
+                  SizedBox(
+                      width: 120,
+                      child: Container(
+                          width: 80,
+                          height: 80,
+                          child: BarcodeWidget(
+                            color: PdfColor.fromHex("#000000"),
+                            barcode: Barcode.fromType(BarcodeType.QrCode),
+                            drawText: false,
+                            data: invoiceModel.qrCode.toString(),
+                          )))
+                ]))
+          ];
+        }));
+
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.LayoutBuilder(builder: (context, c) {
+            return PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            );
+          });
+        });
+  }
 
   void printSalesReports(m.BuildContext context, List<CategoriesTotalsResponse> salesReports) async {
     final doc = Document();

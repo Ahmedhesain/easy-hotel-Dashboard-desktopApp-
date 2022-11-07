@@ -4,19 +4,15 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
-import 'package:toby_bills/app/core/utils/user_manager.dart';
-import 'package:toby_bills/app/core/values/app_constants.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
-import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import '../../../../core/values/app_colors.dart';
 import '../../controllers/purchase_invoices_controller.dart';
 
-class InvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
-  const InvoiceInfoWidget({Key? key}) : super(key: key);
+class PurchaseInvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
+  const PurchaseInvoiceInfoWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +24,9 @@ class InvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
           child: Obx(() {
             return Row(
               children: [
-                const Text('الحالة:'),
+                const Text('رقم الفاتورة:'),
                 const SizedBox(width: 5),
-                if (controller.invoice.value?.id != null)
+                if (controller.invoice.value?.serial != null)
                   GetBuilder<PurchaseInvoicesController>(
                       id: PurchaseInvoicesController.getBuilderSerial,
                       builder: (context) {
@@ -38,42 +34,9 @@ class InvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                       }),
                 const SizedBox(width: 10),
                 Expanded(
-                  flex: 2,
-                  child: Row(
-                    children: [
-                      const Text('تحديد السعر:'),
-                      const SizedBox(width: 5),
-                      Expanded(
-                        child: Obx(() {
-                          return DropdownButtonFormField(
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(10),
-                              isDense: true,
-                            ),
-                            dropdownColor: AppColors.appGreyLight,
-                            value: controller.selectedPriceType.value,
-                            // style: smallTextStyleNormal(size, color: Colors.black),
-                            elevation: 0,
-                            items: controller.priceTypes.entries
-                                .map((e) => DropdownMenuItem<int>(
-                                      value: e.key,
-                                      child: Text(e.value),
-                                    ))
-                                .toList(),
-                            onChanged: controller.changePriceType,
-                            // value: provider.priceTypeSelected,
-                          );
-                        }),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  flex: 2,
                   child: Center(
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text('التاريخ:'),
                         const SizedBox(width: 5),
@@ -87,16 +50,62 @@ class InvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  flex: 2,
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('تاريخ فاتورة المورد:'),
+                        const SizedBox(width: 5),
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () async {
+                              final date = await showDatePicker(
+                                  context: context,
+                                  initialDate: controller.supplierDate.value ?? DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime.now()
+                              );
+                              controller.supplierDate(date);
+                            },
+                            child: Text(
+                              controller.supplierDate.value == null ? "dd-mm-yyyy" : DateFormat("dd-MM-yyyy").format(controller.supplierDate.value!),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
                   child: Obx(() {
                     return Center(
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text('تاريخ الاستحقاق:'),
                           const SizedBox(width: 5),
-                          Text(
-                            controller.dueDate.value?.dueDate == null ? "" : DateFormat("dd-MM-yyyy").format(controller.dueDate.value!.dueDate!),
-                            textAlign: TextAlign.center,
+                          MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: () async {
+                                final date = await showDatePicker(
+                                    context: context,
+                                    initialDate: controller.dueDate.value ?? DateTime.now(),
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime.now()
+                                );
+                                controller.dueDate(date);
+                              },
+                              child: Text(
+                                controller.dueDate.value == null ? "dd-mm-yyyy" : DateFormat("dd-MM-yyyy").format(controller.dueDate.value!),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(decoration: TextDecoration.underline),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -112,57 +121,7 @@ class InvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
-              const Text('مكان الاستلام:'),
-              const SizedBox(width: 5),
-              Expanded(
-                flex: 3,
-                child: Obx(() {
-                  return DropdownSearch<DeliveryPlaceResposne>(
-                    // showSearchBox: true,
-                    items: controller.deliveryPlaces,
-                    itemAsString: (DeliveryPlaceResposne e) => e.name,
-                    onChanged: controller.selectedDeliveryPlace,
-                    selectedItem: controller.selectedDeliveryPlace.value,
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.all(10),
-                        isDense: true,
-                      ),
-                    ),
-                  );
-                }),
-              ),
-              const SizedBox(width: 25),
-              const Text('نوع الفاتوره:'),
-              const SizedBox(width: 5),
-              Expanded(
-                  flex: 3,
-                  child: Obx(() {
-                    return DropdownSearch<String>(
-                      key: UniqueKey(),
-                      selectedItem: controller.selectedInvoiceType.value,
-                      items: AppConstants.invoiceTypeList,
-                      onChanged: (value) {
-                        controller.selectedInvoiceType(value);
-                        // if (value == context.read<InvoiceProvider>().invoiceTypeList.first) {
-                        //   context.read<InvoiceProvider>().invoiceTypeSelected = null;
-                        // } else {
-                        //   context.read<InvoiceProvider>().invoiceTypeSelected = context.read<InvoiceProvider>().invoiceTypeList.indexOf(value!) - 1;
-                        // }
-                        // context.read<InvoiceProvider>().invoiceTypeName = value!;
-                      },
-                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.all(10),
-                          isDense: true,
-                        ),
-                      ),
-                    );
-                  })),
-              const SizedBox(width: 25),
-              const Text('مندوب المبيعات:'),
+              const Text('مندوب المشتريات:'),
               const SizedBox(width: 5),
               Expanded(
                 flex: 3,
@@ -182,43 +141,6 @@ class InvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                   );
                 }),
               ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            children: [
-              const Text('اختيار المعرض:'),
-              const SizedBox(width: 5),
-              Expanded(
-                child: Obx(() {
-                  return DropdownSearch<GalleryResponse>(
-                    items: controller.galleries,
-                    selectedItem: controller.selectedGallery.value,
-                    onChanged: UserManager().changeGallery,
-                    itemAsString: (gallery) => gallery.name ?? "",
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  );
-                }),
-              ),
-              const SizedBox(width: 10),
-              const Text('ملاحظات:'),
-              const SizedBox(width: 5),
-              Expanded(
-                flex: 2,
-                child: TextFormField(
-                  decoration: const InputDecoration(isDense: true, contentPadding: EdgeInsets.all(13), border: OutlineInputBorder()),
-                  controller: controller.invoiceRemarkController,
-                ),
-              ),
               const SizedBox(width: 10),
               const Text('المورد:'),
               const SizedBox(width: 4),
@@ -237,23 +159,10 @@ class InvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                           ),
                         );
                       },
-                      suggestionsCallback: (filter) => controller.customers,
+                      suggestionsCallback: (filter) => controller.suppliers,
                       onSuggestionSelected: (value) async {
                         controller.invoiceCustomerController.text = "${value.name} ${value.code}";
                         controller.selectedCustomer(value);
-                        controller.getCustomerBalance(value.id);
-                        // provider.loading = true;
-                        // setState(() {});
-                        // try {
-                        //   searchedClientSelected = value;
-                        //   searchedCustomerBalance = await context.read<InvoiceProvider>().getbalanceScreenGroups(value.id!);
-                        //   searchClintController.text = value.name! + " " + value.code!;
-                        // } catch (e, s) {
-                        //   print('$e\n$s');
-                        //   Helper().showToast(context, "عذراً حصل خطأ", MsgType.error);
-                        // }
-                        // provider.loading = false;
-                        // setState(() {});
                       },
                       textFieldConfiguration: TextFieldConfiguration(
                         textInputAction: TextInputAction.next,
@@ -262,9 +171,6 @@ class InvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                         onEditingComplete: () => controller.getCustomersByCodeForInvoice(),
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(),
-                            // disabledBorder: InputBorder.none,
-                            // enabledBorder: InputBorder.none,
-                            // focusedBorder: InputBorder.none,
                             hintText: "ابحث عن مورد",
                             isDense: true,
                             hintMaxLines: 2,
@@ -283,6 +189,23 @@ class InvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
               const Text('رقم فاتورة المورد:'),
               const SizedBox(width: 5),
               Expanded(
+                child: TextFormField(
+                  decoration: const InputDecoration(isDense: true, contentPadding: EdgeInsets.all(13), border: OutlineInputBorder()),
+                  controller: controller.invoiceSupplierNumberController,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            children: [
+              const Text('ملاحظات:'),
+              const SizedBox(width: 5),
+              Expanded(
+                flex: 2,
                 child: TextFormField(
                   decoration: const InputDecoration(isDense: true, contentPadding: EdgeInsets.all(13), border: OutlineInputBorder()),
                   controller: controller.invoiceRemarkController,

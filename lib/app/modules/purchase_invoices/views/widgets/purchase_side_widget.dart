@@ -11,8 +11,8 @@ import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_re
 import '../../../../components/text_widget.dart';
 import '../../controllers/purchase_invoices_controller.dart';
 
-class SideWidget extends GetView<PurchaseInvoicesController> {
-  const SideWidget({Key? key}) : super(key: key);
+class PurchaseSideWidget extends GetView<PurchaseInvoicesController> {
+  const PurchaseSideWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,6 @@ class SideWidget extends GetView<PurchaseInvoicesController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _TitleWidget(title: 'الاجمالي', value: controller.totalNet),
-          _TitleWidget(title: 'خصم الهالالات', value: controller.discountHalala),
           Padding(
             padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
             child: Row(
@@ -108,21 +107,36 @@ class SideWidget extends GetView<PurchaseInvoicesController> {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
+            child: Row(
+              children: [
+                const Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Text("إضافة ضريبة المبيعات"),
+                    )),
+                Obx(() {
+                  final isDiscountValue = controller.selectedDiscountType.value == 0;
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Checkbox(
+                      value: controller.isAddedTax.value,
+                      onChanged: (value){
+                        controller.isAddedTax(value);
+                        controller.calcInvoiceValues();
+                      },
+
+                    ),
+                  );
+                })
+              ],
+            ),
+          ),
           // _TitleWidget(title: 'خصم علي الفاتوره', value: controller.discount),
           _TitleWidget(title: 'بعد الخصم الكلي', value: controller.totalAfterDiscount),
           _TitleWidget(title: 'قيمه الضريبه', value: controller.tax),
           _TitleWidget(title: 'الصافي ضريبيا', value: controller.finalNet, fixedWith: 2),
-          _TitleWidget(title: 'المبلغ المتبقي', value: controller.remain, fixedWith: 2),
-          const SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: TextFieldWidget(
-              label: "كوبون الخصم",
-              onChanged: (value) => controller.offerCoupon = value,
-            ),
-          ),
           const SizedBox(height: 10),
           TypeAheadFormField<FindCustomerResponse>(
               itemBuilder: (context, client) {
@@ -133,16 +147,16 @@ class SideWidget extends GetView<PurchaseInvoicesController> {
                   ),
                 );
               },
-              suggestionsCallback: (filter) => controller.customers,
+              suggestionsCallback: (filter) => controller.suppliers,
               onSuggestionSelected: controller.getInvoiceListForCustomer,
               textFieldConfiguration: TextFieldConfiguration(
                 textInputAction: TextInputAction.next,
                 controller: controller.findSideCustomerController,
                 focusNode: controller.findSideCustomerFieldFocusNode,
-                onEditingComplete: () => controller.getCustomersByCode(),
+                onEditingComplete: () => controller.getSuppliersByCode(),
                 decoration: InputDecoration(
                     border: const OutlineInputBorder(),
-                    hintText: "ابحث عن فاتورة لعميل معين",
+                    hintText: "ابحث عن فاتورة لمورد معين",
                     isDense: true,
                     hintMaxLines: 2,
                     contentPadding: const EdgeInsets.all(5),
@@ -150,7 +164,7 @@ class SideWidget extends GetView<PurchaseInvoicesController> {
                     suffixIcon: IconButtonWidget(
                       icon: Icons.search,
                       onPressed: () {
-                        controller.getCustomersByCode();
+                        controller.getSuppliersByCode();
                       },
                     )),
               )),

@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:toby_bills/app/core/extensions/num_extension.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/app_storage.dart';
+import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/create_customer_request.dart';
@@ -192,7 +193,7 @@ class HomeController extends GetxController {
 
   Future<void> getDelegators() {
     return InvoiceRepository().findDelegatorByInventory(
-      DelegatorRequest(gallaryId: UserManager().galleryId),
+      DelegatorRequest(gallaryId: UserManager().galleryId, branchId: UserManager().branchId),
       onSuccess: (data) => {delegators.assignAll(data), if (delegators.isNotEmpty) selectedDelegator(delegators.first)},
       onError: (error) => showPopupText(text: error.toString()),
     );
@@ -222,6 +223,30 @@ class HomeController extends GetxController {
         onSuccess: (data) => findCustomerBalanceResponse = data, onError: (error) => showPopupText(text: error.toString()), onComplete: () => isLoading(false));
   }
 
+
+
+
+  printInvoice(BuildContext context){
+    isLoading(true);
+    InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null),
+        onSuccess: (data) {
+          PrintingHelper().printInvoice(
+            context,
+            data,
+            dariba: data.taxvalue,
+            total: data.totalNetAfterDiscount,
+            discount: data.discount,
+            value: data.totalNet,
+            net: data.finalNet,
+            payed: data.payed,
+            remain: data.remain
+          );
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
+
+  }
+
   searchForInvoiceById(String id) async {
     newInvoice();
     isLoading(true);
@@ -248,7 +273,7 @@ class HomeController extends GetxController {
           invoiceDiscountController.text = data.discount.toString();
           selectedDiscountType(data.discountType);
           checkSendSms(data.checkSendSms == 1);
-          invoiceRemarkController.text = data.remarks;
+          invoiceRemarkController.text = data.remarks??'';
           for (final detail in data.invoiceDetailApiList!) {
             if(!items.any((element) => element.id == detail.itemId)){
               showPopupText(text: "يرجى عمل تحديث ثم البحث عن الفاتورة مرة اخرى");
@@ -416,6 +441,7 @@ class HomeController extends GetxController {
     final detail = InvoiceDetailsModel(
             progroupId: item.proGroupId,
             typeShow: item.typeShow,
+            typeInv: 4,
             lastCost: item.lastCost,
             remark: itemNotesController.text,
             name: item.name!,
@@ -489,7 +515,7 @@ class HomeController extends GetxController {
       customerMobile: selectedCustomer.value!.mobile,
       customerName: selectedCustomer.value!.name,
       discountHalala: discountHalala.value,
-      dueDate: dueDate.value,
+      dueDate: dueDate.value?.dueDate,
       dueperiod: dueDate.value?.dayNumber,
       finalNet: finalNet.value,
       gallaryDeliveryId: selectedDeliveryPlace.value?.id,
@@ -506,8 +532,9 @@ class HomeController extends GetxController {
       invDelegatorId: selectedDelegator.value?.id,
       invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(),
       invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted.map((element) => element).toList(),
-      invoiceType: AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0 ? null : AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
+      invoiceType: AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0?null:AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
       pricetype: selectedPriceType.value,
+      typeInv: 4,
       proof: isProof.value ? 1 : 0,
       remarks: invoiceRemarkController.text,
       taxvalue: tax.value,
@@ -542,12 +569,12 @@ class HomeController extends GetxController {
 
   newInvoice() {
     _clearItemFields();
-    selectedPriceType(priceTypes.keys.first);
-    selectedDiscountType(discountType.keys.first);
+    if(priceTypes.keys.isNotEmpty) selectedPriceType(priceTypes.keys.first);
+    if(discountType.keys.isNotEmpty) selectedDiscountType(discountType.keys.first);
+    if(deliveryPlaces.isNotEmpty) selectedDeliveryPlace(deliveryPlaces.first);
+    if(delegators.isNotEmpty) selectedDelegator(delegators.first);
     invoiceDiscountController.clear();
-    selectedDeliveryPlace(deliveryPlaces.first);
     selectedInvoiceType(AppConstants.invoiceTypeList.first);
-    selectedDelegator(delegators.first);
     isProof(false);
     checkSendSms(false);
     invoiceRemarkController.clear();

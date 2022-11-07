@@ -9,7 +9,7 @@ class ItemPriceRequest {
   });
 
   final int id;
-  final int customerId;
+  final int? customerId;
   final int priceType;
   final int inventoryId;
   final num quantityOfUnit;

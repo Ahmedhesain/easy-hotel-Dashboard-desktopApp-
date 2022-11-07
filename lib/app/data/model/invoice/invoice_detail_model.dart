@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toby_bills/app/core/extensions/num_extension.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 
 import '../item/dto/response/item_response.dart';
 
@@ -36,8 +37,11 @@ class InvoiceDetailsModel {
     this.minPriceMen,
     this.minPriceYoung,
     this.unitId,
+    // this.glAccount,
     this.quantityOfOneUnit,
+    this.typeInv,
     this.netWithoutDiscount,
+    this.account,
   }) : numberFocus = FocusNode(), quantityFocus = FocusNode(), priceFocus = FocusNode(), discountFocus = FocusNode(), discountValueFocus = FocusNode();
 
   FocusNode numberFocus;
@@ -46,7 +50,9 @@ class InvoiceDetailsModel {
   FocusNode discountFocus;
   FocusNode discountValueFocus;
 
+  int? typeInv;
   int? unitId;
+  int? account;
   String name;
   String? code;
   String? unitName;
@@ -100,11 +106,11 @@ class InvoiceDetailsModel {
 
 
   InvoiceDetailsModel assignItem(ItemResponse item) {
-    final instance = InvoiceDetailsModel(
+    final instance = copyWith(
         progroupId: item.proGroupId,
         typeShow: item.typeShow,
         lastCost: item.lastCost,
-        name: item.name!,
+        name: item.name,
         quantityOfOneUnit: item.itemData?.quantityOfUnit,
         code: item.code,
         minPriceMen: item.minPriceMen,
@@ -112,35 +118,20 @@ class InvoiceDetailsModel {
         maxPriceMen: item.maxPriceMen,
         maxPriceYoung: item.maxPriceYoung,
         availableQuantityRow: item.itemData?.availableQuantity,
-        price: item.itemData?.sellPrice,
+        price: item.itemData?.sellPrice ?? price,
         unitName: item.unitName,
-        discount: item.itemData!.discountRow,
-        inventoryName: inventoryName,
-        inventoryCode: inventoryCode,
-        inventoryId: inventoryId,
-        itemId: item.id,
-        proof: proof,
-        remnants: remnants,
-        id: id,
-        serial: serial,
-        image: image,
-        discountValue: discountValue,
-        groupId: groupId,
-        number: number,
-        remark: remark,
-        unitId: unitId,
-        createdBy: createdBy,
-        createdDate: createdDate,
-        netWithoutDiscount: netWithoutDiscount,
-        quantity: quantity);
+        discount: item.itemData?.discountRow,
+        itemId: item.id);
 
-    instance._calcData();
+    instance.calcData();
     return instance;
   }
+
+
   num get totalQuantity => ((number??0) * (quantity??0)).fixed(2);
 
-  void _calcData() {
-    netWithoutDiscount = (price! * (number??0)).fixed(2);
+  void calcData() {
+    netWithoutDiscount = (price! * (typeInv == 0?(quantity??0):(number??0))).fixed(2);
     net = (netWithoutDiscount! - (netWithoutDiscount! * (discount! / 100)) - (discountValue??0)).fixed(2);
   }
 
@@ -148,9 +139,11 @@ class InvoiceDetailsModel {
     String? name,
     String? code,
     int? serial,
+    int? account,
     int? id,
     int? inventoryId,
     String? inventoryName,
+    GlAccountResponse? glAccount,
     String? inventoryCode,
     num? quantity,
     String? remark,
@@ -178,10 +171,13 @@ class InvoiceDetailsModel {
     int? unitId,
     num? quantityOfOneUnit,
     num? netWithoutDiscount,
+    int? typeInv,
   }) {
     final instance =  InvoiceDetailsModel(
         name: name ?? this.name,
+        typeInv: typeInv ?? this.typeInv,
         code: code ?? this.code,
+        account: account ?? this.account,
         serial: serial ?? this.serial,
         id: id ?? this.id,
         inventoryId: inventoryId ?? this.inventoryId,
@@ -214,13 +210,14 @@ class InvoiceDetailsModel {
         unitId: unitId ?? this.unitId,
         unitName: unitName ?? this.unitName,
       );
-    instance._calcData();
+    instance.calcData();
     return instance;
   }
 
   factory InvoiceDetailsModel.fromJson(Map<String, dynamic> json) => InvoiceDetailsModel(
         id: json["id"],
         serial: json["serial"],
+    typeInv: json["typeInv"],
         availableQuantityRow: json["availableQuantityRow"],
         code: json["code"],
         discount: json["discount"] ?? 0,
@@ -246,6 +243,7 @@ class InvoiceDetailsModel {
         typeShow: json["typeShow"],
         lastCost: json["lastCost"],
         unitName: json["unitName"],
+        account: json["account"],
         unitId: json["unitId"],
         maxPriceMen: json["maxPriceMen"] ?? 0,
         maxPriceYoung: json["maxPriceYoung"] ?? 0,
@@ -255,7 +253,9 @@ class InvoiceDetailsModel {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "typeInv": typeInv,
         "serial": serial,
+        "account": account,
         "quantityOfOneUnit": quantityOfOneUnit,
         "quantity": quantity,
         "proof": proof,

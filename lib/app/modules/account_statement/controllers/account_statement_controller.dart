@@ -21,7 +21,7 @@ class AccountStatementController extends GetxController {
 
   getStatements() async {
     isLoading(true);
-    final request = AccountStatementRequest(id: Get.find<HomeController>().selectedCustomer.value!.id);
+    final request = AccountStatementRequest(id: Get.find<HomeController>().selectedCustomer.value!.id!);
     CustomerRepository().getCustomerAccountStatement(request,
         onSuccess: (data) => reports.assignAll(data),
         onError: (e) => showPopupText(text: e.toString()),

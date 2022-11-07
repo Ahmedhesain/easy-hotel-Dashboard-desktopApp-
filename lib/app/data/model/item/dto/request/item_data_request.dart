@@ -11,18 +11,18 @@ String itemDataRequestToJson(ItemDataRequest data) => json.encode(data.toJson())
 
 class ItemDataRequest {
   ItemDataRequest({
-    required this.id,
-    required this.customerId,
-    required this.priceType,
-    required this.inventoryId,
-    required this.invNameGallary,
+    this.id,
+    this.customerId,
+    this.priceType,
+    this.inventoryId,
+    this.invNameGallary,
   });
 
-  final int id;
-  final int customerId;
-  final int priceType;
-  final int inventoryId;
-  final int invNameGallary;
+  int? id;
+  int? customerId;
+  int? priceType;
+  int? inventoryId;
+  int? invNameGallary;
 
   factory ItemDataRequest.fromJson(Map<String, dynamic> json) => ItemDataRequest(
     id: json["id"],

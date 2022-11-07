@@ -23,6 +23,20 @@ class CustomerRepository {
         convertor: FindCustomerResponse.getList,
     );
 
+  findSupplierByCode(
+      FindCustomerRequest findCustomerRequest, {
+        Function()? onComplete,
+        Function(List<FindCustomerResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<List<FindCustomerResponse>,List<dynamic>>('customer/findBySupplier',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: findCustomerRequest.toJson(),
+        onError: onError,
+        convertor: FindCustomerResponse.getList,
+    );
+
   findCustomerInvoicesData(
       FindCustomerBalanceRequest findCustomerBalanceRequest, {
         Function()? onComplete,

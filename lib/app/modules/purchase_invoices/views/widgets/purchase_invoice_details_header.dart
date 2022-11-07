@@ -6,13 +6,14 @@ import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/double_filter.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
 import '../../controllers/purchase_invoices_controller.dart';
 
-class InvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
-  const InvoiceDetailsHeaderWidget({Key? key}) : super(key: key);
+class PurchaseInvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
+  const PurchaseInvoiceDetailsHeaderWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,43 +65,13 @@ class InvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
                               onEditingComplete: () {
                                 final items = controller.filterItems(controller.itemNameController.text);
                                 if(controller.selectedItem.value != null){
-                                  controller.itemNumberFocusNode.requestFocus();
+                                  controller.itemQuantityFocusNode.requestFocus();
                                   return;
                                 }
                                 if (controller.itemNameController.text.isNotEmpty) {
                                   controller.selectItem(items.first);
                                 }
                               }),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                separator,
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Center(
-                        child: Text(
-                          "رقم الوحدة",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        // width: 50,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Center(
-                          child: Obx(() {
-                            return Text(controller.itemAvailableQuantity.value?.toString() ?? "");
-                          }),
                         ),
                       ),
                     ],
@@ -125,7 +96,7 @@ class InvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
                         child: TextFormField(
                           textDirection: TextDirection.ltr,
                           keyboardType: TextInputType.number,
-                          focusNode: controller.itemNumberFocusNode,
+                          focusNode: controller.itemYardNumberFocusNode,
                           enabled: controller.selectedItem.value != null,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -135,12 +106,15 @@ class InvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
                           ),
                           textAlign: TextAlign.center,
                           inputFormatters: [doubleInputFilter],
-                          controller: controller.itemNumberController,
-                          onFieldSubmitted: controller.onItemNumberFieldSubmitted,
+                          controller: controller.itemYardNumberController,
+                          onFieldSubmitted: (_) => controller.itemQuantityFocusNode.requestFocus(),
                           onChanged: (value) {
                             if (value.isEmpty) {
-                              controller.itemNumberController.text = "0";
+                              controller.itemYardNumberController.text = "0";
                             }
+                            final yardNumber = controller.itemYardNumberController.text.parseToNum * 0.9;
+                            controller.itemQuantityController.text = yardNumber.toStringAsFixed(2);
+                            controller.calcItemData();
                           },
                         ),
                       ),
@@ -167,7 +141,7 @@ class InvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
                           textDirection: TextDirection.ltr,
                           focusNode: controller.itemQuantityFocusNode,
                           textAlign: TextAlign.center,
-                          enabled: !(controller.selectedItem.value == null || (controller.selectedItem.value != null && controller.selectedItem.value!.proGroupId == 1)),
+                          enabled: controller.selectedItem.value != null,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.zero,
@@ -182,6 +156,7 @@ class InvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
                             if (value.isEmpty) {
                               controller.itemQuantityController.text = "0";
                             }
+                            controller.calcItemData();
                           },
                         ),
                       ),
@@ -220,6 +195,7 @@ class InvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
                             if (value.isEmpty) {
                               controller.itemPriceController.text = "0";
                             }
+                            controller.calcItemData();
                           },
                           controller: controller.itemPriceController,
                           onEditingComplete: () {
@@ -265,12 +241,12 @@ class InvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
                             if (controller.itemDiscountController.text.parseToNum > 100) {
                               controller.itemDiscountController.text = "100";
                             }
-                            controller.itemDiscountValueController.text = "0";
+                            // controller.itemDiscountValueController.text = "0";
                             controller.calcItemData();
                           },
                           controller: controller.itemDiscountController,
                           onEditingComplete: () {
-                            controller.itemDiscountValueFocusNode.requestFocus();
+                            controller.itemGlAccountFocusNode.requestFocus();
                           },
                         ),
                       ),
@@ -298,13 +274,14 @@ class InvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Center(child: Obx(() {
-                            return Text(controller.itemTotalQuantity.value?.toString() ?? "");
+                            return Text(controller.itemNet.value?.toString() ?? "");
                           }))),
                     ],
                   ),
                 ),
                 separator,
                 Expanded(
+                  flex: 2,
                   child: Column(
                     children: [
                       const Center(
@@ -323,13 +300,70 @@ class InvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesController> {
                           color: Colors.white70,
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: Center(
-                          child: Obx(() =>
-                              Text(
-                                controller.itemNet.value?.toString() ?? "",
-                              )),
+                        child: TypeAheadFormField<GlAccountResponse>(
+                            itemBuilder: (context, client) {
+                              return SizedBox(
+                                height: 50,
+                                child: Center(
+                                  child: Text("${client.name} ${client.accNumber}"),
+                                ),
+                              );
+                            },
+                            suggestionsCallback: (filter) => controller.glAccounts.where((element) => (element.name??"").contains(filter) || element.accNumber.toString().contains(filter)),
+                            onSuggestionSelected: (value) async {
+                              controller.itemGlAccountController.text = "${value.name} ${value.accNumber}";
+                              controller.selectedGlAccount(value);
+                              controller.addNewInvoiceDetail();
+                            },
+                            textFieldConfiguration: TextFieldConfiguration(
+                              textInputAction: TextInputAction.next,
+                              controller: controller.itemGlAccountController,
+                              focusNode: controller.itemGlAccountFocusNode,
+                              decoration:  const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  isDense: true,
+                                  hintMaxLines: 2,
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 5,vertical: 13),
+                                  suffixIconConstraints: BoxConstraints(maxWidth: 50)
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                separator,
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Center(
+                        child: Text(
+                          "المستودع",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
+                      Obx(() {
+                        return DropdownSearch<InventoryResponse>(
+                          // showSearchBox: true,
+                          items: controller.inventories,
+                          itemAsString: (InventoryResponse e) => e.code,
+                          onChanged: controller.selectInventory,
+                          selectedItem: controller.selectedInventory.value,
+                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                border: OutlineInputBorder(),
+                                fillColor: Colors.white70,
+                                isDense: true,
+                                filled: true,
+                                suffixIconConstraints: BoxConstraints(maxHeight: 30)),
+                          ),
+                        );
+                      }),
                     ],
                   ),
                 ),

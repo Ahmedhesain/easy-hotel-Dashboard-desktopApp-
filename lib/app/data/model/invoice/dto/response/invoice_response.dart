@@ -56,31 +56,33 @@ class InvoiceResponse {
       required this.shoulder,
       required this.status,
       required this.step,
-      required this.totalNet});
+      required this.supplierInvoiceNumber,
+      required this.totalNet, this.supplierDate});
 
-  String type;
+  String? type;
   int? branchId;
-  int companyId;
-  int createdBy;
-  DateTime createdDate;
-  int id;
-  int customerId;
-  String daribaValue;
-  DateTime date;
-  num discount;
-  int discountType;
-  int dueperiod;
-  num finalNet;
-  int gallaryId;
-  int invDelegatorId;
-  int invInventoryId;
-  num payed;
-  int pricetype;
-  String qrCode;
-  String remarks;
-  String segilValue;
-  num taxvalue;
-  num totalNetAfterDiscount;
+  int? companyId;
+  String? supplierInvoiceNumber;
+  int? createdBy;
+  DateTime? createdDate;
+  int? id;
+  int? customerId;
+  String? daribaValue;
+  DateTime? date;
+  num? discount;
+  int? discountType;
+  int? dueperiod;
+  num? finalNet;
+  int? gallaryId;
+  int? invDelegatorId;
+  int? invInventoryId;
+  num? payed;
+  int? pricetype;
+  String? qrCode;
+  String? remarks;
+  String? segilValue;
+  num? taxvalue;
+  num? totalNetAfterDiscount;
   List<InvoiceDetailsModel>? invoiceDetailApiList;
   List<InvoiceDetailsModel> invoiceDetailApiListDeleted;
 
@@ -132,6 +134,7 @@ class InvoiceResponse {
         type: json["type"],
         branchId: json["branchId"],
         companyId: json["companyId"],
+       supplierInvoiceNumber: json["supplierInvoiceNumber"],
         createdBy: json["createdBy"],
         createdDate: DateTime.parse(json["createdDate"]),
         id: json["id"],
@@ -168,6 +171,7 @@ class InvoiceResponse {
         length: json["length"],
         invoiceNumber: json["invoiceNumber"],
         invoiceDate: json["invoiceDate"] == null ? null: DateTime.parse(json["invoiceDate"]),
+    supplierDate: json["supplierDate"] == null ? null: DateTime.parse(json["supplierDate"]),
         invInventoryName: json["invInventoryName"],
         invDelegatorName: json["invDelegatorName"],
         gallaryName: json["gallaryName"],
@@ -187,14 +191,15 @@ class InvoiceResponse {
 
   Map<String, dynamic> toJson() => {
         "type": type,
+        "supplierInvoiceNumber": supplierInvoiceNumber,
         "branchId": branchId,
         "companyId": companyId,
         "createdBy": createdBy,
-        "createdDate": createdDate.toIso8601String(),
+        "createdDate": createdDate?.toIso8601String(),
         "id": id,
         "customerId": customerId,
         "daribaValue": daribaValue,
-        "date": date.toIso8601String(),
+        "date": date?.toIso8601String(),
         "discount": discount,
         "discountType": discountType,
         "dueperiod": dueperiod,
@@ -209,6 +214,7 @@ class InvoiceResponse {
         "remarks": remarks,
         "segilValue": segilValue,
         "taxvalue": taxvalue,
+        "supplierDate:": supplierDate?.toIso8601String(),
         "invoiceType": invoiceType,
         "proof": proof,
         "totalNetAfterDiscount": totalNetAfterDiscount,

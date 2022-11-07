@@ -3,8 +3,10 @@ import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.da
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/gl_account_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/invoice_status_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
@@ -67,6 +69,20 @@ class InvoiceRepository {
       Function(dynamic error)? onError,
       }) =>
     ApiProvider().post<List<DelegatorResponse>,List<dynamic>>('delegator/findDelegatorByInventory',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: delegatorRequest.toJson(),
+        onError: onError,
+        convertor: DelegatorResponse.getList,
+    );
+
+  findDelegatorPurchaseByInventory(
+      DelegatorRequest delegatorRequest, {
+      Function()? onComplete,
+      Function(List<DelegatorResponse> data)? onSuccess,
+      Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<List<DelegatorResponse>,List<dynamic>>('delegator/findDelegatorPurchaseByInventory',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: delegatorRequest.toJson(),
@@ -142,6 +158,20 @@ class InvoiceRepository {
         data: invoiceStatusRequest.toJson(),
         onError: onError,
         convertor: InvoiceStatusResponse.fromList,
+    );
+
+  getGlAccountList(
+      GlAccountRequest glAccountRequest, {
+        Function()? onComplete,
+        Function(List<GlAccountResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<List<GlAccountResponse>, List<dynamic>>('glaccount/glaccountsactive',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: glAccountRequest.toJson(),
+        onError: onError,
+        convertor: GlAccountResponse.fromList,
     );
 
 

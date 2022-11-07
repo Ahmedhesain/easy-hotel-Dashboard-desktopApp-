@@ -1,6 +1,6 @@
 class SaveTarhilResponse {
   final int serial;
-  final String qrCode;
+  final String? qrCode;
   final String daribaValue;
   final String segilValue;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
+import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
@@ -20,29 +21,30 @@ class HomeHeaderWidget extends GetView<HomeController> {
           runSpacing: 10,
           children: [
             Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: AppColors.appGreyDark
-              ),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors.appGreyDark),
               padding: const EdgeInsets.all(5),
               margin: const EdgeInsets.symmetric(horizontal: 5),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ButtonWidget(text: "تنزيل عرض", onPressed: () {}),
-                  const SizedBox(width: 5),
-                  ButtonWidget(text: "تحديث", onPressed: () => controller.getItems()),
-                  const SizedBox(width: 5),
-                  Obx(() {
-                      return ButtonWidget(text: controller.invoice.value != null?"تعديل":"حفظ", onPressed: () => controller.saveInvoice());
-                    }
-                  ),
-                  const SizedBox(width: 5),
-                  ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
-                  const SizedBox(width: 5),
-                  ButtonWidget(text: "حذف هللة", onPressed: () => controller.removeHalala()),
-                ],
-              ),
+              child: Obx(() {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ButtonWidget(text: "تنزيل عرض", onPressed: () {}),
+                    const SizedBox(width: 5),
+                    ButtonWidget(text: "تحديث", onPressed: () => controller.getItems()),
+                    const SizedBox(width: 5),
+                    ButtonWidget(text: controller.invoice.value != null ? "تعديل" : "حفظ", onPressed: () => controller.saveInvoice()),
+                    if (controller.invoice.value != null) const SizedBox(width: 5),
+                    if (controller.invoice.value != null)
+                      ButtonWidget(
+                          text: "طباعة",
+                          onPressed: () => controller.printInvoice(context)),
+                    const SizedBox(width: 5),
+                    ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
+                    const SizedBox(width: 5),
+                    ButtonWidget(text: "حذف هللة", onPressed: () => controller.removeHalala()),
+                  ],
+                );
+              }),
             ),
           ],
         ),
@@ -50,4 +52,3 @@ class HomeHeaderWidget extends GetView<HomeController> {
     );
   }
 }
-

@@ -9,7 +9,7 @@ class CreateInvoiceRequest {
   final int? invDelegatorId;
   final int? pricetype;
   final DateTime? date;
-  final GetDueDateResponse? dueDate;
+  final DateTime? dueDate;
   final int? gallaryDeliveryId;
   final String? gallaryDeliveryName;
   final String? gallaryName;
@@ -28,6 +28,7 @@ class CreateInvoiceRequest {
   final int? branchId;
   final int? createdBy;
   final DateTime? createdDate;
+  final DateTime? supplierDate;
   final int? proof;
   final int? invInventoryId;
   final int? gallaryId;
@@ -36,11 +37,16 @@ class CreateInvoiceRequest {
   final num? taxvalue;
   final int? checkSendSms;
   final int? serial;
+  final int? typeInv;
+  final int? supplierInvoiceNumber;
   final num? discount;
   final num? discountType;
 
   CreateInvoiceRequest({
     this.discount,
+    this.supplierInvoiceNumber,
+    this.typeInv,
+    this.supplierDate,
     this.discountHalala,
     this.discountType,
     this.offerCopoun,
@@ -79,6 +85,7 @@ class CreateInvoiceRequest {
   Map<String, dynamic> toJson() => {
     "companyId": companyId,
     "createdBy": createdBy,
+    "typeInv": typeInv,
     "createdDate": createdDate?.toIso8601String(),
     "id": id,
     "customerCode": customerCode,
@@ -87,9 +94,10 @@ class CreateInvoiceRequest {
     "customerMobile": customerMobile,
     "customerName": customerName,
     "date": date?.toIso8601String(),
+    "supplierDate": supplierDate?.toIso8601String(),
     "discount": discount,
     "discountType": discountType,
-    "dueDate": dueDate?.toJson(),
+    "dueDate": dueDate?.toIso8601String(),
     "dueperiod": dueperiod,
     "gallaryId": gallaryId,
     "gallaryName": gallaryName,
@@ -102,6 +110,7 @@ class CreateInvoiceRequest {
     "pricetype": pricetype,
     "proof": proof,
     "remarks": remarks,
+    "supplierInvoiceNumber": supplierInvoiceNumber,
     "gallaryDeliveryId": gallaryDeliveryId,
     "gallaryDeliveryName": gallaryDeliveryName,
     "invoiceType": invoiceType,

@@ -39,13 +39,14 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                       suggestionsCallback: (filter) => controller.filterItems(filter),
                       onSuggestionSelected: (item) => controller.getItemData(
                           itemId: item.id!,
+                          inventoryId: detail.value.inventoryId,
                           onSuccess: (itemData) {
-                            if (item.itemData!.availableQuantity != null && item.itemData!.availableQuantity == 0) {
+                            if (itemData.availableQuantity != null && itemData.availableQuantity == 0) {
                               showPopupText(text: "لايوجد كمية متاحة");
                               detail(detail.value.copyWith(name: detail.value.name, code: detail.value.code));
                               return;
                             }
-                            item.itemData = itemData;
+                            // item.itemData = itemData;
                             final newDetail = detail.value.assignItem(item);
                             detail(newDetail);
                             controller.calcInvoiceValues();
@@ -59,7 +60,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           controller: TextEditingController(text: "${detail.value.name} ${detail.value.code}"),
                           textInputAction: TextInputAction.next,
                           textAlignVertical: TextAlignVertical.center,
-                          enabled: false,
+                          enabled: true,
                           decoration: const InputDecoration(
                               contentPadding: EdgeInsets.symmetric(horizontal: 10), border: OutlineInputBorder(), filled: true, fillColor: Colors.white70),
                           onSubmitted: (value) {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
-import 'package:toby_bills/app/modules/purchase_invoices/views/widgets/invoice_details_header.dart';
-import 'package:toby_bills/app/modules/purchase_invoices/views/widgets/invoice_details_widget.dart';
+import 'package:toby_bills/app/modules/purchase_invoices/views/widgets/purchase_invoice_details_header.dart';
+import 'package:toby_bills/app/modules/purchase_invoices/views/widgets/purchase_invoice_details_widget.dart';
 import 'package:toby_bills/app/modules/purchase_invoices/controllers/purchase_invoices_controller.dart';
 import 'widgets/customer_info_widget.dart';
-import 'widgets/invoice_info_widget.dart';
+import 'widgets/purchase_invoice_info_widget.dart';
 import 'widgets/purchase_invoice_header_widget.dart';
-import 'widgets/side_widget.dart';
+import 'widgets/purchase_side_widget.dart';
 
 class PurchaseInvoicesView extends GetView<PurchaseInvoicesController> {
   const PurchaseInvoicesView({super.key});
@@ -20,7 +20,7 @@ class PurchaseInvoicesView extends GetView<PurchaseInvoicesController> {
         child: Scaffold(
           body: Row(
             children: [
-              const SideWidget(),
+              const PurchaseSideWidget(),
               Expanded(
                 child: Column(
                   children: [
@@ -31,11 +31,11 @@ class PurchaseInvoicesView extends GetView<PurchaseInvoicesController> {
                           margin: const EdgeInsets.all(20).copyWith(top: 0),
                           child: Column(
                             children: const [
-                              InvoiceInfoWidget(),
+                              PurchaseInvoiceInfoWidget(),
                               SizedBox(height: 10),
-                              CustomerInfoWidget(),
-                              InvoiceDetailsHeaderWidget(),
-                              Expanded(child: InvoiceDetailsWidget()),
+                              // CustomerInfoWidget(),
+                              PurchaseInvoiceDetailsHeaderWidget(),
+                              Expanded(child: PurchaseInvoiceDetailsWidget()),
                             ],
                           )
                       ),
