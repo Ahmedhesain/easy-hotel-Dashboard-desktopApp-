@@ -104,7 +104,7 @@ class InvoiceResponse {
   DateTime? invoiceDate;
   String? invoiceNumber;
   num? length;
-  int? noticeCredit;
+  num? noticeCredit;
   int? noticeDebit;
   int? proof;
   int? checkSendSms;
