@@ -202,7 +202,7 @@ class PurchaseInvoiceDetailsWidget extends GetView<PurchaseInvoicesController> {
                           inventoryId: inventory?.id, inventoryCode: inventory?.code, inventoryName: inventory?.name));
                       controller.calcInvoiceValues();
                     },
-                    selectedItem: controller.inventories.singleWhere((element) => element.id == detail.value.inventoryId),
+                    selectedItem: controller.inventories.every((element) => element.id != detail.value.inventoryId)?null:controller.inventories.singleWhere((element) => element.id == detail.value.inventoryId),
                     dropdownDecoratorProps: const DropDownDecoratorProps(
                         dropdownSearchDecoration: InputDecoration(
                             isDense: true,

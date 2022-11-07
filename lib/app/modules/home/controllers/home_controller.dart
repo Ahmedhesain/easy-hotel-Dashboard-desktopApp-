@@ -132,7 +132,7 @@ class HomeController extends GetxController {
   getCustomersByCode() {
     isLoading(true);
     findSideCustomerFieldFocusNode.unfocus();
-    final request = FindCustomerRequest(code: findSideCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
+    final request = FindCustomerRequest(code: findSideCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: selectedGallery.value?.id);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
@@ -145,7 +145,7 @@ class HomeController extends GetxController {
   getCustomersByCodeForInvoice() {
     isLoading(true);
     invoiceCustomerFieldFocusNode.unfocus();
-    final request = FindCustomerRequest(code: invoiceCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
+    final request = FindCustomerRequest(code: invoiceCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: selectedGallery.value?.id);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
@@ -222,9 +222,6 @@ class HomeController extends GetxController {
     CustomerRepository().findCustomerInvoicesData(FindCustomerBalanceRequest(id: value.id),
         onSuccess: (data) => findCustomerBalanceResponse = data, onError: (error) => showPopupText(text: error.toString()), onComplete: () => isLoading(false));
   }
-
-
-
 
   printInvoice(BuildContext context){
     isLoading(true);

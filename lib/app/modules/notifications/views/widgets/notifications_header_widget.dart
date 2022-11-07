@@ -53,7 +53,7 @@ class NotificationsHeaderWidget extends GetView<NotificationsController> {
                       ),
                       Expanded(
                         child: RadioListTile(
-                          value: 2,
+                          value: 4,
                           groupValue: controller.notificationType.value,
                           title: const Text("اشعار دائن"),
                           onChanged: controller.notificationType,
@@ -140,6 +140,71 @@ class NotificationsHeaderWidget extends GetView<NotificationsController> {
                 ),
               ),
               const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  children: [
+                    Expanded(child: Row(
+                      children: [
+                        const Expanded(child: Text("إشعار دائن", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+                        Expanded(child: Center(child: Obx(() {
+                          return Text(controller.invoice.value?.noticeCredit?.toString() ?? "--",
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+                        })),),
+                      ],
+                    )),
+                    Expanded(child: Row(
+                      children: [
+                        const Expanded(child: Text("المدفوع", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+                        Expanded(child: Center(child: Obx(() {
+                          return Text(controller.invoice.value?.payed?.toString() ?? "--",
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+                        })),),
+                      ],
+                    )),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  children: [
+                    Expanded(child: Row(
+                      children: [
+                        const Expanded(child: Text("إشعار مدين", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+                        Expanded(child: Center(child: Obx(() {
+                          return Text(controller.invoice.value?.noticeDebit?.toString() ?? "--",
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+                        })),),
+                      ],
+                    )),
+                    Expanded(child: Row(
+                      children: [
+                        const Expanded(child: Text("المتبقي", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+                        Expanded(child: Center(child: Obx(() {
+                          return Text(controller.invoice.value?.remain?.toString() ?? "--",
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+                        })),),
+                      ],
+                    )),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  children: [
+                    const Expanded(child: Text("الإجمالي", style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold))),
+                    Expanded(child: Obx(() {
+                      return Center(child: Text(controller.invoice.value?.finalNet?.toString() ?? "--",
+                          style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold)));
+                    }),),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
             ],
           ),
         ),
@@ -153,22 +218,33 @@ class NotificationsHeaderWidget extends GetView<NotificationsController> {
               children: [
                 Row(
                   children: [
+                    const Expanded(child: Text("رقم السند")),
+                    Expanded(
+                      child: Obx(() {
+                        return Text(controller.notification.value?.serial.toString() ?? "--");
+                      }),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
                     const Expanded(child: Text("التاريخ")),
                     Expanded(
                       child: GestureDetector(
                         onTap: () async {
                           final date = await showDatePicker(
-                              context: context,
-                              initialDate: controller.date.value??DateTime.now(),
-                              firstDate: DateTime(2016),
-                              lastDate: DateTime.now(),
+                            context: context,
+                            initialDate: controller.date.value ?? DateTime.now(),
+                            firstDate: DateTime(2016),
+                            lastDate: DateTime.now(),
                           );
-                          if(date != null){
+                          if (date != null) {
                             controller.date(date);
                           }
                         },
                         child: Obx(
-                          () {
+                              () {
                             return Text(
                               controller.date.value == null ? "dd/mm/yyyy" : DateFormat("dd/MM/yyyy").format(controller.date.value!),
                               style: const TextStyle(decoration: TextDecoration.underline),
@@ -189,7 +265,7 @@ class NotificationsHeaderWidget extends GetView<NotificationsController> {
                         onChanged: (value) {},
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 12),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                           isDense: true,
                           filled: true,
                           fillColor: Colors.white70,
@@ -209,7 +285,7 @@ class NotificationsHeaderWidget extends GetView<NotificationsController> {
                         onChanged: (value) {},
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 12),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                           isDense: true,
                           filled: true,
                           fillColor: Colors.white70,
