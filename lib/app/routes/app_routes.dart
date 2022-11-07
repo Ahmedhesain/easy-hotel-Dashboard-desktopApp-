@@ -37,6 +37,7 @@ abstract class Routes {
 
 
 
+  static const PURCHASE_INVOICES = _Paths.PURCHASE_INVOICES;
 }
 
 abstract class _Paths {
@@ -72,4 +73,5 @@ abstract class _Paths {
 
 
 
+  static const PURCHASE_INVOICES = '/purchase-invoices';
 }

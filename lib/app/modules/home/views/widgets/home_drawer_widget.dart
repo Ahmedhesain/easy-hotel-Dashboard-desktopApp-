@@ -142,6 +142,10 @@ class HomeDrawerWidget extends GetView<HomeController> {
               title: "بيان الفواتير حسب الضريبه ",
               onTap: () => Get.toNamed(Routes.FIND_VALES_VALUES_ADDED),
             ),
+            _Tile(
+              title: "فواتير الشراء",
+              onTap: () => Get.toNamed(Routes.PURCHASE_INVOICES),
+            ),
           ],
         ),
       ),
