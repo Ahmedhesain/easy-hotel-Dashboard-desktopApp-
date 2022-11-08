@@ -112,20 +112,23 @@ class PaymentsController extends GetxController {
     if(galleries.isNotEmpty) selectedGallery(galleries.first);
     selectedAccount.value = null;
     selectedCenter.value = null;
+    details.clear();
+    payment.value = null;
+    date(DateTime.now());
     clearItemFields();
   }
 
   savePayment(){
     final payment = PaymentModel(
       glBankTransactionDetailFromApiList: details,
-      companyId: user.companyId,
-      createdBy: user.id,
-      createdDate: DateTime.now(),
-      branchId: user.branchId,
+      companyId: this.payment.value?.companyId ?? user.companyId,
+      createdBy: this.payment.value?.createdBy ?? user.id,
+      createdDate: this.payment.value?.createdDate ?? DateTime.now(),
+      branchId: this.payment.value?.branchId ?? user.branchId,
       id: this.payment.value?.id,
       type: this.payment.value?.type,
       remark: remarksController.text,
-      date: date.value,
+      date: DateTime.now(),
       totalValue: details.fold<num>(0, (p, e) => p + (e.value??0)),
       generalJournalId: this.payment.value?.generalJournalId,
       isDebit: this.payment.value?.isDebit
@@ -146,6 +149,9 @@ class PaymentsController extends GetxController {
     PaymentRepository().findPayment(FindPaymentRequest(branchId: user.branchId, serial: searchPaymentIdController.text.tryToParseToNum?.toInt()),
         onSuccess: (data){
           payment(data);
+          details.assignAll(data.glBankTransactionDetailFromApiList!);
+          date(data.date);
+          remarksController.text = data.remark??"";
         },
         onError: (e) => showPopupText(text: e.toString()),
         onComplete: () => isLoading(false)
@@ -154,6 +160,9 @@ class PaymentsController extends GetxController {
   }
 
   printPayment(){
+  }
+
+  deletePayment(){
     isLoading(true);
     PaymentRepository().deletePayment(DeletePaymentRequest(id: payment.value!.id!),
         onSuccess: (data){

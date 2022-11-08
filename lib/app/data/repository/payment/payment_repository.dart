@@ -70,7 +70,7 @@ class PaymentRepository {
         Function(PaymentModel data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-    ApiProvider().post<PaymentModel,Map<String,dynamic>>('glBankTransaction/saveSettlment',
+    ApiProvider().post<PaymentModel,Map<String,dynamic>>('glBankTransaction/saveSettelMent',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: paymentModel.toJson(),

@@ -11,52 +11,58 @@ class PaymentsButtonsWidget extends GetView<PaymentsController> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Row(
-        children: [
-          SizedBox(
-            width: 250,
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              onChanged: (value) {},
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                  hintText: "ابحث",
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white70,
-                  suffixIcon: IconButtonWidget(
-                    icon: Icons.search,
-                    onPressed: () => controller.searchPayment(),
-                  )
+      child: Padding(
+        padding:  const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 15.0),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 250,
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                onChanged: (value) {},
+                decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                    hintText: "ابحث",
+                    isDense: true,
+                    filled: true,
+                    fillColor: Colors.white70,
+                    suffixIcon: IconButtonWidget(
+                      icon: Icons.search,
+                      onPressed: () => controller.searchPayment(),
+                    )
+                ),
+                onFieldSubmitted: (_) => controller.searchPayment(),
+                controller: controller.searchPaymentIdController,
               ),
-              onFieldSubmitted: (_) => controller.searchPayment(),
-              controller: controller.searchPaymentIdController,
             ),
-          ),
-          const Spacer(),
-          Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors.appGreyDark),
-            padding: const EdgeInsets.all(5),
-            margin: const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 15.0),
-            child: Obx(() {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ButtonWidget(text: controller.payment.value != null ? "تعديل" : "حفظ", onPressed: () => controller.savePayment()),
-                  if(controller.payment.value != null)
+            const Spacer(),
+            Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors.appGreyDark),
+              padding: const EdgeInsets.all(5),
+              child: Obx(() {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ButtonWidget(text: controller.payment.value != null ? "تعديل" : "حفظ", onPressed: () => controller.savePayment()),
+                    if(controller.payment.value != null)
+                      const SizedBox(width: 5),
+                    if(controller.payment.value != null)
+                      ButtonWidget(text: "طباعة", onPressed: () => controller.printPayment()),
+                    if(controller.payment.value != null)
+                      const SizedBox(width: 5),
+                    if(controller.payment.value != null)
+                      ButtonWidget(text: "حذف", onPressed: () => controller.deletePayment()),
                     const SizedBox(width: 5),
-                  if(controller.payment.value != null)
-                    ButtonWidget(text: "طباعة", onPressed: () => controller.printPayment()),
-                  const SizedBox(width: 5),
-                  ButtonWidget(text: "جديد", onPressed: () => controller.newPayment()),
-                  const SizedBox(width: 5),
-                  ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
-                ],
-              );
-            }),
-          ),
-        ],
+                    ButtonWidget(text: "جديد", onPressed: () => controller.newPayment()),
+                    const SizedBox(width: 5),
+                    ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
+                  ],
+                );
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }
