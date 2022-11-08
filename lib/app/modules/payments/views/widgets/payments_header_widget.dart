@@ -36,7 +36,7 @@ class PaymentsHeaderWidget extends GetView<PaymentsController> {
                     const Expanded(child: Text("مسلسل")),
                     Expanded(
                       child: Obx(() {
-                        return Text(controller.notification.value?.serial.toString() ?? "");
+                        return Text(controller.payment.value?.branchId.toString() ?? "");
                       }),
                     )
                   ],

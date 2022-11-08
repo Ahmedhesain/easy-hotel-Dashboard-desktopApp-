@@ -27,7 +27,7 @@ class PaymentModel {
   List<GlBankTransactionDetail>? glBankTransactionDetailFromApiList = [];
   bool? isDebit;
   String? remark;
-  int? totalValue;
+  num? totalValue;
 
   factory PaymentModel.fromJson(Map<String, dynamic> json) => PaymentModel(
     type: json["type"],

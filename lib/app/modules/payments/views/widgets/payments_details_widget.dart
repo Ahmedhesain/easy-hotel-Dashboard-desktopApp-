@@ -94,8 +94,8 @@ class PaymentsDetailsWidget extends GetView<PaymentsController> {
                           );
                         },
                         suggestionsCallback: (filter) {
-                          return (controller.findCustomerBalanceResponse != null)
-                              ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList()
+                          return (controller.findCustomerBalanceResponse[detail.invOrganizationSiteId] != null)
+                              ? controller.findCustomerBalanceResponse[detail.invOrganizationSiteId]!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList()
                               : [];
                         },
                         onSuggestionSelected: (value) {
@@ -116,7 +116,8 @@ class PaymentsDetailsWidget extends GetView<PaymentsController> {
                             contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
                           ),
                           onSubmitted: (filter){
-                            final invoices = controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList();
+                            if(controller.findCustomerBalanceResponse[detail.invOrganizationSiteId] == null) return;
+                            final invoices = controller.findCustomerBalanceResponse[detail.invOrganizationSiteId]!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList();
                             if(invoices.isEmpty) return;
                             final inv = invoices.first;
                             detail.invoiceId = inv.id;

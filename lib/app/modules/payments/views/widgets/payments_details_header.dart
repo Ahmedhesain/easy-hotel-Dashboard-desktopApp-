@@ -106,8 +106,8 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                               );
                             },
                             suggestionsCallback: (filter) {
-                              return (controller.findCustomerBalanceResponse != null)
-                                  ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList()
+                              return (controller.selectedCustomer.value != null && controller.findCustomerBalanceResponse[controller.selectedCustomer.value!.id] != null)
+                                  ? controller.findCustomerBalanceResponse[controller.selectedCustomer.value!.id]!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList()
                                   : [];
                             },
                             onSuggestionSelected: (value) {
@@ -126,7 +126,8 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                                   contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
                                 ),
                                 onSubmitted: (filter){
-                                  final invoices = controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList();
+                                  if(controller.findCustomerBalanceResponse[controller.selectedCustomer.value!.id] == null) return;
+                                  final invoices = controller.findCustomerBalanceResponse[controller.selectedCustomer.value!.id]!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList();
                                   if(invoices.isEmpty) return;
                                   final inv = invoices.first;
                                   controller.selectInvoice(inv);

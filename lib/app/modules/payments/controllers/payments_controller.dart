@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
@@ -15,11 +16,14 @@ import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/notifications/dto/response/find_notification_response.dart';
+import 'package:toby_bills/app/data/model/payments/dto/request/delete_payment_request.dart';
+import 'package:toby_bills/app/data/model/payments/dto/request/find_payment_request.dart';
 import 'package:toby_bills/app/data/model/payments/payment_model.dart';
 import 'package:toby_bills/app/data/provider/local_provider.dart';
 import 'package:toby_bills/app/data/repository/cost_center/cost_center_repository.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
+import 'package:toby_bills/app/data/repository/payment/payment_repository.dart';
 
 class PaymentsController extends GetxController {
 
@@ -38,12 +42,13 @@ class PaymentsController extends GetxController {
   Rxn<GlAccountResponse> selectedAccount = Rxn();
   Rxn<GlAccountResponse> selectedItemDebit = Rxn();
   Rxn<GlAccountResponse> selectedItemCredit = Rxn();
-  Rxn<FindNotificationResponse> notification = Rxn();
+  Rxn<PaymentModel> payment = Rxn();
   RxList<GlBankTransactionDetail> details = RxList();
-  FindCustomerBalanceResponse? findCustomerBalanceResponse;
+  Map<int,FindCustomerBalanceResponse> findCustomerBalanceResponse = {};
+
   final user = UserManager();
   final itemInvoiceController = TextEditingController();
-  final notificationNumberController = TextEditingController();
+  final searchPaymentIdController = TextEditingController();
   final itemCustomerController = TextEditingController();
   final monawlaController = TextEditingController();
   final remarksController = TextEditingController();
@@ -102,6 +107,61 @@ class PaymentsController extends GetxController {
   }
 
   newPayment(){
+    remarksController.clear();
+    monawlaController.clear();
+    if(galleries.isNotEmpty) selectedGallery(galleries.first);
+    selectedAccount.value = null;
+    selectedCenter.value = null;
+    clearItemFields();
+  }
+
+  savePayment(){
+    final payment = PaymentModel(
+      glBankTransactionDetailFromApiList: details,
+      companyId: user.companyId,
+      createdBy: user.id,
+      createdDate: DateTime.now(),
+      branchId: user.branchId,
+      id: this.payment.value?.id,
+      type: this.payment.value?.type,
+      remark: remarksController.text,
+      date: date.value,
+      totalValue: details.fold<num>(0, (p, e) => p + (e.value??0)),
+      generalJournalId: this.payment.value?.generalJournalId,
+      isDebit: this.payment.value?.isDebit
+    );
+    isLoading(true);
+    PaymentRepository().savePayment(payment,
+      onSuccess: (data){
+        this.payment(data);
+        showPopupText(text: "تم الحفظ بنجاح",type: MsgType.success);
+      },
+      onError: (e) => showPopupText(text: e.toString()),
+      onComplete: () => isLoading(false)
+    );
+  }
+
+  searchPayment(){
+    isLoading(true);
+    PaymentRepository().findPayment(FindPaymentRequest(branchId: user.branchId, serial: searchPaymentIdController.text.tryToParseToNum?.toInt()),
+        onSuccess: (data){
+          payment(data);
+        },
+        onError: (e) => showPopupText(text: e.toString()),
+        onComplete: () => isLoading(false)
+    );
+
+  }
+
+  printPayment(){
+    isLoading(true);
+    PaymentRepository().deletePayment(DeletePaymentRequest(id: payment.value!.id!),
+        onSuccess: (data){
+          showPopupText(text: "تم الحذف بنجاح",type: MsgType.success);
+        },
+        onError: (e) => showPopupText(text: e.toString()),
+        onComplete: () => isLoading(false)
+    );
 
   }
 
@@ -138,7 +198,7 @@ class PaymentsController extends GetxController {
     CustomerRepository().findCustomerInvoicesData(
       FindCustomerBalanceRequest(id: value.id),
       onSuccess: (data) {
-        findCustomerBalanceResponse = data;
+        findCustomerBalanceResponse[value.id!] = data;
         onSuccess();
       },
       onError: (error) => showPopupText(text: error.toString()),
