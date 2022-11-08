@@ -215,6 +215,7 @@ class ClientNoMovementView extends GetView<ClientsNoMovementController> {
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
+
                                               ],)
 
                                           ),

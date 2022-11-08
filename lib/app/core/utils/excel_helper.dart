@@ -9,6 +9,7 @@ import 'package:toby_bills/app/data/model/customer/dto/response/account_statemen
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_status_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_totals_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoice_statement_by_case_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/invoices_without_sewing_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/item_balances_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
@@ -256,6 +257,33 @@ class ExcelHelper {
     await saveFile("رصيد الاصناف.xlsx", x!, context);
     return excel;
   }
+
+  static Future<Excel> InvoicesWithoutSweingExcel(List<CompanyInvoicesWithoutSewingResponse> reports, BuildContext context) async {
+    var excel = Excel.createExcel();
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), "رقم الفاتوره");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "اسم المعرض");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "الاسم");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "الكود");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "الاجمالي");
+
+
+
+    for (var i = 1; i <= reports.length; i++) {
+      final report = reports[i - 1];
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i), report.id);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i), report.galleryName);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.name);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.code);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.total);
+
+
+
+    }
+    List<int>? x = excel.save(fileName: "رصيد الاصناف.xlsx");
+    await saveFile("رصيد الاصناف.xlsx", x!, context);
+    return excel;
+  }
+
 
   // static Future<Excel> invoicesByStatusExcel(List<InvoiceModel> reports, BuildContext context) async {
   //   var excel = Excel.createExcel();
