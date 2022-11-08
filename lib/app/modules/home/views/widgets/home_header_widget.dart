@@ -38,6 +38,11 @@ class HomeHeaderWidget extends GetView<HomeController> {
                       ButtonWidget(
                           text: "طباعة",
                           onPressed: () => controller.printInvoice(context)),
+                    if (controller.invoice.value != null) const SizedBox(width: 5),
+                    if (controller.invoice.value != null)
+                      ButtonWidget(
+                          text: "طباعة قيد",
+                          onPressed: () => controller.printInvoice(context)),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
                     const SizedBox(width: 5),

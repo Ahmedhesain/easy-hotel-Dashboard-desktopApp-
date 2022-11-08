@@ -33,8 +33,8 @@ class InvoiceList {
   final int id;
   final int? serial;
   final DateTime date;
-  final num net;
-  final String remarks;
+  final num? net;
+  final String? remarks;
   final SalesStatementForThePeriod salesStatementForThePeriod;
 
   factory InvoiceList.fromJson(Map<String, dynamic> json) => InvoiceList(

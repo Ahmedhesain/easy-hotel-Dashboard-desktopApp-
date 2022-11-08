@@ -70,8 +70,8 @@ class PurchaseInvoicesController extends GetxController {
   Rxn<GlAccountResponse> selectedGlAccount = Rxn();
   Rxn<InventoryResponse> selectedInventory = Rxn();
   Rxn<ItemResponse> selectedItem = Rxn();
-  Rxn<DateTime> dueDate = Rxn();
-  Rxn<DateTime> supplierDate = Rxn();
+  Rx<DateTime> dueDate = Rx(DateTime.now());
+  Rx<DateTime> supplierDate = Rx(DateTime.now());
   FindCustomerBalanceResponse? findCustomerBalanceResponse;
 
   final findSideCustomerController = TextEditingController();

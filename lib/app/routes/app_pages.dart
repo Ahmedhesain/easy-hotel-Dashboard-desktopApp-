@@ -12,6 +12,10 @@ import 'package:toby_bills/app/modules/items/bindings/items_binding.dart';
 import 'package:toby_bills/app/modules/items/views/items_view.dart';
 import 'package:toby_bills/app/modules/login/bindings/login_binding.dart';
 import 'package:toby_bills/app/modules/login/views/login_view.dart';
+import 'package:toby_bills/app/modules/notifications/bindings/notifications_binding.dart';
+import 'package:toby_bills/app/modules/notifications/views/notifications_view.dart';
+import 'package:toby_bills/app/modules/payments/bindings/payments_binding.dart';
+import 'package:toby_bills/app/modules/payments/views/payments_view.dart';
 import 'package:toby_bills/app/modules/production_stages/bindings/production_stages_binding.dart';
 import 'package:toby_bills/app/modules/production_stages/views/production_stages_view.dart';
 import 'package:toby_bills/app/modules/purchase_invoices/bindings/purchase_invoices_binding.dart';
@@ -168,7 +172,6 @@ class AppPages {
       page: () => FindSalesValueAddedView(),
       binding: FindSalesValueAddedBinding(),
     ),
-
     GetPage(
       name: _Paths.PURCHASE_INVOICES,
       page: () => PurchaseInvoicesView(),
@@ -193,6 +196,16 @@ class AppPages {
       name: _Paths.INV_ITEM_DTO,
       page: () => InvItemView(),
       binding: InvItemBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTIFICATIONS,
+      page: () => NotificationsView(),
+      binding: NotificationsBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAYMENTS,
+      page: () => PaymentsView(),
+      binding: PaymentsBinding(),
     ),
   ];
 }
