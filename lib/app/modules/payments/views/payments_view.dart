@@ -6,6 +6,7 @@ import 'package:toby_bills/app/modules/payments/views/widgets/payments_header_wi
 
 import '../controllers/payments_controller.dart';
 import 'widgets/payments_buttons_widget.dart';
+import 'widgets/payments_details_header.dart';
 
 class PaymentsView extends GetView<PaymentsController> {
   const PaymentsView({super.key});
@@ -25,6 +26,7 @@ class PaymentsView extends GetView<PaymentsController> {
                   clipBehavior: Clip.antiAlias,
                   child: const PaymentsHeaderWidget(),
                 ),
+                const PaymentsDetailsHeaderWidget()
               ],
             )
         ),
