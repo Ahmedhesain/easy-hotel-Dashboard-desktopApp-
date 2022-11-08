@@ -80,15 +80,34 @@ class GlBankTransactionDetail with FormMixin{
     this.invOrganizationSiteName,
     this.remarks,
     this.value,
+    this.invoiceId,
+    this.invoiceSerial,
     this.valueLocal,
-  });
+    this.costCenterCode,
+    this.costCenterId,
+    this.costCenterName,
+  }){
+    textFieldController1.text = "$invOrganizationSiteName $invOrganizationSiteCode";
+    textFieldController2.text = "$invoiceSerial";
+    textFieldController3.text = "$glAccountDebitName $glAccountDebitCode";
+    textFieldController4.text = "$glAccountCreditName $glAccountCreditCode";
+    textFieldController5.text = "$value";
+    textFieldController6.text = bankCommition?.toString()??"";
+    textFieldController7.text = "$costCenterName";
+    textFieldController8.text = "$remarks";
+  }
 
   int? companyId;
   int? createdBy;
+  int? invoiceId;
+  int? invoiceSerial;
+  int? costCenterId;
+  int? costCenterCode;
+  String? costCenterName;
   DateTime? createdDate;
   int? id;
   int? serial;
-  int? bankCommition;
+  num? bankCommition;
   int? glAccountCreditCode;
   int? glAccountCreditId;
   String? glAccountCreditName;
@@ -105,6 +124,8 @@ class GlBankTransactionDetail with FormMixin{
 
   factory GlBankTransactionDetail.fromJson(Map<String, dynamic> json) => GlBankTransactionDetail(
     companyId: json["companyId"],
+    invoiceId: json["invoiceId"],
+    invoiceSerial: json["invoiceSerial"],
     createdBy: json["createdBy"],
     createdDate: json["createdDate"] == null ? null : DateTime.parse(json["createdDate"]),
     id: json["id"],
@@ -123,10 +144,18 @@ class GlBankTransactionDetail with FormMixin{
     remarks: json["remarks"],
     value: json["value"],
     valueLocal: json["valueLocal"],
+    costCenterId: json["costCenterId"],
+    costCenterName: json["costCenterName"],
+    costCenterCode: json["costCenterCode"],
   );
 
   Map<String, dynamic> toJson() => {
     "companyId": companyId,
+    "invoiceSerial": invoiceSerial,
+    "costCenterId": costCenterId,
+    "costCenterName": costCenterName,
+    "costCenterCode": costCenterCode,
+    "invoiceId": invoiceId,
     "createdBy": createdBy,
     "createdDate": createdDate?.toIso8601String(),
     "id": id,

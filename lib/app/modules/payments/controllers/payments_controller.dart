@@ -42,9 +42,9 @@ class PaymentsController extends GetxController {
   RxList<GlBankTransactionDetail> details = RxList();
   FindCustomerBalanceResponse? findCustomerBalanceResponse;
   final user = UserManager();
-  final searchedItemInvoiceController = TextEditingController();
+  final itemInvoiceController = TextEditingController();
   final notificationNumberController = TextEditingController();
-  final findSideCustomerController = TextEditingController();
+  final itemCustomerController = TextEditingController();
   final monawlaController = TextEditingController();
   final remarksController = TextEditingController();
   final itemPriceController = TextEditingController();
@@ -53,8 +53,8 @@ class PaymentsController extends GetxController {
   final itemDebitController = TextEditingController();
   final itemCreditController = TextEditingController();
   final itemCenterController = TextEditingController();
-  final findSideCustomerFieldFocusNode = FocusNode();
-  final searchedItemInvoiceFocusNode = FocusNode();
+  final itemCustomerFieldFocusNode = FocusNode();
+  final itemInvoiceFocusNode = FocusNode();
   final itemDebitFocusNode = FocusNode();
   final itemCreditFocusNode = FocusNode();
   final itemPriceFocusNode = FocusNode();
@@ -72,21 +72,49 @@ class PaymentsController extends GetxController {
   }
 
 
-  addDetail(){
+  addDetail(BuildContext context){
     if(!itemForm.currentState!.validate()) return;
-    final detial = GlBankTransactionDetail(
+    final detail = GlBankTransactionDetail(
       value: itemPriceController.text.tryToParseToNum,
       remarks: itemRemarksController.text,
+      bankCommition: itemCommissionController.text.tryToParseToNum,
       createdDate: DateTime.now(),
       createdBy: user.id,
       glAccountDebitId: selectedItemDebit.value?.id,
       glAccountDebitName: selectedItemDebit.value?.name,
+      glAccountDebitCode: selectedItemDebit.value?.accNumber,
       glAccountCreditId: selectedItemCredit.value?.id,
       glAccountCreditName: selectedItemCredit.value?.name,
+      glAccountCreditCode: selectedItemCredit.value?.accNumber,
       companyId: user.companyId,
-      invOrganizationSiteId: itemInvoice?.id,
+      invoiceId: itemInvoice?.id,
+      invoiceSerial: itemInvoice?.serial,
+      invOrganizationSiteId: selectedCustomer.value?.id,
+      invOrganizationSiteCode: selectedCustomer.value?.code,
+      invOrganizationSiteName: selectedCustomer.value?.name,
+      costCenterId: selectedItemCenter.value?.id,
+      costCenterCode: selectedItemCenter.value?.code,
+      costCenterName: selectedItemCenter.value?.name,
     );
-    details.add(detial);
+    details.add(detail);
+    FocusScope.of(context).unfocus();
+    clearItemFields();
+  }
+
+  clearItemFields(){
+    itemPriceController.clear();
+    itemRemarksController.clear();
+    itemCommissionController.clear();
+    itemCustomerController.clear();
+    itemInvoiceController.clear();
+    itemDebitController.clear();
+    itemCreditController.clear();
+    itemCenterController.clear();
+    selectedItemDebit.value = null;
+    selectedItemCredit.value = null;
+    itemInvoice = null;
+    selectedCustomer.value = null;
+    selectedItemCenter.value = null;
   }
 
   Future<void> getGlAccounts() async {
@@ -116,47 +144,29 @@ class PaymentsController extends GetxController {
 
 
   selectCustomer(FindCustomerResponse value){
-    findSideCustomerController.text = "${value.name} ${value.code}";
+    itemCustomerController.text = "${value.name} ${value.code}";
     selectedCustomer(value);
     if(accounts.any((element) => element.id == value.accountIdApi)) {
       selectItemDebit(accounts.singleWhere((element) => element.id == value.accountIdApi),ignoreFocus: true);
     }
     if(selectedAccount.value != null) selectItemCredit(selectedAccount.value!,ignoreFocus: true);
-    getInvoiceListForCustomer(value, () => searchedItemInvoiceFocusNode.requestFocus());
+    getInvoiceListForCustomer(value, () => itemInvoiceFocusNode.requestFocus());
   }
 
-  getCustomers(){
+  Future<void> getCustomers(String search) async {
     isLoading(true);
-    findSideCustomerFieldFocusNode.unfocus();
-    final request = FindCustomerRequest(code: findSideCustomerController.text, branchId: user.branchId, gallaryIdAPI: selectedGallery.value?.id);
-    // if(destinationType.value == 0) {
-      _getCustomersByCode(request);
-    // } else {
-    //   _getSupplierByCode(request);
-    // }
-  }
-
-  _setCustomers(List<FindCustomerResponse> data){
-    customers.assignAll(data);
-    findSideCustomerFieldFocusNode.requestFocus();
-  }
-
-  _getCustomersByCode(FindCustomerRequest request) {
-    CustomerRepository().findCustomerByCode(request,
-        onSuccess: _setCustomers,
+    itemCustomerFieldFocusNode.unfocus();
+    final request = FindCustomerRequest(code: search, branchId: user.branchId, gallaryIdAPI: selectedGallery.value?.id);
+    await CustomerRepository().findCustomerByCode(request,
+        onSuccess: customers.assignAll,
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
   }
 
-  _getSupplierByCode(FindCustomerRequest request) {
-    CustomerRepository().findSupplierByCode(request,
-        onSuccess: _setCustomers,
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
-  }
 
   selectInvoice(InvoiceList inv,{bool ignoreFocus = false}) async {
-    searchedItemInvoiceController.text = inv.serial?.toString()??"";
+    itemInvoiceController.text = inv.serial?.toString()??"";
+    itemInvoice = inv;
     if(ignoreFocus) return;
     if(itemDebitController.text.isEmpty) {
       itemDebitFocusNode.requestFocus();
@@ -169,14 +179,14 @@ class PaymentsController extends GetxController {
 
   selectItemDebit(GlAccountResponse account,{bool ignoreFocus = false}){
     selectedItemDebit(account);
-    itemDebitController.text = "${account.name} ${account.shotCode}";
+    itemDebitController.text = "${account.name} ${account.accNumber}";
     if(ignoreFocus) return;
     itemCreditFocusNode.requestFocus();
   }
 
   selectItemCredit(GlAccountResponse account,{bool ignoreFocus = false}){
     selectedItemCredit(account);
-    itemCreditController.text = "${account.name} ${account.shotCode}";
+    itemCreditController.text = "${account.name} ${account.accNumber}";
     if(ignoreFocus) return;
     itemPriceFocusNode.requestFocus();
   }

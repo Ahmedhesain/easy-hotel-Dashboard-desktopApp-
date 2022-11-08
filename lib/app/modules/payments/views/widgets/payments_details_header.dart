@@ -61,9 +61,11 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                             },
                             textFieldConfiguration: TextFieldConfiguration(
                               textInputAction: TextInputAction.next,
-                              controller: controller.findSideCustomerController,
-                              focusNode: controller.findSideCustomerFieldFocusNode,
-                              onEditingComplete: () => controller.getCustomers(),
+                              controller: controller.itemCustomerController,
+                              focusNode: controller.itemCustomerFieldFocusNode,
+                              onEditingComplete: () {
+                                controller.getCustomers(controller.itemCustomerController.text).whenComplete(() => controller.itemCustomerFieldFocusNode.requestFocus());
+                              },
                               decoration: InputDecoration(
                                   border: const OutlineInputBorder(),
                                   isDense: true,
@@ -72,7 +74,7 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                                   suffixIcon: IconButtonWidget(
                                     icon: Icons.search,
                                     onPressed: () {
-                                      controller.getCustomers();
+                                      controller.getCustomers(controller.itemCustomerController.text).whenComplete(() => controller.itemCustomerFieldFocusNode.requestFocus());
                                     },
                                   )),
                             )),
@@ -129,8 +131,8 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                                   final inv = invoices.first;
                                   controller.selectInvoice(inv);
                                 },
-                                focusNode: controller.searchedItemInvoiceFocusNode,
-                                controller: controller.searchedItemInvoiceController))
+                                focusNode: controller.itemInvoiceFocusNode,
+                                controller: controller.itemInvoiceController))
                       ],
                     ),
                   ),
@@ -155,7 +157,7 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                               return SizedBox(
                                 height: 50,
                                 child: Center(
-                                  child: Text("${account.name} ${account.shotCode}"),
+                                  child: Text("${account.name} ${account.accNumber}"),
                                 ),
                               );
                             },
@@ -173,7 +175,7 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                             },
                             textFieldConfiguration: TextFieldConfiguration(
                                 onSubmitted: (filter){
-                                  final list = controller.accounts.where((element) => (element.name??"").contains(filter) || (element.shotCode??"").contains(filter)).toList();
+                                  final list = controller.accounts.where((element) => (element.name??"").contains(filter) || (element.accNumber?.toString()??"").contains(filter)).toList();
                                   if(list.isEmpty) return;
                                   controller.selectItemDebit(list.first);
                                 },
@@ -210,12 +212,12 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                               return SizedBox(
                                 height: 50,
                                 child: Center(
-                                  child: Text("${account.name} ${account.shotCode}"),
+                                  child: Text("${account.name} ${account.accNumber}"),
                                 ),
                               );
                             },
                             suggestionsCallback: (filter) {
-                              return controller.accounts.where((element) => (element.name??"").contains(filter) || (element.shotCode??"").contains(filter)).toList();
+                              return controller.accounts.where((element) => (element.name??"").contains(filter) || (element.accNumber?.toString()??"").contains(filter)).toList();
                             },
                             onSuggestionSelected: (value) {
                               controller.selectItemCredit(value);
@@ -406,7 +408,7 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                           controller: controller.itemRemarksController,
                           focusNode: controller.itemRemarksFocusNode,
                           onEditingComplete: () {
-                            controller.addDetail();
+                            controller.addDetail(context);
                           },
                         ),
                       ],
@@ -416,7 +418,7 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                   Expanded(
                     child: Center(
                       child: IconButtonWidget(
-                        onPressed: () => controller.addDetail(),
+                        onPressed: () => controller.addDetail(context),
                         icon: Icons.done_rounded,
                       ),
                     ),
