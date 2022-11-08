@@ -19,7 +19,7 @@ class PaymentsButtonsWidget extends GetView<PaymentsController> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ButtonWidget(text: "حفظ", onPressed: () => controller.saveNotification()),
+            ButtonWidget(text: "حفظ", onPressed: () {}),
             const SizedBox(width: 5),
             ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
             const SizedBox(width: 5),

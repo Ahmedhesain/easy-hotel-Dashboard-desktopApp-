@@ -29,7 +29,6 @@ import 'package:toby_bills/app/data/repository/notifications/notifications_repos
 class PaymentsController extends GetxController {
 
   final isLoading = true.obs;
-  final destinationType = 0.obs;
   final Rxn<FindCustomerResponse> selectedCustomer = Rxn();
   final Rx<DateTime> date = Rx(DateTime.now());
   final customers = <FindCustomerResponse>[];
@@ -65,10 +64,6 @@ class PaymentsController extends GetxController {
     getCostCenters();
   }
 
-  changeDestination(int? value){
-    destinationType(value);
-    customers.clear();
-  }
 
   Future<void> getGlAccounts() async {
     accounts.assignAll(LocalProvider().getGlAccounts());
@@ -101,11 +96,11 @@ class PaymentsController extends GetxController {
     isLoading(true);
     findSideCustomerFieldFocusNode.unfocus();
     final request = FindCustomerRequest(code: findSideCustomerController.text, branchId: user.branchId, gallaryIdAPI: selectedGallery.value?.id);
-    if(destinationType.value == 0) {
+    // if(destinationType.value == 0) {
       _getCustomersByCode(request);
-    } else {
-      _getSupplierByCode(request);
-    }
+    // } else {
+    //   _getSupplierByCode(request);
+    // }
   }
 
   _setCustomers(List<FindCustomerResponse> data){
@@ -178,63 +173,4 @@ class PaymentsController extends GetxController {
     );
   }
 
-  searchByNotification() {
-    isLoading(true);
-    final request =FindNotificationRequest(branchId: user.branchId, typeNotice: destinationType.value, serial: notificationNumberController.text.tryToParseToNum?.toInt()??0);
-    NotificationsRepository().findInvoiceNotice(request,
-        onSuccess: (data){
-          notification(data);
-          searchedItemInvoiceController.text = data.invInvoiceSerial?.toString()??"";
-          findSideCustomerController.text = "${data.organizationSiteName} ${data.organizationSiteCode}";
-          monawlaController.text = data.value?.toString()??"";
-          remarksController.text = data.remark?.toString()??"";
-          destinationType(data.typeNotice);
-          if(galleries.any((element) => element.id == data.gallaryId)){
-            selectedGallery(galleries.singleWhere((element) => element.id == data.gallaryId));
-          }
-        },
-        onError: (e) => showPopupText(text: e.toString()),
-        onComplete: () => isLoading(false)
-    );
-  }
-
-  saveNotification(){
-    final request = SaveNotificationRequest(
-        serial: notification.value?.serial,
-        typeNotice: destinationType.value,
-        branchId: user.branchId,
-        id: notification.value?.id,
-        value: monawlaController.text.tryToParseToNum?.toDouble(),
-        companyId: user.companyId,
-        createdBy: user.id,
-        createdDate: notification.value?.createdDate,
-        date: date.value,
-        invInvoice: notification.value?.invInvoice ?? invoice.value?.id,
-        invInvoiceSerial: notification.value?.invInvoiceSerial ?? invoice.value?.serial,
-        gallaryId: selectedGallery.value?.id,
-        organizationSiteId: notification.value?.organizationSiteId ?? selectedCustomer.value?.id,
-        remark: remarksController.text
-    );
-    isLoading(true);
-    NotificationsRepository().saveInvoiceNotice(request,
-        onSuccess: (data) {
-          notification(data);
-          showPopupText(text: "تم الحفظ بنجاح",type: MsgType.success);
-        },
-        onError: (e) => showPopupText(text: e.toString()),
-        onComplete: () => isLoading(false)
-    );
-  }
-
-  deleteNotification() {
-    final request = DeleteNotificationRequest(notification.value!.id!);
-    isLoading(true);
-    NotificationsRepository().deleteInvoiceNotice(request,
-        onSuccess: (_) {
-          showPopupText(text: "تم الحذف بنجاح",type: MsgType.success);
-        },
-        onError: (e) => showPopupText(text: e.toString()),
-        onComplete: () => isLoading(false)
-    );
-  }
 }

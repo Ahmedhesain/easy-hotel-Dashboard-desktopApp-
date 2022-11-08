@@ -84,34 +84,6 @@ class PaymentsHeaderWidget extends GetView<PaymentsController> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Obx(() {
-                  return Material(
-                    color: Colors.transparent,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: RadioListTile(
-                            value: 0,
-                            groupValue: controller.destinationType.value,
-                            title: const Text("عميل"),
-                            onChanged: controller.changeDestination,
-                            activeColor: AppColors.colorYellow,
-                          ),
-                        ),
-                        Expanded(
-                          child: RadioListTile(
-                            value: 1,
-                            groupValue: controller.destinationType.value,
-                            title: const Text("مورد"),
-                            onChanged: controller.changeDestination,
-                            activeColor: AppColors.colorYellow,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-                const SizedBox(height: 10),
               ],
             ),
           ),
