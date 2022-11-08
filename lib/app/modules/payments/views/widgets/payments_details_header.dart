@@ -102,11 +102,11 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                         },
                         suggestionsCallback: (filter) {
                           return (controller.findCustomerBalanceResponse != null)
-                              ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null).toList()
+                              ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList()
                               : [];
                         },
                         onSuggestionSelected: (value) {
-                          controller.searchForInvoiceById(value.serial.toString());
+                          controller.selectInvoice(value.serial.toString());
                         },
                         textFieldConfiguration: TextFieldConfiguration(
                             decoration: const InputDecoration(
@@ -114,6 +114,12 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                               isDense: true,
                               contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
                             ),
+                            onSubmitted: (filter){
+                              final invoices = controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList();
+                              if(invoices.isEmpty) return;
+                              final inv = invoices.first;
+                              controller.selectInvoice(inv.serial.toString());
+                            },
                             focusNode: controller.searchedItemInvoiceFocusNode,
                             controller: controller.searchedItemInvoiceController))
                   ],
@@ -121,12 +127,13 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
               ),
               separator,
               Expanded(
+                flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Center(
                       child: Text(
-                        "رمز الحساب",
+                        "المدين",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -134,53 +141,36 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Obx(() {
-                      return DropdownSearch<GlAccountResponse>(
-                        items: controller.accounts,
-                        selectedItem: controller.selectedItemAccount.value,
-                        onChanged: controller.selectedItemAccount,
-                        itemAsString: (account) => account.shotCode.toString(),
-                        dropdownDecoratorProps: const DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      );
-                    })
-                  ],
-                ),
-              ),
-              separator,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Center(
-                      child: Text(
-                        "اسم الحساب",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Obx((){
-                      return Container(
-                        height: 40,
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                          border: Border.all(color: Colors.black38)
-                        ),
-                        child: Center(
-                          child: Text(controller.selectedItemAccount.value?.name??"",style: const TextStyle(fontWeight: FontWeight.w600),textAlign: TextAlign.center,),
-                        ),
-                      );
-                    })
+                    TypeAheadFormField<GlAccountResponse>(
+                        itemBuilder: (context, account) {
+                          return SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: Text("${account.name} ${account.shotCode}"),
+                            ),
+                          );
+                        },
+                        suggestionsCallback: (filter) {
+                          return controller.accounts.where((element) => (element.name??"").contains(filter) || (element.shotCode??"").contains(filter)).toList();
+                        },
+                        onSuggestionSelected: (value) {
+                          controller.selectAccount(value);
+                        },
+                        textFieldConfiguration: TextFieldConfiguration(
+                            onSubmitted: (filter){
+                              final list = controller.accounts.where((element) => (element.name??"").contains(filter) || (element.shotCode??"").contains(filter)).toList();
+                              if(list.isEmpty) return;
+                              controller.selectAccount(list.first);
+                            },
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              isDense: true,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
+                            ),
+                            focusNode: controller.itemAccountFocusNode,
+                            controller: controller.itemAccountController
+                        )
+                    )
                   ],
                 ),
               ),
@@ -211,8 +201,9 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                       onChanged: (value) {
                       },
                       controller: controller.itemPriceController,
+                      focusNode: controller.itemPriceFocusNode,
                       onEditingComplete: () {
-
+                        controller.itemCommissionFocusNode.requestFocus();
                       },
                     ),
                   ],
@@ -245,8 +236,9 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                       onChanged: (value) {
                       },
                       controller: controller.itemCommissionController,
+                      focusNode: controller.itemCommissionFocusNode,
                       onEditingComplete: () {
-
+                        controller.itemCenterFocusNode.requestFocus();
                       },
                     ),
                   ],
@@ -266,22 +258,36 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Obx(() {
-                      return DropdownSearch<CostCenterResponse>(
-                        items: controller.costCenters,
-                        selectedItem: controller.itemSelectedCenter.value,
-                        onChanged: controller.itemSelectedCenter,
-                        itemAsString: (center) => center.name ?? "",
-                        dropdownBuilder: (context, center) => Text(center?.name??"",maxLines: 2,style: const TextStyle(fontWeight: FontWeight.w600),),
-                        dropdownDecoratorProps: const DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      );
-                    })
+                    TypeAheadFormField<CostCenterResponse>(
+                        itemBuilder: (context, center) {
+                          return SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: Text("${center.name}"),
+                            ),
+                          );
+                        },
+                        suggestionsCallback: (filter) {
+                          return controller.costCenters.where((element) => (element.name??"").contains(filter) || (element.code?.toString()??"").contains(filter)).toList();
+                        },
+                        onSuggestionSelected: (value) {
+                          controller.selectCenter(value);
+                        },
+                        textFieldConfiguration: TextFieldConfiguration(
+                            onSubmitted: (filter){
+                              final list = controller.costCenters.where((element) => (element.name??"").contains(filter) || (element.code?.toString()??"").contains(filter)).toList();
+                              if(list.isEmpty) return;
+                              controller.selectCenter(list.first);
+                            },
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              isDense: true,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
+                            ),
+                            focusNode: controller.itemCenterFocusNode,
+                            controller: controller.itemCenterController
+                        )
+                    )
                   ],
                 ),
               ),
@@ -303,16 +309,16 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                     TextFormField(
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.ltr,
-                      inputFormatters: [doubleInputFilter],
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13),
                       ),
-                      onChanged: (value) {
-                      },
                       controller: controller.itemRemarksController,
-                      onEditingComplete: () {},
+                      focusNode: controller.itemRemarksFocusNode,
+                      onEditingComplete: () {
+
+                      },
                     ),
                   ],
                 ),

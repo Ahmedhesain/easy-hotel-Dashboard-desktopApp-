@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
-import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/cost_center/dto/request/get_cost_center_request.dart';
@@ -11,20 +9,14 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_req
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gl_account_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
-import 'package:toby_bills/app/data/model/notifications/dto/request/delete_notification_request.dart';
-import 'package:toby_bills/app/data/model/notifications/dto/request/find_notification_request.dart';
-import 'package:toby_bills/app/data/model/notifications/dto/request/save_notification_request.dart';
 import 'package:toby_bills/app/data/model/notifications/dto/response/find_notification_response.dart';
 import 'package:toby_bills/app/data/provider/local_provider.dart';
 import 'package:toby_bills/app/data/repository/cost_center/cost_center_repository.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
-import 'package:toby_bills/app/data/repository/notifications/notifications_repository.dart';
 
 class PaymentsController extends GetxController {
 
@@ -40,7 +32,6 @@ class PaymentsController extends GetxController {
   Rxn<GalleryResponse> selectedGallery = Rxn();
   Rxn<GlAccountResponse> selectedAccount = Rxn();
   Rxn<GlAccountResponse> selectedItemAccount = Rxn();
-  Rxn<InvoiceResponse> invoice = Rxn();
   Rxn<FindNotificationResponse> notification = Rxn();
   FindCustomerBalanceResponse? findCustomerBalanceResponse;
   final user = UserManager();
@@ -52,9 +43,15 @@ class PaymentsController extends GetxController {
   final itemPriceController = TextEditingController();
   final itemCommissionController = TextEditingController();
   final itemRemarksController = TextEditingController();
+  final itemAccountController = TextEditingController();
+  final itemCenterController = TextEditingController();
   final findSideCustomerFieldFocusNode = FocusNode();
   final searchedItemInvoiceFocusNode = FocusNode();
   final itemAccountFocusNode = FocusNode();
+  final itemPriceFocusNode = FocusNode();
+  final itemCommissionFocusNode = FocusNode();
+  final itemCenterFocusNode = FocusNode();
+  final itemRemarksFocusNode = FocusNode();
 
   @override
   void onInit() async {
@@ -122,27 +119,21 @@ class PaymentsController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  searchForInvoiceById(String id) async {
-    isLoading(true);
-    await InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: user.branchId, gallaryId: null),
-        onSuccess: (data) {
-          invoice(data);
-          searchedItemInvoiceController.text = data.serial?.toString() ?? "";
-        },
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
+  selectInvoice(String id) async {
+    searchedItemInvoiceController.text = id;
+    itemAccountFocusNode.requestFocus();
   }
 
-  newInvoice() {
-    date(DateTime.now());
-    selectedCustomer.value = null;
-    invoice.value = null;
-    notification.value = null;
-    if(galleries.isNotEmpty) selectedGallery(galleries.first);
-    searchedItemInvoiceController.clear();
-    findSideCustomerController.clear();
-    monawlaController.clear();
-    remarksController.clear();
+  selectAccount(GlAccountResponse account){
+    selectedItemAccount(account);
+    itemAccountController.text = "${account.name} ${account.shotCode}";
+    itemPriceFocusNode.requestFocus();
+  }
+
+  selectCenter(CostCenterResponse center){
+    selectedCenter(center);
+    itemCenterController.text = "${center.name}";
+    itemRemarksFocusNode.requestFocus();
   }
 
   Future<void> getGalleries() {
