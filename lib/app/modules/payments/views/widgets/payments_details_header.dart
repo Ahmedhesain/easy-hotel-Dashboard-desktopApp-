@@ -1,18 +1,12 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
-import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/double_filter.dart';
-import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/data/model/cost_center/dto/response/cost_center_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
-import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
-import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/modules/payments/controllers/payments_controller.dart';
-
 import '../../../../data/model/customer/dto/response/find_customer_balance_response.dart';
 
 
@@ -106,7 +100,7 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                               : [];
                         },
                         onSuggestionSelected: (value) {
-                          controller.selectInvoice(value.serial.toString());
+                          controller.selectInvoice(value!);
                         },
                         textFieldConfiguration: TextFieldConfiguration(
                             decoration: const InputDecoration(

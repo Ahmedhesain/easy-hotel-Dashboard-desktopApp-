@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/cost_center/dto/request/get_cost_center_request.dart';
@@ -12,7 +13,9 @@ import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.da
 import 'package:toby_bills/app/data/model/invoice/dto/request/gl_account_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/notifications/dto/response/find_notification_response.dart';
+import 'package:toby_bills/app/data/model/payments/payment_model.dart';
 import 'package:toby_bills/app/data/provider/local_provider.dart';
 import 'package:toby_bills/app/data/repository/cost_center/cost_center_repository.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
@@ -33,6 +36,7 @@ class PaymentsController extends GetxController {
   Rxn<GlAccountResponse> selectedAccount = Rxn();
   Rxn<GlAccountResponse> selectedItemAccount = Rxn();
   Rxn<FindNotificationResponse> notification = Rxn();
+  RxList<GlBankTransactionDetail> details = RxList();
   FindCustomerBalanceResponse? findCustomerBalanceResponse;
   final user = UserManager();
   final searchedItemInvoiceController = TextEditingController();
@@ -52,6 +56,7 @@ class PaymentsController extends GetxController {
   final itemCommissionFocusNode = FocusNode();
   final itemCenterFocusNode = FocusNode();
   final itemRemarksFocusNode = FocusNode();
+  InvoiceList? itemInvoice;
 
   @override
   void onInit() async {
@@ -61,6 +66,19 @@ class PaymentsController extends GetxController {
     getCostCenters();
   }
 
+
+  addDetail(){
+    final detial = GlBankTransactionDetail(
+      value: itemPriceController.text.tryToParseToNum,
+      remarks: itemRemarksController.text,
+      createdDate: DateTime.now(),
+      createdBy: user.id,
+      glAccountCreditId: selectedItemAccount.value?.id,
+      glAccountCreditName: selectedItemAccount.value?.name,
+      companyId: user.companyId,
+      invOrganizationSiteId:
+    );
+  }
 
   Future<void> getGlAccounts() async {
     accounts.assignAll(LocalProvider().getGlAccounts());
@@ -119,8 +137,8 @@ class PaymentsController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  selectInvoice(String id) async {
-    searchedItemInvoiceController.text = id;
+  selectInvoice(InvoiceList inv) async {
+    searchedItemInvoiceController.text = inv.serial?.toString()??"";
     itemAccountFocusNode.requestFocus();
   }
 
