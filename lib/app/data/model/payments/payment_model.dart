@@ -1,3 +1,5 @@
+import 'package:toby_bills/app/core/mixins/form_mixin.dart';
+
 class PaymentModel {
   PaymentModel({
     this.type,
@@ -58,7 +60,7 @@ class PaymentModel {
   };
 }
 
-class GlBankTransactionDetail {
+class GlBankTransactionDetail with FormMixin{
   GlBankTransactionDetail({
     this.companyId,
     this.createdBy,

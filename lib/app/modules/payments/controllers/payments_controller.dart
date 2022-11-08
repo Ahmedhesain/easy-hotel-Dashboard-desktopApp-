@@ -30,11 +30,14 @@ class PaymentsController extends GetxController {
   final accounts = <GlAccountResponse>[];
   final galleries = <GalleryResponse>[];
   final costCenters = <CostCenterResponse>[];
+  final itemForm = GlobalKey<FormState>();
   Rxn<CostCenterResponse> selectedCenter = Rxn();
+  Rxn<CostCenterResponse> selectedItemCenter = Rxn();
   Rxn<CostCenterResponse> itemSelectedCenter = Rxn();
   Rxn<GalleryResponse> selectedGallery = Rxn();
   Rxn<GlAccountResponse> selectedAccount = Rxn();
-  Rxn<GlAccountResponse> selectedItemAccount = Rxn();
+  Rxn<GlAccountResponse> selectedItemDebit = Rxn();
+  Rxn<GlAccountResponse> selectedItemCredit = Rxn();
   Rxn<FindNotificationResponse> notification = Rxn();
   RxList<GlBankTransactionDetail> details = RxList();
   FindCustomerBalanceResponse? findCustomerBalanceResponse;
@@ -47,11 +50,13 @@ class PaymentsController extends GetxController {
   final itemPriceController = TextEditingController();
   final itemCommissionController = TextEditingController();
   final itemRemarksController = TextEditingController();
-  final itemAccountController = TextEditingController();
+  final itemDebitController = TextEditingController();
+  final itemCreditController = TextEditingController();
   final itemCenterController = TextEditingController();
   final findSideCustomerFieldFocusNode = FocusNode();
   final searchedItemInvoiceFocusNode = FocusNode();
-  final itemAccountFocusNode = FocusNode();
+  final itemDebitFocusNode = FocusNode();
+  final itemCreditFocusNode = FocusNode();
   final itemPriceFocusNode = FocusNode();
   final itemCommissionFocusNode = FocusNode();
   final itemCenterFocusNode = FocusNode();
@@ -68,16 +73,20 @@ class PaymentsController extends GetxController {
 
 
   addDetail(){
+    if(!itemForm.currentState!.validate()) return;
     final detial = GlBankTransactionDetail(
       value: itemPriceController.text.tryToParseToNum,
       remarks: itemRemarksController.text,
       createdDate: DateTime.now(),
       createdBy: user.id,
-      glAccountCreditId: selectedItemAccount.value?.id,
-      glAccountCreditName: selectedItemAccount.value?.name,
+      glAccountDebitId: selectedItemDebit.value?.id,
+      glAccountDebitName: selectedItemDebit.value?.name,
+      glAccountCreditId: selectedItemCredit.value?.id,
+      glAccountCreditName: selectedItemCredit.value?.name,
       companyId: user.companyId,
-      invOrganizationSiteId:
+      invOrganizationSiteId: itemInvoice?.id,
     );
+    details.add(detial);
   }
 
   Future<void> getGlAccounts() async {
@@ -92,19 +101,28 @@ class PaymentsController extends GetxController {
     }
   }
 
-  void getInvoiceListForCustomer(FindCustomerResponse value) {
-    findSideCustomerController.text = "${value.name} ${value.code}";
-    selectedCustomer(value);
+  void getInvoiceListForCustomer(FindCustomerResponse value, void Function() onSuccess) {
     isLoading(true);
     CustomerRepository().findCustomerInvoicesData(
       FindCustomerBalanceRequest(id: value.id),
       onSuccess: (data) {
         findCustomerBalanceResponse = data;
-        searchedItemInvoiceFocusNode.requestFocus();
+        onSuccess();
       },
       onError: (error) => showPopupText(text: error.toString()),
       onComplete: () => isLoading(false),
     );
+  }
+
+
+  selectCustomer(FindCustomerResponse value){
+    findSideCustomerController.text = "${value.name} ${value.code}";
+    selectedCustomer(value);
+    if(accounts.any((element) => element.id == value.accountIdApi)) {
+      selectItemDebit(accounts.singleWhere((element) => element.id == value.accountIdApi),ignoreFocus: true);
+    }
+    if(selectedAccount.value != null) selectItemCredit(selectedAccount.value!,ignoreFocus: true);
+    getInvoiceListForCustomer(value, () => searchedItemInvoiceFocusNode.requestFocus());
   }
 
   getCustomers(){
@@ -137,20 +155,36 @@ class PaymentsController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  selectInvoice(InvoiceList inv) async {
+  selectInvoice(InvoiceList inv,{bool ignoreFocus = false}) async {
     searchedItemInvoiceController.text = inv.serial?.toString()??"";
-    itemAccountFocusNode.requestFocus();
+    if(ignoreFocus) return;
+    if(itemDebitController.text.isEmpty) {
+      itemDebitFocusNode.requestFocus();
+    } else if(itemCreditController.text.isEmpty) {
+      itemCreditFocusNode.requestFocus();
+    } else {
+      itemPriceFocusNode.requestFocus();
+    }
   }
 
-  selectAccount(GlAccountResponse account){
-    selectedItemAccount(account);
-    itemAccountController.text = "${account.name} ${account.shotCode}";
+  selectItemDebit(GlAccountResponse account,{bool ignoreFocus = false}){
+    selectedItemDebit(account);
+    itemDebitController.text = "${account.name} ${account.shotCode}";
+    if(ignoreFocus) return;
+    itemCreditFocusNode.requestFocus();
+  }
+
+  selectItemCredit(GlAccountResponse account,{bool ignoreFocus = false}){
+    selectedItemCredit(account);
+    itemCreditController.text = "${account.name} ${account.shotCode}";
+    if(ignoreFocus) return;
     itemPriceFocusNode.requestFocus();
   }
 
-  selectCenter(CostCenterResponse center){
-    selectedCenter(center);
+  selectItemCenter(CostCenterResponse center,{bool ignoreFocus = false}){
+    selectedItemCenter(center);
     itemCenterController.text = "${center.name}";
+    if(ignoreFocus) return;
     itemRemarksFocusNode.requestFocus();
   }
 
