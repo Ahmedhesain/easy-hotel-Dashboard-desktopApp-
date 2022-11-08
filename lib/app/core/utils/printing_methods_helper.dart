@@ -3559,7 +3559,8 @@ class PrintingHelper {
 
     };
     doc.addPage(MultiPage(
-        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.portrait, margin: EdgeInsets.all(10)),
+        maxPages: 1000,
         build: (Context context) {
           return [
             SizedBox(height: 50.5),
@@ -3629,20 +3630,17 @@ class PrintingHelper {
     m.showDialog(
         context: context,
         builder: (context) {
-          return m.RotatedBox(
-            quarterTurns: 3,
-            child: PdfPreview(
-              actions: [
-                m.IconButton(
-                  onPressed: () => m.Navigator.pop(context),
-                  icon: const m.Icon(
-                    m.Icons.close,
-                    color: m.Colors.red,
-                  ),
-                )
-              ],
-              build: (format) => doc.save(),
-            ),
+          return PdfPreview(
+            actions: [
+              m.IconButton(
+                onPressed: () => m.Navigator.pop(context),
+                icon: const m.Icon(
+                  m.Icons.close,
+                  color: m.Colors.red,
+                ),
+              )
+            ],
+            build: (format) => doc.save(),
           );
         });
   }
