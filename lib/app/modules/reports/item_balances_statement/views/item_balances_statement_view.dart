@@ -221,6 +221,24 @@ class ItemsBalancesStatementView extends GetView<ItemsBalancesStatementControlle
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printItemsBalance(context, controller.reports),
+                                                      child: const Text("طباعة"),
+                                                    );
+                                                  }),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => ExcelHelper.ItemsBalanceExcel(controller.reports, context),
+                                                      child: const Text("تصدير الى اكسل"),
+                                                    );
+                                                  }),
+                                                ),
                                               ],)
 
                                           ),
@@ -247,7 +265,7 @@ class ItemsBalancesStatementView extends GetView<ItemsBalancesStatementControlle
                           ),
                           Container(
                               width:size.width,
-                              height:size.height*.45,
+                              height:size.height*.72,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(

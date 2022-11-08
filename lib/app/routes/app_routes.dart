@@ -26,6 +26,14 @@ abstract class Routes {
   static const FIND_STATEMENT_OF_BONDS_BY_BRANCH = _Paths.FIND_STATEMENT_OF_BONDS_BY_BRANCH;
   static const FIND_VALES_VALUES_ADDED_DETAILS = _Paths.FIND_VALES_VALUES_ADDED_DETAILS;
   static const FIND_VALES_VALUES_ADDED = _Paths.FIND_VALES_VALUES_ADDED;
+  static const BALANCE_GALLARY = _Paths.BALANCE_GALLARY;
+  static const BALANCE_GALLARY_UNPAID = _Paths.BALANCE_GALLARY_UNPAID;
+  static const BALANCE_GALLARY_PAID = _Paths.BALANCE_GALLARY_PAID;
+  static const INV_ITEM_DTO = _Paths.INV_ITEM_DTO;
+
+
+
+
 
 
 
@@ -63,6 +71,14 @@ abstract class _Paths {
   static const FIND_STATEMENT_OF_BONDS_BY_BRANCH = '/find-statement-of-bonds-by-branch';
   static const FIND_VALES_VALUES_ADDED_DETAILS = '/find-vales-value-added-details';
   static const FIND_VALES_VALUES_ADDED = '/find-vales-value-added';
+  static const BALANCE_GALLARY = '/balance-gallary';
+  static const BALANCE_GALLARY_UNPAID = '/balance-gallary-unpaid';
+  static const BALANCE_GALLARY_PAID = '/balance-gallary-paid';
+  static const INV_ITEM_DTO = '/inv-item-dto';
+
+
+
+
 
 
 

@@ -6,11 +6,15 @@ import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/account_statement_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_status_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoice_statement_by_case_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/item_balances_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
 
 import '../../data/model/reports/dto/response/categories_totals_response.dart';
 
@@ -3302,4 +3306,345 @@ class PrintingHelper {
           });
         });
   }
+
+  void printSalesItemsByCompany(m.BuildContext context, List<SalesOfItemsByCompanyResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+      2:const FlexColumnWidth(1),
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اخر مرحلة",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("عدد الثواب",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("عدد الايام المتبقية",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+                  Center(
+                      child: Text(
+                        data[i].gallaryId!.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].gallaryName! ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].totalSales?.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+  void printProfitSold(m.BuildContext context, List<ProfitOfItemsSoldResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+      2:const FlexColumnWidth(1),
+      3:const FlexColumnWidth(1),
+      4:const FlexColumnWidth(1),
+      5:const FlexColumnWidth(1),
+      6:const FlexColumnWidth(1),
+
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الكود",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الاسم",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("متوسط التكلفه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("كميه المبيعات",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("عدد المبيعات",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الخصم الكلي",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اجمالي سعرالبيع",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+                  Center(
+                      child: Text(
+                        data[i].code!.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].name! ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].costAverage?.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].totallNet?.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),    Center(
+                      child: Text(
+                        data[i].totallNumber?.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),    Center(
+                      child: Text(
+                        data[i].totallDiscount?.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),    Center(
+                      child: Text(
+                        data[i].totallSell?.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+  void printItemsBalance(m.BuildContext context, List<ItemsBalanceResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+      2:const FlexColumnWidth(1),
+      3:const FlexColumnWidth(1),
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الاسم",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الكود",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("المتوسط",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("المرتب",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+                  Center(
+                      child: Text(
+                        data[i].name!.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].code! ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].costAverage?.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].sallary?.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+
+
 }

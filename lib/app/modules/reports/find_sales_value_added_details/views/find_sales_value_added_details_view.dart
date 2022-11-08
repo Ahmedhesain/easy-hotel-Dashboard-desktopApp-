@@ -277,7 +277,7 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                           ),
                           Container(
                               width:size.width,
-                              height:size.height*.45,
+                              height:size.height*.72,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(

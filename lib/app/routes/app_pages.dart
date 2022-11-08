@@ -16,6 +16,12 @@ import 'package:toby_bills/app/modules/production_stages/bindings/production_sta
 import 'package:toby_bills/app/modules/production_stages/views/production_stages_view.dart';
 import 'package:toby_bills/app/modules/purchase_invoices/bindings/purchase_invoices_binding.dart';
 import 'package:toby_bills/app/modules/purchase_invoices/views/purchase_invoices_view.dart';
+import 'package:toby_bills/app/modules/reports/balance_galary/bindings/balance_galary_binding.dart';
+import 'package:toby_bills/app/modules/reports/balance_galary/views/balance_galary_view.dart';
+import 'package:toby_bills/app/modules/reports/balance_galary_paid/bindings/balance_galary_paid_binding.dart';
+import 'package:toby_bills/app/modules/reports/balance_galary_paid/views/balance_galary_unpaid_view.dart';
+import 'package:toby_bills/app/modules/reports/balance_galary_unpaid/bindings/balance_galary_unpaid_binding.dart';
+import 'package:toby_bills/app/modules/reports/balance_galary_unpaid/views/balance_galary_unpaid_view.dart';
 import 'package:toby_bills/app/modules/reports/categories_totals/bindings/categories_totals_binding.dart';
 import 'package:toby_bills/app/modules/reports/categories_totals/views/categories_totals_view.dart';
 import 'package:toby_bills/app/modules/reports/clients_no_movement/bindings/clients_no_movement_binding.dart';
@@ -28,6 +34,8 @@ import 'package:toby_bills/app/modules/reports/find_sales_value_added_details/bi
 import 'package:toby_bills/app/modules/reports/find_sales_value_added_details/views/find_sales_value_added_details_view.dart';
 import 'package:toby_bills/app/modules/reports/find_statement_of_bonds_by_branch_report/bindings/find_statement_of_bonds_by_branch_report_binding.dart';
 import 'package:toby_bills/app/modules/reports/find_statement_of_bonds_by_branch_report/views/find_statement_of_bonds_by_branch_report_view.dart';
+import 'package:toby_bills/app/modules/reports/inv_item/bindings/inv_item_binding.dart';
+import 'package:toby_bills/app/modules/reports/inv_item/views/inv_item_view.dart';
 import 'package:toby_bills/app/modules/reports/invoice_status/bindings/invoice_status_binding.dart';
 import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_status_view.dart';
 import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/bindings/invoices_without_swing_binding.dart';
@@ -165,6 +173,26 @@ class AppPages {
       name: _Paths.PURCHASE_INVOICES,
       page: () => PurchaseInvoicesView(),
       binding: PurchaseInvoicesBinding(),
+    ),
+    GetPage(
+      name: _Paths.BALANCE_GALLARY,
+      page: () => BalanceGallaryView(),
+      binding: BalanceGallaryBinding(),
+    ),
+    GetPage(
+      name: _Paths.BALANCE_GALLARY_UNPAID,
+      page: () => BalanceGallaryUnpaidView(),
+      binding: BalanceGallaryUnpaidBinding(),
+    ),
+    GetPage(
+      name: _Paths.BALANCE_GALLARY_PAID,
+      page: () => BalanceGallarypaidView(),
+      binding: BalanceGallarypaidBinding(),
+    ),
+    GetPage(
+      name: _Paths.INV_ITEM_DTO,
+      page: () => InvItemView(),
+      binding: InvItemBinding(),
     ),
   ];
 }

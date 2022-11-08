@@ -14,14 +14,14 @@ import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/inv_item_dto_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
+import 'package:toby_bills/app/modules/reports/inv_item/controllers/inv_item_controller.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
-import 'package:toby_bills/app/modules/reports/sales_items_by_company/controllers/sales_items_by_company_controller.dart';
 
 
-class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
-  const SalesItemsByCompanyView({super.key});
+class InvItemView extends GetView<InvItemController> {
+  const InvItemView({super.key});
 
 
 
@@ -63,7 +63,7 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
-                                height: size.height*.15,
+                                height: size.height*.25,
                                 width: size.width*.95,
                                 child: Column(
                                   children: [
@@ -74,7 +74,10 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                         child: Row(
                                           children: [
 
-                                             Text('المعرض  ',style: smallTextStyleNormal(size)),
+
+
+                                            SizedBox(width: size.width*.08,)
+                                            , Text('الفئه',style: smallTextStyleNormal(size)),
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                               child: Container(
@@ -87,12 +90,12 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                                     border: Border.all(color: Colors.grey)),
                                                 child:
                                                 Obx(() {
-                                                  return DropdownSearch<DeliveryPlaceResposne>(
+                                                  return DropdownSearch<AllGroupResponse>(
                                                     // showSearchBox: true,
-                                                    items: controller.deliveryPlaces,
-                                                    itemAsString: (DeliveryPlaceResposne e) => e.name,
-                                                    onChanged: controller.selectedDeliveryPlace,
-                                                    selectedItem: controller.selectedDeliveryPlace.value,
+                                                    items: controller.groups,
+                                                    itemAsString: (AllGroupResponse e) => e.name!,
+                                                    onChanged: controller.selectedGroup,
+                                                    selectedItem: controller.selectedGroup.value,
                                                     dropdownDecoratorProps: const DropDownDecoratorProps(
                                                       dropdownSearchDecoration: InputDecoration(
                                                         border: OutlineInputBorder(),
@@ -103,98 +106,112 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                                   );
                                                 }),                                              ),
                                             ),
-                                            SizedBox(width: size.width*.1,),
+                                            SizedBox(width: size.width*.2,),
 
                                             Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
-                                              child: Row(
-                                                children: [
-
-                                                   Text('من تاريخ',style: smallTextStyleNormal(size)),
-                                                  Padding(
-                                                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                    child:
-                                                    Container(
-                                                      width: size.width * .2,
-                                                      height: size.height * .04,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white70,
-                                                        borderRadius: BorderRadius.circular(5),
-
-                                                      ),child:
-
-                                                    Center(
-                                                      child: MouseRegion(
-                                                        cursor: SystemMouseCursors.click,
-                                                        child: GestureDetector(
-                                                            onTap: () {
-                                                              controller.pickFromDate();
-                                                            },
-                                                            child: Obx(() {
-                                                              return Text(
-                                                                controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
-                                                                style: const TextStyle(decoration: TextDecoration.underline),
-                                                              );
-                                                            })),
-                                                      ),
-                                                    ),
-
-
-
-
-                                                    ),
-                                                  ),
-
-
-                                                  SizedBox(width: size.width*.05,)
-                                                  ,Padding(
-                                                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                                    child: Text('الي تاريخ',style: smallTextStyleNormal(size)),
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                    child: Container(
-                                                      width: size.width * .2,
-                                                      height: size.height * .04,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white70,
-                                                        borderRadius: BorderRadius.circular(5),
-
-                                                      ),child:
-
-                                                    Center(
-                                                      child: MouseRegion(
-                                                        cursor: SystemMouseCursors.click,
-                                                        child: GestureDetector(
-                                                            onTap: () {
-                                                              controller.pickToDate();
-                                                            },
-                                                            child: Obx(() {
-                                                              return Text(
-                                                                controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
-                                                                style: const TextStyle(decoration: TextDecoration.underline),
-                                                              );
-                                                            })),
-                                                      ),
-                                                    ),
-
-
-
-
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                              child: Text('الاصناف المستخدمه',style: smallTextStyleNormal(size)),
                                             ),
-
-
-                                            SizedBox(width: size.width*.05,)
-
                                           ],
                                         ),
                                       ),
                                     ),
-                                       Padding(
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                                        child: Row(
+                                          children: [
+
+
+
+                                            SizedBox(width: size.width*.08,)
+
+                                            , Text('طبيعه الصنف',style: smallTextStyleNormal(size)),
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                              child: Container(
+                                                width: size.width * .2,
+                                                height: size.height * .045,
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(5)),
+                                                    color: Colors.white,
+                                                    border: Border.all(color: Colors.grey)),
+                                                child:
+                                                Obx(() {
+                                                  return DropdownSearch<AllGroupResponse>(
+                                                    // showSearchBox: true,
+                                                    items: controller.groups,
+                                                    itemAsString: (AllGroupResponse e) => e.name!,
+                                                    onChanged: controller.selectedGroup,
+                                                    selectedItem: controller.selectedGroup.value,
+                                                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                                                      dropdownSearchDecoration: InputDecoration(
+                                                        border: OutlineInputBorder(),
+                                                        contentPadding: EdgeInsets.all(10),
+                                                        isDense: true,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),                                              ),
+                                            ),
+                                            SizedBox(width: size.width*.2,),
+
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                              child: Text('التكلفه اقل من او تساوي',style: smallTextStyleNormal(size)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                                        child: Row(
+                                          children: [
+
+                                            SizedBox(width: size.width*.1,)
+                                            , Text('من تاريخ',style: smallTextStyleNormal(size)),
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                              child:
+                                              Container(
+                                                width: size.width * .3,
+                                                height: size.height * .04,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white70,
+                                                  borderRadius: BorderRadius.circular(5),
+
+                                                ),child:
+
+                                              Center(
+                                                child: MouseRegion(
+                                                  cursor: SystemMouseCursors.click,
+                                                  child: GestureDetector(
+                                                      onTap: () {
+                                                        controller.pickFromDate();
+                                                      },
+                                                      child: Obx(() {
+                                                        return Text(
+                                                          controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
+                                                          style: const TextStyle(decoration: TextDecoration.underline),
+                                                        );
+                                                      })),
+                                                ),
+                                              ),
+
+
+
+
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
                                       padding: EdgeInsets.fromLTRB(0, size.height * .01, 0, 0),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -214,7 +231,7 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                                 const SizedBox(width: 10),
                                                 GestureDetector(
                                                   onTap: (){
-                                                    controller.getSalesItemsByCompany();
+                                                    controller.getInvItemSold();
                                                   },
                                                   child: Container(alignment: Alignment.centerRight,
 
@@ -249,24 +266,6 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
-                                                const SizedBox(width: 10),
-                                                UnconstrainedBox(
-                                                  child: Obx(() {
-                                                    return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printSalesItemsByCompany(context, controller.reports),
-                                                      child: const Text("طباعة"),
-                                                    );
-                                                  }),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                UnconstrainedBox(
-                                                  child: Obx(() {
-                                                    return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => ExcelHelper.SalesItemsByCompanyExcel(controller.reports, context),
-                                                      child: const Text("تصدير الى اكسل"),
-                                                    );
-                                                  }),
-                                                ),
                                               ],)
 
                                           ),
@@ -293,13 +292,13 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                           ),
                           Container(
                               width:size.width,
-                              height:size.height*.72,
+                              height:size.height*.62,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
                                     margin: EdgeInsets.all(0),
                                     child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .2425),
+                                      defaultColumnWidth: FixedColumnWidth(size.width * .0745),
                                       border: TableBorder.all(
                                           borderRadius: BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
@@ -308,19 +307,45 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [Text('المعرض',
+                                          Column(children: [Text('الكود',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('كود الشركه',
+                                          Column(children: [Text('الاسم',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اسم الشركه',
+                                          Column(children: [Text('متوسط التكلفه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اجمالي المبيعات',
+                                          Column(children: [Text('كميه المبيعات',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-
+                                          Column(children: [Text('عدد المبيعات',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('الخصم الكلي',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('اجمالي سعر البيع',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('الاسم',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('متوسط التكلفه',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('كميه المبيعات',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('عدد المبيعات',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('الخصم الكلي',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [Text('اجمالي سعر البيع',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
 
 
 
@@ -334,30 +359,70 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                         if(controller.reports != null)
 
 
-                                          for(SalesOfItemsByCompanyResponse kha in controller.reports??[] )
+                                          for(InvItemDtoResponse kha in controller.reports??[] )
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
-                                                    controller.selectedDeliveryPlace.value!.name,
+                                                    kha.code!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.gallaryId?.toString()??"",
-                                                    style: TextStyle(fontSize: 20.0))
-                                              ]),
-                                              Column(children: [
-                                                Text(
-                                                    kha.gallaryName??"",
+                                                    kha.name!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 
                                               Column(children: [
                                                 Text(
-                                                    kha.totalSales?.toString()??"",
+                                                    kha.sellPrice!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
-
+                                              Column(children: [
+                                                Text(
+                                                    kha.maxpricemen!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.maxpriceyoung!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.minpricemen!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.minpriceyoung!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.numbermetersfreemen!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]), Column(children: [
+                                                Text(
+                                                    kha.numbermetersfreeyoung!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]), Column(children: [
+                                                Text(
+                                                    kha.numbermetersmen!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]), Column(children: [
+                                                Text(
+                                                    kha.numbermetersyoung!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.type!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]), Column(children: [
+                                                Text(
+                                                    kha.quantity!.toString(),
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),
 
 
                                             ],

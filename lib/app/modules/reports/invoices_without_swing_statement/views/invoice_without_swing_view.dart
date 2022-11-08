@@ -249,7 +249,7 @@ class InvoicesWithoutSwingView extends GetView<InvoicesWithoutSwingController> {
                           ),
                           Container(
                               width:size.width,
-                              height:size.height*.45,
+                              height:size.height*.72,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
@@ -312,7 +312,7 @@ class InvoicesWithoutSwingView extends GetView<InvoicesWithoutSwingController> {
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.code!.toString(),
+                                              kha.code != null? kha.code!.toString():"",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 

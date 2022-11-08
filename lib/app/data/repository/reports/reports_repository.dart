@@ -7,6 +7,7 @@ import 'package:toby_bills/app/data/model/reports/dto/request/clients_no_movemen
 import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/find_custome_balance_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/group_list_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/inv_item_dto_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/invoice_statement_by_case_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/items_balances_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/production_stages_request.dart';
@@ -15,6 +16,8 @@ import 'package:toby_bills/app/data/model/reports/dto/request/purchases_request.
 import 'package:toby_bills/app/data/model/reports/dto/request/quantity_items_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/safe_account_statement_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/sales_of_items_by_company_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/balance_galary_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/balance_galary_unpaid_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_totals_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/client_no_movement_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/find_customer_balance_response.dart';
@@ -22,6 +25,7 @@ import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_
 import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_added_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/find_statement_of_bonds_by_branch_report_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/group_list_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/inv_item_dto_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoice_statement_by_case_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoices_without_sewing_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/item_balances_response.dart';
@@ -311,5 +315,57 @@ class ReportsRepository {
         data: salesOfItemsByCompanyRequest.toJson(),
         onError: onError,
         convertor: FindSalesValueAddedResponse.fromList,
+      );
+  BalanceGalary(
+      SalesOfItemsByCompanyRequest salesOfItemsByCompanyRequest, {
+        Function()? onComplete,
+        Function(List<BalanceGalaryResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<BalanceGalaryResponse>,List<dynamic>>('reports/unPaidAmountAfterSearch',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: salesOfItemsByCompanyRequest.toJson(),
+        onError: onError,
+        convertor: BalanceGalaryResponse.fromList,
+      );
+  BalanceGalaryUnpaid(
+      SalesOfItemsByCompanyRequest salesOfItemsByCompanyRequest, {
+        Function()? onComplete,
+        Function(List<BalanceGalaryUnpaidResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<BalanceGalaryUnpaidResponse>,List<dynamic>>('reports/unPaidAmountAfterSearch',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: salesOfItemsByCompanyRequest.toJson(),
+        onError: onError,
+        convertor: BalanceGalaryUnpaidResponse.fromList,
+      );
+  BalanceGalarypaid(
+      SalesOfItemsByCompanyRequest salesOfItemsByCompanyRequest, {
+        Function()? onComplete,
+        Function(List<BalanceGalaryUnpaidResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<BalanceGalaryUnpaidResponse>,List<dynamic>>('reports/GlBankTransactionDetailAfterSearch',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: salesOfItemsByCompanyRequest.toJson(),
+        onError: onError,
+        convertor: BalanceGalaryUnpaidResponse.fromList,
+      );
+  InvItem(
+      InvItemDtoRequest invItemDtoRequest, {
+        Function()? onComplete,
+        Function(List<InvItemDtoResponse> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<InvItemDtoResponse>,List<dynamic>>('reports/invItemsReport',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: invItemDtoRequest.toJson(),
+        onError: onError,
+        convertor: InvItemDtoResponse.fromList,
       );
 }

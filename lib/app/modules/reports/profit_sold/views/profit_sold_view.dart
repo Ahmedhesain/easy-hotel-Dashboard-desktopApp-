@@ -347,23 +347,28 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                               child:Row(children: [
 
                                                 const SizedBox(width: 10),
-                                                Container(alignment: Alignment.centerRight,
+                                                GestureDetector(
+                                                  onTap: (){
+                                                    controller.getProfitSold();
+                                                  },
+                                                  child: Container(alignment: Alignment.centerRight,
 
-                                                  height: size.height * .05,
-                                                  width: size.width * .1,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(6.00)), color:coloryellow,
-                                                  ),
-                                                  child: Row(mainAxisAlignment: MainAxisAlignment
-                                                      .spaceAround,
-                                                    children: [
-                                                      Text('بحث',
-                                                        style: smallTextStyleNormal(size,color: Colors.black),),
-                                                      Icon(Icons.search,color: Colors.black,)
-                                                    ],
-                                                  ),
+                                                    height: size.height * .05,
+                                                    width: size.width * .1,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.all(
+                                                          Radius.circular(6.00)), color:coloryellow,
+                                                    ),
+                                                    child: Row(mainAxisAlignment: MainAxisAlignment
+                                                        .spaceAround,
+                                                      children: [
+                                                        Text('بحث',
+                                                          style: smallTextStyleNormal(size,color: Colors.black),),
+                                                        Icon(Icons.search,color: Colors.black,)
+                                                      ],
+                                                    ),
 
+                                                  ),
                                                 ),
                                                 const SizedBox(width: 10),
                                                 Container(
@@ -378,6 +383,24 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                     child: Text("رجوع"),
                                                     onPressed: () => Get.back(),
                                                   ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printProfitSold(context, controller.reports),
+                                                      child: const Text("طباعة"),
+                                                    );
+                                                  }),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => ExcelHelper.ProfitSoldExcel(controller.reports, context),
+                                                      child: const Text("تصدير الى اكسل"),
+                                                    );
+                                                  }),
                                                 ),
                                               ],)
 
@@ -405,7 +428,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                           ),
                           Container(
                               width:size.width,
-                              height:size.height*.45,
+                              height:size.height*.62,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(

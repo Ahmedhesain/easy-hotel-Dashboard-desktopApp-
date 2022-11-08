@@ -199,7 +199,7 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
                           ),
                           Container(
                               width:size.width,
-                              height:size.height*.45,
+                              height:size.height*.72,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
@@ -254,7 +254,7 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
-                                                kha.clientName!,
+                                                kha.clientCode!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
@@ -264,7 +264,7 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.clientCode!,
+                                                    kha.organizationsiteId!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 

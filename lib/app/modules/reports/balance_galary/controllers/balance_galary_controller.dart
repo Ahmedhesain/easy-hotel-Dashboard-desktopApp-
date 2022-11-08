@@ -5,27 +5,27 @@ import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/sales_of_items_by_company_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/balance_galary_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/quantity_items_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
 import '../../../../data/model/reports/dto/request/quantity_items_request.dart';
 
-class ProfitSoldController extends GetxController{
+class BalanceGallaryController extends GetxController{
 
-  final List<ProfitOfItemsSoldResponse> _allReports = [];
-  final reports = <ProfitOfItemsSoldResponse>[].obs;
+  final List<BalanceGalaryResponse> _allReports = [];
+  final reports = <BalanceGalaryResponse>[].obs;
   final isLoading = false.obs;
   String query = '';
   final deliveryPlaces = <DeliveryPlaceResposne>[];
-  final groups = <AllGroupResponse>[];
   Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
-  Rxn<AllGroupResponse> selectedGroup = Rxn();
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
-  var categoryController = TextEditingController();
 
 
 
@@ -36,29 +36,22 @@ class ProfitSoldController extends GetxController{
   void onInit() {
     super.onInit();
     getDeliveryPlaces();
-    getGroups();
 
 
   }
 
-  getProfitSold() async {
+  getSalesItemsByCompany() async {
     isLoading(true);
-    final request = ProfitOfItemsSoldRequest(
+    final request = SalesOfItemsByCompanyRequest(
       dateTo: dateTo.value,
       dateFrom:dateFrom.value,
-      invType: 4,
-      invoiceType:categoryController.text,
-      invInventoryDtoList: [
-        DtoList(
-            id: selectedDeliveryPlace.value!.id
-        )],
-      proGroupDtoList: [
-    DtoList(
-    id: selectedGroup.value!.id
-    )],
-      branchId:UserManager().branchId,
+      invInventoryDtoList:    [
+    DtoList(id: selectedDeliveryPlace.value!.id)
+    ],
+    branchId: UserManager().branchId
+    // invInventoryDtoList: deliveryPlaces.map((e) => DtoList(id: e.id)).toList(),,
     );
-    ReportsRepository().profitSoldStatement(request,
+    ReportsRepository().BalanceGalary(request,
         onSuccess: (data) {
           reports.assignAll(data);
           _allReports.assignAll(data);
@@ -90,18 +83,6 @@ class ProfitSoldController extends GetxController{
     return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
   }
 
-  Future<void> getGroups() {
-    return ReportsRepository().groupStatement(
-      AllGroupsRequest(branchId: UserManager().branchId, id: UserManager().id),
-      onSuccess: (data) {
-        groups.assignAll(data);
-        if (groups.isNotEmpty) {
-          selectedGroup(groups.first);
-        }
-      },
-      onError: (error) => showPopupText(text: error.toString()),
-    );
-  }
 
 // Future<void> searchItem() async {
   //   reports.clear();

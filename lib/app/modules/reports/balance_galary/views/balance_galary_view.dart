@@ -14,14 +14,16 @@ import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/balance_galary_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
+import 'package:toby_bills/app/modules/reports/balance_galary/controllers/balance_galary_controller.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
 import 'package:toby_bills/app/modules/reports/sales_items_by_company/controllers/sales_items_by_company_controller.dart';
 
 
-class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
-  const SalesItemsByCompanyView({super.key});
+class BalanceGallaryView extends GetView<BalanceGallaryController> {
+  const BalanceGallaryView({super.key});
 
 
 
@@ -249,24 +251,6 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
-                                                const SizedBox(width: 10),
-                                                UnconstrainedBox(
-                                                  child: Obx(() {
-                                                    return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printSalesItemsByCompany(context, controller.reports),
-                                                      child: const Text("طباعة"),
-                                                    );
-                                                  }),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                UnconstrainedBox(
-                                                  child: Obx(() {
-                                                    return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => ExcelHelper.SalesItemsByCompanyExcel(controller.reports, context),
-                                                      child: const Text("تصدير الى اكسل"),
-                                                    );
-                                                  }),
-                                                ),
                                               ],)
 
                                           ),
@@ -293,7 +277,7 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                           ),
                           Container(
                               width:size.width,
-                              height:size.height*.72,
+                              height:size.height*.45,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
@@ -311,13 +295,13 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                           Column(children: [Text('المعرض',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('كود الشركه',
+                                          Column(children: [Text('النوع',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اسم الشركه',
+                                          Column(children: [Text('اسم البنك',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اجمالي المبيعات',
+                                          Column(children: [Text('القيمه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -334,7 +318,7 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                         if(controller.reports != null)
 
 
-                                          for(SalesOfItemsByCompanyResponse kha in controller.reports??[] )
+                                          for(BalanceGalaryResponse kha in controller.reports??[] )
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
@@ -343,18 +327,19 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.gallaryId?.toString()??"",
+                                                    kha.transactionType??"",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.gallaryName??"",
+                                                    kha.bankName??"",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 
+
                                               Column(children: [
                                                 Text(
-                                                    kha.totalSales?.toString()??"",
+                                                    kha.value?.toString()??"",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 

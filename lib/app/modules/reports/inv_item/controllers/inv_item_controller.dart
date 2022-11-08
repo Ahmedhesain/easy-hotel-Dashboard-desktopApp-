@@ -4,7 +4,9 @@ import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/inv_item_dto_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/inv_item_dto_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/quantity_items_response.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
@@ -13,10 +15,10 @@ import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
 import '../../../../data/model/reports/dto/request/quantity_items_request.dart';
 
-class ProfitSoldController extends GetxController{
+class InvItemController extends GetxController{
 
-  final List<ProfitOfItemsSoldResponse> _allReports = [];
-  final reports = <ProfitOfItemsSoldResponse>[].obs;
+  final List<InvItemDtoResponse> _allReports = [];
+  final reports = <InvItemDtoResponse>[].obs;
   final isLoading = false.obs;
   String query = '';
   final deliveryPlaces = <DeliveryPlaceResposne>[];
@@ -35,30 +37,25 @@ class ProfitSoldController extends GetxController{
   @override
   void onInit() {
     super.onInit();
-    getDeliveryPlaces();
     getGroups();
-
 
   }
 
-  getProfitSold() async {
+  getInvItemSold() async {
     isLoading(true);
-    final request = ProfitOfItemsSoldRequest(
-      dateTo: dateTo.value,
+    final request = InvItemDtoRequest(
       dateFrom:dateFrom.value,
-      invType: 4,
-      invoiceType:categoryController.text,
-      invInventoryDtoList: [
-        DtoList(
-            id: selectedDeliveryPlace.value!.id
-        )],
       proGroupDtoList: [
-    DtoList(
-    id: selectedGroup.value!.id
-    )],
+        ProGroupDtoList(
+          id: selectedGroup.value!.id
+        )
+      ],
       branchId:UserManager().branchId,
+      isUsed: true,
+      itemNatural: 1,
+      lastCost: null
     );
-    ReportsRepository().profitSoldStatement(request,
+    ReportsRepository().InvItem(request,
         onSuccess: (data) {
           reports.assignAll(data);
           _allReports.assignAll(data);

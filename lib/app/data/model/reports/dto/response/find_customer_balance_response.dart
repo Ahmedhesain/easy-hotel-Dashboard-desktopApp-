@@ -22,7 +22,7 @@ class FindCustomersBalanceResponse {
   double? balance;
   String ?clientCode;
   String ?clientName;
-  int ?creditor;
+  num ?creditor;
   double? debit;
   num ?openningBalance;
   num ?organizationsiteId;
