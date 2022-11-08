@@ -408,7 +408,7 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                           controller: controller.itemRemarksController,
                           focusNode: controller.itemRemarksFocusNode,
                           onEditingComplete: () {
-                            controller.addDetail(context);
+                            controller.addDetail();
                           },
                         ),
                       ],
@@ -418,7 +418,7 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                   Expanded(
                     child: Center(
                       child: IconButtonWidget(
-                        onPressed: () => controller.addDetail(context),
+                        onPressed: () => controller.addDetail(),
                         icon: Icons.done_rounded,
                       ),
                     ),

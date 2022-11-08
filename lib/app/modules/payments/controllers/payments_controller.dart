@@ -72,7 +72,7 @@ class PaymentsController extends GetxController {
   }
 
 
-  addDetail(BuildContext context){
+  addDetail(){
     if(!itemForm.currentState!.validate()) return;
     final detail = GlBankTransactionDetail(
       value: itemPriceController.text.tryToParseToNum,
@@ -97,8 +97,12 @@ class PaymentsController extends GetxController {
       costCenterName: selectedItemCenter.value?.name,
     );
     details.add(detail);
-    FocusScope.of(context).unfocus();
+    itemCustomerFieldFocusNode.requestFocus();
     clearItemFields();
+  }
+
+  newPayment(){
+
   }
 
   clearItemFields(){
