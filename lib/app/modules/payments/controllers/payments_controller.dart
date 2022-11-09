@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
+import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/cost_center/dto/request/get_cost_center_request.dart';
@@ -157,7 +158,15 @@ class PaymentsController extends GetxController {
 
   }
 
-  printPayment(){
+  printPayment(BuildContext context){
+    isLoading(true);
+    PaymentRepository().findPayment(FindPaymentRequest(branchId: user.branchId, serial: searchPaymentIdController.text.tryToParseToNum?.toInt()),
+        onSuccess: (data){
+          PrintingHelper().printPayments(context, data);
+        },
+        onError: (e) => showPopupText(text: e.toString()),
+        onComplete: () => isLoading(false)
+    );
   }
 
   deletePayment(){

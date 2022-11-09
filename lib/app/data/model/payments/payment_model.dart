@@ -17,9 +17,11 @@ class PaymentModel {
     this.glAccountId,
     this.costCenterId,
     this.serial,
+    this.valueName,
   });
 
   String? type;
+  String? valueName;
   int? branchId;
   int? companyId;
   int? createdBy;
@@ -51,8 +53,10 @@ class PaymentModel {
     bool? isDebit,
     String? remark,
     num? totalValue,
+    String? valueName,
   }) => PaymentModel(
     serial: serial ?? this.serial,
+    valueName: valueName ?? this.valueName,
     type: type ?? this.type,
     branchId: branchId ?? this.branchId,
     companyId: companyId ?? this.companyId,
@@ -73,6 +77,7 @@ class PaymentModel {
     serial: json["serial"],
     type: json["type"],
     branchId: json["branchId"],
+    valueName: json["valueName"],
     companyId: json["companyId"],
     createdBy: json["createdBy"],
     createdDate: json["createdDate"] == null?null:DateTime.parse(json["createdDate"]),
@@ -101,6 +106,7 @@ class PaymentModel {
     "generalJournalId": generalJournalId,
     "glBankTransactionDetailFromAPIList": List<dynamic>.from((glBankTransactionDetailFromApiList??[]).map((x) => x.toJson())),
     "isDebit": isDebit,
+    "valueName": valueName,
     "remark": remark,
     "totalValue": totalValue,
   };

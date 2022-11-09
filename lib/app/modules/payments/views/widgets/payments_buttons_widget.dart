@@ -48,7 +48,7 @@ class PaymentsButtonsWidget extends GetView<PaymentsController> {
                     if(controller.payment.value != null)
                       const SizedBox(width: 5),
                     if(controller.payment.value != null)
-                      ButtonWidget(text: "طباعة", onPressed: () => controller.printPayment()),
+                      ButtonWidget(text: "طباعة", onPressed: () => controller.printPayment(context)),
                     if(controller.payment.value != null)
                       const SizedBox(width: 5),
                     if(controller.payment.value != null)
