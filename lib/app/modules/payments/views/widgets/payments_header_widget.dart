@@ -36,7 +36,7 @@ class PaymentsHeaderWidget extends GetView<PaymentsController> {
                     const Expanded(child: Text("مسلسل")),
                     Expanded(
                       child: Obx(() {
-                        return Text(controller.payment.value?.id.toString() ?? "");
+                        return Text(controller.payment.value?.serial.toString() ?? "");
                       }),
                     )
                   ],
@@ -118,24 +118,6 @@ class PaymentsHeaderWidget extends GetView<PaymentsController> {
                             );
                           },
                         ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    const Expanded(child: Text("مناولة")),
-                    Expanded(
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                          isDense: true,
-                          filled: true,
-                          fillColor: Colors.white70,
-                        ),
-                        controller: controller.monawlaController,
                       ),
                     )
                   ],

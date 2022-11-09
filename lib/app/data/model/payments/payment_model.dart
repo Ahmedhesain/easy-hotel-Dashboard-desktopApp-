@@ -14,6 +14,9 @@ class PaymentModel {
     this.isDebit,
     this.remark,
     this.totalValue,
+    this.glAccountId,
+    this.costCenterId,
+    this.serial,
   });
 
   String? type;
@@ -22,6 +25,9 @@ class PaymentModel {
   int? createdBy;
   DateTime? createdDate;
   int? id;
+  int? serial;
+  int? glAccountId;
+  int? costCenterId;
   DateTime? date;
   int? generalJournalId;
   List<GlBankTransactionDetail>? glBankTransactionDetailFromApiList = [];
@@ -29,7 +35,42 @@ class PaymentModel {
   String? remark;
   num? totalValue;
 
+  PaymentModel copyWith({
+    String? type,
+    int? branchId,
+    int? companyId,
+    int? createdBy,
+    DateTime? createdDate,
+    int? id,
+    int? serial,
+    int? glAccountId,
+    int? costCenterId,
+    DateTime? date,
+    int? generalJournalId,
+    List<GlBankTransactionDetail>? glBankTransactionDetailFromApiList,
+    bool? isDebit,
+    String? remark,
+    num? totalValue,
+  }) => PaymentModel(
+    serial: serial ?? this.serial,
+    type: type ?? this.type,
+    branchId: branchId ?? this.branchId,
+    companyId: companyId ?? this.companyId,
+    createdBy: createdBy ?? this.createdBy,
+    createdDate: createdDate ?? this.createdDate,
+    id: id ?? this.id,
+    date: date ?? this.date,
+    generalJournalId: generalJournalId ?? this.generalJournalId,
+    glBankTransactionDetailFromApiList: glBankTransactionDetailFromApiList ?? this.glBankTransactionDetailFromApiList,
+    isDebit: isDebit ?? this.isDebit,
+    remark: remark ?? this.remark,
+    totalValue: totalValue ?? this.totalValue,
+    costCenterId: costCenterId ?? this.costCenterId,
+    glAccountId: glAccountId ?? this.glAccountId,
+  );
+
   factory PaymentModel.fromJson(Map<String, dynamic> json) => PaymentModel(
+    serial: json["serial"],
     type: json["type"],
     branchId: json["branchId"],
     companyId: json["companyId"],
@@ -42,9 +83,14 @@ class PaymentModel {
     isDebit: json["isDebit"],
     remark: json["remark"],
     totalValue: json["totalValue"],
+    costCenterId: json["costCenterId"],
+    glAccountId: json["glAccountId"],
   );
 
   Map<String, dynamic> toJson() => {
+    "costCenterId": costCenterId,
+    "serial": serial,
+    "glAccountId": glAccountId,
     "type": type,
     "branchId": branchId,
     "companyId": companyId,
@@ -147,6 +193,58 @@ class GlBankTransactionDetail with FormMixin{
     costCenterId: json["costCenterId"],
     costCenterName: json["costCenterName"],
     costCenterCode: json["costCenterCode"],
+  );
+
+  GlBankTransactionDetail copyWith({
+    int? companyId,
+    int? createdBy,
+    DateTime? createdDate,
+    int? id,
+    int? serial,
+    num? bankCommition,
+    int? glAccountCreditCode,
+    int? glAccountCreditId,
+    String? glAccountCreditName,
+    int? glAccountDebitCode,
+    int? glAccountDebitId,
+    String? glAccountDebitName,
+    int? glBankTransactionId,
+    String? invOrganizationSiteCode,
+    int? invOrganizationSiteId,
+    String? invOrganizationSiteName,
+    String? remarks,
+    num? value,
+    int? invoiceId,
+    int? invoiceSerial,
+    num? valueLocal,
+    int? costCenterCode,
+    int? costCenterId,
+    String? costCenterName,
+  }) => GlBankTransactionDetail(
+    companyId: companyId ?? this.companyId,
+    invoiceId: invoiceId ?? this.invoiceId,
+    invoiceSerial: invoiceSerial ?? this.invoiceSerial,
+    createdBy: createdBy ?? this.createdBy,
+    createdDate: createdDate ?? this.createdDate,
+    id: id ?? this.id,
+    serial: serial ?? this.serial,
+    bankCommition: bankCommition ?? this.bankCommition,
+    glAccountCreditCode: glAccountCreditCode ?? this.glAccountCreditCode,
+    glAccountCreditId: glAccountCreditId ?? this.glAccountCreditId,
+    glAccountCreditName: glAccountCreditName ?? this.glAccountCreditName,
+    glAccountDebitCode: glAccountDebitCode ?? this.glAccountDebitCode,
+    glAccountDebitId: glAccountDebitId ?? this.glAccountDebitId,
+    glAccountDebitName: glAccountDebitName ?? this.glAccountDebitName,
+    glBankTransactionId: glBankTransactionId ?? this.glBankTransactionId,
+    invOrganizationSiteCode: invOrganizationSiteCode ?? this.invOrganizationSiteCode,
+    invOrganizationSiteId: invOrganizationSiteId ?? this.invOrganizationSiteId,
+    invOrganizationSiteName: invOrganizationSiteName ?? this.invOrganizationSiteName,
+    remarks: remarks ?? this.remarks,
+    value: value ?? this.value,
+    valueLocal: valueLocal ?? this.valueLocal,
+    costCenterId: costCenterId ?? this.costCenterId,
+    costCenterName: costCenterName ?? this.costCenterName,
+    costCenterCode: costCenterCode ?? this.costCenterCode,
   );
 
   Map<String, dynamic> toJson() => {

@@ -119,19 +119,17 @@ class PaymentsController extends GetxController {
   }
 
   savePayment(){
-    final payment = PaymentModel(
+    final payment = (this.payment.value??PaymentModel()).copyWith(
       glBankTransactionDetailFromApiList: details,
       companyId: this.payment.value?.companyId ?? user.companyId,
       createdBy: this.payment.value?.createdBy ?? user.id,
       createdDate: this.payment.value?.createdDate ?? DateTime.now(),
       branchId: this.payment.value?.branchId ?? user.branchId,
-      id: this.payment.value?.id,
-      type: this.payment.value?.type,
       remark: remarksController.text,
       date: DateTime.now(),
       totalValue: details.fold<num>(0, (p, e) => p + (e.value??0)),
-      generalJournalId: this.payment.value?.generalJournalId,
-      isDebit: this.payment.value?.isDebit
+      costCenterId: selectedCenter.value?.id,
+      glAccountId: selectedAccount.value?.id
     );
     isLoading(true);
     PaymentRepository().savePayment(payment,
