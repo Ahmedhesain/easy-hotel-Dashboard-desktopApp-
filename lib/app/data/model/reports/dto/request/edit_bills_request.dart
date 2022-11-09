@@ -29,30 +29,26 @@ class EditBillsRequest {
   }
 
 }
+
 class AllInvoicesRequest {
+
   AllInvoicesRequest({
     required this.id,
     required this.branchId,
-
-
-
   });
+
   final int id;
   final int branchId;
 
-
-
-
   Map<String, dynamic> toJson(){
     return {
-
       "id": id,
       "branchId": branchId,
-
     };
   }
 
 }
+
 class GlBankTransactionApi {
   GlBankTransactionApi({
     this.date,

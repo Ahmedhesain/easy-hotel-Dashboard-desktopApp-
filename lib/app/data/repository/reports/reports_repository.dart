@@ -171,6 +171,7 @@ class ReportsRepository {
         onError: onError,
         convertor: GlPayDTO.fromList,
       );
+
   editInvoicesStatement(
       GlBankTransactionApi glBankTransactionApi, {
         Function()? onComplete,

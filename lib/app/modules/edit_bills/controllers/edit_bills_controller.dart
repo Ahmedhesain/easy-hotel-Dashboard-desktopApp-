@@ -19,22 +19,12 @@ class EditBillsController extends GetxController {
 
   final manager = UserManager();
   final selectedStatusController = TextEditingController();
-  List<TextEditingController> fieldsControllers=[];
   final findSideCustomerController = TextEditingController();
   final invoiceCustomerController = TextEditingController();
-  List <FocusNode> nodes = [];
-  List<TextEditingController> banksControllers=[];
-  List <FocusNode> banknodes = [];
-
 
   final customers = <FindCustomerResponse>[];
   final allInvoices = <GlPayDTO>[];
-
   final allInvoicesSelected = <GlPayDTO>[];
-
-
-
-
 
 
   @override
@@ -43,59 +33,40 @@ class EditBillsController extends GetxController {
     getAllInvoices() ;
   }
 
-  TextEditingController reportController(GlPayDTO report){
-    final index = reports.indexWhere((e)=>e.id == report.id);
-    return fieldsControllers[index];
-  }
-  FocusNode reportNodes(GlPayDTO report){
-    final index = reports.indexWhere((e)=>e.id == report.id);
-    return nodes[index];
-  }
-
-  TextEditingController bankController(GlPayDTO report){
-    final index = reports.indexWhere((e)=>e.bankId == report.bankId);
-    return banksControllers[index];
-  }
-
-  FocusNode bankNodes(GlPayDTO report){
-    final index = reports.indexWhere((e)=>e.bankId == report.bankId);
-    return banknodes[index];
-  }
   getStatements() async {
     if(int.tryParse(selectedStatusController.text) == null) return;
     isLoading(true);
-    final request = EditBillsRequest(serial:int.parse(selectedStatusController.text) ,branchId: manager.branchId,dateFrom:dateFrom.value,dateTo: dateTo.value);
+    final request = EditBillsRequest(
+        serial:int.parse(selectedStatusController.text),
+        branchId: manager.branchId,
+        dateFrom:dateFrom.value,
+        dateTo: dateTo.value,
+    );
     ReportsRepository().getEditBillsStatement(request,
-        onSuccess: (data) {
-          reports.assignAll(data);
-          fieldsControllers.assignAll(List.generate(reports.length, (index) => TextEditingController(text: reports[index].customerName??"")));
-          nodes.assignAll(List.generate(reports.length, (index) => FocusNode()));
-          banksControllers.assignAll(List.generate(reports.length, (index) => TextEditingController(text: reports[index].bankName??"")));
-          banknodes.assignAll(List.generate(reports.length, (index) => FocusNode()));
-
-        },
+        onSuccess: reports.assignAll,
         onError: (e) => showPopupText(text: e.toString()),
         onComplete: () => isLoading(false)
     );
   }
+
   pickFromDate() async {
-    dateFrom(await _pickDate(initialDate: dateFrom.value ?? DateTime.now(), firstDate: DateTime(2019), lastDate: dateTo.value ?? DateTime.now()));
+    dateFrom(await _pickDate(initialDate: dateFrom.value, firstDate: DateTime(2019), lastDate: dateTo.value));
   }
 
   pickToDate() async {
-    dateTo(await _pickDate(initialDate: dateTo.value ?? DateTime.now(), firstDate: dateFrom.value ?? DateTime.now(), lastDate: DateTime.now()));
+    dateTo(await _pickDate(initialDate: dateTo.value, firstDate: dateFrom.value, lastDate: DateTime.now()));
   }
+
   pickEditDate(DateTime date) async {
     editDate(await _pickDate(initialDate: date, firstDate: date , lastDate: DateTime.now()));
   }
 
-
   _pickDate({required DateTime initialDate, required DateTime firstDate, required DateTime lastDate}) {
     return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
   }
+
   getCustomersByCode() {
     isLoading(true);
-    // findSideCustomerFieldFocusNode.unfocus();
     final request = FindCustomerRequest(code: findSideCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
@@ -106,10 +77,10 @@ class EditBillsController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  getCustomersByCodeForInvoice(FocusNode node) {
+  getCustomersByCodeForInvoice(String code, FocusNode node) {
     isLoading(true);
     node.unfocus();
-    final request = FindCustomerRequest(code: invoiceCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
+    final request = FindCustomerRequest(code: code, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
@@ -129,7 +100,6 @@ class EditBillsController extends GetxController {
     ReportsRepository().getAllInvoicesStatement(request,
         onSuccess: (data) {
           allInvoices.assignAll(data);
-
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));

@@ -76,15 +76,11 @@ class EditBillsButtons extends GetView<EditBillsController> {
           ),
           const Spacer(),
           Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors.appGreyDark),
+            // decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors.appGreyDark),
             padding: const EdgeInsets.all(5),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ButtonWidget(text: "حفظ", onPressed: () {}),
-                const SizedBox(width: 5),
-                ButtonWidget(text: "جديد", onPressed: () {}),
-                const SizedBox(width: 5),
                 ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
               ],
             ),
