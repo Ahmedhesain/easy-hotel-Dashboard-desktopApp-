@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import 'package:toby_bills/app/modules/account_statement/bindings/account_statement_binding.dart';
 import 'package:toby_bills/app/modules/account_statement/views/account_statement_view.dart';
+import 'package:toby_bills/app/modules/catch_receipt/bindings/catch_receipt_binding.dart';
+import 'package:toby_bills/app/modules/catch_receipt/views/catch_receipt_view.dart';
 import 'package:toby_bills/app/modules/edit_bills/bindings/edit_bills_binding.dart';
 import 'package:toby_bills/app/modules/edit_bills/views/edit_bills_view.dart';
 import 'package:toby_bills/app/modules/home/bindings/home_binding.dart';
@@ -54,6 +56,7 @@ import 'package:toby_bills/app/modules/reports/safe_account_statement/bindings/s
 import 'package:toby_bills/app/modules/reports/safe_account_statement/views/safe_account_statement_view.dart';
 import 'package:toby_bills/app/modules/reports/sales_items_by_company/bindings/sales_items_by_company_binding.dart';
 import 'package:toby_bills/app/modules/reports/sales_items_by_company/views/sales_items_by_company_view.dart';
+
 import '../modules/reports/items_quantity/bindings/production_stages_binding.dart';
 import '../modules/reports/items_quantity/views/quantity_items_view.dart';
 
@@ -204,6 +207,11 @@ class AppPages {
       name: _Paths.PAYMENTS,
       page: () => const PaymentsView(),
       binding: PaymentsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CATCH_RECEIPT,
+      page: () => CatchReceiptView(),
+      binding: CatchReceiptBinding(),
     ),
   ];
 }

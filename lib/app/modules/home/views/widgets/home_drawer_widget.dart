@@ -171,6 +171,10 @@ class HomeDrawerWidget extends GetView<HomeController> {
               title: "المدفوعات",
               onTap: () => goTo(Routes.PAYMENTS, "المدفوعات"),
             ),
+            _Tile(
+              title: "سند القبض",
+              onTap: () => goTo(Routes.CATCH_RECEIPT, "سند القبض"),
+            ),
           ],
         ),
       ),
