@@ -13,12 +13,12 @@ class EditBillsController extends GetxController {
 
   final List<GlPayDTO> reports = [];
   final isLoading = false.obs;
-  final Rxn<DateTime> dateFrom = Rxn();
-  final Rxn<DateTime> dateTo = Rxn();
-  final Rxn<DateTime> Editdate = Rxn();
+  final Rx<DateTime> dateFrom = Rx(DateTime.now().subtract(const Duration(days: 1)));
+  final Rx<DateTime> dateTo = Rx(DateTime.now());
+  final Rxn<DateTime> editDate = Rxn();
 
   final manager = UserManager();
-  final selectedStatus = TextEditingController();
+  final selectedStatusController = TextEditingController();
   List<TextEditingController> fieldsControllers=[];
   final findSideCustomerController = TextEditingController();
   final invoiceCustomerController = TextEditingController();
@@ -62,9 +62,9 @@ class EditBillsController extends GetxController {
     return banknodes[index];
   }
   getStatements() async {
-    if(int.tryParse(selectedStatus.text) == null) return;
+    if(int.tryParse(selectedStatusController.text) == null) return;
     isLoading(true);
-    final request = EditBillsRequest(serial:int.parse(selectedStatus.text) ,branchId: manager.branchId,dateFrom:dateFrom.value,dateTo: dateTo.value);
+    final request = EditBillsRequest(serial:int.parse(selectedStatusController.text) ,branchId: manager.branchId,dateFrom:dateFrom.value,dateTo: dateTo.value);
     ReportsRepository().getEditBillsStatement(request,
         onSuccess: (data) {
           reports.assignAll(data);
@@ -86,7 +86,7 @@ class EditBillsController extends GetxController {
     dateTo(await _pickDate(initialDate: dateTo.value ?? DateTime.now(), firstDate: dateFrom.value ?? DateTime.now(), lastDate: DateTime.now()));
   }
   pickEditDate(DateTime date) async {
-    Editdate(await _pickDate(initialDate: date, firstDate: date , lastDate: DateTime.now()));
+    editDate(await _pickDate(initialDate: date, firstDate: date , lastDate: DateTime.now()));
   }
 
 

@@ -4,6 +4,7 @@ import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:toby_bills/app/routes/app_pages.dart';
+import 'package:window_manager/window_manager.dart';
 
 class HomeDrawerWidget extends GetView<HomeController> {
   const HomeDrawerWidget({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
             _Tile(
               title: "إجماليات الفواتير",
               onTap: () {
-                Get.toNamed(Routes.CATEGORIES_TOTALS);
+                goTo(Routes.CATEGORIES_TOTALS, "إجماليات الفواتير");
               },
             ),
             _Tile(
@@ -53,7 +54,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
                   showPopupText(text: "يجب اختيار فاتورة اولاً");
                   return;
                 }
-                Get.toNamed(Routes.INVOICE_STATUS);
+                goTo(Routes.INVOICE_STATUS,"حالة الفاتورة");
               },
             ),
             _Tile(
@@ -63,7 +64,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
                   showPopupText(text: "يجب اختيار عميل اولاً");
                   return;
                 }
-                Get.toNamed(Routes.ACCOUNT_STATEMENT);
+                goTo(Routes.ACCOUNT_STATEMENT,"كشف حساب");
               },
             ),
             _Tile(
@@ -73,7 +74,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
                   showPopupText(text: "يجب اختيار فاتورة اولاً");
                   return;
                 }
-                Get.toNamed(Routes.PRODUCTION_STAGES);
+                goTo(Routes.PRODUCTION_STAGES,"مراحل الانتاج");
               },
             ),
             _Tile(
@@ -83,97 +84,103 @@ class HomeDrawerWidget extends GetView<HomeController> {
                   showPopupText(text: "يجب اختيار فاتورة اولاً");
                   return;
                 }
-                Get.toNamed(Routes.ITEMS_QUANTITY);
+                goTo(Routes.ITEMS_QUANTITY, "كميه الاصناف بالمعرض");
               },
             ),
             _Tile(
               title: "مبيعات الأصناف حسب العملاء تفصيلي",
-              onTap: () => Get.toNamed(Routes.ITEMS_SALES_BY_CUSTOMERS),
+              onTap: () => goTo(Routes.ITEMS_SALES_BY_CUSTOMERS, "مبيعات الأصناف حسب العملاء تفصيلي"),
             ),
             _Tile(
               title: "كشف حساب خزنة",
-              onTap: () => Get.toNamed(Routes.SAFE_ACCOUNT_SATATMENT),
+              onTap: () => goTo(Routes.SAFE_ACCOUNT_SATATMENT, "كشف حساب خزنة"),
             ),
             _Tile(
               title: "الاصناف",
-              onTap: () => Get.toNamed(Routes.ITEMS),
+              onTap: () => goTo(Routes.ITEMS, "الاصناف"),
             ),
             _Tile(
               title: "بيان الفواتير حسب الحالة",
-              onTap: () => Get.toNamed(Routes.INVOICE_STATEMENT_BY_CASE),
+              onTap: () => goTo(Routes.INVOICE_STATEMENT_BY_CASE, "بيان الفواتير حسب الحالة"),
             ),
             _Tile(
               title: "تعديل سندات القبض",
-              onTap: () => Get.toNamed(Routes.EDITBILLS),
+              onTap: () => goTo(Routes.EDITBILLS, "تعديل سندات القبض"),
             ),
             _Tile(
               title: "ارباح مبيعات الاصناف",
-              onTap: () => Get.toNamed(Routes.PROFITSOLD),
+              onTap: () => goTo(Routes.PROFITSOLD, "ارباح مبيعات الاصناف"),
             ),
             _Tile(
               title: "المبيعات حسب الشركات لفتره",
-              onTap: () => Get.toNamed(Routes.SALES_ITEMS_BY_COMPANY),
+              onTap: () => goTo(Routes.SALES_ITEMS_BY_COMPANY, "المبيعات حسب الشركات لفتره"),
             ),
             _Tile(
               title: "رصيد الاصناف",
-              onTap: () => Get.toNamed(Routes.ITEMS_BALANCES_STATEMENT),
+              onTap: () => goTo(Routes.ITEMS_BALANCES_STATEMENT, "رصيد الاصناف"),
             ),
             _Tile(
               title: "فواتير الشركات بدون خياطه",
-              onTap: () => Get.toNamed(Routes.INVOICES_WITHOUT_SWING),
+              onTap: () => goTo(Routes.INVOICES_WITHOUT_SWING, "فواتير الشركات بدون خياطه"),
             ),
             _Tile(
               title: "عملاء ليس لديهم حركه",
-              onTap: () => Get.toNamed(Routes.CLIENTS_NO_MOVEMENT),
+              onTap: () => goTo(Routes.CLIENTS_NO_MOVEMENT, "عملاء ليس لديهم حركه"),
             ),
             _Tile(
               title: "ارصده العملاء",
-              onTap: () => Get.toNamed(Routes.FIND_CUSTOMER_BALANCE),
+              onTap: () => goTo(Routes.FIND_CUSTOMER_BALANCE, "ارصده العملاء"),
             ),
             _Tile(
               title: "بيان بالسندات الصادره حسب الفرع",
-              onTap: () => Get.toNamed(Routes.FIND_STATEMENT_OF_BONDS_BY_BRANCH),
+              onTap: () => goTo(Routes.FIND_STATEMENT_OF_BONDS_BY_BRANCH, "بيان بالسندات الصادره حسب الفرع"),
             ),
             _Tile(
               title: "بيان الفواتير حسب الضريبه تفصيلي",
-              onTap: () => Get.toNamed(Routes.FIND_VALES_VALUES_ADDED_DETAILS),
+              onTap: () => goTo(Routes.FIND_VALES_VALUES_ADDED_DETAILS, "بيان الفواتير حسب الضريبه تفصيلي"),
             ),
             _Tile(
               title: "بيان الفواتير حسب الضريبه ",
-              onTap: () => Get.toNamed(Routes.FIND_VALES_VALUES_ADDED),
+              onTap: () => goTo(Routes.FIND_VALES_VALUES_ADDED, "بيان الفواتير حسب الضريبه "),
             ),
             _Tile(
               title: "فواتير الشراء",
-              onTap: () => Get.toNamed(Routes.PURCHASE_INVOICES),
+              onTap: () => goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء"),
             ),
             _Tile(
               title: "تقرير العمولات",
-              onTap: () => Get.toNamed(Routes.BALANCE_GALLARY),
+              onTap: () => goTo(Routes.BALANCE_GALLARY, "تقرير العمولات"),
             ),
             _Tile(
               title: "تقرير بالمبالغ الغير مسدده",
-              onTap: () => Get.toNamed(Routes.BALANCE_GALLARY_UNPAID),
+              onTap: () => goTo(Routes.BALANCE_GALLARY_UNPAID, "تقرير بالمبالغ الغير مسدده"),
             ),
             _Tile(
               title: "تقرير بالمبالغ المسدده",
-              onTap: () => Get.toNamed(Routes.BALANCE_GALLARY_PAID),
+              onTap: () => goTo(Routes.BALANCE_GALLARY_PAID, "تقرير بالمبالغ المسدده"),
             ),
             _Tile(
               title: "الاصناف حسب الفئات",
-              onTap: () => Get.toNamed(Routes.INV_ITEM_DTO),
+              onTap: () => goTo(Routes.INV_ITEM_DTO, "الاصناف حسب الفئات"),
             ),
             _Tile(
               title: "الإشعارات",
-              onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
+              onTap: () => goTo(Routes.NOTIFICATIONS, "الإشعارات"),
             ),
             _Tile(
               title: "المدفوعات",
-              onTap: () => Get.toNamed(Routes.PAYMENTS),
+              onTap: () => goTo(Routes.PAYMENTS, "المدفوعات"),
             ),
           ],
         ),
       ),
     );
+  }
+  
+  goTo(String to, String title)async{
+    windowManager.setTitle("Toby Bills -> $title");
+    await Get.toNamed(to);
+    windowManager.setTitle("Toby Bills");
   }
 }
 
