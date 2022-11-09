@@ -42,7 +42,7 @@ class PrintingHelper {
         build: (Context context) {
           return [
             SizedBox(height: 50),
-            SizedBox(
+            Center(
               child: Container(
                 color: grey,
                 padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
@@ -56,7 +56,6 @@ class PrintingHelper {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                //customer data and date
                 Expanded(
                   child: Column(
                     children: [
@@ -75,6 +74,7 @@ class PrintingHelper {
                         ),
                         SizedBox(width: 15),
                         SizedBox(
+                          width: 60,
                           child: Text(
                             "رقم السند",
                             style: boldStyle,
@@ -111,7 +111,7 @@ class PrintingHelper {
                     ],
                   ),
                 ),
-                // seller data
+                SizedBox(width: 30),
                 Expanded(
                   flex: 2,
                   child: Column(

@@ -111,8 +111,6 @@ class PaymentsController extends GetxController {
     remarksController.clear();
     monawlaController.clear();
     if(galleries.isNotEmpty) selectedGallery(galleries.first);
-    selectedAccount.value = null;
-    selectedCenter.value = null;
     details.clear();
     payment.value = null;
     date(DateTime.now());
@@ -120,6 +118,16 @@ class PaymentsController extends GetxController {
   }
 
   savePayment(){
+    if(details.isEmpty){
+      showPopupText(text: "يرجى إضافة تفاصيل");
+      return;
+    } else if(selectedCenter.value == null){
+      showPopupText(text: "يرجى تحديد مركز تكلفة");
+      return;
+    } else if(selectedAccount.value == null){
+      showPopupText(text: "يرجى تحديد رقم الحساب الدائن");
+      return;
+    }
     final payment = (this.payment.value??PaymentModel()).copyWith(
       glBankTransactionDetailFromApiList: details,
       companyId: this.payment.value?.companyId ?? user.companyId,
@@ -174,6 +182,7 @@ class PaymentsController extends GetxController {
     PaymentRepository().deletePayment(DeletePaymentRequest(id: payment.value!.id!),
         onSuccess: (data){
           showPopupText(text: "تم الحذف بنجاح",type: MsgType.success);
+          newPayment();
         },
         onError: (e) => showPopupText(text: e.toString()),
         onComplete: () => isLoading(false)
