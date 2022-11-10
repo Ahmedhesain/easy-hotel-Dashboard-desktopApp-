@@ -13,6 +13,7 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/general_journal/dto/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
@@ -33,6 +34,7 @@ import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dar
 import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
+import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
@@ -249,9 +251,9 @@ class HomeController extends GetxController {
 
   printGeneralJournal(BuildContext context){
     isLoading(true);
-    InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null),
+    GeneralJournalRepository().findGeneralJournalById(FindGeneralJournalRequest(invoice.value!.generalJournalId),
         onSuccess: (data) {
-          PrintingHelper().printGeneralJournal(GeneralJournalModel(), context);
+          PrintingHelper().printGeneralJournal(data, context);
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));

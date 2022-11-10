@@ -57,6 +57,7 @@ class InvoiceResponse {
       required this.status,
       required this.step,
       required this.supplierInvoiceNumber,
+      required this.generalJournalId,
       required this.totalNet, this.supplierDate});
 
   String? type;
@@ -64,6 +65,7 @@ class InvoiceResponse {
   int? companyId;
   String? supplierInvoiceNumber;
   int? createdBy;
+  int? generalJournalId;
   DateTime? createdDate;
   int? id;
   int? customerId;
@@ -134,6 +136,7 @@ class InvoiceResponse {
         type: json["type"],
         branchId: json["branchId"],
         companyId: json["companyId"],
+        generalJournalId: json["generalJournalId"],
        supplierInvoiceNumber: json["supplierInvoiceNumber"],
         createdBy: json["createdBy"],
         createdDate: DateTime.parse(json["createdDate"]),
@@ -194,6 +197,7 @@ class InvoiceResponse {
         "supplierInvoiceNumber": supplierInvoiceNumber,
         "branchId": branchId,
         "companyId": companyId,
+        "generalJournalId": generalJournalId,
         "createdBy": createdBy,
         "createdDate": createdDate?.toIso8601String(),
         "id": id,

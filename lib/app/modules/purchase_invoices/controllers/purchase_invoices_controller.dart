@@ -13,6 +13,8 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/general_journal/dto/find_general_journal_request.dart';
+import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
@@ -35,6 +37,7 @@ import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.d
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/provider/local_provider.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
+import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
@@ -212,6 +215,17 @@ class PurchaseInvoicesController extends GetxController {
             discount: data.discount,
             value: data.totalNet,
           );
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
+
+  }
+
+  printGeneralJournal(BuildContext context){
+    isLoading(true);
+    GeneralJournalRepository().findGeneralJournalById(FindGeneralJournalRequest(invoice.value!.generalJournalId),
+        onSuccess: (data) {
+          PrintingHelper().printGeneralJournal(data, context);
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));

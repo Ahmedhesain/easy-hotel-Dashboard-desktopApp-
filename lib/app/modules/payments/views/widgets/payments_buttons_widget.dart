@@ -46,13 +46,17 @@ class PaymentsButtonsWidget extends GetView<PaymentsController> {
                   children: [
                     ButtonWidget(text: controller.payment.value != null ? "تعديل" : "حفظ", onPressed: () => controller.savePayment()),
                     if(controller.payment.value != null)
-                      const SizedBox(width: 5),
-                    if(controller.payment.value != null)
-                      ButtonWidget(text: "طباعة", onPressed: () => controller.printPayment(context)),
-                    if(controller.payment.value != null)
-                      const SizedBox(width: 5),
-                    if(controller.payment.value != null)
-                      ButtonWidget(text: "حذف", onPressed: () => controller.deletePayment()),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(width: 5),
+                          ButtonWidget(text: "طباعة", onPressed: () => controller.printPayment(context)),
+                          const SizedBox(width: 5),
+                          ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printPayment(context)),
+                          const SizedBox(width: 5),
+                          ButtonWidget(text: "حذف", onPressed: () => controller.deletePayment()),
+                        ],
+                      ),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "جديد", onPressed: () => controller.newPayment()),
                     const SizedBox(width: 5),

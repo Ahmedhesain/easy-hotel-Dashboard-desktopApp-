@@ -213,11 +213,11 @@ class HomeDrawerSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       clipBehavior: Clip.antiAlias,
-      margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(spreadRadius: 2,blurRadius: 5,color: Colors.black12)
         ]
       ),
@@ -243,7 +243,7 @@ class HomeDrawerTileWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      contentPadding: EdgeInsets.only(left: 30),
+      contentPadding: const EdgeInsets.only(left: 30),
       leading: const SizedBox(
           width: 20,
           child: Center(

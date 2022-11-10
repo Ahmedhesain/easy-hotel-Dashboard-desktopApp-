@@ -19,16 +19,22 @@ class CatchReceiptButtonsWidget extends GetView<CatchReceiptController> {
           Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors.appGreyDark),
             padding: const EdgeInsets.all(5),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ButtonWidget(text: "حفظ", onPressed: () => controller.save()),
-                const SizedBox(width: 5),
-                ButtonWidget(text: "جديد", onPressed: () => controller.newPay()),
-                const SizedBox(width: 5),
-                ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
-              ],
-            ),
+            child: Obx(() {
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ButtonWidget(text: "حفظ", onPressed: () => controller.save()),
+                  const SizedBox(width: 5),
+                  ButtonWidget(text: "جديد", onPressed: () => controller.newPay()),
+                  if(controller.glBankTransactionApi.value != null)
+                    const SizedBox(width: 5),
+                  if(controller.glBankTransactionApi.value != null)
+                    ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printGeneralJournal(context)),
+                  const SizedBox(width: 5),
+                  ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
+                ],
+              );
+            }),
           ),
         ],
       ),

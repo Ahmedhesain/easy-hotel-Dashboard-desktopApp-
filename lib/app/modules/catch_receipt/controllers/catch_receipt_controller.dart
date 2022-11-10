@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
+import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_balance_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
+import 'package:toby_bills/app/data/model/general_journal/dto/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
+import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 
 import '../../../data/model/customer/dto/response/find_customer_response.dart';
@@ -113,7 +116,7 @@ class CatchReceiptController extends GetxController {
     ReportsRepository().saveInvoicesStatement(request,
       onSuccess: (data){
         showPopupText(text: "تم حفظ السند ينجاح", type: MsgType.success);
-        newPay();
+        glBankTransactionApi(data);
       },
       onError: (e) => showPopupText(text: e.toString()),
       onComplete: () => isLoading(false)
@@ -127,6 +130,17 @@ class CatchReceiptController extends GetxController {
     remarksController.clear();
     banksToPay.clear();
     clearItemFields();
+  }
+
+  printGeneralJournal(BuildContext context){
+    isLoading(true);
+    GeneralJournalRepository().findGeneralJournalById(FindGeneralJournalRequest(glBankTransactionApi.value!.generalJournalId),
+        onSuccess: (data) {
+          PrintingHelper().printGeneralJournal(data, context);
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
+
   }
 
   clearItemFields(){

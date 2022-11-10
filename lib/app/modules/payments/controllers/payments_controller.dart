@@ -11,6 +11,7 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/general_journal/dto/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gl_account_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
@@ -23,6 +24,7 @@ import 'package:toby_bills/app/data/model/payments/payment_model.dart';
 import 'package:toby_bills/app/data/provider/local_provider.dart';
 import 'package:toby_bills/app/data/repository/cost_center/cost_center_repository.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
+import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/payment/payment_repository.dart';
 
@@ -176,6 +178,18 @@ class PaymentsController extends GetxController {
         onComplete: () => isLoading(false)
     );
   }
+
+  printGeneralJournal(BuildContext context){
+    isLoading(true);
+    GeneralJournalRepository().findGeneralJournalById(FindGeneralJournalRequest(payment.value!.generalJournalId),
+        onSuccess: (data) {
+          PrintingHelper().printGeneralJournal(data, context);
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
+
+  }
+
 
   deletePayment(){
     isLoading(true);
