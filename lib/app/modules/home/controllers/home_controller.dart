@@ -13,6 +13,7 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
@@ -238,6 +239,17 @@ class HomeController extends GetxController {
             payed: data.payed,
             remain: data.remain
           );
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
+
+  }
+
+  printGeneralJournal(BuildContext context){
+    isLoading(true);
+    InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null),
+        onSuccess: (data) {
+          PrintingHelper().printGeneralJournal(GeneralJournalModel(), context);
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));

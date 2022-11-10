@@ -4,9 +4,11 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
+import 'package:toby_bills/app/components/heads_widget.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/account_statement_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
+import 'package:toby_bills/app/data/model/general_journal/generaljournaldetail_model.dart';
+import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_status_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
@@ -21,6 +23,381 @@ import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by
 import '../../data/model/reports/dto/response/categories_totals_response.dart';
 
 class PrintingHelper {
+
+  void printGeneralJournal(GeneralJournalModel generalJournalModel,  m.BuildContext context) async {
+    final user = UserManager().user;
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle =
+    TextStyle(font: ttfBold, fontSize: 7.5, fontBold: ttfBold);
+    double allDebitAmount = 0.0;
+    double allCreditAmount = 0.0;
+
+    for (GenralJournalDetailModel detail
+    in generalJournalModel.detailDtoList!) {
+      detail.creditAmount != null
+          ? allCreditAmount += detail.creditAmount!
+          : null;
+      detail.debitAmount != null ? allDebitAmount += detail.debitAmount! : null;
+    }
+    doc.addPage(MultiPage(
+        footer: (context) => Container(
+            height: 25,
+            width: 650,
+            decoration: const BoxDecoration(
+                border: Border(
+                    top: BorderSide(color: PdfColors.black, width: 2))),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    DateFormat("dd-MM-yyyy HH:mm:ss").format(DateTime.now()),
+                    style: boldStyle,
+                    textDirection: TextDirection.rtl,
+                  ),
+                  Text(
+                    user.name,
+                    style: boldStyle,
+                    textDirection: TextDirection.rtl,
+                  ),
+                ])),
+        pageTheme: PageTheme(
+          pageFormat: PdfPageFormat.a4,
+        ),
+        build: (Context context) {
+          return [
+            Directionality(
+                textDirection: TextDirection.rtl,
+                child: Column(
+                  children: [
+                    Container(
+                      color: grey,
+                      width: 100,
+                      height: 20,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Text('بيان قيود اليومية',
+                            style: boldStyle,
+                            textDirection: TextDirection.rtl,
+                            textAlign: TextAlign.center),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          HeadWidget(
+                              value: generalJournalModel.generalData
+                                  ?.toIso8601String()
+                                  .split("T")[0],
+                              title: 'تاريخ السند',
+                              textStyle: boldStyle,
+                              color: grey),
+                          SizedBox(width: 40),
+                          HeadWidget(
+                              value: generalJournalModel.generalTypeName,
+                              title: "نوع السند",
+                              textStyle: boldStyle,
+                              color: grey),
+                          SizedBox(width: 60),
+                          HeadWidget(
+                              value: generalJournalModel.generalDecument,
+                              title: "رقم السند ",
+                              textStyle: boldStyle,
+                              color: grey),
+                          SizedBox(width: 60),
+                          HeadWidget(
+                              value: generalJournalModel.serial,
+                              title: 'رقم القيد',
+                              textStyle: boldStyle,
+                              color: grey),
+                        ]),
+                    SizedBox(height: 20),
+                    Row(children: [
+                      Container(
+                          width: 500,
+                          height: 80,
+                          color: PdfColors.white,
+                          child: Table(
+                              border: TableBorder.all(
+                                  color: PdfColors.black, width: 1),
+                              // border: TableBorder(),
+                              children: [
+                                TableRow(
+                                    decoration: const BoxDecoration(
+                                      color: PdfColors.white,
+                                    ),
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        height: 25,
+                                        child: Column(children: [
+                                          Text(
+                                              generalJournalModel
+                                                  .generalStatement ??
+                                                  "",
+                                              style: boldStyle,
+                                              textDirection:
+                                              TextDirection.rtl)
+                                        ]),
+                                      ),
+                                      Container(
+                                          color: grey,
+                                          height: 25,
+                                          child: Center(
+                                              child: Text('عنوان القيد',
+                                                  style: boldStyle,
+                                                  textDirection:
+                                                  TextDirection.rtl,
+                                                  textAlign:
+                                                  TextAlign.center))),
+                                    ]),
+                              ]))
+                    ]),
+                    SizedBox(height: 20),
+                    Container(
+                      // width: double.infinity,
+                        color: PdfColors.white,
+                        child: Table(
+                            border: TableBorder.all(
+                                color: PdfColors.black, width: 1),
+                            tableWidth: TableWidth.max,
+                            // columnWidths: {
+                            //   0 : FixedColumnWidth(300),
+                            //   1 : FixedColumnWidth(300),
+                            //   2 : FixedColumnWidth(300),
+                            //   3 : FixedColumnWidth(300),
+                            //   4 : FixedColumnWidth(300),
+                            //   5 : FixedColumnWidth(300),
+                            // },
+                            // border: TableBorder(),
+                            children: [
+                              TableRow(
+                                  decoration: const BoxDecoration(
+                                    color: grey,
+                                  ),
+                                  children: [
+                                    Container(
+                                        width: 100,
+                                        child: Text('البيان',
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center)),
+                                    // Container(
+                                    //     width: 40,
+                                    //     child: Text('وحدة ادارية',
+                                    //         style: boldStyle,
+                                    //         textDirection: TextDirection.rtl,
+                                    //         textAlign: TextAlign.center)),
+                                    Container(
+                                        width: 70,
+                                        child: Text('مركز التكلفة',
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center)),
+                                    Container(
+                                        width: 70,
+                                        child: Text('اسم الحساب',
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center)),
+                                    Container(
+                                        width: 40,
+                                        child: Text('رقم الحساب',
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center)),
+                                    Container(
+                                        width: 30,
+                                        child: Text('دائن',
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center)),
+                                    Container(
+                                        width: 30,
+                                        child: Text('مدين',
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center)),
+                                  ]),
+                            ])),
+                    for (GenralJournalDetailModel detail in generalJournalModel.detailDtoList!)
+                      Container(
+                          color: PdfColors.white,
+                          child: Table(
+                              border: TableBorder.all(
+                                  color: PdfColors.black, width: 1),
+                              // border: TableBorder(),
+                              children: [
+                                TableRow(children: [
+                                  Container(
+                                      width: 100,
+                                      child: Text(detail.discribtion!,
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center)),
+                                  // Container(
+                                  //     width: 40,
+                                  //     child: Text("",
+                                  //         style: normalStyle,
+                                  //         textDirection: TextDirection.rtl,
+                                  //         textAlign: TextAlign.center)),
+                                  Container(
+                                      width: 70,
+                                      child: Text(detail.glCostCenterName!,
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center)),
+                                  Container(
+                                      width: 70,
+                                      child: Text(detail.glAccountName!,
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center)),
+                                  Container(
+                                      width: 40,
+                                      child: Text(detail.glAccountNumber!,
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center)),
+                                  Container(
+                                      width: 30,
+                                      child: Text(
+                                          detail.creditAmount != null
+                                              ? detail.creditAmount!.toString()
+                                              : "",
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center)),
+                                  Container(
+                                      width: 30,
+                                      child: Text(
+                                          detail.debitAmount != null
+                                              ? detail.debitAmount!.toString()
+                                              : "",
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center)),
+                                ]),
+                              ])),
+                    Container(
+                        color: PdfColors.white,
+                        child: Table(
+                            border: TableBorder.all(
+                                color: PdfColors.black, width: 1),
+                            // border: TableBorder(),
+                            children: [
+                              TableRow(children: [
+                                Container(
+                                    width: 30,
+                                    child: Text('مرحل',
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    width: 30,
+                                    child: Text('موزون',
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    width: 30,
+                                    color: grey,
+                                    child: Text('قيد',
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    child: Text(
+                                        DateFormat("dd-MM-yyyy").format(generalJournalModel.createdDate ?? DateTime.now()),
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    width: 65,
+                                    child: Text(
+                                        generalJournalModel.createdByName ?? "",
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    width: 75,
+                                    color: grey,
+                                    child: Text('اسم و تاريخ منشئ القيد',
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    width: 30,
+                                    child: Text(allCreditAmount.toStringAsFixed(2),
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.center)),
+                                Container(
+                                    width: 30,
+                                    child: Text(allDebitAmount.toStringAsFixed(2),
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.center)),
+                              ]),
+                            ])),
+                    Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(children: [
+                          Column(children: [
+                            Text('اعتماد',
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                                textAlign: TextAlign.center),
+                            Text('.........',
+                                style: const TextStyle(color: grey)),
+                          ]),
+                          SizedBox(width: 150),
+                          Column(children: [
+                            Text('مدير الحسابات',
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                                textAlign: TextAlign.center),
+                            Text('.........',
+                                style: const TextStyle(color: grey)),
+                          ]),
+                          SizedBox(width: 150),
+                          Column(children: [
+                            Text('المحاسب',
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                                textAlign: TextAlign.center),
+                            Text('.........',
+                                style: const TextStyle(color: grey)),
+                          ]),
+                        ]))
+                  ],
+                ))
+          ];
+        }));
+
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return PdfPreview(
+            actions: [
+              m.IconButton(
+                onPressed: () => m.Navigator.pop(context),
+                icon: const m.Icon(
+                  m.Icons.close,
+                  color: m.Colors.red,
+                ),
+              )
+            ],
+            build: (format) => doc.save(),
+          );
+        });
+  }
 
   void printPayments(m.BuildContext context, PaymentModel payment) async {
     final doc = Document();
