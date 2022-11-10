@@ -6,11 +6,14 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
+import 'package:toby_bills/app/core/extensions/string_ext.dart';
+import 'package:toby_bills/app/core/utils/double_filter.dart';
+import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
-import 'package:toby_bills/app/modules/catch_receipt/controllers/widgets/catch_receipt_buttons_widget.dart';
+import 'package:toby_bills/app/modules/catch_receipt/views/widgets/catch_receipt_buttons_widget.dart';
 
 import '../controllers/catch_receipt_controller.dart';
 
@@ -19,9 +22,7 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Obx(() {
       return AppLoadingOverlay(
         isLoading: controller.isLoading.value,
@@ -60,8 +61,10 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                 child: Container(
                                   width: size.width * .13,
                                   height: size.height * .06,
-                                  decoration:
-                                  BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(5)), color: Colors.white, border: Border.all(color: Colors.grey)),
+                                  decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.grey)),
                                   child: TypeAheadFormField<FindCustomerResponse>(
                                       itemBuilder: (context, client) {
                                         return SizedBox(
@@ -71,15 +74,16 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                           ),
                                         );
                                       },
-                                      suggestionsCallback: (filter) =>
-                                          controller.customers.where((element) => (element.name ?? "").contains(filter) || (element.code ?? "").contains(filter)),
+                                      suggestionsCallback: (filter) => controller.customers
+                                          .where((element) => (element.name ?? "").contains(filter) || (element.code ?? "").contains(filter)),
                                       onSuggestionSelected: (value) {
                                         controller.customerController.text = value.name ?? "";
                                         controller.selectedCustomer(value);
-                                        controller.getInvoiceListForCustomer(value, () { });
+                                        controller.getInvoiceListForCustomer(value, () {});
                                       },
                                       textFieldConfiguration: TextFieldConfiguration(
                                         controller: controller.customerController,
+                                        focusNode: controller.customerFocusNode,
                                         onSubmitted: (search) => controller.getCustomers(search),
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
@@ -178,14 +182,17 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                             return SizedBox(
                                               height: 50,
                                               child: Center(
-                                                child: Text(inv.serial!.toString()),
+                                                child: Text(inv.serial.toString()),
                                               ),
                                             );
                                           },
-                                          suggestionsCallback: (filter) => controller.customerBalance.value?.invoicesList??[],
+                                          suggestionsCallback: (filter) => controller.customerBalance.value?.invoicesList.where((inv) => inv.serial != null && controller.banksToPay.every((element) => element.invoiceId != inv.id) && inv.serial.toString().contains(filter)) ?? [],
                                           onSuggestionSelected: (value) {
                                             controller.itemInvoiceController.text = value.serial.toString();
-                                            controller.itemRemainController.text = value.salesStatementForThePeriod.remain.toString();
+                                            controller.itemRemainController.text = "0";
+                                            controller.itemPayController.text = value.salesStatementForThePeriod.remain.toString();
+                                            controller.itemPayFocus.requestFocus();
+                                            controller.itemInvoice = value;
                                           },
                                           textFieldConfiguration: TextFieldConfiguration(
                                             controller: controller.itemInvoiceController,
@@ -221,9 +228,11 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                         borderRadius: BorderRadius.circular(5),
                                       ),
                                       child: TextFormField(
-                                        decoration: const InputDecoration(border: InputBorder.none, isDense: true, contentPadding: EdgeInsets.symmetric(vertical: 8)),
+                                        decoration: const InputDecoration(
+                                            border: InputBorder.none, isDense: true, contentPadding: EdgeInsets.symmetric(vertical: 8)),
                                         textDirection: TextDirection.rtl,
                                         textAlign: TextAlign.center,
+                                        enabled: false,
                                         controller: controller.itemRemainController,
                                         focusNode: controller.itemRemainFocus,
                                       ),
@@ -252,11 +261,24 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                         borderRadius: BorderRadius.circular(5),
                                       ),
                                       child: TextFormField(
-                                        decoration: const InputDecoration(border: InputBorder.none, isDense: true, contentPadding: EdgeInsets.symmetric(vertical: 8)),
+                                        decoration: const InputDecoration(
+                                            border: InputBorder.none, isDense: true, contentPadding: EdgeInsets.symmetric(vertical: 8)),
                                         textDirection: TextDirection.rtl,
                                         textAlign: TextAlign.center,
                                         controller: controller.itemPayController,
                                         focusNode: controller.itemPayFocus,
+                                        inputFormatters: [doubleInputFilter],
+                                        onFieldSubmitted: (_) => controller.itemBankFocus.requestFocus(),
+                                        onChanged: (value) {
+                                          if (controller.itemInvoice == null) return;
+                                          final pay = value.tryToParseToNum ?? 0;
+                                          final remain = controller.itemInvoice!.salesStatementForThePeriod.remain - pay;
+                                          if (remain < 0) {
+                                            controller.itemPayController.text = controller.itemInvoice!.salesStatementForThePeriod.remain.toString();
+                                            return;
+                                          }
+                                          controller.itemRemainController.text = remain.toString();
+                                        },
                                       ),
                                     ),
                                   ],
@@ -290,8 +312,15 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                             ),
                                           );
                                         },
-                                        suggestionsCallback: (filter) => [],
-                                        onSuggestionSelected: (value) {},
+                                        suggestionsCallback: (filter) =>
+                                            controller.banks.where((element) => element.bankName.toString().trim().contains(filter.trim())),
+                                        onSuggestionSelected: (value) {
+                                          controller.itemBank = value;
+                                          controller.itemBankController.text = value.bankName ?? "";
+                                          if (controller.itemInvoice != null) {
+                                            controller.addNewDetail();
+                                          }
+                                        },
                                         textFieldConfiguration: TextFieldConfiguration(
                                           controller: controller.itemBankController,
                                           focusNode: controller.itemBankFocus,
@@ -306,10 +335,17 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                 ]),
                               ),
                               const SizedBox(width: 15),
-                              const Expanded(
+                              Expanded(
                                 child: Center(
                                   child: IconButtonWidget(
                                     icon: Icons.done_rounded,
+                                    onPressed: () {
+                                      if (controller.itemInvoice == null) {
+                                        showPopupText(text: "يرجى اختيار فاتورة اولاً");
+                                      } else {
+                                        controller.addNewDetail();
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
@@ -318,109 +354,114 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                         ),
                         Expanded(
                             child: SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.all(0),
-                                    child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .194),
-                                      border: TableBorder.all(
-                                          borderRadius: const BorderRadius.all(Radius.circular(0)), color: Colors.grey, style: BorderStyle.solid, width: 1),
-                                      children: [
-                                        const TableRow(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.all(0),
+                                child: Obx(() {
+                                  return Table(
+                                    border: TableBorder.all(
+                                        borderRadius: const BorderRadius.all(Radius.circular(0)),
+                                        color: Colors.grey,
+                                        style: BorderStyle.solid,
+                                        width: 1),
+                                    children: [
+                                      const TableRow(
+                                        children: [
+                                          Text(
+                                            'رقم الفاتوره',
+                                            style: TextStyle(fontSize: 20.0),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                                            'المتبقي',
+                                            style: TextStyle(fontSize: 20.0),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                                            'المدفوع',
+                                            style: TextStyle(fontSize: 20.0),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                                            'الخزينه',
+                                            style: TextStyle(fontSize: 20.0),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                                            'حذف',
+                                            style: TextStyle(fontSize: 20.0),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                        decoration: BoxDecoration(
+                                            color: AppColors.appGreyDark,
+                                            borderRadius: BorderRadius.only(topRight: Radius.circular(0), topLeft: Radius.circular(0))),
+                                      ),
+                                      for (GlPayDTO kha in controller.banksToPay)
+                                        TableRow(
                                           children: [
-                                            Text(
-                                              'رقم الفاتوره',
-                                              style: TextStyle(fontSize: 20.0),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Text(
-                                              'المتبقي',
-                                              style: TextStyle(fontSize: 20.0),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Text(
-                                              'المدفوع',
-                                              style: TextStyle(fontSize: 20.0),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Text(
-                                              'الخزينه',
-                                              style: TextStyle(fontSize: 20.0),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Text(
-                                              'حذف',
-                                              style: TextStyle(fontSize: 20.0),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
-                                          decoration: BoxDecoration(
-                                              color: AppColors.appGreyDark, borderRadius: BorderRadius.only(topRight: Radius.circular(0), topLeft: Radius.circular(0))),
-                                        ),
-                                        for (GlPayDTO kha in [])
-                                          TableRow(
-                                            children: [
-                                              Column(children: [Text(kha.invoiceSerial!.toString(), style: const TextStyle(fontSize: 20.0))]),
-                                              Column(children: [Text(kha.remain!.toString(), style: const TextStyle(fontSize: 20.0))]),
-                                              Column(children: [Text(kha.value!.toString(), style: const TextStyle(fontSize: 20.0))]),
-                                              Column(children: [Text(kha.bankName!, style: const TextStyle(fontSize: 20.0))]),
-                                              Column(children: [
-                                                Center(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.fromLTRB(0, 0, 70, 0),
-                                                    child: Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding: EdgeInsets.fromLTRB(0, size.height * .01, 5, 0),
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                            children: [
-                                                              GestureDetector(
-                                                                onTap: () {},
-                                                                child: Container(
-                                                                  alignment: Alignment.centerRight,
-                                                                  height: size.height * .05,
-                                                                  width: size.width * .05,
-                                                                  decoration: const BoxDecoration(
-                                                                    borderRadius: BorderRadius.all(Radius.circular(6.00)),
-                                                                    color: AppColors.colorYellow,
-                                                                  ),
-                                                                  child: Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                    children: [
-                                                                      Text(
-                                                                        'حذف',
-                                                                        style: smallTextStyleNormal(size, color: Colors.black),
-                                                                      ),
-                                                                      const Icon(
-                                                                        Icons.delete,
-                                                                        color: Colors.black,
-                                                                      )
-                                                                    ],
-                                                                  ),
+                                            Column(children: [Text(kha.invoiceSerial!.toString(), style: const TextStyle(fontSize: 20.0))]),
+                                            Column(children: [Text(kha.remain!.toString(), style: const TextStyle(fontSize: 20.0))]),
+                                            Column(children: [Text(kha.value!.toString(), style: const TextStyle(fontSize: 20.0))]),
+                                            Column(children: [Text(kha.bankName!, style: const TextStyle(fontSize: 20.0))]),
+                                            Column(children: [
+                                              Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0, 0, 70, 0),
+                                                  child: Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding: EdgeInsets.fromLTRB(0, size.height * .01, 5, 0),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            GestureDetector(
+                                                              onTap: () {},
+                                                              child: Container(
+                                                                alignment: Alignment.centerRight,
+                                                                height: size.height * .05,
+                                                                width: size.width * .05,
+                                                                decoration: const BoxDecoration(
+                                                                  borderRadius: BorderRadius.all(Radius.circular(6.00)),
+                                                                  color: AppColors.colorYellow,
+                                                                ),
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                  children: [
+                                                                    Text(
+                                                                      'حذف',
+                                                                      style: smallTextStyleNormal(size, color: Colors.black),
+                                                                    ),
+                                                                    const Icon(
+                                                                      Icons.delete,
+                                                                      color: Colors.black,
+                                                                    )
+                                                                  ],
                                                                 ),
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                              ]),
-                                            ],
-                                            decoration: const BoxDecoration(
-                                                color: AppColors.appGreyLight,
-                                                borderRadius: BorderRadius.only(topRight: Radius.circular(0), topLeft: Radius.circular(0))),
-                                          )
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                              ),
+                                            ]),
+                                          ],
+                                          decoration: const BoxDecoration(
+                                              color: AppColors.appGreyLight,
+                                              borderRadius: BorderRadius.only(topRight: Radius.circular(0), topLeft: Radius.circular(0))),
+                                        )
+                                    ],
+                                  );
+                                }),
                               ),
-                            )),
+                            ],
+                          ),
+                        )),
                       ],
                     )),
               ),

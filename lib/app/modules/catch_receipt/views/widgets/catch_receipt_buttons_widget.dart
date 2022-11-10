@@ -22,9 +22,9 @@ class CatchReceiptButtonsWidget extends GetView<CatchReceiptController> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ButtonWidget(text: "حفظ", onPressed: () {}),
+                ButtonWidget(text: "حفظ", onPressed: () => controller.save()),
                 const SizedBox(width: 5),
-                ButtonWidget(text: "جديد", onPressed: () {}),
+                ButtonWidget(text: "جديد", onPressed: () => controller.newPay()),
                 const SizedBox(width: 5),
                 ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
               ],

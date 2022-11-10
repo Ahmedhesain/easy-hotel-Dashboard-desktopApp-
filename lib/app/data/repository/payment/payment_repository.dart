@@ -49,7 +49,7 @@ import '../../model/reports/dto/response/items_sales_response.dart';
 class PaymentRepository {
 
 
-  findPayment(
+  findPaymentBySerial(
       FindPaymentRequest findPaymentRequest, {
         Function()? onComplete,
         Function(PaymentModel data)? onSuccess,
@@ -61,6 +61,21 @@ class PaymentRepository {
         data: findPaymentRequest.toJson(),
         onError: onError,
         convertor: PaymentModel.fromJson,
+    );
+
+
+  findPaymentById(
+      FindPaymentRequest findPaymentRequest, {
+        Function()? onComplete,
+        Function(GlPayDTO data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<GlPayDTO,Map<String,dynamic>>('glBankTransaction/searchGlBankTransactionById',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: findPaymentRequest.toJson(),
+        onError: onError,
+        convertor: GlPayDTO.fromJson,
     );
 
 

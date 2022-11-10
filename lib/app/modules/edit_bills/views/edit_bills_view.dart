@@ -17,9 +17,7 @@ class EditBillsView extends GetView<EditBillsController> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
@@ -91,10 +89,9 @@ class EditBillsView extends GetView<EditBillsController> {
                                               onTap: () async {
                                                 final date = await showDatePicker(
                                                     context: context,
-                                                    initialDate: kha.date??DateTime.now(),
+                                                    initialDate: kha.date ?? DateTime.now(),
                                                     firstDate: DateTime(2017),
-                                                    lastDate: DateTime.now()
-                                                );
+                                                    lastDate: DateTime.now());
                                                 kha.date = date ?? kha.date;
                                                 controller.update([kha.id.toString()]);
                                               },
@@ -119,9 +116,10 @@ class EditBillsView extends GetView<EditBillsController> {
                                           ),
                                         );
                                       },
-                                      suggestionsCallback: (filter) => controller.customers.where((element) => (element.name??"").trim().contains(filter.trim()) || (element.code??"").trim().contains(filter.trim())),
+                                      suggestionsCallback: (filter) => controller.customers.where((element) =>
+                                          (element.name ?? "").trim().contains(filter.trim()) || (element.code ?? "").trim().contains(filter.trim())),
                                       onSuggestionSelected: (value) {
-                                        kha.textFieldController1.text = value.name??"";
+                                        kha.textFieldController1.text = value.name ?? "";
                                         kha.focusNode2.requestFocus();
                                       },
                                       textFieldConfiguration: TextFieldConfiguration(
@@ -161,11 +159,12 @@ class EditBillsView extends GetView<EditBillsController> {
                                         return SizedBox(
                                           height: 50,
                                           child: Center(
-                                            child: Text(client.bankName??''),
+                                            child: Text(client.bankName ?? ''),
                                           ),
                                         );
                                       },
-                                      suggestionsCallback: (filter) => controller.allInvoices.where((element) => (element.bankName??"").trim().contains(filter)),
+                                      suggestionsCallback: (filter) =>
+                                          controller.allInvoices.where((element) => (element.bankName ?? "").trim().contains(filter)),
                                       onSuggestionSelected: (value) {
                                         kha.textFieldController3.text = value.bankName ?? "";
                                         kha.focusNode4.requestFocus();
@@ -205,7 +204,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                         Expanded(
                                           child: GestureDetector(
                                             onTap: () {
-                                              controller.editInvoice(controller.allInvoicesSelected, 22);
+                                              controller.editInvoice(kha);
                                             },
                                             child: Container(
                                               decoration: BoxDecoration(
@@ -231,7 +230,9 @@ class EditBillsView extends GetView<EditBillsController> {
                                         const SizedBox(width: 5),
                                         Expanded(
                                           child: GestureDetector(
-                                            onTap: () {},
+                                            onTap: () {
+                                              controller.deleteRow(kha.id!);
+                                            },
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius: const BorderRadius.all(Radius.circular(6.00)),
@@ -256,7 +257,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                         const SizedBox(width: 5),
                                         Expanded(
                                           child: GestureDetector(
-                                            onTap: () {},
+                                            onTap: () => controller.printRow(kha.id!, context),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius: const BorderRadius.all(Radius.circular(6.00)),

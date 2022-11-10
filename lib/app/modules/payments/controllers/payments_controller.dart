@@ -153,7 +153,7 @@ class PaymentsController extends GetxController {
 
   searchPayment(){
     isLoading(true);
-    PaymentRepository().findPayment(FindPaymentRequest(branchId: user.branchId, serial: searchPaymentIdController.text.tryToParseToNum?.toInt()),
+    PaymentRepository().findPaymentBySerial(FindPaymentRequest(branchId: user.branchId, serial: searchPaymentIdController.text.tryToParseToNum?.toInt()),
         onSuccess: (data){
           payment(data);
           details.assignAll(data.glBankTransactionDetailFromApiList!);
@@ -168,7 +168,7 @@ class PaymentsController extends GetxController {
 
   printPayment(BuildContext context){
     isLoading(true);
-    PaymentRepository().findPayment(FindPaymentRequest(branchId: user.branchId, serial: searchPaymentIdController.text.tryToParseToNum?.toInt()),
+    PaymentRepository().findPaymentBySerial(FindPaymentRequest(branchId: user.branchId, serial: searchPaymentIdController.text.tryToParseToNum?.toInt()),
         onSuccess: (data){
           PrintingHelper().printPayments(context, data);
         },

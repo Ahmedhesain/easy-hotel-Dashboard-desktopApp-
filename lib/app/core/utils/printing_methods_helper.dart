@@ -11,6 +11,7 @@ import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_status_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/model/payments/payment_model.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoice_statement_by_case_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/item_balances_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
@@ -256,6 +257,272 @@ class PrintingHelper {
                     child: Center(
                         child: Text(
                           payment.totalValue?.toStringAsFixed(2) ?? "",
+                          style: boldStyle,
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    width: 60,
+                    child: Center(
+                        child: Text(
+                          "الإجمالي",
+                          style: boldStyle,
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                SizedBox(),
+                SizedBox(),
+              ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return PdfPreview(
+            actions: [
+              m.IconButton(
+                onPressed: () => m.Navigator.pop(context),
+                icon: const m.Icon(
+                  m.Icons.close,
+                  color: m.Colors.red,
+                ),
+              )
+            ],
+            build: (format) => doc.save(),
+          );
+        });
+  }
+
+  void printReceipt(m.BuildContext context, GlBankTransactionApi receipt) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
+    final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(2),
+      2:const FlexColumnWidth(2),
+      3:const FlexColumnWidth(1),
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50),
+            Center(
+              child: Container(
+                color: grey,
+                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                child: Text(
+                  "سند قبض",
+                  style: boldStyle,
+                ),
+              ),
+            ),
+            SizedBox(height: 20.5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                        Expanded(
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all()
+                                ),
+                                child: Text(
+                                  receipt.glPayDTOAPIList?.first.serial?.toString()??"",
+                                  style: boldStyle,
+                                  textDirection: TextDirection.rtl,
+                                )
+                            )
+                        ),
+                        SizedBox(width: 15),
+                        SizedBox(
+                            width: 60,
+                            child: Text(
+                              "رقم السند",
+                              style: boldStyle,
+                              textDirection: TextDirection.rtl,
+                            )
+                        ),
+                      ],),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all()
+                                  ),
+                                  child: Text(
+                                    receipt.date == null?"":DateFormat("yyyy/MM/dd").format(receipt.date!),
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  )
+                              )
+                          ),
+                          SizedBox(width: 15),
+                          SizedBox(
+                              width: 60,
+                              child: Text(
+                                "التاريخ",
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                              )
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 30),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all()
+                                  ),
+                                  child: Text(
+                                    receipt.glPayDTOAPIList?.first.value?.toString()??"",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  )
+                              )
+                          ),
+                          SizedBox(width: 15),
+                          SizedBox(
+                              width: 60,
+                              child: Text(
+                                "المبلغ",
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                              )
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: Container(
+                                constraints: const BoxConstraints(minHeight: 20),
+                                  decoration: BoxDecoration(
+                                      border: Border.all()
+                                  ),
+                                  child: Text(
+                                    receipt.remark??"",
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  )
+                              )
+                          ),
+                          SizedBox(width: 15),
+                          SizedBox(
+                              width: 60,
+                              child: Text(
+                                "وذلك قيمة:",
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                              )
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 15),
+            Table(border: TableBorder.all(width: 1), columnWidths: widths, children: [
+              TableRow(children: [
+                Container(
+                    color: grey,
+                    width: 55,
+                    child: Center(
+                        child: Text("المبلغ",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 60,
+                    child: Center(
+                        child: Text("البيان",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("اسم العميل",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child:
+                        Text("م", style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+              ]),
+              //table content
+              for (int i = 0; i < receipt.glPayDTOAPIList!.length; i++)
+                TableRow(children: [
+                  Container(
+                      width: 55,
+                      child: Center(
+                          child: Text(
+                            receipt.glPayDTOAPIList![i].value?.toStringAsFixed(2) ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 60,
+                      child: Center(
+                          child: Text(
+                            receipt.glPayDTOAPIList![i].remark ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            receipt.glPayDTOAPIList![i].customerName??"",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            "${i+1}",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                ]),
+              TableRow(children: [
+                Container(
+                    width: 55,
+                    child: Center(
+                        child: Text(
+                          receipt.glPayDTOAPIList?.first.value?.toStringAsFixed(2) ?? "",
                           style: boldStyle,
                           textAlign: TextAlign.center,
                           textDirection: TextDirection.rtl,
