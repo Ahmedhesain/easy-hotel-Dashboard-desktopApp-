@@ -205,7 +205,7 @@ class PurchaseInvoicesController extends GetxController {
 
   printInvoice(BuildContext context){
     isLoading(true);
-    InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null),
+    InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null, typeInv: 0),
         onSuccess: (data) {
           PrintingHelper().printPurchaseInvoice(
             context,
@@ -235,7 +235,7 @@ class PurchaseInvoicesController extends GetxController {
   searchForInvoiceById(String id) async {
     newInvoice();
     isLoading(true);
-    await InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null),
+    await InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 0),
         onSuccess: (data) {
           invoice(data);
           if(galleries.any((element) => element.id == data.gallaryId)) {

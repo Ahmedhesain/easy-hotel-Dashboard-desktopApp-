@@ -230,7 +230,7 @@ class HomeController extends GetxController {
 
   printInvoice(BuildContext context){
     isLoading(true);
-    InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null),
+    InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
         onSuccess: (data) {
           PrintingHelper().printInvoice(
             context,
@@ -263,7 +263,7 @@ class HomeController extends GetxController {
   searchForInvoiceById(String id) async {
     newInvoice();
     isLoading(true);
-    await InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null),
+    await InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
         onSuccess: (data) {
           invoice(data);
           selectedPriceType(data.pricetype);
