@@ -3,9 +3,12 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/icon_button_widget.dart';
+import 'package:toby_bills/app/components/text_field_widget.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/core/utils/validator.dart';
 import 'package:toby_bills/app/core/values/app_constants.dart';
+import 'package:toby_bills/app/data/model/customer/dto/request/create_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
@@ -297,46 +300,46 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                       )),
                 ),
               ),
-              // IconButton(
-              //   icon: Icon(Icons.add),
-              //   onPressed: () {
-              //     final formKey = GlobalKey<FormState>();
-              //     final newCustomer = CreateCustomerRequest();
-              //     Get.dialog(AlertDialog(
-              //       title: Center(child: Text("إضافة عميل")),
-              //       content: Form(
-              //         key: formKey,
-              //         child: Column(
-              //           mainAxisSize: MainAxisSize.min,
-              //           children: [
-              //             TextFieldWidget(label: "اسم العميل", onChanged: (value) => newCustomer.name = value, validator: AppValidator.forceValue),
-              //             const SizedBox(height: 15),
-              //             TextFieldWidget(label: "هاتف العميل", onChanged: (value) => newCustomer.mobile = value, validator: AppValidator.forceValue,textAlign: TextAlign.left,textDirection: TextDirection.ltr,),
-              //             const SizedBox(height: 15),
-              //             TextFieldWidget(label: "إيميل العميل", onChanged: (value) => newCustomer.email = value),
-              //             const SizedBox(height: 15),
-              //             TextFieldWidget(label: "الطول", onChanged: (value) => newCustomer.length = double.tryParse(value), justNumbers: true),
-              //             const SizedBox(height: 15),
-              //             TextFieldWidget(label: "الكتف", onChanged: (value) => newCustomer.shoulder = double.tryParse(value), justNumbers: true),
-              //             const SizedBox(height: 15),
-              //             TextFieldWidget(label: "الخطوة", onChanged: (value) => newCustomer.step = double.tryParse(value), justNumbers: true),
-              //           ],
-              //         ),
-              //       ),
-              //       actions: [
-              //         ElevatedButton(
-              //           onPressed: () async {
-              //             if (formKey.currentState!.validate()) {
-              //               controller.createCustomer(newCustomer);
-              //               Get.back();
-              //             }
-              //           },
-              //           child: Text("حفظ"),
-              //         )
-              //       ],
-              //     ));
-              //   },
-              // )
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  final formKey = GlobalKey<FormState>();
+                  final newCustomer = CreateCustomerRequest();
+                  Get.dialog(AlertDialog(
+                    title: const Center(child: Text("إضافة عميل")),
+                    content: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextFieldWidget(label: "اسم العميل", onChanged: (value) => newCustomer.name = value, validator: AppValidator.forceValue),
+                          const SizedBox(height: 15),
+                          TextFieldWidget(label: "هاتف العميل", onChanged: (value) => newCustomer.mobile = value, validator: AppValidator.forceValue,textAlign: TextAlign.left,textDirection: TextDirection.ltr,),
+                          const SizedBox(height: 15),
+                          TextFieldWidget(label: "إيميل العميل", onChanged: (value) => newCustomer.email = value),
+                          const SizedBox(height: 15),
+                          TextFieldWidget(label: "الطول", onChanged: (value) => newCustomer.length = double.tryParse(value), justNumbers: true),
+                          const SizedBox(height: 15),
+                          TextFieldWidget(label: "الكتف", onChanged: (value) => newCustomer.shoulder = double.tryParse(value), justNumbers: true),
+                          const SizedBox(height: 15),
+                          TextFieldWidget(label: "الخطوة", onChanged: (value) => newCustomer.step = double.tryParse(value), justNumbers: true),
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            controller.createCustomer(newCustomer);
+                            Get.back();
+                          }
+                        },
+                        child: Text("حفظ"),
+                      )
+                    ],
+                  ));
+                },
+              )
             ],
           ),
         ),

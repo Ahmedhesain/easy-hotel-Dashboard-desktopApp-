@@ -14,7 +14,6 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_req
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/general_journal/dto/find_general_journal_request.dart';
-import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
@@ -173,7 +172,7 @@ class HomeController extends GetxController {
       GalleryRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
         galleries.assignAll(data);
-        if(galleries.any((element) => element.id == UserManager().galleryId)){
+        if (galleries.any((element) => element.id == UserManager().galleryId)) {
           selectedGallery(galleries.singleWhere((element) => element.id == UserManager().galleryId));
         } else if (galleries.isNotEmpty) {
           selectedGallery(galleries.first);
@@ -217,8 +216,20 @@ class HomeController extends GetxController {
 
   void createCustomer(CreateCustomerRequest newCustomer) {
     isLoading(true);
-    CustomerRepository().createCustomer(newCustomer,
-        onSuccess: (data) => selectedCustomer(data), onError: (error) => showPopupText(text: error.toString()), onComplete: () => isLoading(false));
+    CustomerRepository().createCustomer(
+      newCustomer,
+      onSuccess: (data) {
+        data.name = newCustomer.name;
+        data.mobile = newCustomer.mobile;
+        data.email = newCustomer.email;
+        invoiceCustomerController.text = "${data.name} ${data.code}";
+        selectedCustomer(data);
+        getCustomerBalance(data.id!);
+        showPopupText(text: "تم إنشاء العميل بنجاح", type: MsgType.success);
+      },
+      onError: (error) => showPopupText(text: error.toString()),
+      onComplete: () => isLoading(false),
+    );
   }
 
   void getInvoiceListForCustomer(FindCustomerResponse value) {
@@ -228,28 +239,25 @@ class HomeController extends GetxController {
         onSuccess: (data) => findCustomerBalanceResponse = data, onError: (error) => showPopupText(text: error.toString()), onComplete: () => isLoading(false));
   }
 
-  printInvoice(BuildContext context){
+  printInvoice(BuildContext context) {
     isLoading(true);
-    InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
-        onSuccess: (data) {
-          PrintingHelper().printInvoice(
-            context,
-            data,
-            dariba: data.taxvalue,
-            total: data.totalNetAfterDiscount,
-            discount: data.discount,
-            value: data.totalNet,
-            net: data.finalNet,
-            payed: data.payed,
-            remain: data.remain
-          );
-        },
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
-
+    InvoiceRepository()
+        .findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
+            onSuccess: (data) {
+              PrintingHelper().printInvoice(context, data,
+                  dariba: data.taxvalue,
+                  total: data.totalNetAfterDiscount,
+                  discount: data.discount,
+                  value: data.totalNet,
+                  net: data.finalNet,
+                  payed: data.payed,
+                  remain: data.remain);
+            },
+            onError: (error) => showPopupText(text: error.toString()),
+            onComplete: () => isLoading(false));
   }
 
-  printGeneralJournal(BuildContext context){
+  printGeneralJournal(BuildContext context) {
     isLoading(true);
     GeneralJournalRepository().findGeneralJournalById(FindGeneralJournalRequest(invoice.value!.generalJournalId),
         onSuccess: (data) {
@@ -257,7 +265,6 @@ class HomeController extends GetxController {
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
-
   }
 
   searchForInvoiceById(String id) async {
@@ -267,7 +274,7 @@ class HomeController extends GetxController {
         onSuccess: (data) {
           invoice(data);
           selectedPriceType(data.pricetype);
-          if(galleries.any((element) => element.id == data.gallaryId)) {
+          if (galleries.any((element) => element.id == data.gallaryId)) {
             selectedGallery(galleries.singleWhere((element) => element.id == data.gallaryId));
             UserManager().changeGallery(selectedGallery.value);
           } else {
@@ -286,9 +293,9 @@ class HomeController extends GetxController {
           invoiceDiscountController.text = data.discount.toString();
           selectedDiscountType(data.discountType);
           checkSendSms(data.checkSendSms == 1);
-          invoiceRemarkController.text = data.remarks??'';
+          invoiceRemarkController.text = data.remarks ?? '';
           for (final detail in data.invoiceDetailApiList!) {
-            if(!items.any((element) => element.id == detail.itemId)){
+            if (!items.any((element) => element.id == detail.itemId)) {
               showPopupText(text: "يرجى عمل تحديث ثم البحث عن الفاتورة مرة اخرى");
               return;
             }
@@ -545,7 +552,7 @@ class HomeController extends GetxController {
       invDelegatorId: selectedDelegator.value?.id,
       invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(),
       invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted.map((element) => element).toList(),
-      invoiceType: AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0?null:AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
+      invoiceType: AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0 ? null : AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
       pricetype: selectedPriceType.value,
       typeInv: 4,
       proof: isProof.value ? 1 : 0,
@@ -582,10 +589,10 @@ class HomeController extends GetxController {
 
   newInvoice() {
     _clearItemFields();
-    if(priceTypes.keys.isNotEmpty) selectedPriceType(priceTypes.keys.first);
-    if(discountType.keys.isNotEmpty) selectedDiscountType(discountType.keys.first);
-    if(deliveryPlaces.isNotEmpty) selectedDeliveryPlace(deliveryPlaces.first);
-    if(delegators.isNotEmpty) selectedDelegator(delegators.first);
+    if (priceTypes.keys.isNotEmpty) selectedPriceType(priceTypes.keys.first);
+    if (discountType.keys.isNotEmpty) selectedDiscountType(discountType.keys.first);
+    if (deliveryPlaces.isNotEmpty) selectedDeliveryPlace(deliveryPlaces.first);
+    if (delegators.isNotEmpty) selectedDelegator(delegators.first);
     invoiceDiscountController.clear();
     selectedInvoiceType(AppConstants.invoiceTypeList.first);
     isProof(false);
@@ -601,7 +608,7 @@ class HomeController extends GetxController {
 
   calcInvoiceValues() {
     num net = 0;
-    for(final invoiceDetailsModel in invoiceDetails) {
+    for (final invoiceDetailsModel in invoiceDetails) {
       net += invoiceDetailsModel.value.net!;
     }
     totalNet(net);
@@ -618,7 +625,6 @@ class HomeController extends GetxController {
     num payed = 0;
     remain(finalNet.value - payed);
   }
-
 
   removeHalala() {
     int number = finalNet.value.toInt();
@@ -734,6 +740,4 @@ class HomeController extends GetxController {
     invoiceDetails.assignAll(details);
     calcInvoiceValues();
   }
-
-
 }
