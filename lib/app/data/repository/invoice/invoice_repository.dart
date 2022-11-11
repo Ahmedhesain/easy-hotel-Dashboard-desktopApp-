@@ -104,19 +104,20 @@ class InvoiceRepository {
         convertor: GalleryResponse.fromList,
     );
 
-  findInvPurchaseInvoiceBySerial(
+  findInvPurchaseInvoiceBySerialNew(
       GetInvoiceRequest getInvoiceRequest, {
         Function()? onComplete,
         Function(InvoiceResponse data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-    ApiProvider().post<InvoiceResponse,Map<String, dynamic>>('sales/findInvPurchaseInvoiceByserial',
+    ApiProvider().post<InvoiceResponse,Map<String, dynamic>>('sales/findInvPurchaseInvoiceByserialNew',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: getInvoiceRequest.toJson(),
         onError: onError,
         convertor: InvoiceResponse.fromJson,
     );
+
 
   saveInvoice(
       CreateInvoiceRequest createInvoiceRequest, {

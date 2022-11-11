@@ -76,7 +76,7 @@ class NotificationsController extends GetxController {
 
   searchForInvoiceById(String id) async {
     isLoading(true);
-    await InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: user.branchId, gallaryId: null),
+    await InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: user.branchId, gallaryId: null,typeInv: 4),
         onSuccess: (data) {
           invoice(data);
           searchedInvoiceController.text = data.serial?.toString() ?? "";
