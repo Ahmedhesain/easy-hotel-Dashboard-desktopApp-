@@ -137,7 +137,7 @@ class HomeController extends GetxController {
   getCustomersByCode() {
     isLoading(true);
     findSideCustomerFieldFocusNode.unfocus();
-    final request = FindCustomerRequest(code: findSideCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: selectedGallery.value?.id);
+    final request = FindCustomerRequest(code: findSideCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
@@ -150,7 +150,7 @@ class HomeController extends GetxController {
   getCustomersByCodeForInvoice() {
     isLoading(true);
     invoiceCustomerFieldFocusNode.unfocus();
-    final request = FindCustomerRequest(code: invoiceCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: selectedGallery.value?.id);
+    final request = FindCustomerRequest(code: invoiceCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);

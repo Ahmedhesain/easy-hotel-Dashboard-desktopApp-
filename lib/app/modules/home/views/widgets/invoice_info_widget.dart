@@ -212,7 +212,10 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                   return DropdownSearch<GalleryResponse>(
                     items: controller.galleries,
                     selectedItem: controller.selectedGallery.value,
-                    onChanged: UserManager().changeGallery,
+                    onChanged: (g){
+                      UserManager().changeGallery(g);
+                      controller.selectedGallery(g);
+                    },
                     itemAsString: (gallery) => gallery.name ?? "",
                     dropdownDecoratorProps: const DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
