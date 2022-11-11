@@ -56,7 +56,7 @@ class GeneralJournalRepository {
         Function(GeneralJournalModel data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-    ApiProvider().post<GeneralJournalModel,Map<String,dynamic>>('generaljournal/fingeneraljournalById',
+    ApiProvider().post<GeneralJournalModel,Map<String,dynamic>>('generaljournal/findgeneraljournalById',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: findGeneralJournalRequest.toJson(),
