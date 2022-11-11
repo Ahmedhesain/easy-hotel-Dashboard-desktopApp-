@@ -164,21 +164,6 @@ class HomeDrawerWidget extends GetView<HomeController> {
                 ],
             ),
             HomeDrawerSectionWidget(
-              title: "تقارير الخزائن",
-              children: [
-                HomeDrawerTileWidget(
-                  title: "كشف حساب",
-                  onTap: () {
-                    if(Get.find<HomeController>().selectedCustomer.value == null) {
-                      showPopupText(text: "يجب اختيار عميل اولاً");
-                      return;
-                    }
-                    goTo(Routes.ACCOUNT_STATEMENT,"كشف حساب");
-                  },
-                ),
-              ],
-            ),
-            HomeDrawerSectionWidget(
               title: "حركة الخزائن",
               children: [
                 HomeDrawerTileWidget(
@@ -192,6 +177,21 @@ class HomeDrawerWidget extends GetView<HomeController> {
                 HomeDrawerTileWidget(
                   title: "المدفوعات",
                   onTap: () => goTo(Routes.PAYMENTS, "المدفوعات"),
+                ),
+              ],
+            ),
+            HomeDrawerSectionWidget(
+              title: "تقارير الخزائن",
+              children: [
+                HomeDrawerTileWidget(
+                  title: "كشف حساب",
+                  onTap: () {
+                    if(Get.find<HomeController>().selectedCustomer.value == null) {
+                      showPopupText(text: "يجب اختيار عميل اولاً");
+                      return;
+                    }
+                    goTo(Routes.ACCOUNT_STATEMENT,"كشف حساب");
+                  },
                 ),
               ],
             ),
