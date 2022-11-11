@@ -42,6 +42,19 @@ class HomeDrawerWidget extends GetView<HomeController> {
               ),
             ),
             HomeDrawerSectionWidget(
+              title: "حركة المخازن",
+              children: [
+                HomeDrawerTileWidget(
+                  title: "فواتير الشراء",
+                  onTap: () => goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء"),
+                ),
+                HomeDrawerTileWidget(
+                  title: "الإشعارات",
+                  onTap: () => goTo(Routes.NOTIFICATIONS, "الإشعارات"),
+                ),
+              ],
+            ),
+            HomeDrawerSectionWidget(
                 title: "تقارير المخازن",
                 children: [
                   HomeDrawerTileWidget(
@@ -151,7 +164,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
                 ],
             ),
             HomeDrawerSectionWidget(
-              title: "تقارير الحسابات",
+              title: "تقارير الخزائن",
               children: [
                 HomeDrawerTileWidget(
                   title: "كشف حساب",
@@ -169,25 +182,16 @@ class HomeDrawerWidget extends GetView<HomeController> {
               title: "حركة الخزائن",
               children: [
                 HomeDrawerTileWidget(
+                  title: "سند القبض",
+                  onTap: () => goTo(Routes.CATCH_RECEIPT, "سند القبض"),
+                ),
+                HomeDrawerTileWidget(
                   title: "تعديل سندات القبض",
                   onTap: () => goTo(Routes.EDITBILLS, "تعديل سندات القبض"),
-                ),
-
-                HomeDrawerTileWidget(
-                  title: "فواتير الشراء",
-                  onTap: () => goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء"),
-                ),
-                HomeDrawerTileWidget(
-                  title: "الإشعارات",
-                  onTap: () => goTo(Routes.NOTIFICATIONS, "الإشعارات"),
                 ),
                 HomeDrawerTileWidget(
                   title: "المدفوعات",
                   onTap: () => goTo(Routes.PAYMENTS, "المدفوعات"),
-                ),
-                HomeDrawerTileWidget(
-                  title: "سند القبض",
-                  onTap: () => goTo(Routes.CATCH_RECEIPT, "سند القبض"),
                 ),
               ],
             ),
