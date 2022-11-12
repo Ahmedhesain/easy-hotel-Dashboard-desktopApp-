@@ -36,7 +36,8 @@ class UserManager{
         galleryName: galleryResponse?.name?? user.galleryName,
         galleryType: galleryResponse?.invName ?? user.galleryType,
         id: user.id,
-        name:user. name
+        name: user.name,
+        userScreens: user.userScreens
     );
     final userData = newUser.toJson();
     AppStorage.write(AppStorage.USER, userData);

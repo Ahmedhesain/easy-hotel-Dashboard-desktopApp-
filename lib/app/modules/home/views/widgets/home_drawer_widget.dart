@@ -197,7 +197,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
               ],
             ),
             ListTile(
-              onTap: () => Get.offAll(Routes.LOGIN),
+              onTap: () => Get.offAllNamed(Routes.LOGIN),
               contentPadding: const EdgeInsets.only(left: 30),
               leading: const SizedBox(
                   width: 20,
