@@ -56,6 +56,13 @@ class HomeDrawerWidget extends GetView<HomeController> {
           onTap: () => goTo(Routes.PAYMENTS, "المدفوعات"),
         ),
     ];
+    final list5 = [
+      HomeDrawerTileWidget(
+        title: "كشف حساب فرعي",
+        onTap: () => goTo(Routes.SUB_ACCOUNT_STATEMENT,"كشف حساب فرعي"),
+      ),
+
+    ];
     return Drawer(
       child: Directionality(
         textDirection: TextDirection.ltr,
@@ -209,6 +216,11 @@ class HomeDrawerWidget extends GetView<HomeController> {
             HomeDrawerSectionWidget(
               title: "تقارير الخزائن",
               children: list3,
+            ),
+            if(list5.isNotEmpty)
+            HomeDrawerSectionWidget(
+              title: "تقارير الحسابات",
+              children: list5,
             ),
             Container(
               clipBehavior: Clip.antiAlias,

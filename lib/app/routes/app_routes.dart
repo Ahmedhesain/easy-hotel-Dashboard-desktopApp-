@@ -37,6 +37,7 @@ abstract class Routes {
   static const NOTIFICATIONS = _Paths.NOTIFICATIONS;
   static const PAYMENTS = _Paths.PAYMENTS;
   static const CATCH_RECEIPT = _Paths.CATCH_RECEIPT;
+  static const SUB_ACCOUNT_STATEMENT = _Paths.SUB_ACCOUNT_STATEMENT;
 }
 
 abstract class _Paths {
@@ -73,4 +74,5 @@ abstract class _Paths {
   static const NOTIFICATIONS = '/notifications';
   static const PAYMENTS = '/payments';
   static const CATCH_RECEIPT = '/catch-receipt';
+  static const SUB_ACCOUNT_STATEMENT = '/sub-account-statement';
 }

@@ -3,9 +3,9 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
-import 'package:toby_bills/app/components/colors.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/modules/edit_bills/views/edit_bills_buttons.dart';
@@ -73,7 +73,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                 child: Text('الحركه', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
                               ),
                             ],
-                            decoration: BoxDecoration(color: appGreyDark, border: Border(bottom: BorderSide())),
+                            decoration: BoxDecoration(color: AppColors.appGreyDark, border: Border(bottom: BorderSide())),
                           ),
                           for (GlPayDTO kha in controller.reports)
                             TableRow(
@@ -212,7 +212,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.all(Radius.circular(6.00)),
-                                                color: coloryellow,
+                                                color: AppColors.colorYellow,
                                               ),
                                               child: Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -241,7 +241,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius: const BorderRadius.all(Radius.circular(6.00)),
-                                                color: coloryellow,
+                                                color: AppColors.colorYellow,
                                               ),
                                               child: Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -267,7 +267,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius: const BorderRadius.all(Radius.circular(6.00)),
-                                                color: coloryellow,
+                                                color: AppColors.colorYellow,
                                               ),
                                               child: Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -290,7 +290,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                   ),
                                 ),
                               ],
-                              decoration: const BoxDecoration(color: appGreyLight, border: Border(bottom: BorderSide())),
+                              decoration: const BoxDecoration(color: AppColors.appGreyLight, border: Border(bottom: BorderSide())),
                             )
                         ],
                       )),
