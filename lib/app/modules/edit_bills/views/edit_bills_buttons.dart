@@ -110,6 +110,7 @@ class EditBillsButtons extends GetView<EditBillsController> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
+                ButtonWidget(text: "بحث", onPressed: () => controller.getStatements()),
                 ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
               ],
             ),
