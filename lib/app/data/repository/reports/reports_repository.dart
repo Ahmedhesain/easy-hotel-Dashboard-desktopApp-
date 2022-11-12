@@ -158,7 +158,8 @@ class ReportsRepository {
         onError: onError,
         convertor: GlPayDTO.fromList,
       );
-  getAllInvoicesStatement(
+
+  getAllBanks(
       AllInvoicesRequest allInvoicesRequest, {
         Function()? onComplete,
         Function(List<GlPayDTO> data)? onSuccess,
@@ -171,18 +172,19 @@ class ReportsRepository {
         onError: onError,
         convertor: GlPayDTO.fromList,
       );
-  editInvoicesStatement(
+
+  saveInvoicesStatement(
       GlBankTransactionApi glBankTransactionApi, {
         Function()? onComplete,
-        Function(List<GlBankTransactionApi> data)? onSuccess,
+        Function(GlBankTransactionApi data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-      ApiProvider().post<List<GlBankTransactionApi>,List<dynamic>>('glBankTransaction/saveGlBankTransaction',
+      ApiProvider().post<GlBankTransactionApi,Map<String, dynamic>>('glBankTransaction/saveGlBankTransaction',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: glBankTransactionApi.toJson(),
         onError: onError,
-        convertor: GlBankTransactionApi.fromList,
+        convertor: GlBankTransactionApi.fromJson,
       );
 
   profitSoldStatement(

@@ -1,232 +1,351 @@
-// import 'package:dropdown_search/dropdown_search.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_typeahead/flutter_typeahead.dart';
-// import 'package:get/get.dart';
-// import 'package:toby_bills/app/core/extensions/string_ext.dart';
-// import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
-// import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
-// import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
-// import 'package:toby_bills/app/modules/payments/controllers/payments_controller.dart';
-// import '../../../../components/icon_button_widget.dart';
-// import '../../../../core/utils/double_filter.dart';
-// import '../../../../data/model/inventory/dto/response/inventory_response.dart';
-//
-// class PurchaseInvoiceDetailsWidget extends GetView<PaymentsController> {
-//   const PurchaseInvoiceDetailsWidget({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     const separator = SizedBox(width: 5);
-//     return Obx(() {
-//       final details = controller.invoiceDetails;
-//       return ListView.separated(
-//         itemCount: details.length,
-//         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-//         separatorBuilder: (_, __) => const Divider(),
-//         itemBuilder: (context, index) {
-//           return Obx(() {
-//             Rx<InvoiceDetailsModel> detail = details[index];
-//             return Row(
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               children: [
-//                 Expanded(
-//                   flex: 2,
-//                   child: SizedBox(
-//                     height: 30,
-//                     child: TypeAheadField<ItemResponse>(
-//                       suggestionsCallback: (filter) => controller.filterItems(filter),
-//                       onSuggestionSelected: (item){
-//                         final newDetail = detail.value.assignItem(item);
-//                         detail(newDetail);
-//                       },
-//                       itemBuilder: (context, item) {
-//                         return Center(
-//                           child: Text("${item.name} ${item.code}"),
-//                         );
-//                       },
-//                       textFieldConfiguration: TextFieldConfiguration(
-//                           controller: TextEditingController(text: "${detail.value.name} ${detail.value.code}"),
-//                           textInputAction: TextInputAction.next,
-//                           textAlignVertical: TextAlignVertical.center,
-//                           decoration: const InputDecoration(
-//                               contentPadding: EdgeInsets.symmetric(horizontal: 10), border: OutlineInputBorder(), filled: true, fillColor: Colors.white70),
-//                           ),
-//                     ),
-//                   ),
-//                 ),
-//                 separator,
-//                 Expanded(
-//                   child: SizedBox(
-//                     height: 30,
-//                     child: Builder(builder: (context) {
-//                       num? oldValue = (detail.value.quantity??0) / 0.9;
-//                       return TextFormField(
-//                         controller: TextEditingController(text: ((detail.value.quantity??0) / 0.9).toStringAsFixed(2)),
-//                         textDirection: TextDirection.ltr,
-//                         textAlign: TextAlign.center,
-//                         onChanged: (value) => oldValue = value.tryToParseToNum ?? 0,
-//                         focusNode: detail.value.quantityFocus..addListener(() {
-//                           if(!detail.value.quantityFocus.hasFocus){
-//                             detail(detail.value.copyWith(quantity: (oldValue??0) * 0.9));
-//                             controller.calcInvoiceValues();
-//                           }
-//                         }),
-//                         decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
-//                         inputFormatters: [doubleInputFilter],
-//                       );
-//                     }),
-//                   ),
-//                 ),
-//                 separator,
-//                 Expanded(
-//                   child: SizedBox(
-//                     height: 30,
-//                     child: Builder(builder: (context) {
-//                       num? oldValue = detail.value.quantity;
-//                       return TextFormField(
-//                         controller: TextEditingController(text: detail.value.quantity?.toString()),
-//                         textDirection: TextDirection.ltr,
-//                         textAlign: TextAlign.center,
-//                         onChanged: (value) {
-//                           oldValue = value.tryToParseToNum ?? 0;
-//                         },
-//                         focusNode: detail.value.numberFocus..addListener(() {
-//                           if(!detail.value.numberFocus.hasFocus){
-//                             detail(detail.value.copyWith(quantity: oldValue));
-//                             controller.calcInvoiceValues();
-//                           }
-//                         }),
-//                         decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
-//                         inputFormatters: [doubleInputFilter],
-//                       );
-//                     }),
-//                   ),
-//                 ),
-//                 separator,
-//                 Expanded(
-//                   child: Container(
-//                       height: 30,
-//                       decoration: BoxDecoration(
-//                         color: Colors.white70,
-//                         borderRadius: BorderRadius.circular(5),
-//                       ),
-//                       child: Builder(
-//                         builder: (context) {
-//                           num? oldValue = detail.value.price;
-//                           return TextFormField(
-//                             controller: TextEditingController(text: detail.value.price?.toStringAsFixed(2)),
-//                             textAlign: TextAlign.center,
-//                             textDirection: TextDirection.ltr,
-//                             onChanged: (value) => oldValue = value.tryToParseToNum ?? 0,
-//                             focusNode: detail.value.priceFocus..addListener(() {
-//                               if(!detail.value.priceFocus.hasFocus){
-//                                 detail(detail.value.copyWith(price: oldValue));
-//                                 controller.calcInvoiceValues();
-//                               }
-//                             }),
-//                             inputFormatters: [doubleInputFilter],
-//                             decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
-//                           );
-//                         }
-//                       )),
-//                 ),
-//                 separator,
-//                 Expanded(
-//                   child: SizedBox(
-//                     height: 30,
-//                     child: Builder(builder: (context) {
-//                       num? oldValue = detail.value.discount;
-//                       return TextFormField(
-//                         controller: TextEditingController(text: detail.value.discount?.toStringAsFixed(2)),
-//                         textAlign: TextAlign.center,
-//                         textDirection: TextDirection.ltr,
-//
-//                         onChanged: (value) => oldValue = value.tryToParseToNum ?? 0,
-//                         focusNode: detail.value.discountFocus..addListener(() {
-//                           if(!detail.value.discountFocus.hasFocus){
-//                             detail(detail.value.copyWith(discount: oldValue));
-//                             controller.calcInvoiceValues();
-//                           }
-//                         }),
-//                         inputFormatters: [doubleInputFilter],
-//                         decoration: const InputDecoration(border: OutlineInputBorder(), contentPadding: EdgeInsets.zero, filled: true, fillColor: Colors.white70),
-//                       );
-//                     }),
-//                   ),
-//                 ),
-//                 separator,
-//                 Expanded(
-//                   child: Container(
-//                     // width: 50,
-//                     height: 30,
-//                     decoration: BoxDecoration(
-//                       color: Colors.white70,
-//                       borderRadius: BorderRadius.circular(5),
-//                     ),
-//                     child: Center(
-//                       child: Text(detail.value.net?.toString() ?? ""),
-//                     ),
-//                   ),
-//                 ),
-//                 separator,
-//                 Expanded(
-//                   flex: 2,
-//                   child: DropdownSearch<GlAccountResponse>(
-//                     key: UniqueKey(),
-//                     items: controller.glAccounts,
-//                     itemAsString: (GlAccountResponse account) => "${account.name} ${account.accNumber}",
-//                     onChanged: (GlAccountResponse? account) {
-//                       detail(detail.value.copyWith(account: account?.id));
-//                     },
-//                     selectedItem: controller.glAccounts.every((element) => element.id != detail.value.account)?null:controller.glAccounts.singleWhere((element) => element.id == detail.value.account),
-//                     dropdownDecoratorProps: const DropDownDecoratorProps(
-//                         dropdownSearchDecoration: InputDecoration(
-//                             isDense: true,
-//                             border: OutlineInputBorder(),
-//                             contentPadding: EdgeInsets.symmetric(horizontal: 10),
-//                             suffixIconConstraints: BoxConstraints(maxHeight: 30))),
-//                   ),
-//                 ),
-//                 separator,
-//                 Expanded(
-//                   flex: 2,
-//                   child: DropdownSearch<InventoryResponse>(
-//                     key: UniqueKey(),
-//                     items: controller.inventories,
-//                     itemAsString: (InventoryResponse inventory) => inventory.code,
-//                     onChanged: (InventoryResponse? inventory) {
-//                       detail(detail.value.copyWith(
-//                           inventoryId: inventory?.id, inventoryCode: inventory?.code, inventoryName: inventory?.name));
-//                       controller.calcInvoiceValues();
-//                     },
-//                     selectedItem: controller.inventories.every((element) => element.id != detail.value.inventoryId)?null:controller.inventories.singleWhere((element) => element.id == detail.value.inventoryId),
-//                     dropdownDecoratorProps: const DropDownDecoratorProps(
-//                         dropdownSearchDecoration: InputDecoration(
-//                             isDense: true,
-//                             border: OutlineInputBorder(),
-//                             contentPadding: EdgeInsets.symmetric(horizontal: 10),
-//                             suffixIconConstraints: BoxConstraints(maxHeight: 30))),
-//                   ),
-//                 ),
-//                 separator,
-//                 Expanded(
-//                   child: IconButtonWidget(
-//                     onPressed: () {
-//                       final deleted = controller.invoiceDetails.removeAt(index);
-//                       if (controller.invoice.value?.id != null) {
-//                         controller.invoice.value!.invoiceDetailApiListDeleted.add(deleted.value);
-//                       }
-//                       controller.calcInvoiceValues();
-//                     },
-//                     icon: Icons.clear,
-//                   ),
-//                 ),
-//                 separator,
-//               ],
-//             );
-//           });
-//         },
-//       );
-//     });
-//   }
-// }
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get/get.dart';
+import 'package:toby_bills/app/core/extensions/string_ext.dart';
+import 'package:toby_bills/app/data/model/cost_center/dto/response/cost_center_response.dart';
+import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
+import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
+import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
+import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
+import 'package:toby_bills/app/modules/payments/controllers/payments_controller.dart';
+import '../../../../components/icon_button_widget.dart';
+import '../../../../core/utils/double_filter.dart';
+import '../../../../data/model/inventory/dto/response/inventory_response.dart';
+
+class PaymentsDetailsWidget extends GetView<PaymentsController> {
+  const PaymentsDetailsWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    const separator = SizedBox(width: 5);
+    return Obx(() {
+      final details = controller.details;
+      return ListView.separated(
+        itemCount: details.length,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        separatorBuilder: (_, __) => const Divider(),
+        itemBuilder: (context, index) {
+          final detail = details[index];
+          return GetBuilder<PaymentsController>(
+            id: index.toString(),
+            builder: (_){
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: TypeAheadFormField<FindCustomerResponse>(
+                        itemBuilder: (context, client) {
+                          return SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: Text("${client.name} ${client.code}"),
+                            ),
+                          );
+                        },
+                        suggestionsCallback: (filter) => controller.customers.where((element) => (element.name??"").contains(filter) || (element.code??"").contains(filter)),
+                        onSuggestionSelected: (value){
+                          detail.textFieldController1.text = "${value.name} ${value.code}";
+                          detail.textFieldController2.clear();
+                          detail.focusNode1.unfocus();
+                          controller.getInvoiceListForCustomer(value,(){
+                            detail.focusNode2.requestFocus();
+                          });
+                        },
+                        validator: (value){
+                          if((value??"").isEmpty){
+                            return "مطلوب";
+                          }
+                          return null;
+                        },
+                        textFieldConfiguration: TextFieldConfiguration(
+                          textInputAction: TextInputAction.next,
+                          controller: detail.textFieldController1,
+                          focusNode: detail.focusNode1,
+                          onEditingComplete: () {
+                            detail.focusNode1.unfocus();
+                            controller.getCustomers(detail.textFieldController1.text).whenComplete(() => detail.focusNode1.requestFocus());
+                          },
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              isDense: true,
+                              hintMaxLines: 2,
+                              contentPadding: const EdgeInsets.all(5),
+                              suffixIcon: IconButtonWidget(
+                                icon: Icons.search,
+                                onPressed: () {
+                                  detail.focusNode1.unfocus();
+                                  controller.getCustomers(detail.textFieldController1.text).whenComplete(() => detail.focusNode1.requestFocus());
+                                },
+                              )),
+                        )),
+                  ),
+                  separator,
+                  Expanded(
+                    child: TypeAheadFormField<InvoiceList>(
+                        itemBuilder: (context, inv) {
+                          return SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: Text((inv.serial).toString()),
+                            ),
+                          );
+                        },
+                        suggestionsCallback: (filter) {
+                          return (controller.findCustomerBalanceResponse[detail.invOrganizationSiteId] != null)
+                              ? controller.findCustomerBalanceResponse[detail.invOrganizationSiteId]!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList()
+                              : [];
+                        },
+                        onSuggestionSelected: (value) {
+                          detail.invoiceId = value.id;
+                          detail.invoiceSerial = value.serial;
+                          detail.textFieldController2.text = "${value.serial}";
+                        },
+                        validator: (value){
+                          if((value??"").isEmpty){
+                            return "مطلوب";
+                          }
+                          return null;
+                        },
+                        textFieldConfiguration: TextFieldConfiguration(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
+                          ),
+                          onSubmitted: (filter){
+                            if(controller.findCustomerBalanceResponse[detail.invOrganizationSiteId] == null) return;
+                            final invoices = controller.findCustomerBalanceResponse[detail.invOrganizationSiteId]!.invoicesList.where((element) => element.serial != null && element.serial.toString().contains(filter)).toList();
+                            if(invoices.isEmpty) return;
+                            final inv = invoices.first;
+                            detail.invoiceId = inv.id;
+                            detail.invoiceSerial = inv.serial;
+                            detail.textFieldController2.text = "${inv.serial}";
+                          },
+                          controller: detail.textFieldController2,
+                          focusNode: detail.focusNode2,
+                        )),
+                  ),
+                  separator,
+                  Expanded(
+                    flex: 2,
+                    child: TypeAheadFormField<GlAccountResponse>(
+                        itemBuilder: (context, account) {
+                          return SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: Text("${account.name} ${account.accNumber}"),
+                            ),
+                          );
+                        },
+                        suggestionsCallback: (filter) {
+                          return controller.accounts.where((element) => (element.name??"").contains(filter) || (element.shotCode??"").contains(filter)).toList();
+                        },
+                        onSuggestionSelected: (account) {
+                          detail.glAccountDebitCode = account.accNumber;
+                          detail.glAccountDebitId = account.id;
+                          detail.glAccountDebitName = account.name;
+                          detail.textFieldController3.text = "${account.name} ${account.accNumber}";
+                        },
+                        validator: (value){
+                          if((value??"").isEmpty){
+                            return "مطلوب";
+                          }
+                          return null;
+                        },
+                        textFieldConfiguration: TextFieldConfiguration(
+                          onSubmitted: (filter){
+                            final list = controller.accounts.where((element) => (element.name??"").contains(filter) || (element.shotCode??"").contains(filter)).toList();
+                            if(list.isEmpty) return;
+                            final account = list.first;
+                            detail.glAccountDebitCode = account.accNumber;
+                            detail.glAccountDebitId = account.id;
+                            detail.glAccountDebitName = account.name;
+                            detail.textFieldController3.text = "${account.name} ${account.accNumber}";
+                          },
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
+                          ),
+                          controller: detail.textFieldController3,
+                          focusNode: detail.focusNode3,
+                        )
+                    ),
+                  ),
+                  separator,
+                  Expanded(
+                    flex: 2,
+                    child: TypeAheadFormField<GlAccountResponse>(
+                        itemBuilder: (context, account) {
+                          return SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: Text("${account.name} ${account.accNumber}"),
+                            ),
+                          );
+                        },
+                        suggestionsCallback: (filter) {
+                          return controller.accounts.where((element) => (element.name??"").contains(filter) || (element.shotCode??"").contains(filter)).toList();
+                        },
+                        onSuggestionSelected: (account) {
+                          detail.glAccountCreditCode = account.accNumber;
+                          detail.glAccountCreditId = account.id;
+                          detail.glAccountCreditName = account.name;
+                          detail.textFieldController4.text = "${account.name} ${account.accNumber}";
+                        },
+                        validator: (value){
+                          if((value??"").isEmpty){
+                            return "مطلوب";
+                          }
+                          return null;
+                        },
+                        textFieldConfiguration: TextFieldConfiguration(
+                          onSubmitted: (filter){
+                            final list = controller.accounts.where((element) => (element.name??"").contains(filter) || (element.shotCode??"").contains(filter)).toList();
+                            if(list.isEmpty) return;
+                            final account = list.first;
+                            detail.glAccountCreditCode = account.accNumber;
+                            detail.glAccountCreditId = account.id;
+                            detail.glAccountCreditName = account.name;
+                            detail.textFieldController4.text = "${account.name} ${account.accNumber}";
+                          },
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
+                          ),
+                          controller: detail.textFieldController4,
+                          focusNode: detail.focusNode4,
+                        )
+                    ),
+                  ),
+                  separator,
+                  Expanded(
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      textDirection: TextDirection.ltr,
+                      inputFormatters: [doubleInputFilter],
+                      validator: (value){
+                        if((value??"").isEmpty){
+                          return "مطلوب";
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13),
+                      ),
+                      onChanged: (v) => detail.value = v.tryToParseToNum??0,
+                      controller: detail.textFieldController5,
+                      focusNode: detail.focusNode5,
+                    ),
+                  ),
+                  separator,
+                  Expanded(
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      textDirection: TextDirection.ltr,
+                      inputFormatters: [doubleInputFilter],
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13),
+                      ),
+                      onChanged: (v) => detail.bankCommition = v.tryToParseToNum??0,
+                      controller: detail.textFieldController6,
+                      focusNode: detail.focusNode6,
+                      onEditingComplete: () {
+                      },
+                    ),
+                  ),
+                  separator,
+                  Expanded(
+                    flex: 2,
+                    child: TypeAheadFormField<CostCenterResponse>(
+                        itemBuilder: (context, center) {
+                          return SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: Text("${center.name}"),
+                            ),
+                          );
+                        },
+                        suggestionsCallback: (filter) {
+                          return controller.costCenters.where((element) => (element.name??"").contains(filter) || (element.code?.toString()??"").contains(filter)).toList();
+                        },
+                        onSuggestionSelected: (center) {
+                          detail.costCenterName = center.name;
+                          detail.costCenterCode = center.code;
+                          detail.costCenterId = center.id;
+                          detail.textFieldController7.text = center.name??"";
+                        },
+                        validator: (value){
+                          if((value??"").isEmpty){
+                            return "مطلوب";
+                          }
+                          return null;
+                        },
+                        textFieldConfiguration: TextFieldConfiguration(
+                          onSubmitted: (filter){
+                            final list = controller.costCenters.where((element) => (element.name??"").contains(filter) || (element.code?.toString()??"").contains(filter)).toList();
+                            if(list.isEmpty) return;
+                            final center = list.first;
+                            detail.costCenterName = center.name;
+                            detail.costCenterCode = center.code;
+                            detail.costCenterId = center.id;
+                            detail.textFieldController7.text = center.name??"";
+                          },
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
+                          ),
+                          controller: detail.textFieldController7,
+                          focusNode: detail.focusNode7,
+                        )
+                    ),
+                  ),
+                  separator,
+                  Expanded(
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      textDirection: TextDirection.ltr,
+                      validator: (value){
+                        if((value??"").isEmpty){
+                          return "مطلوب";
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13),
+                      ),
+                      controller: detail.textFieldController8,
+                      focusNode: detail.focusNode8,
+                      onChanged: (v) => detail.remarks = v,
+                    ),
+                  ),
+                  separator,
+                  Expanded(
+                    child: Center(
+                      child: IconButtonWidget(
+                        onPressed: () => controller.details.removeAt(index),
+                        icon: Icons.clear_rounded,
+                      ),
+                    ),
+                  ),
+                  separator,
+                ],
+              );
+            },
+          );
+        },
+      );
+    });
+  }
+}

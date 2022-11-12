@@ -4,6 +4,7 @@ import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:toby_bills/app/routes/app_pages.dart';
+import 'package:window_manager/window_manager.dart';
 
 class HomeDrawerWidget extends GetView<HomeController> {
   const HomeDrawerWidget({Key? key}) : super(key: key);
@@ -40,145 +41,205 @@ class HomeDrawerWidget extends GetView<HomeController> {
                 ],
               ),
             ),
-            _Tile(
-              title: "إجماليات الفواتير",
-              onTap: () {
-                Get.toNamed(Routes.CATEGORIES_TOTALS);
-              },
+            HomeDrawerSectionWidget(
+              title: "حركة المخازن",
+              children: [
+                HomeDrawerTileWidget(
+                  title: "فواتير الشراء",
+                  onTap: () => goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء"),
+                ),
+                HomeDrawerTileWidget(
+                  title: "الإشعارات",
+                  onTap: () => goTo(Routes.NOTIFICATIONS, "الإشعارات"),
+                ),
+              ],
             ),
-            _Tile(
-              title: "حالة الفاتورة",
-              onTap: () {
-                if(Get.find<HomeController>().invoice.value == null){
-                  showPopupText(text: "يجب اختيار فاتورة اولاً");
-                  return;
-                }
-                Get.toNamed(Routes.INVOICE_STATUS);
-              },
+            HomeDrawerSectionWidget(
+                title: "تقارير المخازن",
+                children: [
+                  HomeDrawerTileWidget(
+                    title: "إجماليات الفواتير",
+                    onTap: () {
+                      goTo(Routes.CATEGORIES_TOTALS, "إجماليات الفواتير");
+                    },
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "حالة الفاتورة",
+                    onTap: () {
+                      if(Get.find<HomeController>().invoice.value == null){
+                        showPopupText(text: "يجب اختيار فاتورة اولاً");
+                        return;
+                      }
+                      goTo(Routes.INVOICE_STATUS,"حالة الفاتورة");
+                    },
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "مراحل الانتاج",
+                    onTap: () {
+                      if(Get.find<HomeController>().invoice.value == null) {
+                        showPopupText(text: "يجب اختيار فاتورة اولاً");
+                        return;
+                      }
+                      goTo(Routes.PRODUCTION_STAGES,"مراحل الانتاج");
+                    },
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "كميه الاصناف بالمعرض",
+                    onTap: () {
+                      if(Get.find<HomeController>().invoice.value == null) {
+                        showPopupText(text: "يجب اختيار فاتورة اولاً");
+                        return;
+                      }
+                      goTo(Routes.ITEMS_QUANTITY, "كميه الاصناف بالمعرض");
+                    },
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "مبيعات الأصناف حسب العملاء تفصيلي",
+                    onTap: () => goTo(Routes.ITEMS_SALES_BY_CUSTOMERS, "مبيعات الأصناف حسب العملاء تفصيلي"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "كشف حساب خزنة",
+                    onTap: () => goTo(Routes.SAFE_ACCOUNT_SATATMENT, "كشف حساب خزنة"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "الاصناف",
+                    onTap: () => goTo(Routes.ITEMS, "الاصناف"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "بيان الفواتير حسب الحالة",
+                    onTap: () => goTo(Routes.INVOICE_STATEMENT_BY_CASE, "بيان الفواتير حسب الحالة"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "ارباح مبيعات الاصناف",
+                    onTap: () => goTo(Routes.PROFITSOLD, "ارباح مبيعات الاصناف"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "المبيعات حسب الشركات لفتره",
+                    onTap: () => goTo(Routes.SALES_ITEMS_BY_COMPANY, "المبيعات حسب الشركات لفتره"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "رصيد الاصناف",
+                    onTap: () => goTo(Routes.ITEMS_BALANCES_STATEMENT, "رصيد الاصناف"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "فواتير الشركات بدون خياطه",
+                    onTap: () => goTo(Routes.INVOICES_WITHOUT_SWING, "فواتير الشركات بدون خياطه"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "عملاء ليس لديهم حركه",
+                    onTap: () => goTo(Routes.CLIENTS_NO_MOVEMENT, "عملاء ليس لديهم حركه"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "ارصده العملاء",
+                    onTap: () => goTo(Routes.FIND_CUSTOMER_BALANCE, "ارصده العملاء"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "بيان بالسندات الصادره حسب الفرع",
+                    onTap: () => goTo(Routes.FIND_STATEMENT_OF_BONDS_BY_BRANCH, "بيان بالسندات الصادره حسب الفرع"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "بيان الفواتير حسب الضريبه تفصيلي",
+                    onTap: () => goTo(Routes.FIND_VALES_VALUES_ADDED_DETAILS, "بيان الفواتير حسب الضريبه تفصيلي"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "بيان الفواتير حسب الضريبه ",
+                    onTap: () => goTo(Routes.FIND_VALES_VALUES_ADDED, "بيان الفواتير حسب الضريبه "),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "تقرير العمولات",
+                    onTap: () => goTo(Routes.BALANCE_GALLARY, "تقرير العمولات"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "تقرير بالمبالغ الغير مسدده",
+                    onTap: () => goTo(Routes.BALANCE_GALLARY_UNPAID, "تقرير بالمبالغ الغير مسدده"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "تقرير بالمبالغ المسدده",
+                    onTap: () => goTo(Routes.BALANCE_GALLARY_PAID, "تقرير بالمبالغ المسدده"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "الاصناف حسب الفئات",
+                    onTap: () => goTo(Routes.INV_ITEM_DTO, "الاصناف حسب الفئات"),
+                  ),
+                ],
             ),
-            _Tile(
-              title: "كشف حساب",
-              onTap: () {
-                if(Get.find<HomeController>().selectedCustomer.value == null) {
-                  showPopupText(text: "يجب اختيار عميل اولاً");
-                  return;
-                }
-                Get.toNamed(Routes.ACCOUNT_STATEMENT);
-              },
+            HomeDrawerSectionWidget(
+              title: "حركة الخزائن",
+              children: [
+                HomeDrawerTileWidget(
+                  title: "سند القبض",
+                  onTap: () => goTo(Routes.CATCH_RECEIPT, "سند القبض"),
+                ),
+                HomeDrawerTileWidget(
+                  title: "تعديل سندات القبض",
+                  onTap: () => goTo(Routes.EDITBILLS, "تعديل سندات القبض"),
+                ),
+                HomeDrawerTileWidget(
+                  title: "المدفوعات",
+                  onTap: () => goTo(Routes.PAYMENTS, "المدفوعات"),
+                ),
+              ],
             ),
-            _Tile(
-              title: "مراحل الانتاج",
-              onTap: () {
-                if(Get.find<HomeController>().invoice.value == null) {
-                  showPopupText(text: "يجب اختيار فاتورة اولاً");
-                  return;
-                }
-                Get.toNamed(Routes.PRODUCTION_STAGES);
-              },
-            ),
-            _Tile(
-              title: "كميه الاصناف بالمعرض",
-              onTap: () {
-                if(Get.find<HomeController>().invoice.value == null) {
-                  showPopupText(text: "يجب اختيار فاتورة اولاً");
-                  return;
-                }
-                Get.toNamed(Routes.ITEMS_QUANTITY);
-              },
-            ),
-            _Tile(
-              title: "مبيعات الأصناف حسب العملاء تفصيلي",
-              onTap: () => Get.toNamed(Routes.ITEMS_SALES_BY_CUSTOMERS),
-            ),
-            _Tile(
-              title: "كشف حساب خزنة",
-              onTap: () => Get.toNamed(Routes.SAFE_ACCOUNT_SATATMENT),
-            ),
-            _Tile(
-              title: "الاصناف",
-              onTap: () => Get.toNamed(Routes.ITEMS),
-            ),
-            _Tile(
-              title: "بيان الفواتير حسب الحالة",
-              onTap: () => Get.toNamed(Routes.INVOICE_STATEMENT_BY_CASE),
-            ),
-            _Tile(
-              title: "تعديل سندات القبض",
-              onTap: () => Get.toNamed(Routes.EDITBILLS),
-            ),
-            _Tile(
-              title: "ارباح مبيعات الاصناف",
-              onTap: () => Get.toNamed(Routes.PROFITSOLD),
-            ),
-            _Tile(
-              title: "المبيعات حسب الشركات لفتره",
-              onTap: () => Get.toNamed(Routes.SALES_ITEMS_BY_COMPANY),
-            ),
-            _Tile(
-              title: "رصيد الاصناف",
-              onTap: () => Get.toNamed(Routes.ITEMS_BALANCES_STATEMENT),
-            ),
-            _Tile(
-              title: "فواتير الشركات بدون خياطه",
-              onTap: () => Get.toNamed(Routes.INVOICES_WITHOUT_SWING),
-            ),
-            _Tile(
-              title: "عملاء ليس لديهم حركه",
-              onTap: () => Get.toNamed(Routes.CLIENTS_NO_MOVEMENT),
-            ),
-            _Tile(
-              title: "ارصده العملاء",
-              onTap: () => Get.toNamed(Routes.FIND_CUSTOMER_BALANCE),
-            ),
-            _Tile(
-              title: "بيان بالسندات الصادره حسب الفرع",
-              onTap: () => Get.toNamed(Routes.FIND_STATEMENT_OF_BONDS_BY_BRANCH),
-            ),
-            _Tile(
-              title: "بيان الفواتير حسب الضريبه تفصيلي",
-              onTap: () => Get.toNamed(Routes.FIND_VALES_VALUES_ADDED_DETAILS),
-            ),
-            _Tile(
-              title: "بيان الفواتير حسب الضريبه ",
-              onTap: () => Get.toNamed(Routes.FIND_VALES_VALUES_ADDED),
-            ),
-            _Tile(
-              title: "فواتير الشراء",
-              onTap: () => Get.toNamed(Routes.PURCHASE_INVOICES),
-            ),
-            _Tile(
-              title: "تقرير العمولات",
-              onTap: () => Get.toNamed(Routes.BALANCE_GALLARY),
-            ),
-            _Tile(
-              title: "تقرير بالمبالغ الغير مسدده",
-              onTap: () => Get.toNamed(Routes.BALANCE_GALLARY_UNPAID),
-            ),
-            _Tile(
-              title: "تقرير بالمبالغ المسدده",
-              onTap: () => Get.toNamed(Routes.BALANCE_GALLARY_PAID),
-            ),
-            _Tile(
-              title: "الاصناف حسب الفئات",
-              onTap: () => Get.toNamed(Routes.INV_ITEM_DTO),
-            ),
-            _Tile(
-              title: "الإشعارات",
-              onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
-            ),
-            _Tile(
-              title: "المدفوعات",
-              onTap: () => Get.toNamed(Routes.PAYMENTS),
+            HomeDrawerSectionWidget(
+              title: "تقارير الخزائن",
+              children: [
+                HomeDrawerTileWidget(
+                  title: "كشف حساب",
+                  onTap: () {
+                    if(Get.find<HomeController>().selectedCustomer.value == null) {
+                      showPopupText(text: "يجب اختيار عميل اولاً");
+                      return;
+                    }
+                    goTo(Routes.ACCOUNT_STATEMENT,"كشف حساب");
+                  },
+                ),
+              ],
             ),
           ],
         ),
       ),
     );
   }
+  
+  goTo(String to, String title)async{
+    windowManager.setTitle("Toby Bills -> $title");
+    await Get.toNamed(to);
+    windowManager.setTitle("Toby Bills -> شاشة المشتريات");
+  }
 }
 
-class _Tile extends GetView<HomeController> {
-  const _Tile({Key? key, required this.title, required this.onTap}) : super(key: key);
+class HomeDrawerSectionWidget extends StatelessWidget {
+  const HomeDrawerSectionWidget({Key? key, required this.title, required this.children}) : super(key: key);
+  final String title;
+  final List<HomeDrawerTileWidget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(spreadRadius: 2,blurRadius: 5,color: Colors.black12)
+        ]
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: ExpansionTile(
+          title: Text(title),
+          leading: const Icon(Icons.menu_rounded),
+          children: children,
+        ),
+      ),
+    );
+  }
+}
+
+
+class HomeDrawerTileWidget extends GetView<HomeController> {
+  const HomeDrawerTileWidget({Key? key, required this.title, required this.onTap}) : super(key: key);
   final String title;
   final Function() onTap;
 
@@ -186,6 +247,7 @@ class _Tile extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
+      contentPadding: const EdgeInsets.only(left: 30),
       leading: const SizedBox(
           width: 20,
           child: Center(

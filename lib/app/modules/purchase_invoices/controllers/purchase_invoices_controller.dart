@@ -13,6 +13,8 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/general_journal/dto/find_general_journal_request.dart';
+import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
@@ -35,6 +37,7 @@ import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.d
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/provider/local_provider.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
+import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
@@ -202,7 +205,7 @@ class PurchaseInvoicesController extends GetxController {
 
   printInvoice(BuildContext context){
     isLoading(true);
-    InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null),
+    InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null, typeInv: 0),
         onSuccess: (data) {
           PrintingHelper().printPurchaseInvoice(
             context,
@@ -218,10 +221,21 @@ class PurchaseInvoicesController extends GetxController {
 
   }
 
+  printGeneralJournal(BuildContext context){
+    isLoading(true);
+    GeneralJournalRepository().findGeneralJournalById(FindGeneralJournalRequest(invoice.value!.generalJournalId),
+        onSuccess: (data) {
+          PrintingHelper().printGeneralJournal(data, context);
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
+
+  }
+
   searchForInvoiceById(String id) async {
     newInvoice();
     isLoading(true);
-    await InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null),
+    await InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 0),
         onSuccess: (data) {
           invoice(data);
           if(galleries.any((element) => element.id == data.gallaryId)) {

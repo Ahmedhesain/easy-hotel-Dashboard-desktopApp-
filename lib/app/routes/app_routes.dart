@@ -33,13 +33,10 @@ abstract class Routes {
   static const BALANCE_GALLARY_PAID = _Paths.BALANCE_GALLARY_PAID;
   static const INV_ITEM_DTO = _Paths.INV_ITEM_DTO;
 
-
-
-
-
   static const PURCHASE_INVOICES = _Paths.PURCHASE_INVOICES;
   static const NOTIFICATIONS = _Paths.NOTIFICATIONS;
   static const PAYMENTS = _Paths.PAYMENTS;
+  static const CATCH_RECEIPT = _Paths.CATCH_RECEIPT;
 }
 
 abstract class _Paths {
@@ -72,11 +69,8 @@ abstract class _Paths {
   static const BALANCE_GALLARY_PAID = '/balance-gallary-paid';
   static const INV_ITEM_DTO = '/inv-item-dto';
 
-
-
-
-
   static const PURCHASE_INVOICES = '/purchase-invoices';
   static const NOTIFICATIONS = '/notifications';
   static const PAYMENTS = '/payments';
+  static const CATCH_RECEIPT = '/catch-receipt';
 }

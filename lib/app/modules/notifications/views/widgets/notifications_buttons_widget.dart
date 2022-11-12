@@ -47,13 +47,15 @@ class NotificationsButtonsWidget extends GetView<NotificationsController> {
                   const SizedBox(width: 5),
                   ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
                   if(controller.notification.value?.id != null)
-                    const SizedBox(width: 5),
-                  if(controller.notification.value?.id != null)
-                    ButtonWidget(text: "طباعة قيد", onPressed: () {}),
-                  if(controller.notification.value?.id != null)
-                    const SizedBox(width: 5),
-                  if(controller.notification.value?.id != null)
-                    ButtonWidget(text: "حذف", onPressed: () => controller.deleteNotification()),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(width: 5),
+                        ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printGeneralJournal(context)),
+                        const SizedBox(width: 5),
+                        ButtonWidget(text: "حذف", onPressed: () => controller.deleteNotification()),
+                      ],
+                    ),
                   const SizedBox(width: 5),
                   ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
                 ],

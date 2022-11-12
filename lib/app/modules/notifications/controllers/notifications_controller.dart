@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
+import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_balance_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/general_journal/dto/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
@@ -17,6 +19,7 @@ import 'package:toby_bills/app/data/model/notifications/dto/request/find_notific
 import 'package:toby_bills/app/data/model/notifications/dto/request/save_notification_request.dart';
 import 'package:toby_bills/app/data/model/notifications/dto/response/find_notification_response.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
+import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/notifications/notifications_repository.dart';
 
@@ -73,7 +76,7 @@ class NotificationsController extends GetxController {
 
   searchForInvoiceById(String id) async {
     isLoading(true);
-    await InvoiceRepository().findInvPurchaseInvoiceBySerial(GetInvoiceRequest(serial: id, branchId: user.branchId, gallaryId: null),
+    await InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: user.branchId, gallaryId: null,typeInv: 4),
         onSuccess: (data) {
           invoice(data);
           searchedInvoiceController.text = data.serial?.toString() ?? "";
@@ -159,6 +162,17 @@ class NotificationsController extends GetxController {
       onError: (e) => showPopupText(text: e.toString()),
       onComplete: () => isLoading(false)
     );
+  }
+
+  printGeneralJournal(BuildContext context){
+    isLoading(true);
+    GeneralJournalRepository().findGeneralJournalById(FindGeneralJournalRequest(notification.value!.generalJournalId),
+        onSuccess: (data) {
+          PrintingHelper().printGeneralJournal(data, context);
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
+
   }
 
   deleteNotification() {

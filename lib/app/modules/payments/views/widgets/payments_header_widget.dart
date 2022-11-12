@@ -36,7 +36,7 @@ class PaymentsHeaderWidget extends GetView<PaymentsController> {
                     const Expanded(child: Text("مسلسل")),
                     Expanded(
                       child: Obx(() {
-                        return Text(controller.notification.value?.serial.toString() ?? "");
+                        return Text(controller.payment.value?.serial.toString() ?? "");
                       }),
                     )
                   ],
@@ -84,34 +84,6 @@ class PaymentsHeaderWidget extends GetView<PaymentsController> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Obx(() {
-                  return Material(
-                    color: Colors.transparent,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: RadioListTile(
-                            value: 0,
-                            groupValue: controller.destinationType.value,
-                            title: const Text("عميل"),
-                            onChanged: controller.changeDestination,
-                            activeColor: AppColors.colorYellow,
-                          ),
-                        ),
-                        Expanded(
-                          child: RadioListTile(
-                            value: 1,
-                            groupValue: controller.destinationType.value,
-                            title: const Text("مورد"),
-                            onChanged: controller.changeDestination,
-                            activeColor: AppColors.colorYellow,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-                const SizedBox(height: 10),
               ],
             ),
           ),
@@ -153,39 +125,38 @@ class PaymentsHeaderWidget extends GetView<PaymentsController> {
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    const Expanded(child: Text("مناولة")),
-                    Expanded(
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                          isDense: true,
-                          filled: true,
-                          fillColor: Colors.white70,
-                        ),
-                        controller: controller.monawlaController,
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
                     const Expanded(child: Text("رقم الحساب الدائن")),
                     Expanded(
                       child: Obx(() {
-                        return DropdownSearch<GlAccountResponse>(
-                          items: controller.accounts,
-                          selectedItem: controller.selectedAccount.value,
-                          onChanged: controller.selectedAccount,
-                          itemAsString: (account) => account.name ?? "",
-                          dropdownDecoratorProps: const DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
+                        return TypeAheadFormField<GlAccountResponse>(
+                            key: UniqueKey(),
+                            initialValue: controller.selectedAccount.value?.name,
+                            itemBuilder: (context, account) {
+                              return SizedBox(
+                                height: 50,
+                                child: Center(
+                                  child: Text("${account.name}"),
+                                ),
+                              );
+                            },
+                            suggestionsCallback: (filter) {
+                              return controller.accounts.where((element) => (element.name??"").contains(filter) || (element.accNumber?.toString()??"").contains(filter)).toList();
+                            },
+                            onSuggestionSelected: (value) {
+                              controller.selectedAccount(value);
+                            },
+                            textFieldConfiguration: TextFieldConfiguration(
+                                onSubmitted: (filter){
+                                  final list = controller.accounts.where((element) => (element.name??"").contains(filter) || (element.accNumber?.toString()??"").contains(filter)).toList();
+                                  if(list.isEmpty) return;
+                                  controller.selectedAccount(list.first);
+                                },
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
+                                ),
+                            )
                         );
                       }),
                     )
@@ -197,18 +168,35 @@ class PaymentsHeaderWidget extends GetView<PaymentsController> {
                     const Expanded(child: Text("مركز التكلفة")),
                     Expanded(
                       child: Obx(() {
-                        return DropdownSearch<CostCenterResponse>(
-                          items: controller.costCenters,
-                          selectedItem: controller.selectedCenter.value,
-                          onChanged: controller.selectedCenter,
-                          itemAsString: (center) => center.name ?? "",
-                          dropdownDecoratorProps: const DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
+                        return TypeAheadFormField<CostCenterResponse>(
+                            key: UniqueKey(),
+                            initialValue: controller.selectedCenter.value?.name,
+                            itemBuilder: (context, center) {
+                              return SizedBox(
+                                height: 50,
+                                child: Center(
+                                  child: Text("${center.name}"),
+                                ),
+                              );
+                            },
+                            suggestionsCallback: (filter) {
+                              return controller.costCenters.where((element) => (element.name??"").contains(filter) || (element.code?.toString()??"").contains(filter)).toList();
+                            },
+                            onSuggestionSelected: (value) {
+                              controller.selectedCenter(value);
+                            },
+                            textFieldConfiguration: TextFieldConfiguration(
+                              onSubmitted: (filter){
+                                final list = controller.costCenters.where((element) => (element.name??"").contains(filter) || (element.code?.toString()??"").contains(filter)).toList();
+                                if(list.isEmpty) return;
+                                controller.selectedCenter(list.first);
+                              },
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 13.5),
+                              ),
+                            )
                         );
                       }),
                     )

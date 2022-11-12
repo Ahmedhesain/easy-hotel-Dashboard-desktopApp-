@@ -27,16 +27,15 @@ class PurchaseInvoiceHeaderWidget extends GetView<PurchaseInvoicesController> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ButtonWidget(text: controller.invoice.value != null ? "تعديل" : "حفظ", onPressed: () => controller.saveInvoice()),
-                if (controller.invoice.value != null) const SizedBox(width: 5),
                 if (controller.invoice.value != null)
-                  ButtonWidget(
-                      text: "طباعة",
-                      onPressed: () => controller.printInvoice(context)),
-                if (controller.invoice.value != null) const SizedBox(width: 5),
-                if (controller.invoice.value != null)
-                  ButtonWidget(
-                      text: "طباعة قيد",
-                      onPressed: () => controller.printInvoice(context)),
+                  Row(
+                    children: [
+                      const SizedBox(width: 5),
+                      ButtonWidget(text: "طباعة", onPressed: () => controller.printInvoice(context)),
+                      const SizedBox(width: 5),
+                      ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printGeneralJournal(context)),
+                    ],
+                  ),
                 const SizedBox(width: 5),
                 ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
                 const SizedBox(width: 5),

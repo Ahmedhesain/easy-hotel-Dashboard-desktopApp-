@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import 'package:toby_bills/app/modules/account_statement/bindings/account_statement_binding.dart';
 import 'package:toby_bills/app/modules/account_statement/views/account_statement_view.dart';
+import 'package:toby_bills/app/modules/catch_receipt/bindings/catch_receipt_binding.dart';
+import 'package:toby_bills/app/modules/catch_receipt/views/catch_receipt_view.dart';
 import 'package:toby_bills/app/modules/edit_bills/bindings/edit_bills_binding.dart';
 import 'package:toby_bills/app/modules/edit_bills/views/edit_bills_view.dart';
 import 'package:toby_bills/app/modules/home/bindings/home_binding.dart';
@@ -45,7 +47,6 @@ import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_stat
 import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/bindings/invoices_without_swing_binding.dart';
 import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/views/invoice_without_swing_view.dart';
 import 'package:toby_bills/app/modules/reports/item_balances_statement/bindings/items_balances_statement_binding.dart';
-import 'package:toby_bills/app/modules/reports/item_balances_statement/controllers/item_balances_statement_controller.dart';
 import 'package:toby_bills/app/modules/reports/item_balances_statement/views/item_balances_statement_view.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/bindings/item_sales_by_customers_binding.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/views/item_sales_by_customers_view.dart';
@@ -119,93 +120,98 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ITEMS,
-      page: () => ItemsView(),
+      page: () => const ItemsView(),
       binding: ItemsBinding(),
     ),
     GetPage(
       name: _Paths.EDIT_BILLS,
-      page: () => EditBillsView(),
+      page: () => const EditBillsView(),
       binding: EditBillsBinding(),
     ),
     GetPage(
       name: _Paths.PROFIT_SOLD,
-      page: () => ProfitSoldView(),
+      page: () => const ProfitSoldView(),
       binding: ProfitSoldBinding(),
     ),
     GetPage(
       name: _Paths.SALES_ITEMS_BY_COMPANY,
-      page: () => SalesItemsByCompanyView(),
+      page: () => const SalesItemsByCompanyView(),
       binding: SalesItemsByCompanyBinding(),
     ),
     GetPage(
       name: _Paths.ITEMS_BALANCES_STATEMENT,
-      page: () => ItemsBalancesStatementView(),
+      page: () => const ItemsBalancesStatementView(),
       binding: ItemsBalancesStatementBinding(),
     ),
     GetPage(
       name: _Paths.INVOICES_WITHOUT_SWING,
-      page: () => InvoicesWithoutSwingView(),
+      page: () => const InvoicesWithoutSwingView(),
       binding: InvoicesWithoutSwingBinding(),
     ),
     GetPage(
       name: _Paths.CLIENTS_NO_MOVEMENT,
-      page: () => ClientNoMovementView(),
+      page: () => const ClientNoMovementView(),
       binding: ClientsNoMovementBinding(),
     ),
     GetPage(
       name: _Paths.FIND_CUSTOMER_BALANCE,
-      page: () => FindCustomerBalanceView(),
+      page: () => const FindCustomerBalanceView(),
       binding: FindCustomerBalanceBinding(),
     ),
     GetPage(
       name: _Paths.FIND_STATEMENT_OF_BONDS_BY_BRANCH,
-      page: () => FindStatementOfBondsByBranchReportView(),
+      page: () => const FindStatementOfBondsByBranchReportView(),
       binding: FindStatementOfBondsByBranchReportBinding(),
     ),
     GetPage(
       name: _Paths.FIND_VALES_VALUES_ADDED_DETAILS,
-      page: () => FindValesValueAddedDetailsView(),
+      page: () => const FindValesValueAddedDetailsView(),
       binding: FindValesValueAddedDetailsBinding(),
     ),
     GetPage(
       name: _Paths.FIND_VALES_VALUES_ADDED,
-      page: () => FindSalesValueAddedView(),
+      page: () => const FindSalesValueAddedView(),
       binding: FindSalesValueAddedBinding(),
     ),
     GetPage(
       name: _Paths.PURCHASE_INVOICES,
-      page: () => PurchaseInvoicesView(),
+      page: () => const PurchaseInvoicesView(),
       binding: PurchaseInvoicesBinding(),
     ),
     GetPage(
       name: _Paths.BALANCE_GALLARY,
-      page: () => BalanceGallaryView(),
+      page: () => const BalanceGallaryView(),
       binding: BalanceGallaryBinding(),
     ),
     GetPage(
       name: _Paths.BALANCE_GALLARY_UNPAID,
-      page: () => BalanceGallaryUnpaidView(),
+      page: () => const BalanceGallaryUnpaidView(),
       binding: BalanceGallaryUnpaidBinding(),
     ),
     GetPage(
       name: _Paths.BALANCE_GALLARY_PAID,
-      page: () => BalanceGallarypaidView(),
+      page: () => const BalanceGallarypaidView(),
       binding: BalanceGallarypaidBinding(),
     ),
     GetPage(
       name: _Paths.INV_ITEM_DTO,
-      page: () => InvItemView(),
+      page: () => const InvItemView(),
       binding: InvItemBinding(),
     ),
     GetPage(
       name: _Paths.NOTIFICATIONS,
-      page: () => NotificationsView(),
+      page: () => const NotificationsView(),
       binding: NotificationsBinding(),
     ),
     GetPage(
       name: _Paths.PAYMENTS,
-      page: () => PaymentsView(),
+      page: () => const PaymentsView(),
       binding: PaymentsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CATCH_RECEIPT,
+      page: () => CatchReceiptView(),
+      binding: CatchReceiptBinding(),
     ),
   ];
 }

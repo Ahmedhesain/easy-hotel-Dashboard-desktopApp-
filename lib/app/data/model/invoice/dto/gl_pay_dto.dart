@@ -1,10 +1,7 @@
-// To parse this JSON data, do
-//
-//     final khaznaModel = khaznaModelFromJson(jsonString);
-
 import 'dart:convert';
+import 'package:toby_bills/app/core/mixins/form_mixin.dart';
 
-class GlPayDTO {
+class GlPayDTO with FormMixin{
   GlPayDTO({
     this.bank,
     this.bankName,
@@ -19,7 +16,12 @@ class GlPayDTO {
     this.remark,
     this.date,
     this.serial
-  });
+  }){
+    textFieldController1.text = customerName??"";
+    textFieldController2.text = value?.toStringAsFixed(2)??"";
+    textFieldController3.text = bankName??"";
+    textFieldController4.text = remark??"";
+  }
 
   Bank? bank;
   String? bankName;
