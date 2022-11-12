@@ -23,7 +23,7 @@ import 'package:toby_bills/app/modules/purchase_invoices/views/purchase_invoices
 import 'package:toby_bills/app/modules/reports/balance_galary/bindings/balance_galary_binding.dart';
 import 'package:toby_bills/app/modules/reports/balance_galary/views/balance_galary_view.dart';
 import 'package:toby_bills/app/modules/reports/balance_galary_paid/bindings/balance_galary_paid_binding.dart';
-import 'package:toby_bills/app/modules/reports/balance_galary_paid/views/balance_galary_unpaid_view.dart';
+import 'package:toby_bills/app/modules/reports/balance_galary_paid/views/balance_galary_paid_view.dart';
 import 'package:toby_bills/app/modules/reports/balance_galary_unpaid/bindings/balance_galary_unpaid_binding.dart';
 import 'package:toby_bills/app/modules/reports/balance_galary_unpaid/views/balance_galary_unpaid_view.dart';
 import 'package:toby_bills/app/modules/reports/categories_totals/bindings/categories_totals_binding.dart';

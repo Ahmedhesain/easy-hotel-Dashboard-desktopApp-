@@ -21,7 +21,7 @@ class ProfitSoldController extends GetxController{
   String query = '';
   final deliveryPlaces = <DeliveryPlaceResposne>[];
   final groups = <AllGroupResponse>[];
-  Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
+   RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
   Rxn<AllGroupResponse> selectedGroup = Rxn();
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
@@ -48,10 +48,8 @@ class ProfitSoldController extends GetxController{
       dateFrom:dateFrom.value,
       invType: 4,
       invoiceType:categoryController.text,
-      invInventoryDtoList: [
-        DtoList(
-            id: selectedDeliveryPlace.value!.id
-        )],
+      invInventoryDtoList: deliveryPlaces.map((e) => DtoList(id: e.id)).toList(),
+
       proGroupDtoList: [
     DtoList(
     id: selectedGroup.value!.id
@@ -72,9 +70,11 @@ class ProfitSoldController extends GetxController{
       DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
         deliveryPlaces.assignAll(data);
-        if (deliveryPlaces.isNotEmpty) {
-          selectedDeliveryPlace(deliveryPlaces.first);
-        }
+        // if (deliveryPlaces.isNotEmpty) {
+        //   // deliveryPlaces.insert(0, );
+        //
+        //   // selectedDeliveryPlace(deliveryPlaces.first);
+        // }
       },
       onError: (error) => showPopupText(text: error.toString()),
     );
@@ -101,6 +101,18 @@ class ProfitSoldController extends GetxController{
       },
       onError: (error) => showPopupText(text: error.toString()),
     );
+  }
+  selectNewDeliveryplace(List<String> values) {
+    if (!values.contains("تحديد الكل") && selectedDeliveryPlace.any((element) => element.name == "تحديد الكل")) {
+      selectedDeliveryPlace.clear();
+    } else if (!selectedDeliveryPlace.any((element) => element.name == "تحديد الكل") && values.contains("تحديد الكل")) {
+      selectedDeliveryPlace.assignAll(deliveryPlaces);
+    } else {
+      if (values.length < selectedDeliveryPlace.length && values.contains("تحديد الكل")) {
+        values.remove("تحديد الكل");
+      }
+      selectedDeliveryPlace.assignAll(deliveryPlaces.where((element) => values.contains(element.name)));
+    }
   }
 
 // Future<void> searchItem() async {

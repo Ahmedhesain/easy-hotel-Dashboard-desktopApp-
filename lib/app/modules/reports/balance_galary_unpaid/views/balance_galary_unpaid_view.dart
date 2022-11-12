@@ -253,6 +253,24 @@ class BalanceGallaryUnpaidView extends GetView<BalanceGallaryUnpaidController> {
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printBalanceGallaryUnpaid(context, controller.reports),
+                                                      child: const Text("طباعة"),
+                                                    );
+                                                  }),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => ExcelHelper.BalanceGallaryUnpaidExcel(controller.reports, context),
+                                                      child: const Text("تصدير الى اكسل"),
+                                                    );
+                                                  }),
+                                                ),
                                               ],)
 
                                           ),

@@ -173,6 +173,24 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printCustomersBalance(context, controller.reports),
+                                                      child: const Text("طباعة"),
+                                                    );
+                                                  }),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => ExcelHelper.CustomersBalanceExcel(controller.reports, context),
+                                                      child: const Text("تصدير الى اكسل"),
+                                                    );
+                                                  }),
+                                                ),
                                               ],)
 
                                           ),
@@ -205,7 +223,7 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
                                   Container(
                                     margin: EdgeInsets.all(0),
                                     child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .121),
+                                      defaultColumnWidth: FixedColumnWidth(size.width * .141),
                                       border: TableBorder.all(
                                           borderRadius: BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
@@ -220,20 +238,18 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
                                           Column(children: [Text('اسم العميل',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('الهاتف',
+                                          Column(children: [Text('الرصيد الافتتاحي',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('تاريخ آخر فاتوره',
+                                          Column(children: [Text('المدين',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اجمالي التعامل',
+                                          Column(children: [Text('الدائن',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اجمالي التعامل',
+                                          Column(children: [Text('الرصيد',
                                               style: TextStyle(fontSize: 20.0))
-                                          ]),  Column(children: [Text('اجمالي التعامل',
-                                              style: TextStyle(fontSize: 20.0))
-                                          ]),  Column(children: [Text('اجمالي التعامل',
+                                          ]),  Column(children: [Text('الفواتير',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -264,7 +280,7 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.organizationsiteId!.toString(),
+                                                    kha.openningBalance!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 
@@ -275,19 +291,15 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.balance!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
-                                              ]),
-                                              Column(children: [
-                                                Text(
                                                     kha.debit!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.openningBalance!.toString(),
+                                                    kha.balance!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
+
                                               Column(children: [
                                                 Text(
                                                     kha.organizationsiteId!.toString(),

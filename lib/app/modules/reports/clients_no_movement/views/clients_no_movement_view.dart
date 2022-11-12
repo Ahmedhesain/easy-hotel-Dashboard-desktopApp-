@@ -215,7 +215,24 @@ class ClientNoMovementView extends GetView<ClientsNoMovementController> {
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
-
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printCustomersNoMovement(context, controller.reports),
+                                                      child: const Text("طباعة"),
+                                                    );
+                                                  }),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => ExcelHelper.CustomersNoMovementExcel(controller.reports, context),
+                                                      child: const Text("تصدير الى اكسل"),
+                                                    );
+                                                  }),
+                                                ),
                                               ],)
 
                                           ),
@@ -248,7 +265,7 @@ class ClientNoMovementView extends GetView<ClientsNoMovementController> {
                                   Container(
                                     margin: EdgeInsets.all(0),
                                     child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .2425),
+                                      defaultColumnWidth: FixedColumnWidth(size.width * .195),
                                       border: TableBorder.all(
                                           borderRadius: BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
@@ -263,10 +280,10 @@ class ClientNoMovementView extends GetView<ClientsNoMovementController> {
                                           Column(children: [Text('اسم العميل',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('الهاتف',
+                                          Column(children: [Text('تاريخ آخر فاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('تاريخ آخر فاتوره',
+                                          Column(children: [Text('الهاتف',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
                                           Column(children: [Text('اجمالي التعامل',
