@@ -127,6 +127,8 @@ class EditBillsView extends GetView<EditBillsController> {
                                           (element.name ?? "").trim().contains(filter.trim()) || (element.code ?? "").trim().contains(filter.trim())),
                                       onSuggestionSelected: (value) {
                                         kha.textFieldController1.text = value.name ?? "";
+                                        kha.customerId = value.id;
+                                        kha.customerName = value.name;
                                         controller.getInvoiceListForCustomer(value.id!, () => kha.focusNode2.requestFocus());
                                       },
                                       textFieldConfiguration: TextFieldConfiguration(
@@ -188,6 +190,12 @@ class EditBillsView extends GetView<EditBillsController> {
                                     controller: kha.textFieldController3,
                                     focusNode: kha.focusNode3,
                                     onFieldSubmitted: (_) => kha.focusNode4.requestFocus(),
+                                    onChanged: (v) {
+                                      kha.value = num.tryParse(v) ?? 0;
+                                      if(kha.value! > (kha.remain??0)){
+                                        kha.textFieldController3.text = kha.remain?.toStringAsFixed(2)??"";
+                                      }
+                                    },
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
                                       contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
@@ -231,6 +239,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                   child: TextFormField(
                                     textAlign: TextAlign.center,
                                     controller: kha.textFieldController5,
+                                    onChanged: (v) => kha.remark = v,
                                     focusNode: kha.focusNode5,
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
