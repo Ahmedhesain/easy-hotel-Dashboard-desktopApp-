@@ -26,10 +26,10 @@ class SubAccountStatementButtonsWidget extends GetView<SubAccountStatementContro
                     ButtonWidget(text: "تصدير الى اكسل", onPressed: () => ExcelHelper.subAccountStatements(controller.statements, context)),
                   if(controller.statements.isNotEmpty)
                     const SizedBox(width: 5),
-                  if(controller.statements.isNotEmpty)
-                    ButtonWidget(text: "طباعة", onPressed: () => controller.getStatements()),
-                  if(controller.statements.isNotEmpty)
-                    const SizedBox(width: 5),
+                  // if(controller.statements.isNotEmpty)
+                  //   ButtonWidget(text: "طباعة", onPressed: () => controller.getStatements()),
+                  // if(controller.statements.isNotEmpty)
+                  //   const SizedBox(width: 5),
                   ButtonWidget(text: "بحث", onPressed: () => controller.getStatements()),
                   const SizedBox(width: 5),
                   ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
