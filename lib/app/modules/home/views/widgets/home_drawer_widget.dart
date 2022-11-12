@@ -193,8 +193,22 @@ class HomeDrawerWidget extends GetView<HomeController> {
                     goTo(Routes.ACCOUNT_STATEMENT,"كشف حساب");
                   },
                 ),
+
               ],
             ),
+            ListTile(
+              onTap: () => Get.offAll(Routes.LOGIN),
+              contentPadding: const EdgeInsets.only(left: 30),
+              leading: const SizedBox(
+                  width: 20,
+                  child: Center(
+                      child: Icon(
+                        Icons.logout_rounded,
+                        size: 15,
+                        color: Colors.black,
+                      ))),
+              title: Text("تسجيل خروج"),
+            )
           ],
         ),
       ),
