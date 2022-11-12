@@ -67,10 +67,10 @@ class SubAccountStatementDetailsWidget extends GetView<SubAccountStatementContro
                   children: [
                     SizedBox(height: 40, child: Center(child: Text(row.date == null ?"--":DateFormat("dd-MM-yyyy").format(row.date!), style: const TextStyle(fontSize: 20.0)),),),
                     SizedBox(height: 40, child: Center(child: Text(row.serial??"--"))),
-                    SizedBox(height: 40, child: Center(child: Text(row.serial??"--"))),
+                    SizedBox(height: 40, child: Center(child: Text(row.generalDecument?.toString()??"--"))),
                     SizedBox(height: 40, child: Center(child: Text(row.symbolName??"--"))),
                     SizedBox(height: 40, child: Center(child: Text(row.glAccountName??"--"))),
-                    SizedBox(height: 40, child: Center(child: Text(row.creditAmount?.toString()??"--"))),
+                    SizedBox(height: 40, child: Center(child: Text(row.debitAmount?.toString()??"--"))),
                     SizedBox(height: 40, child: Center(child: Text(row.creditAmount?.toString()??"--"))),
                     SizedBox(height: 40, child: Center(child: Text(row.balance?.toString()??"--"))),
                   ],

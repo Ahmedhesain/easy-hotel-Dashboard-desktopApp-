@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
+import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/modules/sub_account_statement/controllers/sub_account_statement_controller.dart';
 
@@ -21,6 +22,14 @@ class SubAccountStatementButtonsWidget extends GetView<SubAccountStatementContro
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if(controller.statements.isNotEmpty)
+                    ButtonWidget(text: "تصدير الى اكسل", onPressed: () => ExcelHelper.subAccountStatements(controller.statements, context)),
+                  if(controller.statements.isNotEmpty)
+                    const SizedBox(width: 5),
+                  if(controller.statements.isNotEmpty)
+                    ButtonWidget(text: "طباعة", onPressed: () => controller.getStatements()),
+                  if(controller.statements.isNotEmpty)
+                    const SizedBox(width: 5),
                   ButtonWidget(text: "بحث", onPressed: () => controller.getStatements()),
                   const SizedBox(width: 5),
                   ButtonWidget(text: "رجوع", onPressed: () => Get.back()),

@@ -17,6 +17,7 @@ class AccountSummaryResponse {
     this.glAccountName,
     this.glaccountId,
     this.glbranchId,
+    this.debitAmount,
     this.serial,
     this.symbolId,
     this.symbolName,
@@ -24,10 +25,11 @@ class AccountSummaryResponse {
 
   final int? balance;
   final int? costCenterId;
-  final int? creditAmount;
+  final num? creditAmount;
+  final num? debitAmount;
   final DateTime? date;
   final String? discribtion;
-  final int? generalDecument;
+  final num? generalDecument;
   final int? generalJournalId;
   final String? generalStatement;
   final String? glAccountName;
@@ -46,6 +48,7 @@ class AccountSummaryResponse {
     date: DateTime.parse(json["date"]),
     discribtion: json["discribtion"],
     generalDecument: json["generalDecument"],
+    debitAmount: json["debitAmount"],
     generalJournalId: json["generalJournalId"],
     generalStatement: json["generalStatement"],
     glAccountName: json["glAccountName"],
@@ -62,6 +65,7 @@ class AccountSummaryResponse {
     "creditAmount": creditAmount,
     "date": date?.toIso8601String(),
     "discribtion": discribtion,
+    "debitAmount": debitAmount,
     "generalDecument": generalDecument,
     "generalJournalId": generalJournalId,
     "generalStatement": generalStatement,
