@@ -31,7 +31,7 @@ class EditBillsController extends GetxController {
   final findSideCustomerController = TextEditingController();
   final invoiceCustomerController = TextEditingController();
   final user = UserManager();
-  Rxn<FindCustomerBalanceResponse> customerBalance = Rxn();
+  Map<int,FindCustomerBalanceResponse> balances = {};
   final customers = <FindCustomerResponse>[];
   final banks = <GlPayDTO>[];
 
@@ -122,12 +122,13 @@ class EditBillsController extends GetxController {
   }
 
 
-  void getInvoiceListForCustomer(FindCustomerResponse value, void Function() onSuccess) {
+  void getInvoiceListForCustomer(int id, void Function() onSuccess) {
+    if(balances.containsKey(id)) return;
     isLoading(true);
     CustomerRepository().findCustomerInvoicesData(
-      FindCustomerBalanceRequest(id: value.id),
+      FindCustomerBalanceRequest(id: id),
       onSuccess: (data) {
-        customerBalance(data);
+        balances[id] = (data);
         onSuccess();
       },
       onError: (error) => showPopupText(text: error.toString()),
@@ -137,6 +138,10 @@ class EditBillsController extends GetxController {
 
 
   editInvoice(GlPayDTO bankSelected) {
+    if(balances[bankSelected.customerId!] != null && balances[bankSelected.customerId!]!.invoicesList.every((element) => element.serial != bankSelected.invoiceSerial)){
+      showPopupText(text: "رقم الفاتورة غير صحيح");
+      return;
+    }
     isLoading(true);
     final request = GlBankTransactionApi(glPayDTOAPIList:[bankSelected], branchId: user.branchId, createdBy: user.id, companyId: user.companyId );
     ReportsRepository().saveInvoicesStatement(request,

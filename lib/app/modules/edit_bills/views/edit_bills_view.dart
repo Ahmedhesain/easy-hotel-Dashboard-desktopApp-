@@ -127,7 +127,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                           (element.name ?? "").trim().contains(filter.trim()) || (element.code ?? "").trim().contains(filter.trim())),
                                       onSuggestionSelected: (value) {
                                         kha.textFieldController1.text = value.name ?? "";
-                                        controller.getInvoiceListForCustomer(value, () => kha.focusNode2.requestFocus());
+                                        controller.getInvoiceListForCustomer(value.id!, () => kha.focusNode2.requestFocus());
                                       },
                                       textFieldConfiguration: TextFieldConfiguration(
                                         textInputAction: TextInputAction.next,
@@ -155,10 +155,11 @@ class EditBillsView extends GetView<EditBillsController> {
                                           ),
                                         );
                                       },
-                                      suggestionsCallback: (filter) => (controller.customerBalance.value?.invoicesList??[]).where((element) =>
+                                      suggestionsCallback: (filter) => (controller.balances[kha.customerId]?.invoicesList??[]).where((element) =>
                                           (element.serial.toString() ?? "").contains(filter.trim())),
                                       onSuggestionSelected: (value) {
                                         kha.textFieldController2.text = value.serial?.toString() ?? "";
+                                        kha.textFieldController3.text = value.salesStatementForThePeriod.remain.toStringAsFixed(2);
                                         kha.focusNode3.requestFocus();
                                         kha.invoiceSerial = value.serial;
                                         kha.invoiceId = value.id;
@@ -168,6 +169,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                         controller: kha.textFieldController2,
                                         focusNode: kha.focusNode2,
                                         textDirection: TextDirection.rtl,
+                                        onTap: () => controller.getInvoiceListForCustomer(kha.customerId!, () => kha.focusNode2.requestFocus()),
                                         onChanged: (value) => kha.invoiceSerial = int.tryParse(value),
                                         onEditingComplete: () =>
                                             controller.getCustomersByCodeForInvoice(kha.textFieldController1.text, kha.focusNode1),
