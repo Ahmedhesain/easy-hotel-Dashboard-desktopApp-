@@ -41,7 +41,7 @@ class EditBillsController extends GetxController {
   getStatements() async {
     isLoading(true);
     final request = EditBillsRequest(
-        serial:int.parse(selectedStatusController.text),
+        serial:int.tryParse(selectedStatusController.text),
         branchId: manager.branchId,
         dateFrom:dateFrom.value,
         dateTo: dateTo.value,

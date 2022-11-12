@@ -10,7 +10,7 @@ class EditBillsRequest {
 
 
   });
-  final int serial;
+  final int? serial;
   final int branchId;
   final DateTime ?dateFrom;
   final DateTime ?dateTo;

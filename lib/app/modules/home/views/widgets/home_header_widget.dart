@@ -13,6 +13,7 @@ class HomeHeaderWidget extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    final permissions = UserManager().user.userScreens["proworkorder"]!;
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: SizedBox(
@@ -32,9 +33,9 @@ class HomeHeaderWidget extends GetView<HomeController> {
                     ButtonWidget(text: "تنزيل عرض", onPressed: () {}),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "تحديث", onPressed: () => controller.getItems()),
-                    if((UserManager().user.userScreens["proworkorder"]!.edit ?? false) || controller.invoice.value?.id == null)
+                    if((permissions.edit ?? false) || controller.invoice.value?.id == null)
                       const SizedBox(width: 5),
-                    if((UserManager().user.userScreens["proworkorder"]!.edit ?? false) || controller.invoice.value?.id == null)
+                    if((permissions.edit ?? false) || controller.invoice.value?.id == null)
                       ButtonWidget(text: "حفظ", onPressed: () => controller.saveInvoice()),
                     if (controller.invoice.value != null)
                       const SizedBox(width: 5),
@@ -42,21 +43,19 @@ class HomeHeaderWidget extends GetView<HomeController> {
                       ButtonWidget(
                           text: "طباعة",
                           onPressed: () => controller.printInvoice(context)),
-                    if (controller.invoice.value != null && (UserManager().user.userScreens["proworkorder"]!.edit ?? false))
+                    if (controller.invoice.value != null && (permissions.edit ?? false))
                       const SizedBox(width: 5),
-                    if (controller.invoice.value != null && (UserManager().user.userScreens["proworkorder"]!.edit ?? false))
-                      ButtonWidget(
-                          text: "طباعة قيد",
-                          onPressed: () => controller.printGeneralJournal(context)),
-                    if((UserManager().user.userScreens["proworkorder"]!.add ?? false))
+                    if (controller.invoice.value != null && (permissions.edit ?? false))
+                      ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printGeneralJournal(context)),
+                    if((permissions.add ?? false))
                       const SizedBox(width: 5),
-                    if((UserManager().user.userScreens["proworkorder"]!.add ?? false))
+                    if((permissions.add ?? false))
                       ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "حذف هللة", onPressed: () => controller.removeHalala()),
-                    if((UserManager().user.userScreens["proworkorder"]!.delete ?? false))
+                    if((permissions.delete ?? false) && controller.invoice.value?.id != null)
                       const SizedBox(width: 5),
-                    if((UserManager().user.userScreens["proworkorder"]!.delete ?? false))
+                    if((permissions.delete ?? false) && controller.invoice.value?.id != null)
                       ButtonWidget(text: "حذف", onPressed: () => controller.deleteInvoice()),
                   ],
                 );

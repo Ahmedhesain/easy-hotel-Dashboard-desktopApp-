@@ -5,6 +5,7 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/colors.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
+import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/modules/edit_bills/views/edit_bills_buttons.dart';
@@ -17,6 +18,7 @@ class EditBillsView extends GetView<EditBillsController> {
 
   @override
   Widget build(BuildContext context) {
+    final permissions = UserManager().user.userScreens["customeraddnotice"]!;
     Size size = MediaQuery.of(context).size;
     return Obx(() {
       return AppLoadingOverlay(
@@ -201,7 +203,8 @@ class EditBillsView extends GetView<EditBillsController> {
                                   child: Center(
                                     child: Row(
                                       children: [
-                                        Expanded(
+                                        if(permissions.edit!)
+                                          Expanded(
                                           child: GestureDetector(
                                             onTap: () {
                                               controller.editInvoice(kha);
@@ -227,8 +230,10 @@ class EditBillsView extends GetView<EditBillsController> {
                                             ),
                                           ),
                                         ),
-                                        const SizedBox(width: 5),
-                                        Expanded(
+                                        if(permissions.edit! || permissions.delete!)
+                                          const SizedBox(width: 5),
+                                        if(permissions.delete!)
+                                          Expanded(
                                           child: GestureDetector(
                                             onTap: () {
                                               controller.deleteRow(kha.id!);
@@ -254,7 +259,8 @@ class EditBillsView extends GetView<EditBillsController> {
                                             ),
                                           ),
                                         ),
-                                        const SizedBox(width: 5),
+                                        if(permissions.edit! && permissions.delete!)
+                                          const SizedBox(width: 5),
                                         Expanded(
                                           child: GestureDetector(
                                             onTap: () => controller.printRow(kha.id!, context),
