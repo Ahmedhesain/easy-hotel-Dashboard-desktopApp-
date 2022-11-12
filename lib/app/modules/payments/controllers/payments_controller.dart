@@ -11,7 +11,7 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
-import 'package:toby_bills/app/data/model/general_journal/dto/find_general_journal_request.dart';
+import 'package:toby_bills/app/data/model/general_journal/dto/request/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gl_account_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';

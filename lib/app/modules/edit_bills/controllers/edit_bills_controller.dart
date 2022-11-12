@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_balance_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
+import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/payments/dto/request/delete_payment_request.dart';
@@ -22,26 +24,28 @@ class EditBillsController extends GetxController {
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
   final Rxn<DateTime> editDate = Rxn();
+  InvoiceList? itemInvoice;
 
   final manager = UserManager();
   final selectedStatusController = TextEditingController();
   final findSideCustomerController = TextEditingController();
   final invoiceCustomerController = TextEditingController();
   final user = UserManager();
+  Rxn<FindCustomerBalanceResponse> customerBalance = Rxn();
   final customers = <FindCustomerResponse>[];
-  final allInvoices = <GlPayDTO>[];
+  final banks = <GlPayDTO>[];
 
 
   @override
   void onInit() {
     super.onInit();
-    getAllInvoices() ;
+    getAllBanks() ;
   }
 
   getStatements() async {
     isLoading(true);
     final request = EditBillsRequest(
-        serial:int.parse(selectedStatusController.text),
+        serial:int.tryParse(selectedStatusController.text),
         branchId: manager.branchId,
         dateFrom:dateFrom.value,
         dateTo: dateTo.value,
@@ -94,12 +98,12 @@ class EditBillsController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  getAllInvoices() {
+  getAllBanks() {
     isLoading(true);
     final request = AllInvoicesRequest(id: UserManager().id, branchId: UserManager().branchId);
     ReportsRepository().getAllBanks(request,
         onSuccess: (data) {
-          allInvoices.assignAll(data);
+          banks.assignAll(data);
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
@@ -117,6 +121,19 @@ class EditBillsController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
+
+  void getInvoiceListForCustomer(FindCustomerResponse value, void Function() onSuccess) {
+    isLoading(true);
+    CustomerRepository().findCustomerInvoicesData(
+      FindCustomerBalanceRequest(id: value.id),
+      onSuccess: (data) {
+        customerBalance(data);
+        onSuccess();
+      },
+      onError: (error) => showPopupText(text: error.toString()),
+      onComplete: () => isLoading(false),
+    );
+  }
 
 
   editInvoice(GlPayDTO bankSelected) {

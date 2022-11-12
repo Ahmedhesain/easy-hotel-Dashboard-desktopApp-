@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
-import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/modules/edit_bills/controllers/edit_bills_controller.dart';
 
 class EditBillsButtons extends GetView<EditBillsController> {
@@ -111,6 +110,8 @@ class EditBillsButtons extends GetView<EditBillsController> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
+                ButtonWidget(text: "بحث", onPressed: () => controller.getStatements()),
+                const SizedBox(width: 5),
                 ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
               ],
             ),

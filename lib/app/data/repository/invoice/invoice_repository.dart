@@ -1,4 +1,5 @@
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/delete_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
@@ -175,6 +176,32 @@ class InvoiceRepository {
         convertor: GlAccountResponse.fromList,
     );
 
+  deleteInvoice(
+      DeleteInvoiceRequest deleteInvoiceRequest, {
+        Function()? onComplete,
+        Function(void data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<void,Map<String,dynamic>>('sales/deleteProworkOrder',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: deleteInvoiceRequest.toJson(),
+        onError: onError,
+        convertor: (_){},
+      );
 
+  deletePurchaseInvoice(
+      DeleteInvoiceRequest deleteInvoiceRequest, {
+        Function()? onComplete,
+        Function(void data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<void,Map<String,dynamic>>('sales/deleteInvPurchase',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: deleteInvoiceRequest.toJson(),
+        onError: onError,
+        convertor: (_){},
+      );
 
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
+import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/modules/payments/controllers/payments_controller.dart';
 
@@ -10,6 +11,7 @@ class PaymentsButtonsWidget extends GetView<PaymentsController> {
 
   @override
   Widget build(BuildContext context) {
+    final permissions = UserManager().user.userScreens["settlementdeed"]!;
     return Center(
       child: Padding(
         padding:  const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 15.0),
@@ -44,21 +46,30 @@ class PaymentsButtonsWidget extends GetView<PaymentsController> {
                 return Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ButtonWidget(text: controller.payment.value != null ? "تعديل" : "حفظ", onPressed: () => controller.savePayment()),
+                    if((permissions.edit ?? false) || controller.payment.value?.id == null)
+                      const SizedBox(width: 5),
+                    if((permissions.edit ?? false) || controller.payment.value?.id == null)
+                      ButtonWidget(text: "حفظ", onPressed: () => controller.savePayment()),
                     if(controller.payment.value != null)
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const SizedBox(width: 5),
                           ButtonWidget(text: "طباعة", onPressed: () => controller.printPayment(context)),
-                          const SizedBox(width: 5),
-                          ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printPayment(context)),
-                          const SizedBox(width: 5),
-                          ButtonWidget(text: "حذف", onPressed: () => controller.deletePayment()),
+                          if (controller.payment.value != null && (permissions.edit ?? false))
+                            const SizedBox(width: 5),
+                          if (controller.payment.value != null && (permissions.edit ?? false))
+                            ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printGeneralJournal(context)),
+                          if((permissions.delete ?? false) && controller.payment.value?.id != null)
+                            const SizedBox(width: 5),
+                          if((permissions.delete ?? false) && controller.payment.value?.id != null)
+                            ButtonWidget(text: "حذف", onPressed: () => controller.deletePayment()),
                         ],
                       ),
-                    const SizedBox(width: 5),
-                    ButtonWidget(text: "جديد", onPressed: () => controller.newPayment()),
+                    if((permissions.add ?? false))
+                      const SizedBox(width: 5),
+                    if((permissions.add ?? false))
+                      ButtonWidget(text: "جديد", onPressed: () => controller.newPayment()),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
                   ],

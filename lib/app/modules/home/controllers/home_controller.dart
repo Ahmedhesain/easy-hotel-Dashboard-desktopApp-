@@ -13,10 +13,11 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
-import 'package:toby_bills/app/data/model/general_journal/dto/find_general_journal_request.dart';
+import 'package:toby_bills/app/data/model/general_journal/dto/request/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/delete_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delegator_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
@@ -32,6 +33,7 @@ import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dar
 import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
+import 'package:toby_bills/app/data/model/payments/dto/request/delete_payment_request.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
 import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
@@ -566,25 +568,28 @@ class HomeController extends GetxController {
       discountType: selectedDiscountType.value,
     );
     isLoading(true);
-    InvoiceRepository().saveInvoice(request, onSuccess: (data) async {
-      invoice(data);
-      await InvoiceRepository().saveTarhil(data,
-          onSuccess: (data) {
-            invoice.value!.serial = data.serial;
-            invoice.value!.qrCode = data.qrCode;
-            invoice.value!.daribaValue = data.daribaValue;
-            invoice.value!.segilValue = data.segilValue;
-            showPopupText(text: isEdit ? "تم تعديل الفاتورة بنجاح" : "تم حفظ الفاتورة بنجاح", type: MsgType.success);
-            update([getBuilderSerial]);
-          },
-          onError: (e) {
-            showPopupText(text: e.toString());
-          },
-          onComplete: () => isLoading(false));
-    }, onError: (e) {
-      showPopupText(text: e.toString());
-      isLoading(false);
-    });
+    InvoiceRepository().saveInvoice(request,
+        onSuccess: (data) async {
+          invoice(data);
+          // await InvoiceRepository().saveTarhil(data,
+          //     onSuccess: (data) {
+          //       invoice.value!.serial = data.serial;
+          //       invoice.value!.qrCode = data.qrCode;
+          //       invoice.value!.daribaValue = data.daribaValue;
+          //       invoice.value!.segilValue = data.segilValue;
+          //       showPopupText(text: isEdit ? "تم تعديل الفاتورة بنجاح" : "تم حفظ الفاتورة بنجاح", type: MsgType.success);
+          //       update([getBuilderSerial]);
+          //     },
+          //     onError: (e) {
+          //       showPopupText(text: e.toString());
+          //     },
+          //     onComplete: () => isLoading(false));
+        },
+        onError: (e) {
+          showPopupText(text: e.toString());
+          isLoading(false);
+        },
+        onComplete: () => isLoading(false));
   }
 
   newInvoice() {
@@ -739,5 +744,18 @@ class HomeController extends GetxController {
     }
     invoiceDetails.assignAll(details);
     calcInvoiceValues();
+  }
+
+  deleteInvoice() {
+    isLoading(true);
+    InvoiceRepository().deleteInvoice(
+        DeleteInvoiceRequest(invoice.value?.id),
+      onSuccess: (_){
+        showPopupText(text: "تم الحذف بنجاح",type: MsgType.success);
+        newInvoice();
+      },
+      onError: (e)=>showPopupText(text: e.toString()),
+      onComplete: () => isLoading(false)
+    );
   }
 }

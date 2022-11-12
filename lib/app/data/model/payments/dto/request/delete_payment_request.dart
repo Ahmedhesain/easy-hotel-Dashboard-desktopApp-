@@ -1,5 +1,5 @@
 class DeletePaymentRequest{
-  final int id;
+  final int? id;
 
   DeletePaymentRequest({required this.id});
 
