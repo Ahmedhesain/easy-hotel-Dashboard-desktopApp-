@@ -39,6 +39,8 @@ class PurchaseInvoiceHeaderWidget extends GetView<PurchaseInvoicesController> {
                 const SizedBox(width: 5),
                 ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
                 const SizedBox(width: 5),
+                ButtonWidget(text: "حذف", onPressed: () => controller.deleteInvoice()),
+                const SizedBox(width: 5),
                 ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
               ],
             );
