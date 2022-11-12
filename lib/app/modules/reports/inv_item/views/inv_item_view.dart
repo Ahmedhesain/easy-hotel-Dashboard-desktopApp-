@@ -266,6 +266,24 @@ class InvItemView extends GetView<InvItemController> {
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printInvItem(context, controller.reports),
+                                                      child: const Text("طباعة"),
+                                                    );
+                                                  }),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => ExcelHelper.InvtemExcel(controller.reports, context),
+                                                      child: const Text("تصدير الى اكسل"),
+                                                    );
+                                                  }),
+                                                ),
                                               ],)
 
                                           ),

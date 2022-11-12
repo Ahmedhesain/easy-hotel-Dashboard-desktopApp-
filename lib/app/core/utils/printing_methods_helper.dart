@@ -13,13 +13,23 @@ import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_status_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/balance_galary_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/balance_galary_unpaid_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/client_no_movement_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_customer_balance_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_added_details_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_added_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/find_statement_of_bonds_by_branch_report_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/inv_item_dto_response.dart';
 import 'package:toby_bills/app/data/model/payments/payment_model.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/invoice_statement_by_case_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/invoices_without_sewing_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/item_balances_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
+import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/controllers/invoices_without_swing_controller.dart';
 
 import '../../data/model/reports/dto/response/categories_totals_response.dart';
 
@@ -1592,6 +1602,7 @@ class PrintingHelper {
         });
   }
 
+
   void printInvoice(m.BuildContext context, InvoiceResponse invoiceModel, {num? value, num? dariba, num? total, num? discount, num? net, num? payed, num? remain}) async {
     // LoginData? user = context.read<AuthProvider>().user ;
     final doc = Document();
@@ -2698,7 +2709,7 @@ class PrintingHelper {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(2),
+                    padding: EdgeInsets.all(2),
                     child: Text(
                       invoiceModel.serial.toString(),
                       style: boldStyle,
@@ -2706,7 +2717,7 @@ class PrintingHelper {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(2),
+                    padding: EdgeInsets.all(2),
                     child: Text(
                       "مراحل الانتاج لفاتورة ذات رقم",
                       style: boldStyle,
@@ -2808,12 +2819,7 @@ class PrintingHelper {
                     width: 45,
                     child: Center(
                         child: Text("الموظف",
-                            style: boldStyle.copyWith(fontSize: 10),
-                            textDirection: TextDirection.rtl,
-                            textAlign: TextAlign.center
-                        )
-                    )
-                ),
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
                     width: 45,
@@ -4556,7 +4562,7 @@ class PrintingHelper {
           return [
             SizedBox(height: 50.5),
             Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
-              TableRow(decoration: const BoxDecoration(color: grey), children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
                 Container(
                     color: grey,
                     child: Center(
@@ -4870,6 +4876,1288 @@ class PrintingHelper {
           );
         });
   }
+
+  void printInvoicesWithoutSweing(m.BuildContext context, List<CompanyInvoicesWithoutSewingResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(2),
+      2:const FlexColumnWidth(2),
+      3:const FlexColumnWidth(1),
+      4:const FlexColumnWidth(2),
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("رقم الفاتوره",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اسم المعرض",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الاسم",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الكود",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الاجمالي",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+
+                  Center(
+                      child: Text(
+                        data[i].id!.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].galleryName ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].name ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].code!.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),    Center(
+                      child: Text(
+                        data[i].total!.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+  void printCustomersNoMovement(m.BuildContext context, List<ClientsNoMovementResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(2),
+      2:const FlexColumnWidth(2),
+      3:const FlexColumnWidth(1),
+      4:const FlexColumnWidth(2),
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("رقم العميل",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اسم العميل",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الهاتف",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("تاريخ اخر فاتوره",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اجمالي التعامل",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+
+                  Center(
+                      child: Text(
+                        data[i].clientNumber ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].clientName ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].phoneNumber ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                  DateFormat("yyyy-MM-dd").format(data[i].lastInvoiceDate!)??""
+                        ,
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),    Center(
+                      child: Text(
+                        data[i].totalInvoices!.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+  void printCustomersBalance(m.BuildContext context, List<FindCustomersBalanceResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+      2:const FlexColumnWidth(1),
+      3:const FlexColumnWidth(1),
+      4:const FlexColumnWidth(1),
+      5:const FlexColumnWidth(1),
+      6:const FlexColumnWidth(1),
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("رقم العميل",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اسم العميل",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الرصيد الافتتاحي",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("المدين",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الدائن",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الرصيد",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الفواتير",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+
+                  Center(
+                      child: Text(
+                        data[i].clientCode ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].clientName ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].openningBalance.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].debit.toString() ?? "",
+
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].creditor.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].balance.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),     Center(
+                      child: Text(
+                        data[i].organizationsiteId.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+  void printStatementOfBondsByBranch(m.BuildContext context, List<FindStatementOfBondsByBranchReportResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+      2:const FlexColumnWidth(1),
+      3:const FlexColumnWidth(1),
+      4:const FlexColumnWidth(1),
+
+
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اسم المعرض",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الكود",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("النوع",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("نوع السداد",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("القيمه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+
+
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+
+
+                  Center(
+                      child: Text(
+                        data[i].galleryName ?? "",
+
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].galleryCode.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].type.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].paymentType.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].totalAmount.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+
+  void printSalesValueAddedDetails(m.BuildContext context, List<FindSalesValueAddedDetailsResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+      2:const FlexColumnWidth(1),
+      3:const FlexColumnWidth(1),
+      4:const FlexColumnWidth(1),
+      5:const FlexColumnWidth(1),
+      6:const FlexColumnWidth(1),
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الفاتوره",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("التاريخ",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اسم المعرض",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الموظف",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الاجمالي قبل الضريبه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الاجمالي بعد الضريبه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الضريبه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+
+                  Center(
+                      child: Text(
+                        data[i].invoiceNumber.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        DateFormat("yyyy-MM-dd").format(data[i].invoiceDate!)
+                         ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].galleryName ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].employeeName ?? "",
+
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].totalBeforeTax.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].totalAfterTax.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),     Center(
+                      child: Text(
+                        data[i].tax.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+  void printSalesValueAdded(m.BuildContext context, List<FindSalesValueAddedResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+      2:const FlexColumnWidth(1),
+      3:const FlexColumnWidth(1),
+
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اسم المعرض",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الاجمالي قبل الضريبه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الاجمالي بعد الضريبه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الضريبه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+
+
+                  Center(
+                      child: Text(
+                        data[i].galleryName ?? "",
+
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].totalBeforeTax.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].totalAfterTax.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].tax.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+  void printBalanceGallary(m.BuildContext context, List<BalanceGalaryResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+      2:const FlexColumnWidth(1),
+
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("النوع",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اسم البنك",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("القيمه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+
+
+                  Center(
+                      child: Text(
+                        data[i].transactionType ?? "",
+
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].bankName.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].value.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+  void printBalanceGallaryUnpaid(m.BuildContext context, List<BalanceGalaryUnpaidResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("المعرض",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("القيمه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+
+
+                  Center(
+                      child: Text(
+                        data[i].gallaryName ?? "",
+
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].value.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+
+  void printBalanceGallarypaid(m.BuildContext context, List<BalanceGalaryUnpaidResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("المعرض",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("القيمه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+
+
+                  Center(
+                      child: Text(
+                        data[i].gallaryName ?? "",
+
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].value.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
+
+  void printInvItem(m.BuildContext context, List<InvItemDtoResponse> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+      2:const FlexColumnWidth(1),
+      3:const FlexColumnWidth(1),
+      4:const FlexColumnWidth(1),
+      5:const FlexColumnWidth(1),
+      6:const FlexColumnWidth(1),
+      7:const FlexColumnWidth(1),
+      8:const FlexColumnWidth(1),
+      9:const FlexColumnWidth(1),
+      10:const FlexColumnWidth(1),
+      11:const FlexColumnWidth(1),
+      12:const FlexColumnWidth(1),
+
+
+
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+              TableRow(decoration: BoxDecoration(color: grey),children: [
+
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("رقم الصنف",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اسم الصنف",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("التكلفه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اعلي سعر للرجال",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اعلي سعر للشباب",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اقل سعر للرجال",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اقل سعر للشباب",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("عدد الامتار المجانيه للرجال",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("عدد الامتار المجانيه للشباب",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("عدد الامتار للرجال",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("عدد الامتار للشباب",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("طبيعه الصنف",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("المتاح",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
+
+
+
+
+              ],),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+
+
+                  Center(
+                      child: Text(
+                        data[i].code ?? "",
+
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].name ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].sellPrice.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].maxpricemen.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].maxpriceyoung.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].minpricemen.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].minpriceyoung.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].numbermetersfreemen.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].numbermetersfreeyoung.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].numbermetersmen.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].numbermetersyoung.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].itemNatural.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].quantity.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
+
+
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
 
 
 

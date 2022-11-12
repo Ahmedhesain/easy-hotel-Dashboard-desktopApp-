@@ -251,6 +251,24 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printSalesValueAddedDetails(context, controller.reports),
+                                                      child: const Text("طباعة"),
+                                                    );
+                                                  }),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                UnconstrainedBox(
+                                                  child: Obx(() {
+                                                    return ElevatedButton(
+                                                      onPressed: controller.reports.isEmpty ? null : () => ExcelHelper.SalesValueAddedDetailsExcel(controller.reports, context),
+                                                      child: const Text("تصدير الى اكسل"),
+                                                    );
+                                                  }),
+                                                ),
                                               ],)
 
                                           ),
