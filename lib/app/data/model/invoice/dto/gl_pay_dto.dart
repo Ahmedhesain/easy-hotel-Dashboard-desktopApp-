@@ -18,9 +18,10 @@ class GlPayDTO with FormMixin{
     this.serial
   }){
     textFieldController1.text = customerName??"";
-    textFieldController2.text = value?.toStringAsFixed(2)??"";
-    textFieldController3.text = bankName??"";
-    textFieldController4.text = remark??"";
+    textFieldController2.text = invoiceSerial?.toString()??"";
+    textFieldController3.text = value?.toStringAsFixed(2)??"";
+    textFieldController4.text = bankName??"";
+    textFieldController5.text = remark??"";
   }
 
   Bank? bank;

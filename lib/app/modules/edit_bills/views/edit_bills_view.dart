@@ -6,6 +6,7 @@ import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
+import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/modules/edit_bills/views/edit_bills_buttons.dart';
@@ -55,6 +56,10 @@ class EditBillsView extends GetView<EditBillsController> {
                               Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text('العميل', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('الفاتورة', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
                               ),
                               Padding(
                                 padding: EdgeInsets.all(8.0),
@@ -122,7 +127,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                           (element.name ?? "").trim().contains(filter.trim()) || (element.code ?? "").trim().contains(filter.trim())),
                                       onSuggestionSelected: (value) {
                                         kha.textFieldController1.text = value.name ?? "";
-                                        kha.focusNode2.requestFocus();
+                                        controller.getInvoiceListForCustomer(value, () => kha.focusNode2.requestFocus());
                                       },
                                       textFieldConfiguration: TextFieldConfiguration(
                                         textInputAction: TextInputAction.next,
@@ -141,11 +146,46 @@ class EditBillsView extends GetView<EditBillsController> {
                                 Container(
                                   height: 40,
                                   margin: const EdgeInsets.all(5),
+                                  child: TypeAheadFormField<InvoiceList>(
+                                      itemBuilder: (context, inv) {
+                                        return SizedBox(
+                                          height: 50,
+                                          child: Center(
+                                            child: Text("${inv.serial}"),
+                                          ),
+                                        );
+                                      },
+                                      suggestionsCallback: (filter) => (controller.customerBalance.value?.invoicesList??[]).where((element) =>
+                                          (element.serial.toString() ?? "").contains(filter.trim())),
+                                      onSuggestionSelected: (value) {
+                                        kha.textFieldController2.text = value.serial?.toString() ?? "";
+                                        kha.focusNode3.requestFocus();
+                                        kha.invoiceSerial = value.serial;
+                                        kha.invoiceId = value.id;
+                                      },
+                                      textFieldConfiguration: TextFieldConfiguration(
+                                        textInputAction: TextInputAction.next,
+                                        controller: kha.textFieldController2,
+                                        focusNode: kha.focusNode2,
+                                        textDirection: TextDirection.rtl,
+                                        onChanged: (value) => kha.invoiceSerial = int.tryParse(value),
+                                        onEditingComplete: () =>
+                                            controller.getCustomersByCodeForInvoice(kha.textFieldController1.text, kha.focusNode1),
+                                        decoration: const InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            isDense: true,
+                                            hintMaxLines: 1,
+                                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12)),
+                                      )),
+                                ),
+                                Container(
+                                  height: 40,
+                                  margin: const EdgeInsets.all(5),
                                   child: TextFormField(
                                     textAlign: TextAlign.center,
-                                    controller: kha.textFieldController2,
-                                    focusNode: kha.focusNode2,
-                                    onFieldSubmitted: (_) => kha.focusNode3.requestFocus(),
+                                    controller: kha.textFieldController3,
+                                    focusNode: kha.focusNode3,
+                                    onFieldSubmitted: (_) => kha.focusNode4.requestFocus(),
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
                                       contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
@@ -166,15 +206,15 @@ class EditBillsView extends GetView<EditBillsController> {
                                         );
                                       },
                                       suggestionsCallback: (filter) =>
-                                          controller.allInvoices.where((element) => (element.bankName ?? "").trim().contains(filter)),
+                                          controller.banks.where((element) => (element.bankName ?? "").trim().contains(filter)),
                                       onSuggestionSelected: (value) {
-                                        kha.textFieldController3.text = value.bankName ?? "";
-                                        kha.focusNode4.requestFocus();
+                                        kha.textFieldController4.text = value.bankName ?? "";
+                                        kha.focusNode5.requestFocus();
                                       },
                                       textFieldConfiguration: TextFieldConfiguration(
                                         textInputAction: TextInputAction.next,
-                                        controller: kha.textFieldController3,
-                                        focusNode: kha.focusNode3,
+                                        controller: kha.textFieldController4,
+                                        focusNode: kha.focusNode4,
                                         // onEditingComplete: () => controller.addinvoice(),
                                         decoration: const InputDecoration(
                                             border: OutlineInputBorder(),
@@ -188,8 +228,8 @@ class EditBillsView extends GetView<EditBillsController> {
                                   margin: const EdgeInsets.all(5),
                                   child: TextFormField(
                                     textAlign: TextAlign.center,
-                                    controller: kha.textFieldController4,
-                                    focusNode: kha.focusNode4,
+                                    controller: kha.textFieldController5,
+                                    focusNode: kha.focusNode5,
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
                                       contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
@@ -224,6 +264,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                   Icon(
                                                     Icons.edit,
                                                     color: Colors.black,
+                                                    size: 15,
                                                   )
                                                 ],
                                               ),
@@ -253,6 +294,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                   Icon(
                                                     Icons.delete,
                                                     color: Colors.black,
+                                                    size: 15,
                                                   )
                                                 ],
                                               ),
@@ -279,6 +321,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                   Icon(
                                                     Icons.print,
                                                     color: Colors.black,
+                                                    size: 15,
                                                   )
                                                 ],
                                               ),

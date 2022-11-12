@@ -25,279 +25,309 @@ import '../../data/model/reports/dto/response/categories_totals_response.dart';
 
 class PrintingHelper {
 
-  // void printSubAccountStatements(m.BuildContext context, {required List<AccountSummaryResponse> statements,required DateTime fromDate, required DateTime fromTo, required String fromCenter, required String toCenter}) async {
-  //   final doc = Document();
-  //   const PdfColor grey = PdfColors.grey400;
-  //   final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
-  //   final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
-  //   final ttfBold = Font.ttf(font);
-  //   final ttfLight = Font.ttf(fontLight);
-  //   final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
-  //   final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
-  //   final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
-  //   final widths = {
-  //     0:const FlexColumnWidth(1),
-  //     1:const FlexColumnWidth(2),
-  //     2:const FlexColumnWidth(2),
-  //     3:const FlexColumnWidth(1),
-  //   };
-  //   doc.addPage(MultiPage(
-  //       pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, margin: EdgeInsets.all(10)),
-  //       build: (Context context) {
-  //         return [
-  //           SizedBox(height: 50),
-  //           Center(
-  //             child: Container(
-  //               color: grey,
-  //               padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-  //               child: Text(
-  //                 "سند صرف نقدي",
-  //                 style: boldStyle,
-  //               ),
-  //             ),
-  //           ),
-  //           SizedBox(height: 20.5),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Expanded(
-  //                 child: Column(
-  //                   children: [
-  //                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //                       Expanded(
-  //                           child: Container(
-  //                               decoration: BoxDecoration(
-  //                                   border: Border.all()
-  //                               ),
-  //                               child: Text(
-  //                                 payment.serial?.toString()??"",
-  //                                 style: boldStyle,
-  //                                 textDirection: TextDirection.rtl,
-  //                               )
-  //                           )
-  //                       ),
-  //                       SizedBox(width: 15),
-  //                       SizedBox(
-  //                           width: 60,
-  //                           child: Text(
-  //                             "رقم السند",
-  //                             style: boldStyle,
-  //                             textDirection: TextDirection.rtl,
-  //                           )
-  //                       ),
-  //                     ],),
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Expanded(
-  //                             child: Container(
-  //                                 decoration: BoxDecoration(
-  //                                     border: Border.all()
-  //                                 ),
-  //                                 child: Text(
-  //                                   payment.date == null?"":DateFormat("yyyy/MM/dd").format(payment.date!),
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 )
-  //                             )
-  //                         ),
-  //                         SizedBox(width: 15),
-  //                         SizedBox(
-  //                             width: 60,
-  //                             child: Text(
-  //                               "التاريخ",
-  //                               style: boldStyle,
-  //                               textDirection: TextDirection.rtl,
-  //                             )
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //               SizedBox(width: 30),
-  //               Expanded(
-  //                 flex: 2,
-  //                 child: Column(
-  //                   children: [
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Expanded(
-  //                             flex:2,
-  //                             child: Text(
-  //                               payment.valueName??"",
-  //                               style: boldStyle,
-  //                               textDirection: TextDirection.rtl,
-  //                             )
-  //                         ),
-  //                         SizedBox(width: 15),
-  //                         Expanded(
-  //                             child: Container(
-  //                                 decoration: BoxDecoration(
-  //                                     border: Border.all()
-  //                                 ),
-  //                                 child: Text(
-  //                                   payment.totalValue?.toString()??"",
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 )
-  //                             )
-  //                         ),
-  //                         SizedBox(width: 15),
-  //                         SizedBox(
-  //                             width: 60,
-  //                             child: Text(
-  //                               "المبلغ",
-  //                               style: boldStyle,
-  //                               textDirection: TextDirection.rtl,
-  //                             )
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Expanded(
-  //                             child: Container(
-  //                                 decoration: BoxDecoration(
-  //                                     border: Border.all()
-  //                                 ),
-  //                                 child: Text(
-  //                                   payment.remark??"",
-  //                                   style: boldStyle,
-  //                                   textDirection: TextDirection.rtl,
-  //                                 )
-  //                             )
-  //                         ),
-  //                         SizedBox(width: 15),
-  //                         SizedBox(
-  //                             width: 60,
-  //                             child: Text(
-  //                               "وذلك قيمة:",
-  //                               style: boldStyle,
-  //                               textDirection: TextDirection.rtl,
-  //                             )
-  //                         ),
-  //                       ],
-  //                     )
-  //                   ],
-  //                 ),
-  //               )
-  //             ],
-  //           ),
-  //           SizedBox(height: 15),
-  //           Table(border: TableBorder.all(width: 1), columnWidths: widths, children: [
-  //             TableRow(children: [
-  //               Container(
-  //                   color: grey,
-  //                   width: 55,
-  //                   child: Center(
-  //                       child: Text("المبلغ",
-  //                           style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 60,
-  //                   child: Center(
-  //                       child: Text("البيان",
-  //                           style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 40,
-  //                   child: Center(
-  //                       child: Text("اسم الحساب",
-  //                           style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //               Container(
-  //                   color: grey,
-  //                   width: 40,
-  //                   child: Center(
-  //                       child:
-  //                       Text("م", style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //             ]),
-  //             //table content
-  //             for (int i = 0; i < payment.glBankTransactionDetailFromApiList!.length; i++)
-  //               TableRow(children: [
-  //                 Container(
-  //                     width: 55,
-  //                     child: Center(
-  //                         child: Text(
-  //                           payment.glBankTransactionDetailFromApiList![i].value?.toStringAsFixed(2) ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 60,
-  //                     child: Center(
-  //                         child: Text(
-  //                           payment.glBankTransactionDetailFromApiList![i].remarks ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 40,
-  //                     child: Center(
-  //                         child: Text(
-  //                           payment.glBankTransactionDetailFromApiList![i].invOrganizationSiteName??"",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                 Container(
-  //                     width: 40,
-  //                     child: Center(
-  //                         child: Text(
-  //                           "${i+1}",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //               ]),
-  //             TableRow(children: [
-  //               Container(
-  //                   width: 55,
-  //                   child: Center(
-  //                       child: Text(
-  //                         payment.totalValue?.toStringAsFixed(2) ?? "",
-  //                         style: boldStyle,
-  //                         textAlign: TextAlign.center,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               Container(
-  //                   width: 60,
-  //                   child: Center(
-  //                       child: Text(
-  //                         "الإجمالي",
-  //                         style: boldStyle,
-  //                         textAlign: TextAlign.center,
-  //                         textDirection: TextDirection.rtl,
-  //                       ))),
-  //               SizedBox(),
-  //               SizedBox(),
-  //             ]),
-  //           ]),
-  //           SizedBox(height: 5),
-  //         ];
-  //       }));
-  //
-  //   m.showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return PdfPreview(
-  //           actions: [
-  //             m.IconButton(
-  //               onPressed: () => m.Navigator.pop(context),
-  //               icon: const m.Icon(
-  //                 m.Icons.close,
-  //                 color: m.Colors.red,
-  //               ),
-  //             )
-  //           ],
-  //           build: (format) => doc.save(),
-  //         );
-  //       });
-  // }
+  void printSubAccountStatements(m.BuildContext context, {required List<AccountSummaryResponse> statements,required DateTime fromDate, required DateTime toDate, required String fromCenter, required String toCenter}) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
+    final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
+    final widths = {
+      0:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(2),
+      2:const FlexColumnWidth(2),
+      3:const FlexColumnWidth(1),
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50),
+            Center(
+              child: Container(
+                color: grey,
+                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                child: Text(
+                  "تقارير الحسابات الفرعية",
+                  style: boldStyle,
+                ),
+              ),
+            ),
+            SizedBox(height: 20.5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                        Expanded(
+                            child: Text(
+                              DateFormat("dd/MM/yyyy").format(fromDate),
+                              style: boldStyle,
+                              textDirection: TextDirection.rtl,
+                            )
+                        ),
+                        SizedBox(width: 15),
+                        SizedBox(
+                            width: 60,
+                            child: Text(
+                              "من تاريخ",
+                              style: boldStyle,
+                              textDirection: TextDirection.rtl,
+                            )
+                        ),
+                      ],),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: Text(
+                                DateFormat("dd/MM/yyyy").format(toDate),
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                              )
+                          ),
+                          SizedBox(width: 15),
+                          SizedBox(
+                              width: 60,
+                              child: Text(
+                                "الى تاريخ",
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                              )
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 30),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              flex:2,
+                              child: Text(
+                                fromCenter,
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                              )
+                          ),
+                          SizedBox(width: 15),
+                          SizedBox(
+                              width: 60,
+                              child: Text(
+                                "من مركز",
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                              )
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: Container(
+                                  child: Text(
+                                    toCenter,
+                                    style: boldStyle,
+                                    textDirection: TextDirection.rtl,
+                                  )
+                              )
+                          ),
+                          SizedBox(width: 15),
+                          SizedBox(
+                              width: 60,
+                              child: Text(
+                                "الى مركز",
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                              )
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 15),
+            Table(border: TableBorder.all(width: 1), columnWidths: widths, children: [
+              TableRow(children: [
+                Container(
+                    color: grey,
+                    width: 55,
+                    child: Center(
+                        child: Text("الرصيد",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 55,
+                    child: Center(
+                        child: Text("دائن",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 55,
+                    child: Center(
+                        child: Text("مدين",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 55,
+                    child: Center(
+                        child: Text("بيان القيد",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 60,
+                    child: Center(
+                        child: Text("رقم السند",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("رقم القيد",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child:
+                        Text("التاريخ", style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+              ]),
+              //table content
+              for (int i = 0; i < statements.length; i++)
+                TableRow(children: [
+                  Container(
+                      width: 55,
+                      child: Center(
+                          child: Text(
+                            statements[i].balance?.toStringAsFixed(2) ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 60,
+                      child: Center(
+                          child: Text(
+                            statements[i].creditAmount?.toStringAsFixed(2) ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            statements[i].debitAmount?.toStringAsFixed(2)??"",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            statements[i].discribtion??"",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            statements[i].generalDecument?.toString()??"",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            statements[i].serial?.toString()??"",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            statements[i].date == null?"--":DateFormat("dd/MM/yyyy").format(statements[i].date!),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                ]),
+              TableRow(children: [
+                SizedBox(),
+                Container(
+                    width: 55,
+                    child: Center(
+                        child: Text(
+                          statements.fold<num>(0,(a,b) => a+(b.creditAmount??0)).toStringAsFixed(2) ?? "",
+                          style: boldStyle,
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    width: 55,
+                    child: Center(
+                        child: Text(
+                          statements.fold<num>(0,(a,b) => a+(b.debitAmount??0)).toStringAsFixed(2) ?? "",
+                          style: boldStyle,
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                Container(
+                    width: 60,
+                    child: Center(
+                        child: Text(
+                          "الإجمالي",
+                          style: boldStyle,
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.rtl,
+                        ))),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+              ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return PdfPreview(
+            actions: [
+              m.IconButton(
+                onPressed: () => m.Navigator.pop(context),
+                icon: const m.Icon(
+                  m.Icons.close,
+                  color: m.Colors.red,
+                ),
+              )
+            ],
+            build: (format) => doc.save(),
+          );
+        });
+  }
 
   void printGeneralJournal(GeneralJournalModel generalJournalModel,  m.BuildContext context) async {
     final user = UserManager().user;

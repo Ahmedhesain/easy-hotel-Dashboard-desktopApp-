@@ -257,7 +257,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
   goTo(String to, String title)async{
     windowManager.setTitle("Toby Bills -> $title");
     await Get.toNamed(to);
-    windowManager.setTitle("Toby Bills -> شاشة المشتريات");
+    windowManager.setTitle("Toby Bills -> شاشة المبيعات");
   }
 }
 
