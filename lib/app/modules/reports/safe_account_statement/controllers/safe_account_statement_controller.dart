@@ -15,7 +15,7 @@ import '../../../../data/model/reports/dto/request/quantity_items_request.dart';
 
 class SafeAccountStatmentController extends GetxController{
 
-  final galleries = <GalleryResponse>[];
+  final galleries = <GalleryResponse>[].obs;
   final selectedGalleries = RxList<GalleryResponse>();
   final statements = RxList<BankStatement>();
   String? error;

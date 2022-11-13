@@ -5,6 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/intl.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/colors.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
@@ -30,6 +31,11 @@ class InvItemView extends GetView<InvItemController> {
     Size size = MediaQuery.of(context).size;
     DateTime enddate =DateTime.now();
     DateTime startdate =DateTime.now();
+    Map<String, int> types = {
+      'عرض': 0,
+      'عرضين': 1,
+
+    };
 
 
     var numController = TextEditingController();
@@ -90,21 +96,55 @@ class InvItemView extends GetView<InvItemController> {
                                                     border: Border.all(color: Colors.grey)),
                                                 child:
                                                 Obx(() {
-                                                  return DropdownSearch<AllGroupResponse>(
-                                                    // showSearchBox: true,
-                                                    items: controller.groups,
-                                                    itemAsString: (AllGroupResponse e) => e.name!,
-                                                    onChanged: controller.selectedGroup,
-                                                    selectedItem: controller.selectedGroup.value,
-                                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                                      dropdownSearchDecoration: InputDecoration(
-                                                        border: OutlineInputBorder(),
-                                                        contentPadding: EdgeInsets.all(10),
+                                                  return SizedBox(
+                                                    width: 200,
+                                                    child: DropDownMultiSelect(
+                                                      key: UniqueKey(),
+                                                      options: controller.groups.map((e) => e.name ?? "").toList(),
+                                                      selectedValues: controller.selectedGroup.map((e) => e.name ?? "").toList(),
+                                                      onChanged: controller.selectNewDeliveryplace,
+                                                      decoration: const InputDecoration(
                                                         isDense: true,
+                                                        contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                                        border: OutlineInputBorder(),
+                                                        // contentPadding: EdgeInsets.all(10),
+                                                        // isDense: true,
                                                       ),
+
+                                                      childBuilder: (List<String> values) {
+                                                        return Padding(
+                                                          padding: const EdgeInsets.all(8.0),
+                                                          child: Align(
+                                                            alignment: Alignment.centerRight,
+                                                            child: Text(
+                                                              values.isEmpty ? "يرجى تحديد نوع على الاقل" : values.where((element) => element != "تحديد الكل").join(', '),
+                                                              maxLines: 1,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
                                                   );
-                                                }),                                              ),
+                                                }),
+                                                // Obx(() {
+                                                //   return DropdownSearch<DeliveryPlaceResposne>(
+                                                //     // showSearchBox: true,
+                                                //     items: controller.deliveryPlaces,
+                                                //     itemAsString: (DeliveryPlaceResposne e) => e.name,
+                                                //     onChanged: controller.selectedDeliveryPlace,
+                                                //     selectedItem: controller.selectedDeliveryPlace.value,
+                                                //     dropdownDecoratorProps: const DropDownDecoratorProps(
+                                                //       dropdownSearchDecoration: InputDecoration(
+                                                //         border: OutlineInputBorder(),
+                                                //         contentPadding: EdgeInsets.all(10),
+                                                //         isDense: true,
+                                                //       ),
+                                                //     ),
+                                                //   );
+                                                // }),                                              ),
+                                              ),
+
+
                                             ),
                                             SizedBox(width: size.width*.2,),
 
@@ -124,9 +164,12 @@ class InvItemView extends GetView<InvItemController> {
 
 
 
-                                            SizedBox(width: size.width*.08,)
 
-                                            , Text('طبيعه الصنف',style: smallTextStyleNormal(size)),
+
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                              child: Text('التكلفه اقل من او تساوي',style: smallTextStyleNormal(size)),
+                                            ),
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                               child: Container(
@@ -138,28 +181,26 @@ class InvItemView extends GetView<InvItemController> {
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
                                                 child:
-                                                Obx(() {
-                                                  return DropdownSearch<AllGroupResponse>(
-                                                    // showSearchBox: true,
-                                                    items: controller.groups,
-                                                    itemAsString: (AllGroupResponse e) => e.name!,
-                                                    onChanged: controller.selectedGroup,
-                                                    selectedItem: controller.selectedGroup.value,
-                                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                                      dropdownSearchDecoration: InputDecoration(
-                                                        border: OutlineInputBorder(),
-                                                        contentPadding: EdgeInsets.all(10),
-                                                        isDense: true,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }),                                              ),
+                                                TextFormField(
+                                                  // focusNode: quantityFocus,
+                                                  textAlign: TextAlign.center,
+                                                  decoration: const InputDecoration(
+                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                                                  /////////////quantity
+                                                  // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
+                                                  controller: controller.categoryController,
+                                                  // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
+                                                  // inputFormatters: [doubleFilter],
+                                                  onChanged: (value)  {
+                                                  },
+                                                ),
+                                              ),
                                             ),
                                             SizedBox(width: size.width*.2,),
 
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                              child: Text('التكلفه اقل من او تساوي',style: smallTextStyleNormal(size)),
+                                              child: Text('طبيعه الصنف',style: smallTextStyleNormal(size)),
                                             ),
                                           ],
                                         ),

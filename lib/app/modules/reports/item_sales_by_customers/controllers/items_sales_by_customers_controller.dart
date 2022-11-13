@@ -10,7 +10,7 @@ import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 
 class ItemsSalesByCustomersController extends GetxController{
-  final galleries = <GalleryResponse>[];
+  final galleries = <GalleryResponse>[].obs;
   final selectedGalleries = RxList<GalleryResponse>();
   final List<PurchaseBySupplier> purchases = [];
   final purchasesGroups = RxList<PurchaseBySupplierGroup>();

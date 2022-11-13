@@ -29,19 +29,4 @@ class FindCustomersBalanceRequest {
   };
 }
 
-class DtoList {
-  DtoList({
-    this.id,
-  });
-
-  int? id;
-
-  factory DtoList.fromJson(Map<String, dynamic> json) => DtoList(
-    id: json["id"] == null ? null : json["id"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id == null ? null : id,
-  };
-}
 

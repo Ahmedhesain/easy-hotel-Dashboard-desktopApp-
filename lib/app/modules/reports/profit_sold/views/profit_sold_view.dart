@@ -133,7 +133,8 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                             ),
 
 
-                                            ),SizedBox(width: size.width*.08,)
+                                            ),
+                                            SizedBox(width: size.width*.08,)
                                             ,Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                               child: Text('الحاله',style: smallTextStyleNormal(size)),

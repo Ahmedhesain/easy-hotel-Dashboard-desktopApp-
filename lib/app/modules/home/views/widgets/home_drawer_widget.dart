@@ -1,68 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
-import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:toby_bills/app/routes/app_pages.dart';
-import 'package:window_manager/window_manager.dart';
 
 class HomeDrawerWidget extends GetView<HomeController> {
   const HomeDrawerWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final sections = UserManager().user.userScreens;
-    final list1 = [
-      if(sections["invpurchaseinvoice_1"]?.view ??false)
-        HomeDrawerTileWidget(
-          title: "فواتير الشراء",
-          onTap: () => goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء"),
-        ),
-      if(sections["customeraddnotice"]?.view??false)
-        HomeDrawerTileWidget(
-          title: "الإشعارات",
-          onTap: () => goTo(Routes.NOTIFICATIONS, "الإشعارات"),
-        ),
-    ];
-    final list2 = [];
-    final list3 = [
-      HomeDrawerTileWidget(
-        title: "كشف حساب",
-        onTap: () {
-          if(Get.find<HomeController>().selectedCustomer.value == null) {
-            showPopupText(text: "يجب اختيار عميل اولاً");
-            return;
-          }
-          goTo(Routes.ACCOUNT_STATEMENT,"كشف حساب");
-        },
-      ),
-
-    ];
-    final list4 = [
-      if(sections["notesreceivablesadmin"]?.view??false)
-        HomeDrawerTileWidget(
-          title: "سند القبض",
-          onTap: () => goTo(Routes.CATCH_RECEIPT, "سند القبض"),
-        ),
-      if(sections["notesreceivablesadmin"]?.view??false)
-        HomeDrawerTileWidget(
-          title: "تعديل سندات القبض",
-          onTap: () => goTo(Routes.EDITBILLS, "تعديل سندات القبض"),
-        ),
-      if(sections["settlementdeed"]?.view??false)
-        HomeDrawerTileWidget(
-          title: "المدفوعات",
-          onTap: () => goTo(Routes.PAYMENTS, "المدفوعات"),
-        ),
-    ];
-    final list5 = [
-      HomeDrawerTileWidget(
-        title: "كشف حساب فرعي",
-        onTap: () => goTo(Routes.SUB_ACCOUNT_STATEMENT,"كشف حساب فرعي"),
-      ),
-
-    ];
     return Drawer(
       child: Directionality(
         textDirection: TextDirection.ltr,
@@ -93,10 +42,18 @@ class HomeDrawerWidget extends GetView<HomeController> {
                 ],
               ),
             ),
-            if(list1.isNotEmpty)
             HomeDrawerSectionWidget(
               title: "حركة المخازن",
-              children: list1,
+              children: [
+                HomeDrawerTileWidget(
+                  title: "فواتير الشراء",
+                  onTap: () => goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء"),
+                ),
+                HomeDrawerTileWidget(
+                  title: "الإشعارات",
+                  onTap: () => goTo(Routes.NOTIFICATIONS, "الإشعارات"),
+                ),
+              ],
             ),
             HomeDrawerSectionWidget(
                 title: "تقارير المخازن",
@@ -205,49 +162,57 @@ class HomeDrawerWidget extends GetView<HomeController> {
                     title: "الاصناف حسب الفئات",
                     onTap: () => goTo(Routes.INV_ITEM_DTO, "الاصناف حسب الفئات"),
                   ),
+                  HomeDrawerTileWidget(
+                    title: "الفواتير المسدده لفتره سابقه",
+                    onTap: () => goTo(Routes.CATEGORIES_ITEMS, "الفواتير المسدده لفتره سابقه"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "بيان المبيعات لفتره",
+                    onTap: () => goTo(Routes.SALES_FOR_PERIOD, "بيان المبيعات لفتره"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "حركه الثياب",
+                    onTap: () => goTo(Routes.INVOICE_MOVEMENT, "حركه الثياب"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "قيد اليوميه تفصيلي",
+                    onTap: () => goTo(Routes.JOURNAL_DOCUMENT_DIALY, "قيد اليوميه تفصيلي"),
+                  ),
+
                 ],
             ),
-            if(list4.isNotEmpty)
             HomeDrawerSectionWidget(
               title: "حركة الخزائن",
-              children: list4,
+              children: [
+                HomeDrawerTileWidget(
+                  title: "سند القبض",
+                  onTap: () => goTo(Routes.CATCH_RECEIPT, "سند القبض"),
+                ),
+                HomeDrawerTileWidget(
+                  title: "تعديل سندات القبض",
+                  onTap: () => goTo(Routes.EDITBILLS, "تعديل سندات القبض"),
+                ),
+                HomeDrawerTileWidget(
+                  title: "المدفوعات",
+                  onTap: () => goTo(Routes.PAYMENTS, "المدفوعات"),
+                ),
+              ],
             ),
-            if(list3.isNotEmpty)
             HomeDrawerSectionWidget(
               title: "تقارير الخزائن",
-              children: list3,
-            ),
-            if(list5.isNotEmpty)
-            HomeDrawerSectionWidget(
-              title: "تقارير الحسابات",
-              children: list5,
-            ),
-            Container(
-              clipBehavior: Clip.antiAlias,
-              margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(spreadRadius: 2,blurRadius: 5,color: Colors.black12)
-                  ]
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: ListTile(
-                  onTap: () => Get.offAllNamed(Routes.LOGIN),
-                  leading: const SizedBox(
-                      width: 20,
-                      child: Center(
-                          child: Icon(
-                            Icons.logout_rounded,
-                            size: 15,
-                            color: Colors.black,
-                          ))),
-                  title: const Text("تسجيل خروج"),
+              children: [
+                HomeDrawerTileWidget(
+                  title: "كشف حساب",
+                  onTap: () {
+                    if(Get.find<HomeController>().selectedCustomer.value == null) {
+                      showPopupText(text: "يجب اختيار عميل اولاً");
+                      return;
+                    }
+                    goTo(Routes.ACCOUNT_STATEMENT,"كشف حساب");
+                  },
                 ),
-              ),
-            )
+              ],
+            ),
           ],
         ),
       ),
@@ -255,9 +220,13 @@ class HomeDrawerWidget extends GetView<HomeController> {
   }
   
   goTo(String to, String title)async{
-    windowManager.setTitle("Toby Bills -> $title");
+    if(Platform.isWindows) {
+      // windowManager.setTitle("Toby Bills -> $title");
+    }
     await Get.toNamed(to);
-    windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+    if(Platform.isWindows) {
+      // windowManager.setTitle("Toby Bills -> شاشة المشتريات");
+    }
   }
 }
 

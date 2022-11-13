@@ -19,7 +19,7 @@ class ProfitSoldController extends GetxController{
   final reports = <ProfitOfItemsSoldResponse>[].obs;
   final isLoading = false.obs;
   String query = '';
-  final deliveryPlaces = <DeliveryPlaceResposne>[];
+  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
   final groups = <AllGroupResponse>[];
    RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
   Rxn<AllGroupResponse> selectedGroup = Rxn();
@@ -49,11 +49,7 @@ class ProfitSoldController extends GetxController{
       invType: 4,
       invoiceType:categoryController.text,
       invInventoryDtoList: deliveryPlaces.map((e) => DtoList(id: e.id)).toList(),
-
-      proGroupDtoList: [
-    DtoList(
-    id: selectedGroup.value!.id
-    )],
+      proGroupDtoList: groups.map((e) => DtoList(id: e.id)).toList(),
       branchId:UserManager().branchId,
     );
     ReportsRepository().profitSoldStatement(request,

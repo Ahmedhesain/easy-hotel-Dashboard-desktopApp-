@@ -27,7 +27,7 @@ class FindCustomerBalanceController extends GetxController{
   final reports = <FindCustomersBalanceResponse>[].obs;
   final isLoading = false.obs;
   String query = '';
-  final deliveryPlaces = <DeliveryPlaceResposne>[];
+  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
   Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();

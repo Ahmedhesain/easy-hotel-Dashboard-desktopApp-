@@ -112,7 +112,7 @@ class ClientNoMovementView extends GetView<ClientsNoMovementController> {
                                               child: Row(
                                                 children: [
 
-                                                   Text('من تاريخ',style: smallTextStyleNormal(size)),
+                                                   Text(' تاريخ',style: smallTextStyleNormal(size)),
                                                   Padding(
                                                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                                     child:

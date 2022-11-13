@@ -5,6 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/intl.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/colors.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
@@ -92,21 +93,53 @@ class BalanceGallarypaidView extends GetView<BalanceGallarypaidController> {
                                                     border: Border.all(color: Colors.grey)),
                                                 child:
                                                 Obx(() {
-                                                  return DropdownSearch<DeliveryPlaceResposne>(
-                                                    // showSearchBox: true,
-                                                    items: controller.deliveryPlaces,
-                                                    itemAsString: (DeliveryPlaceResposne e) => e.name,
-                                                    onChanged: controller.selectedDeliveryPlace,
-                                                    selectedItem: controller.selectedDeliveryPlace.value,
-                                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                                      dropdownSearchDecoration: InputDecoration(
-                                                        border: OutlineInputBorder(),
-                                                        contentPadding: EdgeInsets.all(10),
+                                                  return SizedBox(
+                                                    width: 200,
+                                                    child: DropDownMultiSelect(
+                                                      key: UniqueKey(),
+                                                      options: controller.deliveryPlaces.map((e) => e.name ?? "").toList(),
+                                                      selectedValues: controller.selectedDeliveryPlace.map((e) => e.name ?? "").toList(),
+                                                      onChanged: controller.selectNewDeliveryplace,
+                                                      decoration: const InputDecoration(
                                                         isDense: true,
+                                                        contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                                        border: OutlineInputBorder(),
                                                       ),
+
+                                                      childBuilder: (List<String> values) {
+                                                        return Padding(
+                                                          padding: const EdgeInsets.all(8.0),
+                                                          child: Align(
+                                                            alignment: Alignment.centerRight,
+                                                            child: Text(
+                                                              values.isEmpty ? "يرجى تحديد معرض على الاقل" : values.where((element) => element != "تحديد الكل").join(', '),
+                                                              maxLines: 1,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
                                                   );
-                                                }),                                              ),
+                                                }),
+                                                // Obx(() {
+                                                //   return DropdownSearch<DeliveryPlaceResposne>(
+                                                //     // showSearchBox: true,
+                                                //     items: controller.deliveryPlaces,
+                                                //     itemAsString: (DeliveryPlaceResposne e) => e.name,
+                                                //     onChanged: controller.selectedDeliveryPlace,
+                                                //     selectedItem: controller.selectedDeliveryPlace.value,
+                                                //     dropdownDecoratorProps: const DropDownDecoratorProps(
+                                                //       dropdownSearchDecoration: InputDecoration(
+                                                //         border: OutlineInputBorder(),
+                                                //         contentPadding: EdgeInsets.all(10),
+                                                //         isDense: true,
+                                                //       ),
+                                                //     ),
+                                                //   );
+                                                // }),                                              ),
+                                              ),
+
+
                                             ),
                                             SizedBox(width: size.width*.1,),
 
