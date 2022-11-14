@@ -100,6 +100,50 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
             ),
             const SizedBox(width: 15),
             const Center(
+                child: Text(
+                  'المعرض :',
+                  textDirection: TextDirection.rtl,
+                )),
+            Center(
+              child: SizedBox(
+                width: 190,
+                child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child:
+                  Obx(() {
+                    return SizedBox(
+                      width: 200,
+                      child: DropDownMultiSelect(
+                        key: UniqueKey(),
+                        options: controller.deliveryPlaces.map((e) => e.name ?? "").toList(),
+                        selectedValues: controller.selectedDeliveryPlace.map((e) => e.name ?? "").toList(),
+                        onChanged: controller.selectNewDeliveryplace,
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.symmetric(vertical: 10),
+                          border: OutlineInputBorder(),
+                        ),
+
+                        childBuilder: (List<String> values) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                values.isEmpty ? "يرجى تحديد معرض على الاقل" : values.where((element) => element != "تحديد الكل").join(', '),
+                                maxLines: 1,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ),
+            const SizedBox(width: 15),
+            const Center(
               child: Text(
                 "من تاريخ: ",
                 textDirection: TextDirection.rtl,
@@ -185,7 +229,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
           isLoading: controller.isLoading.value,
           child: Directionality(
             textDirection: TextDirection.rtl,
-            child: TableWidget(
+            child: reports == null?SizedBox():TableWidget(
               header: [
                 "الكود",
                 "الفئة",
@@ -201,6 +245,9 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                   .toList(),
               headerHeight: 40,
               rows: [
+                //
+                for (int i = 1 ;i<=reports.length;i++)
+                  if(reports[i].rowType!=null)
                 [
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 7),

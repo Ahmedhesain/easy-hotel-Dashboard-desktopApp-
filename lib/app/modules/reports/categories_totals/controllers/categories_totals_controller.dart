@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/categories_totals_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/group_list_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_totals_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/group_list_response.dart';
+import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 
 class CategoriesTotalsController extends GetxController {
@@ -19,11 +22,14 @@ class CategoriesTotalsController extends GetxController {
   final symbols = <GroupListResponse>[].obs;
   final selectedSymbols = <GroupListResponse>[].obs;
   final salesReports = <CategoriesTotalsResponse>[].obs;
+  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
+  RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
 
   @override
   onInit(){
     super.onInit();
     getGroupList();
+    getDeliveryPlaces();
   }
 
 
@@ -31,7 +37,7 @@ class CategoriesTotalsController extends GetxController {
     isLoading(true);
     final request = CategoriesTotalsRequest(
       invoiceType: invoiceTypeSelected,
-      gallaryId: manager.galleryId,
+      gallaryList:selectedDeliveryPlace.where((e) => e.id != -1).map((e) => SymbolDtoapiList(e.id!)).toList(),
       branchId: manager.branchId,
       dateFrom: dateFrom.value,
       dateTo: dateTo.value,
@@ -86,4 +92,32 @@ class CategoriesTotalsController extends GetxController {
       selectedSymbols.assignAll(symbols.where((element) => values.contains(element.name)));
     }
   }
+  selectNewDeliveryplace(List<String> values) {
+    if (!values.contains("تحديد الكل") && selectedDeliveryPlace.any((element) => element.name == "تحديد الكل")) {
+      selectedDeliveryPlace.clear();
+    } else if (!selectedDeliveryPlace.any((element) => element.name == "تحديد الكل") && values.contains("تحديد الكل")) {
+      selectedDeliveryPlace.assignAll(deliveryPlaces);
+    } else {
+      if (values.length < selectedDeliveryPlace.length && values.contains("تحديد الكل")) {
+        values.remove("تحديد الكل");
+      }
+      selectedDeliveryPlace.assignAll(deliveryPlaces.where((element) => values.contains(element.name)));
+    }
+  }
+  Future<void> getDeliveryPlaces() {
+    return InvoiceRepository().findInventoryByBranch(
+      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
+      onSuccess: (data) {
+        deliveryPlaces.assignAll(data);
+        // if (deliveryPlaces.isNotEmpty) {
+        //   // deliveryPlaces.insert(0, );
+        //
+        //   // selectedDeliveryPlace(deliveryPlaces.first);
+        // }
+      },
+      onError: (error) => showPopupText(text: error.toString()),
+    );
+  }
+
+
 }

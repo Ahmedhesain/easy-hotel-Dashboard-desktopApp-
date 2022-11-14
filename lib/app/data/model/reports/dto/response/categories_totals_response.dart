@@ -15,6 +15,8 @@ class CategoriesTotalsResponse {
     this.quantity,
     this.rowType,
     this.sendNumber,
+    this.gallaryName,
+    this.gallaryCode,
   });
 
   double? allAvarageCost;
@@ -30,6 +32,8 @@ class CategoriesTotalsResponse {
   num? quantity;
   num? rowType;
   num? sendNumber;
+  String? gallaryName;
+  String?gallaryCode;
 
   static List<CategoriesTotalsResponse> fromList(List<dynamic> json) => List<CategoriesTotalsResponse>.from(json.map((x) => CategoriesTotalsResponse.fromJson(x)));
 
@@ -47,6 +51,10 @@ class CategoriesTotalsResponse {
     quantity: json["quantity"],
     rowType: json["rowType"],
     sendNumber: json["sendNumber"],
+    gallaryName: json["gallaryName"],
+    gallaryCode: json["gallaryCode"],
+
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -63,5 +71,9 @@ class CategoriesTotalsResponse {
     "quantity": quantity,
     "rowType": rowType,
     "sendNumber": sendNumber,
+    "gallaryName": gallaryName,
+    "gallaryCode": gallaryCode,
+
+
   };
 }

@@ -26,6 +26,12 @@ class ProfitSoldController extends GetxController{
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
   var categoryController = TextEditingController();
+  final Map<int, String> discBasis = {
+    1: "عرض",
+    2: "عرضين",
+
+  };
+  int selectedVal=0;
 
 
 
