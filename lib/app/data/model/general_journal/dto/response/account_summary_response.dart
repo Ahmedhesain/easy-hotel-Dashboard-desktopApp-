@@ -23,7 +23,7 @@ class AccountSummaryResponse {
     this.symbolName,
   });
 
-  final int? balance;
+  final num? balance;
   final int? costCenterId;
   final num? creditAmount;
   final num? debitAmount;

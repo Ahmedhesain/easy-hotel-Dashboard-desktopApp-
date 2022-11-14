@@ -7,6 +7,7 @@ import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:toby_bills/app/routes/app_pages.dart';
+import 'package:window_manager/window_manager.dart';
 
 class HomeHeaderWidget extends GetView<HomeController> {
   const HomeHeaderWidget({Key? key}) : super(key: key);
@@ -30,6 +31,16 @@ class HomeHeaderWidget extends GetView<HomeController> {
                 return Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    ButtonWidget(text: "كشف حساب عميل", onPressed: () async {
+                      if(Get.find<HomeController>().selectedCustomer.value?.id == null) {
+                        showPopupText(text: "يجب اختيار عميل اولاً");
+                        return;
+                      }
+                      windowManager.setTitle("Toby Bills -> كشف حساب عميل");
+                      await Get.toNamed(Routes.ACCOUNT_STATEMENT);
+                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                    }),
+                    const SizedBox(width: 5),
                     ButtonWidget(text: "تنزيل عرض", onPressed: () {}),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "تحديث", onPressed: () => controller.getItems()),

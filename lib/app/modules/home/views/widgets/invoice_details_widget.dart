@@ -172,7 +172,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           ..addListener(() {
                             if (!detail.value.priceFocus.hasFocus) {
                               if (!detail.value.isValidPrice(controller.selectedPriceType.value!)) {
-                                showPopupText(text: "لايمكن إدخال هذا السعر");
+                                showPopupText(text: "المبلغ اقل من الحد الادنى للسعر");
                                 detail(detail.value.copyWith(price: oldValue));
                               } else {
                                 detail(detail.value.copyWith(price: detail.value.price));

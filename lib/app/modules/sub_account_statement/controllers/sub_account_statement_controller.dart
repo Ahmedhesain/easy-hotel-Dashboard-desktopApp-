@@ -19,7 +19,7 @@ class SubAccountStatementController extends GetxController {
   final Rxn<DateTime> dateTo = Rxn();
   final accounts = <GlAccountResponse>[];
   final costCenters = <CostCenterResponse>[];
-  final statements = <AccountSummaryResponse>[];
+  final statements = <AccountSummaryResponse>[].obs;
   final Rxn<CostCenterResponse> selectedCenterFrom = Rxn();
   final Rxn<CostCenterResponse> selectedCenterTo = Rxn();
   final userManager = UserManager();

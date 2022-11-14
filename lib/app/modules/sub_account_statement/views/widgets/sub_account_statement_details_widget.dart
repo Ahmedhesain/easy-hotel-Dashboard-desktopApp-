@@ -22,61 +22,66 @@ class SubAccountStatementDetailsWidget extends GetView<SubAccountStatementContro
           ),
           clipBehavior: Clip.antiAlias,
           margin: const EdgeInsets.all(15),
-          child: Table(
-            // border: TableBorder.all(borderRadius: BorderRadius.all(Radius.circular(10)), color: Colors.grey, style: BorderStyle.solid, width: 1),
-            children: [
-              const TableRow(
+          child: SingleChildScrollView(
+            child: Obx(() {
+              return Table(
+                // border: TableBorder.all(borderRadius: BorderRadius.all(Radius.circular(10)), color: Colors.grey, style: BorderStyle.solid, width: 1),
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('التاريخ', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                  const TableRow(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('التاريخ', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('رقم القيد', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('رقم السند', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('نوع اليومية', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('بيان القيد', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('مدين', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('دائن', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('الرصيد', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                      ),
+                    ],
+                    decoration: BoxDecoration(color: appGreyDark, border: Border(bottom: BorderSide())),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('رقم القيد', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('رقم السند', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('نوع اليومية', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('بيان القيد', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('مدين', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('دائن', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('الرصيد', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                  ),
+                  for (AccountSummaryResponse row in controller.statements)
+                    TableRow(
+                      children: [
+                        SizedBox(height: 40, child: Center(child: Text(row.date == null ? "--" : DateFormat("dd-MM-yyyy").format(row.date!),
+                            style: const TextStyle(fontSize: 20.0)),),),
+                        SizedBox(height: 40, child: Center(child: Text(row.serial ?? "--"))),
+                        SizedBox(height: 40, child: Center(child: Text(row.generalDecument?.toString() ?? "--"))),
+                        SizedBox(height: 40, child: Center(child: Text(row.symbolName ?? "--"))),
+                        SizedBox(height: 40, child: Center(child: Text(row.glAccountName ?? "--"))),
+                        SizedBox(height: 40, child: Center(child: Text(row.debitAmount?.toString() ?? "--"))),
+                        SizedBox(height: 40, child: Center(child: Text(row.creditAmount?.toString() ?? "--"))),
+                        SizedBox(height: 40, child: Center(child: Text(row.balance?.toString() ?? "--"))),
+                      ],
+                      decoration: const BoxDecoration(color: appGreyLight, border: Border(bottom: BorderSide())),
+                    )
                 ],
-                decoration: BoxDecoration(color: appGreyDark, border: Border(bottom: BorderSide())),
-              ),
-              for (AccountSummaryResponse row in controller.statements)
-                TableRow(
-                  children: [
-                    SizedBox(height: 40, child: Center(child: Text(row.date == null ?"--":DateFormat("dd-MM-yyyy").format(row.date!), style: const TextStyle(fontSize: 20.0)),),),
-                    SizedBox(height: 40, child: Center(child: Text(row.serial??"--"))),
-                    SizedBox(height: 40, child: Center(child: Text(row.generalDecument?.toString()??"--"))),
-                    SizedBox(height: 40, child: Center(child: Text(row.symbolName??"--"))),
-                    SizedBox(height: 40, child: Center(child: Text(row.glAccountName??"--"))),
-                    SizedBox(height: 40, child: Center(child: Text(row.debitAmount?.toString()??"--"))),
-                    SizedBox(height: 40, child: Center(child: Text(row.creditAmount?.toString()??"--"))),
-                    SizedBox(height: 40, child: Center(child: Text(row.balance?.toString()??"--"))),
-                  ],
-                  decoration: const BoxDecoration(color: appGreyLight, border: Border(bottom: BorderSide())),
-                )
-            ],
+              );
+            }),
           )),
     );
   }

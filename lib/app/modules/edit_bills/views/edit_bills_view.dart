@@ -20,7 +20,9 @@ class EditBillsView extends GetView<EditBillsController> {
   @override
   Widget build(BuildContext context) {
     final permissions = UserManager().user.userScreens["customeraddnotice"]!;
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
@@ -29,325 +31,341 @@ class EditBillsView extends GetView<EditBillsController> {
               children: [
                 const EditBillsButtons(),
                 Expanded(
-                  child: Container(
-                      foregroundDecoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                        border: Border.all(color: Colors.grey),
-                      ),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: const EdgeInsets.all(15),
-                      child: Table(
-                        // border: TableBorder.all(borderRadius: BorderRadius.all(Radius.circular(10)), color: Colors.grey, style: BorderStyle.solid, width: 1),
-                        children: [
-                          const TableRow(
+                  child: SingleChildScrollView(
+                    child: Container(
+                        foregroundDecoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        clipBehavior: Clip.antiAlias,
+                        margin: const EdgeInsets.all(15),
+                        child: Obx(() {
+                          final reports = controller.reports;
+                          return Table(
+                            // border: TableBorder.all(borderRadius: BorderRadius.all(Radius.circular(10)), color: Colors.grey, style: BorderStyle.solid, width: 1),
                             children: [
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('رقم السند', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                              const TableRow(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text('رقم السند', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text('التاريخ', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text('العميل', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text('الفاتورة', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text('المبلغ', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text('الخزنه', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text('الملاحظات', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text('الحركه', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+                                  ),
+                                ],
+                                decoration: BoxDecoration(color: AppColors.appGreyDark, border: Border(bottom: BorderSide())),
                               ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('التاريخ', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('العميل', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('الفاتورة', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('المبلغ', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('الخزنه', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('الملاحظات', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('الحركه', style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
-                              ),
+                              for (GlPayDTO kha in reports)
+                                TableRow(
+                                  children: [
+                                    SizedBox(height: 40, child: Center(child: Text(kha.serial!.toString(), style: const TextStyle(fontSize: 20.0)))),
+                                    SizedBox(
+                                      height: 40,
+                                      child: Center(
+                                        child: GetBuilder<EditBillsController>(
+                                            id: kha.id.toString(),
+                                            builder: (_) {
+                                              return MouseRegion(
+                                                cursor: SystemMouseCursors.click,
+                                                child: GestureDetector(
+                                                  onTap: () async {
+                                                    final date = await showDatePicker(
+                                                        context: context,
+                                                        initialDate: kha.date ?? DateTime.now(),
+                                                        firstDate: DateTime(2017),
+                                                        lastDate: DateTime.now());
+                                                    kha.date = date ?? kha.date;
+                                                    controller.update([kha.id.toString()]);
+                                                  },
+                                                  child: Text(
+                                                    DateFormat("yyyy-MM-dd").format(kha.date!),
+                                                    style: const TextStyle(decoration: TextDecoration.underline, fontSize: 18),
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 40,
+                                      margin: const EdgeInsets.all(5),
+                                      child: TypeAheadFormField<FindCustomerResponse>(
+                                          key: UniqueKey(),
+                                          itemBuilder: (context, client) {
+                                            return SizedBox(
+                                              height: 50,
+                                              child: Center(
+                                                child: Text("${client.name} ${client.code}"),
+                                              ),
+                                            );
+                                          },
+                                          suggestionsCallback: (filter) =>
+                                              controller.customers.where((element) =>
+                                              (element.name ?? "").trim().contains(filter.trim()) ||
+                                                  (element.code ?? "").trim().contains(filter.trim())),
+                                          onSuggestionSelected: (value) {
+                                            kha.textFieldController1.text = value.name ?? "";
+                                            kha.textFieldController2.clear();
+                                            kha.customerId = value.id;
+                                            kha.customerName = value.name;
+                                            kha.focusNode2.unfocus();
+
+                                            controller.getInvoiceListForCustomer(value.id!, () => kha.focusNode2.requestFocus());
+                                          },
+                                          textFieldConfiguration: TextFieldConfiguration(
+                                            textInputAction: TextInputAction.next,
+                                            controller: kha.textFieldController1,
+                                            focusNode: kha.focusNode1,
+                                            textDirection: TextDirection.rtl,
+                                            onEditingComplete: () =>
+                                                controller.getCustomersByCodeForInvoice(kha.textFieldController1.text, kha.focusNode1, kha.id!),
+                                            decoration: const InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                isDense: true,
+                                                hintMaxLines: 1,
+                                                contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12)),
+                                          )),
+                                    ),
+                                    Container(
+                                      height: 40,
+                                      margin: const EdgeInsets.all(5),
+                                      child: TypeAheadFormField<InvoiceList>(
+                                          key: UniqueKey(),
+                                          itemBuilder: (context, inv) {
+                                            return SizedBox(
+                                              height: 50,
+                                              child: Center(
+                                                child: Text("${inv.serial}"),
+                                              ),
+                                            );
+                                          },
+                                          suggestionsCallback: (filter) =>
+                                              (controller.balances[kha.customerId]?.invoicesList ?? []).where((element) =>
+                                                  (element.serial.toString() ?? "").contains(filter.trim())),
+                                          onSuggestionSelected: (value) {
+                                            kha.textFieldController2.text = value.serial?.toString() ?? "";
+                                            kha.textFieldController3.text = value.salesStatementForThePeriod.remain.toStringAsFixed(2);
+                                            kha.focusNode3.requestFocus();
+                                            kha.invoiceSerial = value.serial;
+                                            kha.invoiceId = value.id;
+                                          },
+                                          textFieldConfiguration: TextFieldConfiguration(
+                                            textInputAction: TextInputAction.next,
+                                            controller: kha.textFieldController2,
+                                            focusNode: kha.focusNode2,
+                                            textDirection: TextDirection.rtl,
+                                            onTap: () => controller.getInvoiceListForCustomer(kha.customerId!, () => kha.focusNode2.requestFocus()),
+                                            onChanged: (value) => kha.invoiceSerial = int.tryParse(value),
+                                            onEditingComplete: () =>
+                                                controller.getCustomersByCodeForInvoice(kha.textFieldController1.text, kha.focusNode1, kha.id!),
+                                            decoration: const InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                isDense: true,
+                                                hintMaxLines: 1,
+                                                contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12)),
+                                          )),
+                                    ),
+                                    Container(
+                                      height: 40,
+                                      margin: const EdgeInsets.all(5),
+                                      child: TextFormField(
+                                        textAlign: TextAlign.center,
+                                        controller: kha.textFieldController3,
+                                        focusNode: kha.focusNode3,
+                                        onFieldSubmitted: (_) => kha.focusNode4.requestFocus(),
+                                        onChanged: (v) {
+                                          kha.value = num.tryParse(v) ?? 0;
+                                          // if(kha.value! >= (kha.remain??0)){
+                                          //   kha.textFieldController3.text = kha.remain?.toStringAsFixed(2)??"";
+                                          // }
+                                        },
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                                          isDense: true,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 40,
+                                      margin: const EdgeInsets.all(5),
+                                      child: TypeAheadFormField<GlPayDTO>(
+                                          key: UniqueKey(),
+                                          itemBuilder: (context, client) {
+                                            return SizedBox(
+                                              height: 50,
+                                              child: Center(
+                                                child: Text(client.bankName ?? ''),
+                                              ),
+                                            );
+                                          },
+                                          suggestionsCallback: (filter) =>
+                                              controller.banks.where((element) => (element.bankName ?? "").trim().contains(filter)),
+                                          onSuggestionSelected: (value) {
+                                            kha.textFieldController4.text = value.bankName ?? "";
+                                            kha.focusNode5.requestFocus();
+                                            kha.bankId = value.bankId;
+                                            kha.bankName = value.bankName;
+                                          },
+                                          textFieldConfiguration: TextFieldConfiguration(
+                                            textInputAction: TextInputAction.next,
+                                            controller: kha.textFieldController4,
+                                            focusNode: kha.focusNode4,
+                                            // onEditingComplete: () => controller.addinvoice(),
+                                            decoration: const InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                isDense: true,
+                                                hintMaxLines: 1,
+                                                contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12)),
+                                          )),
+                                    ),
+                                    Container(
+                                      height: 40,
+                                      margin: const EdgeInsets.all(5),
+                                      child: TextFormField(
+                                        textAlign: TextAlign.center,
+                                        controller: kha.textFieldController5,
+                                        onChanged: (v) => kha.remark = v,
+                                        focusNode: kha.focusNode5,
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                                          isDense: true,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 40,
+                                      margin: const EdgeInsets.all(5),
+                                      child: Center(
+                                        child: Row(
+                                          children: [
+                                            if(permissions.edit!)
+                                              Expanded(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    controller.editInvoice(kha);
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.all(Radius.circular(6.00)),
+                                                      color: AppColors.colorYellow,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      children: [
+                                                        Text(
+                                                          'تعديل',
+                                                          style: smallTextStyleNormal(size, color: Colors.black),
+                                                        ),
+                                                        Icon(
+                                                          Icons.edit,
+                                                          color: Colors.black,
+                                                          size: 15,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            if(permissions.edit! || permissions.delete!)
+                                              const SizedBox(width: 5),
+                                            if(permissions.delete!)
+                                              Expanded(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    controller.deleteRow(kha.id!);
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: const BorderRadius.all(Radius.circular(6.00)),
+                                                      color: AppColors.colorYellow,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      children: [
+                                                        Text(
+                                                          'حذف',
+                                                          style: smallTextStyleNormal(size, color: Colors.black),
+                                                        ),
+                                                        Icon(
+                                                          Icons.delete,
+                                                          color: Colors.black,
+                                                          size: 15,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            if(permissions.edit! && permissions.delete!)
+                                              const SizedBox(width: 5),
+                                            Expanded(
+                                              child: GestureDetector(
+                                                onTap: () => controller.printRow(kha.id!, context),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: const BorderRadius.all(Radius.circular(6.00)),
+                                                    color: AppColors.colorYellow,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    children: [
+                                                      Text(
+                                                        'طباعه',
+                                                        style: smallTextStyleNormal(size, color: Colors.black),
+                                                      ),
+                                                      Icon(
+                                                        Icons.print,
+                                                        color: Colors.black,
+                                                        size: 15,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  decoration: const BoxDecoration(color: AppColors.appGreyLight, border: Border(bottom: BorderSide())),
+                                )
                             ],
-                            decoration: BoxDecoration(color: AppColors.appGreyDark, border: Border(bottom: BorderSide())),
-                          ),
-                          for (GlPayDTO kha in controller.reports)
-                            TableRow(
-                              children: [
-                                SizedBox(height: 40, child: Center(child: Text(kha.serial!.toString(), style: const TextStyle(fontSize: 20.0)))),
-                                SizedBox(
-                                  height: 40,
-                                  child: Center(
-                                    child: GetBuilder<EditBillsController>(
-                                        id: kha.id.toString(),
-                                        builder: (_) {
-                                          return MouseRegion(
-                                            cursor: SystemMouseCursors.click,
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                final date = await showDatePicker(
-                                                    context: context,
-                                                    initialDate: kha.date ?? DateTime.now(),
-                                                    firstDate: DateTime(2017),
-                                                    lastDate: DateTime.now());
-                                                kha.date = date ?? kha.date;
-                                                controller.update([kha.id.toString()]);
-                                              },
-                                              child: Text(
-                                                DateFormat("yyyy-MM-dd").format(kha.date!),
-                                                style: const TextStyle(decoration: TextDecoration.underline, fontSize: 18),
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                ),
-                                Container(
-                                  height: 40,
-                                  margin: const EdgeInsets.all(5),
-                                  child: TypeAheadFormField<FindCustomerResponse>(
-                                      itemBuilder: (context, client) {
-                                        return SizedBox(
-                                          height: 50,
-                                          child: Center(
-                                            child: Text("${client.name} ${client.code}"),
-                                          ),
-                                        );
-                                      },
-                                      suggestionsCallback: (filter) => controller.customers.where((element) =>
-                                          (element.name ?? "").trim().contains(filter.trim()) || (element.code ?? "").trim().contains(filter.trim())),
-                                      onSuggestionSelected: (value) {
-                                        kha.textFieldController1.text = value.name ?? "";
-                                        kha.customerId = value.id;
-                                        kha.customerName = value.name;
-                                        controller.getInvoiceListForCustomer(value.id!, () => kha.focusNode2.requestFocus());
-                                      },
-                                      textFieldConfiguration: TextFieldConfiguration(
-                                        textInputAction: TextInputAction.next,
-                                        controller: kha.textFieldController1,
-                                        focusNode: kha.focusNode1,
-                                        textDirection: TextDirection.rtl,
-                                        onEditingComplete: () =>
-                                            controller.getCustomersByCodeForInvoice(kha.textFieldController1.text, kha.focusNode1),
-                                        decoration: const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            isDense: true,
-                                            hintMaxLines: 1,
-                                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12)),
-                                      )),
-                                ),
-                                Container(
-                                  height: 40,
-                                  margin: const EdgeInsets.all(5),
-                                  child: TypeAheadFormField<InvoiceList>(
-                                      itemBuilder: (context, inv) {
-                                        return SizedBox(
-                                          height: 50,
-                                          child: Center(
-                                            child: Text("${inv.serial}"),
-                                          ),
-                                        );
-                                      },
-                                      suggestionsCallback: (filter) => (controller.balances[kha.customerId]?.invoicesList??[]).where((element) =>
-                                          (element.serial.toString() ?? "").contains(filter.trim())),
-                                      onSuggestionSelected: (value) {
-                                        kha.textFieldController2.text = value.serial?.toString() ?? "";
-                                        kha.textFieldController3.text = value.salesStatementForThePeriod.remain.toStringAsFixed(2);
-                                        kha.focusNode3.requestFocus();
-                                        kha.invoiceSerial = value.serial;
-                                        kha.invoiceId = value.id;
-                                      },
-                                      textFieldConfiguration: TextFieldConfiguration(
-                                        textInputAction: TextInputAction.next,
-                                        controller: kha.textFieldController2,
-                                        focusNode: kha.focusNode2,
-                                        textDirection: TextDirection.rtl,
-                                        onTap: () => controller.getInvoiceListForCustomer(kha.customerId!, () => kha.focusNode2.requestFocus()),
-                                        onChanged: (value) => kha.invoiceSerial = int.tryParse(value),
-                                        onEditingComplete: () =>
-                                            controller.getCustomersByCodeForInvoice(kha.textFieldController1.text, kha.focusNode1),
-                                        decoration: const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            isDense: true,
-                                            hintMaxLines: 1,
-                                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12)),
-                                      )),
-                                ),
-                                Container(
-                                  height: 40,
-                                  margin: const EdgeInsets.all(5),
-                                  child: TextFormField(
-                                    textAlign: TextAlign.center,
-                                    controller: kha.textFieldController3,
-                                    focusNode: kha.focusNode3,
-                                    onFieldSubmitted: (_) => kha.focusNode4.requestFocus(),
-                                    onChanged: (v) {
-                                      kha.value = num.tryParse(v) ?? 0;
-                                      if(kha.value! > (kha.remain??0)){
-                                        kha.textFieldController3.text = kha.remain?.toStringAsFixed(2)??"";
-                                      }
-                                    },
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                                      isDense: true,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 40,
-                                  margin: const EdgeInsets.all(5),
-                                  child: TypeAheadFormField<GlPayDTO>(
-                                      itemBuilder: (context, client) {
-                                        return SizedBox(
-                                          height: 50,
-                                          child: Center(
-                                            child: Text(client.bankName ?? ''),
-                                          ),
-                                        );
-                                      },
-                                      suggestionsCallback: (filter) =>
-                                          controller.banks.where((element) => (element.bankName ?? "").trim().contains(filter)),
-                                      onSuggestionSelected: (value) {
-                                        kha.textFieldController4.text = value.bankName ?? "";
-                                        kha.focusNode5.requestFocus();
-                                      },
-                                      textFieldConfiguration: TextFieldConfiguration(
-                                        textInputAction: TextInputAction.next,
-                                        controller: kha.textFieldController4,
-                                        focusNode: kha.focusNode4,
-                                        // onEditingComplete: () => controller.addinvoice(),
-                                        decoration: const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            isDense: true,
-                                            hintMaxLines: 1,
-                                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12)),
-                                      )),
-                                ),
-                                Container(
-                                  height: 40,
-                                  margin: const EdgeInsets.all(5),
-                                  child: TextFormField(
-                                    textAlign: TextAlign.center,
-                                    controller: kha.textFieldController5,
-                                    onChanged: (v) => kha.remark = v,
-                                    focusNode: kha.focusNode5,
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                                      isDense: true,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 40,
-                                  margin: const EdgeInsets.all(5),
-                                  child: Center(
-                                    child: Row(
-                                      children: [
-                                        if(permissions.edit!)
-                                          Expanded(
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              controller.editInvoice(kha);
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(Radius.circular(6.00)),
-                                                color: AppColors.colorYellow,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  Text(
-                                                    'تعديل',
-                                                    style: smallTextStyleNormal(size, color: Colors.black),
-                                                  ),
-                                                  Icon(
-                                                    Icons.edit,
-                                                    color: Colors.black,
-                                                    size: 15,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        if(permissions.edit! || permissions.delete!)
-                                          const SizedBox(width: 5),
-                                        if(permissions.delete!)
-                                          Expanded(
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              controller.deleteRow(kha.id!);
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: const BorderRadius.all(Radius.circular(6.00)),
-                                                color: AppColors.colorYellow,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  Text(
-                                                    'حذف',
-                                                    style: smallTextStyleNormal(size, color: Colors.black),
-                                                  ),
-                                                  Icon(
-                                                    Icons.delete,
-                                                    color: Colors.black,
-                                                    size: 15,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        if(permissions.edit! && permissions.delete!)
-                                          const SizedBox(width: 5),
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () => controller.printRow(kha.id!, context),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: const BorderRadius.all(Radius.circular(6.00)),
-                                                color: AppColors.colorYellow,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  Text(
-                                                    'طباعه',
-                                                    style: smallTextStyleNormal(size, color: Colors.black),
-                                                  ),
-                                                  Icon(
-                                                    Icons.print,
-                                                    color: Colors.black,
-                                                    size: 15,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              decoration: const BoxDecoration(color: AppColors.appGreyLight, border: Border(bottom: BorderSide())),
-                            )
-                        ],
-                      )),
+                          );
+                        })),
+                  ),
                 ),
               ],
             ),

@@ -87,21 +87,14 @@ class InvoiceDetailsModel {
   DateTime? createdDate;
 
   bool isValidPrice(int priceType) {
-    bool isValid = true;
     if(priceType == 1 && price! < minPriceMen!){
       price = minPriceMen;
-      isValid = false;
-    } else if(priceType == 1 && price! > maxPriceMen!){
-      price = maxPriceMen;
-      isValid = false;
+      return false;
     } else if(priceType == 0 && price! < minPriceYoung!){
       price = minPriceYoung;
-      isValid = false;
-    } else if(priceType == 0 && price! > maxPriceYoung!){
-      price = maxPriceYoung;
-      isValid = false;
+      return false;
     }
-    return isValid;
+    return true;
   }
 
 

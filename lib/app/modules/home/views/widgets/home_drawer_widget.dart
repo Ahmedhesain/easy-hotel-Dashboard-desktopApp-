@@ -26,17 +26,17 @@ class HomeDrawerWidget extends GetView<HomeController> {
         ),
     ];
     final list2 = [];
-    final list3 = [
-      HomeDrawerTileWidget(
-        title: "كشف حساب",
-        onTap: () {
-          if(Get.find<HomeController>().selectedCustomer.value == null) {
-            showPopupText(text: "يجب اختيار عميل اولاً");
-            return;
-          }
-          goTo(Routes.ACCOUNT_STATEMENT,"كشف حساب");
-        },
-      ),
+    final list3 = <HomeDrawerTileWidget>[
+      // HomeDrawerTileWidget(
+      //   title: "كشف حساب",
+      //   onTap: () {
+      //     if(Get.find<HomeController>().selectedCustomer.value == null) {
+      //       showPopupText(text: "يجب اختيار عميل اولاً");
+      //       return;
+      //     }
+      //     goTo(Routes.ACCOUNT_STATEMENT,"كشف حساب");
+      //   },
+      // ),
 
     ];
     final list4 = [

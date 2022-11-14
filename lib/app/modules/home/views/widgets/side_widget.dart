@@ -102,7 +102,7 @@ class SideWidget extends GetView<HomeController> {
                           if (value.isEmpty || num.tryParse(value) == null) {
                             controller.invoiceDiscountController.text = "0";
                           }
-                          if (controller.invoiceDiscountController.text.parseToNum > 100) {
+                          if (controller.invoiceDiscountController.text.parseToNum > 100 && controller.selectedDiscountType.value == 1) {
                             controller.invoiceDiscountController.text = "100";
                           }
                           controller.calcInvoiceValues();

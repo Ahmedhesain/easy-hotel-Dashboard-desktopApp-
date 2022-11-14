@@ -35,7 +35,7 @@ import '../../data/model/reports/dto/response/categories_totals_response.dart';
 
 class PrintingHelper {
 
-  void printSubAccountStatements(m.BuildContext context, {required List<AccountSummaryResponse> statements,required DateTime fromDate, required DateTime toDate, required String fromCenter, required String toCenter}) async {
+  void printSubAccountStatements(m.BuildContext context, {required List<AccountSummaryResponse> statements, DateTime? fromDate, DateTime? toDate,required  String fromCenter, required String toCenter}) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
     final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
@@ -76,7 +76,7 @@ class PrintingHelper {
                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                         Expanded(
                             child: Text(
-                              DateFormat("dd/MM/yyyy").format(fromDate),
+                              fromDate == null?'--':DateFormat("dd/MM/yyyy").format(fromDate),
                               style: boldStyle,
                               textDirection: TextDirection.rtl,
                             )
@@ -96,7 +96,7 @@ class PrintingHelper {
                         children: [
                           Expanded(
                               child: Text(
-                                DateFormat("dd/MM/yyyy").format(toDate),
+                                toDate ==null ?'--':DateFormat("dd/MM/yyyy").format(toDate),
                                 style: boldStyle,
                                 textDirection: TextDirection.rtl,
                               )

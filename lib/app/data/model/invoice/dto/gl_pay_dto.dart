@@ -15,6 +15,8 @@ class GlPayDTO with FormMixin{
     this.customerName,
     this.remark,
     this.date,
+    this.gallaryId,
+    this.generalJournalId,
     this.serial
   }){
     textFieldController1.text = customerName??"";
@@ -31,6 +33,8 @@ class GlPayDTO with FormMixin{
   num? value;
   int ?invoiceId;
   int? invoiceSerial;
+  int? gallaryId;
+  int? generalJournalId;
   int? id;
   int? customerId;
   String? customerName;
@@ -44,6 +48,8 @@ class GlPayDTO with FormMixin{
   factory GlPayDTO.fromJson(Map<String, dynamic> json) => GlPayDTO(
     bank: json["bank"] == null ? null : Bank.fromJson(json["bank"]),
     bankName: json["bankName"],
+    gallaryId: json["gallaryId"],
+    generalJournalId: json["generalJournalId"],
     bankId: json["bankId"],
     remain: json["remain"],
     value: json["value"],
@@ -72,6 +78,8 @@ class GlPayDTO with FormMixin{
     "remark": remark,
     "date": date == null ? null : date!.toIso8601String(),
     "serial": serial,
+    "generalJournalId": generalJournalId,
+    "gallaryId": gallaryId,
 
   };
 }
