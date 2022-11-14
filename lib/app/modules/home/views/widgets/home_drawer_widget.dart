@@ -49,6 +49,11 @@ class HomeDrawerWidget extends GetView<HomeController> {
         ),
       if(sections["notesreceivablesadmin"]?.view??false)
         HomeDrawerTileWidget(
+          title: "سداد القبض لفرع آخر",
+          onTap: () => goTo(Routes.CATCH_RECEIPT_ANOTHER_GALLERY, "سداد القبض لفرع آخر"),
+        ),
+      if(sections["notesreceivablesadmin"]?.view??false)
+        HomeDrawerTileWidget(
           title: "تعديل سندات القبض",
           onTap: () => goTo(Routes.EDITBILLS, "تعديل سندات القبض"),
         ),
@@ -107,26 +112,6 @@ class HomeDrawerWidget extends GetView<HomeController> {
                     title: "إجماليات الفواتير",
                     onTap: () {
                       goTo(Routes.CATEGORIES_TOTALS, "إجماليات الفواتير");
-                    },
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "حالة الفاتورة",
-                    onTap: () {
-                      if(Get.find<HomeController>().invoice.value == null){
-                        showPopupText(text: "يجب اختيار فاتورة اولاً");
-                        return;
-                      }
-                      goTo(Routes.INVOICE_STATUS,"حالة الفاتورة");
-                    },
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "مراحل الانتاج",
-                    onTap: () {
-                      if(Get.find<HomeController>().invoice.value == null) {
-                        showPopupText(text: "يجب اختيار فاتورة اولاً");
-                        return;
-                      }
-                      goTo(Routes.PRODUCTION_STAGES,"مراحل الانتاج");
                     },
                   ),
                   HomeDrawerTileWidget(

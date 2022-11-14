@@ -5,6 +5,9 @@ import 'package:toby_bills/app/modules/account_statement/bindings/account_statem
 import 'package:toby_bills/app/modules/account_statement/views/account_statement_view.dart';
 import 'package:toby_bills/app/modules/catch_receipt/bindings/catch_receipt_binding.dart';
 import 'package:toby_bills/app/modules/catch_receipt/views/catch_receipt_view.dart';
+import 'package:toby_bills/app/modules/catch_receipt_another_gallery/bindings/catch_receipt_another_gallery_binding.dart';
+import 'package:toby_bills/app/modules/catch_receipt_another_gallery/views/catch_receipt_another_gallery_view.dart';
+import 'package:toby_bills/app/modules/catch_receipt_another_gallery/views/widgets/catch_receipt_another_gallery_buttons_widget.dart';
 import 'package:toby_bills/app/modules/edit_bills/bindings/edit_bills_binding.dart';
 import 'package:toby_bills/app/modules/edit_bills/views/edit_bills_view.dart';
 import 'package:toby_bills/app/modules/home/bindings/home_binding.dart';
@@ -223,6 +226,11 @@ class AppPages {
       name: _Paths.CATCH_RECEIPT,
       page: () => CatchReceiptView(),
       binding: CatchReceiptBinding(),
+    ),
+    GetPage(
+      name: _Paths.CATCH_RECEIPT_ANOTHER_GALLERY,
+      page: () => CatchReceiptAnotherGalleryView(),
+      binding: CatchReceiptAnotherGalleryBinding(),
     ),
     GetPage(
       name: _Paths.CATEGORIES_ITEMS,

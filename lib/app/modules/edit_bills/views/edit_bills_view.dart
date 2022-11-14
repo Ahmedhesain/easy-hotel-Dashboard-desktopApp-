@@ -285,7 +285,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                       children: [
                                                         Text(
-                                                          'تعديل',
+                                                          'حفظ',
                                                           style: smallTextStyleNormal(size, color: Colors.black),
                                                         ),
                                                         Icon(

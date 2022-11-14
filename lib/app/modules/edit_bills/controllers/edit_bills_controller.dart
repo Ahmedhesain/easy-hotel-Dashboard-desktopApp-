@@ -89,7 +89,7 @@ class EditBillsController extends GetxController {
   getAllBanks() {
     isLoading(true);
     final request = AllInvoicesRequest(id: UserManager().id, branchId: UserManager().branchId);
-    ReportsRepository().getAllBanks(request,
+    ReportsRepository().getAllGlPay(request,
         onSuccess: (data) {
           banks.assignAll(data);
         },

@@ -40,6 +40,26 @@ class HomeHeaderWidget extends GetView<HomeController> {
                       windowManager.setTitle("Toby Bills -> شاشة المبيعات");
                     }),
                     const SizedBox(width: 5),
+                    ButtonWidget(text: "حالة الفاتورة", onPressed: () async {
+                      if(Get.find<HomeController>().invoice.value?.id == null) {
+                        showPopupText(text: "يجب اختيار فاتورة اولاً");
+                        return;
+                      }
+                      windowManager.setTitle("Toby Bills -> حالة الفاتورة");
+                      await Get.toNamed(Routes.INVOICE_STATUS);
+                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                    }),
+                    const SizedBox(width: 5),
+                    ButtonWidget(text: "مراحل الانتاج", onPressed: () async {
+                      if(Get.find<HomeController>().invoice.value?.id == null) {
+                        showPopupText(text: "يجب اختيار فاتورة اولاً");
+                        return;
+                      }
+                      windowManager.setTitle("Toby Bills -> مراحل الانتاج");
+                      await Get.toNamed(Routes.PRODUCTION_STAGES);
+                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                    }),
+                    const SizedBox(width: 5),
                     ButtonWidget(text: "تنزيل عرض", onPressed: () {}),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "تحديث", onPressed: () => controller.getItems()),
@@ -63,6 +83,8 @@ class HomeHeaderWidget extends GetView<HomeController> {
                       ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "حذف هللة", onPressed: () => controller.removeHalala()),
+                    const SizedBox(width: 5),
+                    ButtonWidget(text: "إرجاع هللة", onPressed: () => controller.retreiveHalala()),
                     if((permissions.delete ?? false) && controller.invoice.value?.id != null)
                       const SizedBox(width: 5),
                     if((permissions.delete ?? false) && controller.invoice.value?.id != null)

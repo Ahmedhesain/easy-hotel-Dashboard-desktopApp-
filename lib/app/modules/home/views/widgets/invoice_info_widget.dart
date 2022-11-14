@@ -73,13 +73,30 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                 const SizedBox(width: 5),
                 Expanded(
                   flex: 2,
-                  child: Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Text(
-                      DateFormat("dd-MM-yyyy").format(DateTime.now()),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                  child: Obx(() {
+                    return GestureDetector(
+                      onTap: () async {
+                        if(controller.invoice.value?.id != null){
+                          controller.date(await showDatePicker(
+                              context: context,
+                              initialDate: controller.date.value,
+                              firstDate: DateTime(2017),
+                              lastDate: DateTime.now()
+                          ));
+                        }
+                      },
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          DateFormat("dd-MM-yyyy").format(controller.date.value),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            decoration: controller.invoice.value?.id != null ? TextDecoration.underline:null
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
                 ),
                 const SizedBox(width: 10),
                 const Text('تاريخ التسليم:'),

@@ -106,6 +106,7 @@ class HomeController extends GetxController {
   final galleries = <GalleryResponse>[];
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
   Rxn<GetDueDateResponse> dueDate = Rxn();
+  Rx<DateTime> date = Rx(DateTime.now());
   Rxn<InvoiceResponse> invoice = Rxn();
 
   Map<int, String> priceTypes = {
@@ -281,6 +282,7 @@ class HomeController extends GetxController {
           } else {
             selectedGallery.value = null;
           }
+          date(data.date);
           dueDate.value!.dueDate = data.dueDate;
           dueDate.value!.dayNumber = data.dueperiod;
           selectedDeliveryPlace(deliveryPlaces.singleWhere((element) => element.name == data.deliveryPlaceName));
@@ -544,7 +546,7 @@ class HomeController extends GetxController {
       gallaryName: UserManager().galleryName,
       branchId: UserManager().branchId,
       gallaryId: UserManager().galleryId,
-      date: DateTime.now(),
+      date: date.value,
       checkSendSms: checkSendSms.value ? 1 : 0,
       companyId: UserManager().companyId,
       createdBy: UserManager().id,
@@ -634,6 +636,11 @@ class HomeController extends GetxController {
     int number = finalNet.value.toInt();
     num remain = finalNet.value - number;
     discountHalala(remain / 1.15);
+    calcInvoiceValues();
+  }
+
+  retreiveHalala() {
+    discountHalala(0);
     calcInvoiceValues();
   }
 

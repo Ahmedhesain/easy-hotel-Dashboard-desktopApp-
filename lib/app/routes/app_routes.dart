@@ -37,6 +37,7 @@ abstract class Routes {
   static const NOTIFICATIONS = _Paths.NOTIFICATIONS;
   static const PAYMENTS = _Paths.PAYMENTS;
   static const CATCH_RECEIPT = _Paths.CATCH_RECEIPT;
+  static const CATCH_RECEIPT_ANOTHER_GALLERY = _Paths.CATCH_RECEIPT_ANOTHER_GALLERY;
   static const CATEGORIES_ITEMS = _Paths.CATEGORIES_ITEMS;
   static const SALES_FOR_PERIOD = _Paths.SALES_FOR_PERIOD;
   static const INVOICE_MOVEMENT = _Paths.INVOICE_MOVEMENT;
@@ -81,6 +82,7 @@ abstract class _Paths {
   static const NOTIFICATIONS = '/notifications';
   static const PAYMENTS = '/payments';
   static const CATCH_RECEIPT = '/catch-receipt';
+  static const CATCH_RECEIPT_ANOTHER_GALLERY = '/catch-receipt-another-gallery';
   static const CATEGORIES_ITEMS = '/categories-items';
   static const SALES_FOR_PERIOD = '/sales-for-period';
   static const INVOICE_MOVEMENT = '/invoice-movement';

@@ -395,12 +395,6 @@ class PaymentsDetailsHeaderWidget extends GetView<PaymentsController> {
                         TextFormField(
                           textAlign: TextAlign.center,
                           textDirection: TextDirection.ltr,
-                          validator: (value){
-                            if((value??"").isEmpty){
-                              return "مطلوب";
-                            }
-                            return null;
-                          },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             isDense: true,
