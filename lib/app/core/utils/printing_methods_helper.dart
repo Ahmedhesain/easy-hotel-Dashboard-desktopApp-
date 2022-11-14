@@ -31,6 +31,7 @@ import 'package:toby_bills/app/data/model/reports/dto/response/item_balances_res
 import 'package:toby_bills/app/data/model/reports/dto/response/journal_document_dialy_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/safe_account_statement_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
 import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/controllers/invoices_without_swing_controller.dart';
 
@@ -2935,409 +2936,409 @@ class PrintingHelper {
         });
   }
   //
-  // void treasuryStatement(m.BuildContext context, List<TreasuryModel> data, DateTime fromDate, DateTime toDate) async {
-  //   final doc = Document();
-  //   const PdfColor grey = PdfColors.grey400;
-  //   final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
-  //   final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
-  //   final ttfBold = Font.ttf(font);
-  //   final ttfLight = Font.ttf(fontLight);
-  //   final style = TextStyle(font: ttfLight, fontBold: ttfBold);
-  //   final normalStyle = TextStyle(font: ttfLight, fontSize: 11);
-  //   final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
-  //   final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
-  //   Text text(String text, {double? size, FontWeight? weight}) => Text(text, style: style.copyWith(fontSize: size, fontWeight: weight));
-  //
-  //   for (var i = 0; i < data.length; i++) {
-  //     final bank = data[i];
-  //     doc.addPage(MultiPage(
-  //         pageTheme: const PageTheme(
-  //           pageFormat: PdfPageFormat.a4,
-  //           textDirection: TextDirection.rtl,
-  //           margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
-  //           orientation: PageOrientation.landscape,
-  //         ),
-  //         build: (Context context) {
-  //           return [
-  //             if (data.indexOf(bank) == 0)
-  //               Column(
-  //                 children: [
-  //                   Center(
-  //                       child: Container(
-  //                           decoration: const BoxDecoration(color: PdfColors.grey400),
-  //                           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-  //                           child: Text(
-  //                             "كشف حساب خزينة - بنك",
-  //                             style: boldStyle.copyWith(fontSize: 10),
-  //                             textDirection: TextDirection.rtl,
-  //                             textAlign: TextAlign.center,
-  //                           ))),
-  //                   SizedBox(height: 15),
-  //                   Row(
-  //                     mainAxisAlignment: MainAxisAlignment.end,
-  //                     children: [
-  //                       text(DateFormat("MM-dd-yyyy").format(fromDate), weight: FontWeight.bold),
-  //                       SizedBox(width: 15),
-  //                       text("من تاريخ:", weight: FontWeight.bold),
-  //                       SizedBox(width: 15),
-  //                     ],
-  //                   ),
-  //                   Row(
-  //                     mainAxisAlignment: MainAxisAlignment.end,
-  //                     children: [
-  //                       text(DateFormat("MM-dd-yyyy").format(toDate), weight: FontWeight.bold),
-  //                       SizedBox(width: 15),
-  //                       text("الى تاريخ:", weight: FontWeight.bold),
-  //                       SizedBox(width: 15),
-  //                     ],
-  //                   ),
-  //                   SizedBox(height: 15),
-  //                 ],
-  //               ),
-  //             Container(
-  //               foregroundDecoration: BoxDecoration(border: Border.all()),
-  //               child: Row(
-  //                 children: [
-  //                   Expanded(
-  //                     flex: 12,
-  //                     child: text(bank.bankName ?? "", size: 10),
-  //                   ),
-  //                   Expanded(
-  //                     flex: 3,
-  //                     child: Container(
-  //                         decoration: const BoxDecoration(
-  //                           color: PdfColors.grey400,
-  //                           border: Border(left: BorderSide()),
-  //                         ),
-  //                         margin: const EdgeInsets.only(left: 15),
-  //                         alignment: Alignment.center,
-  //                         child: text("اسم البنك", weight: FontWeight.bold)),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //             Row(
-  //               children: [
-  //                 Expanded(
-  //                   child: Container(
-  //                     decoration: BoxDecoration(border: Border.all(), color: grey),
-  //                     child: Center(
-  //                       child: Text(
-  //                         "الرصيد",
-  //                         style: boldStyle.copyWith(fontSize: 10),
-  //                         textDirection: TextDirection.rtl,
-  //                         textAlign: TextAlign.center,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Expanded(
-  //                   child: Container(
-  //                     decoration: BoxDecoration(border: Border.all(), color: grey),
-  //                     child: Center(
-  //                       child: Text(
-  //                         "مدين",
-  //                         style: boldStyle.copyWith(fontSize: 10),
-  //                         textDirection: TextDirection.rtl,
-  //                         textAlign: TextAlign.center,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Expanded(
-  //                   child: Container(
-  //                     decoration: BoxDecoration(border: Border.all(), color: grey),
-  //                     child: Center(
-  //                       child: Text(
-  //                         "البيان",
-  //                         style: boldStyle.copyWith(fontSize: 10),
-  //                         textDirection: TextDirection.rtl,
-  //                         textAlign: TextAlign.center,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Expanded(
-  //                   child: Container(
-  //                     decoration: BoxDecoration(border: Border.all(), color: grey),
-  //                     child: Center(
-  //                       child: Text(
-  //                         "مناولة",
-  //                         style: boldStyle.copyWith(fontSize: 10),
-  //                         textDirection: TextDirection.rtl,
-  //                         textAlign: TextAlign.center,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Expanded(
-  //                   flex: 2,
-  //                   child: Container(
-  //                     decoration: BoxDecoration(border: Border.all(), color: grey),
-  //                     child: Center(
-  //                       child: Text(
-  //                         "اسم العميل",
-  //                         style: boldStyle.copyWith(fontSize: 10),
-  //                         textDirection: TextDirection.rtl,
-  //                         textAlign: TextAlign.center,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Expanded(
-  //                     child: Container(
-  //                   decoration: BoxDecoration(border: Border.all(), color: grey),
-  //                   child: Center(
-  //                     child: Text(
-  //                       "كود العميل",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 )),
-  //                 Expanded(
-  //                     child: Container(
-  //                   decoration: BoxDecoration(border: Border.all(), color: grey),
-  //                   child: Center(
-  //                     child: Text(
-  //                       "رقم الفاتورة",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 )),
-  //                 Expanded(
-  //                     child: Container(
-  //                   decoration: BoxDecoration(border: Border.all(), color: grey),
-  //                   child: Center(
-  //                     child: Text(
-  //                       "نوع الحركة",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 )),
-  //                 Expanded(
-  //                     child: Container(
-  //                   decoration: BoxDecoration(border: Border.all(), color: grey),
-  //                   child: Center(
-  //                     child: Text(
-  //                       "رقم",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 )),
-  //                 Expanded(
-  //                     child: Container(
-  //                   decoration: BoxDecoration(border: Border.all(), color: grey),
-  //                   child: Center(
-  //                     child: Text(
-  //                       "التاريخ",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 )),
-  //               ],
-  //             ),
-  //             for (final statement in bank.statements)
-  //               Row(
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: [
-  //                   Expanded(
-  //                       child: Container(
-  //                         decoration: BoxDecoration(border: Border.all()),
-  //                         height: 40,
-  //                         child: Center(
-  //                           child: Text(
-  //                             statement.balance?.toStringAsFixed(2) ?? " ",
-  //                             style: normalStyle,
-  //                             textAlign: TextAlign.center,
-  //                             textDirection: TextDirection.rtl,
-  //                           ),
-  //                         ),
-  //                       )),
-  //                   Expanded(
-  //                       child: Container(
-  //                         decoration: BoxDecoration(border: Border.all()),
-  //                         height: 40,
-  //                         child: Center(
-  //                           child: Text(
-  //                             statement.debitAmount?.toStringAsFixed(2) ?? " ",
-  //                             style: normalStyle,
-  //                             textAlign: TextAlign.center,
-  //                             textDirection: TextDirection.rtl,
-  //                           ),
-  //                         ),
-  //                       )),
-  //                   Expanded(
-  //                       child: Container(
-  //                         decoration: BoxDecoration(border: Border.all()),
-  //                         height: 40,
-  //                         child: Center(
-  //                           child: Text(
-  //                             statement.remark ?? " ",
-  //                             style: normalStyle,
-  //                             textAlign: TextAlign.center,
-  //                             textDirection: TextDirection.rtl,
-  //                           ),
-  //                         ),
-  //                       )),
-  //                   Expanded(
-  //                       child: Container(
-  //                         decoration: BoxDecoration(border: Border.all()),
-  //                         height: 40,
-  //                         child: Center(
-  //                           child: Text(
-  //                             statement.remark2 ?? " ",
-  //                             style: normalStyle,
-  //                             textAlign: TextAlign.center,
-  //                             textDirection: TextDirection.rtl,
-  //                           ),
-  //                         ),
-  //                       )),
-  //                   Expanded(
-  //                     flex: 2,
-  //                     child: Container(
-  //                       decoration: BoxDecoration(border: Border.all()),
-  //                       height: 40,
-  //                       child: Center(
-  //                         child: Text(
-  //                           statement.customerName ?? " ",
-  //                           style: normalStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   Expanded(
-  //                       child: Container(
-  //                         decoration: BoxDecoration(border: Border.all()),
-  //                         height: 40,
-  //                         child: Center(
-  //                           child: Text(
-  //                             statement.customerCode ?? " ",
-  //                             style: normalStyle,
-  //                             textAlign: TextAlign.center,
-  //                             textDirection: TextDirection.rtl,
-  //                           ),
-  //                         ),
-  //                       )),
-  //                   Expanded(
-  //                       child: Container(
-  //                         decoration: BoxDecoration(border: Border.all()),
-  //                         height: 40,
-  //                         child: Center(
-  //                           child: Text(
-  //                             statement.invoiceNumber?.toString() ?? "",
-  //                             style: normalStyle,
-  //                             textAlign: TextAlign.center,
-  //                             textDirection: TextDirection.rtl,
-  //                           ),
-  //                         ),
-  //                       )),
-  //                   Expanded(
-  //                       child: Container(
-  //                         decoration: BoxDecoration(border: Border.all()),
-  //                         height: 40,
-  //                         child: Center(
-  //                           child: Text(
-  //                             statement.transactionType ?? " ",
-  //                             style: normalStyle,
-  //                             textAlign: TextAlign.center,
-  //                             textDirection: TextDirection.rtl,
-  //                           ),
-  //                         ),
-  //                       )),
-  //                   Expanded(
-  //                       child: Container(
-  //                         decoration: BoxDecoration(border: Border.all()),
-  //                         height: 40,
-  //                         child: Center(
-  //                           child: Text(
-  //                             statement.serial?.toString() ?? " ",
-  //                             style: normalStyle,
-  //                             textAlign: TextAlign.center,
-  //                             textDirection: TextDirection.rtl,
-  //                           ),
-  //                         ),
-  //                       )),
-  //                   Expanded(
-  //                       child: Container(
-  //                         decoration: BoxDecoration(border: Border.all()),
-  //                         height: 40,
-  //                         child: Center(
-  //                           child: Text(
-  //                             statement.date == null ? "" : DateFormat("MM-dd-yyyy").format(statement.date!),
-  //                             style: normalStyle,
-  //                             textAlign: TextAlign.center,
-  //                             textDirection: TextDirection.rtl,
-  //                           ),
-  //                         ),
-  //                       )),
-  //                 ],
-  //               ),
-  //             Container(
-  //               foregroundDecoration: BoxDecoration(border: Border.all()),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.end,
-  //                 children: [
-  //                   Spacer(flex: 1),
-  //                   Expanded(
-  //                     child: Container(
-  //                       decoration: const BoxDecoration(
-  //                         border: Border(left: BorderSide(width: 1.1)),
-  //                       ),
-  //                       child: text(
-  //                         bank.statements.first.totalDebit?.toStringAsFixed(2) ?? "",
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   Expanded(
-  //                     flex: 9,
-  //                     child: Container(
-  //                       decoration: const BoxDecoration(
-  //                         color: PdfColors.grey400,
-  //                         border: Border(left: BorderSide()),
-  //                       ),
-  //                       padding: const EdgeInsets.only(right: 15),
-  //                       child: text("الاجمالي", weight: FontWeight.bold),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ];
-  //         }));
-  //   }
-  //
-  //   m.showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return m.RotatedBox(
-  //           quarterTurns: 3,
-  //           child: PdfPreview(
-  //             actions: [
-  //               m.IconButton(
-  //                 onPressed: () => m.Navigator.pop(context),
-  //                 icon: const m.Icon(
-  //                   m.Icons.close,
-  //                   color: m.Colors.red,
-  //                 ),
-  //               )
-  //             ],
-  //             build: (format) => doc.save(),
-  //           ),
-  //         );
-  //       });
-  // }
+  void treasuryStatement(m.BuildContext context, List<TreasuryModel> data, DateTime fromDate, DateTime toDate) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final style = TextStyle(font: ttfLight, fontBold: ttfBold);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 11);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
+    final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
+    Text text(String text, {double? size, FontWeight? weight}) => Text(text, style: style.copyWith(fontSize: size, fontWeight: weight));
+
+    for (var i = 0; i < data.length; i++) {
+      final bank = data[i];
+      doc.addPage(MultiPage(
+          pageTheme: const PageTheme(
+            pageFormat: PdfPageFormat.a4,
+            textDirection: TextDirection.rtl,
+            margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
+            orientation: PageOrientation.landscape,
+          ),
+          build: (Context context) {
+            return [
+              if (data.indexOf(bank) == 0)
+                Column(
+                  children: [
+                    Center(
+                        child: Container(
+                            decoration: const BoxDecoration(color: PdfColors.grey400),
+                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                            child: Text(
+                              "كشف حساب خزينة - بنك",
+                              style: boldStyle.copyWith(fontSize: 10),
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.center,
+                            ))),
+                    SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        text(DateFormat("MM-dd-yyyy").format(fromDate), weight: FontWeight.bold),
+                        SizedBox(width: 15),
+                        text("من تاريخ:", weight: FontWeight.bold),
+                        SizedBox(width: 15),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        text(DateFormat("MM-dd-yyyy").format(toDate), weight: FontWeight.bold),
+                        SizedBox(width: 15),
+                        text("الى تاريخ:", weight: FontWeight.bold),
+                        SizedBox(width: 15),
+                      ],
+                    ),
+                    SizedBox(height: 15),
+                  ],
+                ),
+              Container(
+                foregroundDecoration: BoxDecoration(border: Border.all()),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 12,
+                      child: text(bank.bankName ?? "", size: 10),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                          decoration: const BoxDecoration(
+                            color: PdfColors.grey400,
+                            border: Border(left: BorderSide()),
+                          ),
+                          margin: const EdgeInsets.only(left: 15),
+                          alignment: Alignment.center,
+                          child: text("اسم البنك", weight: FontWeight.bold)),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(border: Border.all(), color: grey),
+                      child: Center(
+                        child: Text(
+                          "الرصيد",
+                          style: boldStyle.copyWith(fontSize: 10),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(border: Border.all(), color: grey),
+                      child: Center(
+                        child: Text(
+                          "مدين",
+                          style: boldStyle.copyWith(fontSize: 10),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(border: Border.all(), color: grey),
+                      child: Center(
+                        child: Text(
+                          "البيان",
+                          style: boldStyle.copyWith(fontSize: 10),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(border: Border.all(), color: grey),
+                      child: Center(
+                        child: Text(
+                          "مناولة",
+                          style: boldStyle.copyWith(fontSize: 10),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      decoration: BoxDecoration(border: Border.all(), color: grey),
+                      child: Center(
+                        child: Text(
+                          "اسم العميل",
+                          style: boldStyle.copyWith(fontSize: 10),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                      child: Container(
+                    decoration: BoxDecoration(border: Border.all(), color: grey),
+                    child: Center(
+                      child: Text(
+                        "كود العميل",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )),
+                  Expanded(
+                      child: Container(
+                    decoration: BoxDecoration(border: Border.all(), color: grey),
+                    child: Center(
+                      child: Text(
+                        "رقم الفاتورة",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )),
+                  Expanded(
+                      child: Container(
+                    decoration: BoxDecoration(border: Border.all(), color: grey),
+                    child: Center(
+                      child: Text(
+                        "نوع الحركة",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )),
+                  Expanded(
+                      child: Container(
+                    decoration: BoxDecoration(border: Border.all(), color: grey),
+                    child: Center(
+                      child: Text(
+                        "رقم",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )),
+                  Expanded(
+                      child: Container(
+                    decoration: BoxDecoration(border: Border.all(), color: grey),
+                    child: Center(
+                      child: Text(
+                        "التاريخ",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )),
+                ],
+              ),
+              for (final statement in bank.statements)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              statement.balance?.toStringAsFixed(2) ?? " ",
+                              style: normalStyle,
+                              textAlign: TextAlign.center,
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                        )),
+                    Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              statement.debitAmount?.toStringAsFixed(2) ?? " ",
+                              style: normalStyle,
+                              textAlign: TextAlign.center,
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                        )),
+                    Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              statement.remark ?? " ",
+                              style: normalStyle,
+                              textAlign: TextAlign.center,
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                        )),
+                    Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              statement.remark2 ?? " ",
+                              style: normalStyle,
+                              textAlign: TextAlign.center,
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                        )),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(border: Border.all()),
+                        height: 40,
+                        child: Center(
+                          child: Text(
+                            statement.customerName ?? " ",
+                            style: normalStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              statement.customerCode ?? " ",
+                              style: normalStyle,
+                              textAlign: TextAlign.center,
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                        )),
+                    Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              statement.invoiceNumber?.toString() ?? "",
+                              style: normalStyle,
+                              textAlign: TextAlign.center,
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                        )),
+                    Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              statement.transactionType ?? " ",
+                              style: normalStyle,
+                              textAlign: TextAlign.center,
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                        )),
+                    Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              statement.serial?.toString() ?? " ",
+                              style: normalStyle,
+                              textAlign: TextAlign.center,
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                        )),
+                    Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              statement.date == null ? "" : DateFormat("MM-dd-yyyy").format(statement.date!),
+                              style: normalStyle,
+                              textAlign: TextAlign.center,
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
+              Container(
+                foregroundDecoration: BoxDecoration(border: Border.all()),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Spacer(flex: 1),
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          border: Border(left: BorderSide(width: 1.1)),
+                        ),
+                        child: text(
+                          bank.statements.first.totalDebit?.toStringAsFixed(2) ?? "",
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 9,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: PdfColors.grey400,
+                          border: Border(left: BorderSide()),
+                        ),
+                        padding: const EdgeInsets.only(right: 15),
+                        child: text("الاجمالي", weight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ];
+          }));
+    }
+
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
   //
   // void galleryInvoices(m.BuildContext context, List<InvoiceModel> data) async {
   //   final doc = Document();

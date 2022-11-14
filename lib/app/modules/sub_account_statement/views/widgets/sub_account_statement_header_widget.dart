@@ -95,7 +95,7 @@ class SubAccountStatementHeaderWidget extends GetView<SubAccountStatementControl
                               );
                             },
                             suggestionsCallback: (filter) {
-                              return controller.accounts.where((e) => (e.name ?? "").contains(filter));
+                              return controller.accounts.where((e) => (e.name ?? "").contains(filter) || (e.accNumber?.toString() ?? "").contains(filter));
                             },
                             onSuggestionSelected: controller.selectedAccount,
                             textFieldConfiguration: TextFieldConfiguration(

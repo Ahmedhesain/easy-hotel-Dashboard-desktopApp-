@@ -29,16 +29,6 @@ class FindStatementOfBondsByBranchReportController extends GetxController{
   final Rxn<DateTime> dateTo = Rxn();
 
 
-
-
-
-
-  @override
-  void onInit() {
-    super.onInit();
-
-  }
-
   FindStatementOfBondsByBranchReport() async {
     isLoading(true);
     final request = ItemsBalancesRequest(
