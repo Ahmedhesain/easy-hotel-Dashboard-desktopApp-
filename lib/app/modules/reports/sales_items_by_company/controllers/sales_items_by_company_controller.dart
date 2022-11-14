@@ -21,8 +21,8 @@ class SalesItemsByCompanyController extends GetxController{
   final reports = <SalesOfItemsByCompanyResponse>[].obs;
   final isLoading = false.obs;
   String query = '';
-  final deliveryPlaces = <DeliveryPlaceResposne>[];
-  Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
+  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
+  RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
 
@@ -44,10 +44,10 @@ class SalesItemsByCompanyController extends GetxController{
     final request = SalesOfItemsByCompanyRequest(
       dateTo: dateTo.value,
       dateFrom:dateFrom.value,
-      invInventoryDtoList:    [
-    DtoList(id: selectedDeliveryPlace.value!.id)
-    ],
-    // invInventoryDtoList: deliveryPlaces.map((e) => DtoList(id: e.id)).toList(),,
+    //   invInventoryDtoList:    [
+    // DtoList(id: selectedDeliveryPlace.value!.id)
+    // ],
+    invInventoryDtoList: selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
     );
     ReportsRepository().SalesItemsByCompany(request,
         onSuccess: (data) {
@@ -64,7 +64,7 @@ class SalesItemsByCompanyController extends GetxController{
       onSuccess: (data) {
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
-          selectedDeliveryPlace(deliveryPlaces.first);
+          // selectedDeliveryPlace(deliveryPlaces.first);
         }
       },
       onError: (error) => showPopupText(text: error.toString()),
@@ -79,6 +79,18 @@ class SalesItemsByCompanyController extends GetxController{
   }
   _pickDate({required DateTime initialDate, required DateTime firstDate, required DateTime lastDate}) {
     return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
+  }
+  selectNewDeliveryplace(List<String> values) {
+    if (!values.contains("تحديد الكل") && selectedDeliveryPlace.any((element) => element.name == "تحديد الكل")) {
+      selectedDeliveryPlace.clear();
+    } else if (!selectedDeliveryPlace.any((element) => element.name == "تحديد الكل") && values.contains("تحديد الكل")) {
+      selectedDeliveryPlace.assignAll(deliveryPlaces);
+    } else {
+      if (values.length < selectedDeliveryPlace.length && values.contains("تحديد الكل")) {
+        values.remove("تحديد الكل");
+      }
+      selectedDeliveryPlace.assignAll(deliveryPlaces.where((element) => values.contains(element.name)));
+    }
   }
 
 

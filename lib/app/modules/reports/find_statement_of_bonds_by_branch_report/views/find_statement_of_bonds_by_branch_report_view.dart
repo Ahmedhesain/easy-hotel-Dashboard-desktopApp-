@@ -317,28 +317,28 @@ class FindStatementOfBondsByBranchReportView extends GetView<FindStatementOfBond
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
-                                                    kha.galleryCode!,
+                                                    kha.galleryCode==null?"": kha.galleryCode!,
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.galleryName!,
+                                                        kha.galleryName ??"",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.paymentType!,
+                                                    kha.paymentType??"",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 
                                               Column(children: [
                                                 Text(
-                                                    kha.type!,
+                                                    kha.type??"",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.totalAmount!.toString(),
+                                              kha.totalAmount==null?"": kha.totalAmount!.toString(),
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 

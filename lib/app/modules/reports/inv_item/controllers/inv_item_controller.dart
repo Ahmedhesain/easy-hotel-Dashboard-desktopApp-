@@ -21,13 +21,13 @@ class InvItemController extends GetxController{
   final reports = <InvItemDtoResponse>[].obs;
   final isLoading = false.obs;
   String query = '';
-  final deliveryPlaces = <DeliveryPlaceResposne>[];
-  final groups = <AllGroupResponse>[];
+  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
   Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
-  Rxn<AllGroupResponse> selectedGroup = Rxn();
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
   var categoryController = TextEditingController();
+  final groups = <AllGroupResponse>[].obs;
+  RxList <AllGroupResponse> selectedGroup = RxList();
 
 
 
@@ -45,15 +45,11 @@ class InvItemController extends GetxController{
     isLoading(true);
     final request = InvItemDtoRequest(
       dateFrom:dateFrom.value,
-      proGroupDtoList: [
-        ProGroupDtoList(
-          id: selectedGroup.value!.id
-        )
-      ],
+      proGroupDtoList: selectedGroup.map((e) => ProGroupDtoList(id: e.id)).toList(),
       branchId:UserManager().branchId,
       isUsed: true,
       itemNatural: 1,
-      lastCost: null
+      lastCost: categoryController.text
     );
     ReportsRepository().InvItem(request,
         onSuccess: (data) {
@@ -93,12 +89,24 @@ class InvItemController extends GetxController{
       onSuccess: (data) {
         groups.assignAll(data);
         if (groups.isNotEmpty) {
-          selectedGroup(groups.first);
         }
       },
       onError: (error) => showPopupText(text: error.toString()),
     );
   }
+  selectNewDeliveryplace(List<String> values) {
+    if (!values.contains("تحديد الكل") && selectedGroup.any((element) => element.name == "تحديد الكل")) {
+      selectedGroup.clear();
+    } else if (!selectedGroup.any((element) => element.name == "تحديد الكل") && values.contains("تحديد الكل")) {
+      selectedGroup.assignAll(groups);
+    } else {
+      if (values.length < selectedGroup.length && values.contains("تحديد الكل")) {
+        values.remove("تحديد الكل");
+      }
+      selectedGroup.assignAll(groups.where((element) => values.contains(element.name)));
+    }
+  }
+
 
 // Future<void> searchItem() async {
   //   reports.clear();

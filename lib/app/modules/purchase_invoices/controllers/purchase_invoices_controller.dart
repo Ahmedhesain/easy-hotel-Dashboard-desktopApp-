@@ -18,7 +18,6 @@ import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/request/delete_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delegator_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
@@ -36,7 +35,6 @@ import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dar
 import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
-import 'package:toby_bills/app/data/model/payments/dto/request/delete_payment_request.dart';
 import 'package:toby_bills/app/data/provider/local_provider.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
 import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
@@ -514,18 +512,6 @@ class PurchaseInvoicesController extends GetxController {
 
 
 
-  deleteInvoice() {
-    isLoading(true);
-    InvoiceRepository().deletePurchaseInvoice(
-        DeleteInvoiceRequest(invoice.value?.id),
-        onSuccess: (_){
-          showPopupText(text: "تم الحذف بنجاح",type: MsgType.success);
-          newInvoice();
-        },
-        onError: (e)=>showPopupText(text: e.toString()),
-        onComplete: () => isLoading(false)
-    );
-  }
 
 
 

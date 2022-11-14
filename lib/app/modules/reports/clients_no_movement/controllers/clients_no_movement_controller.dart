@@ -23,7 +23,7 @@ class ClientsNoMovementController extends GetxController{
   final reports = <ClientsNoMovementResponse>[].obs;
   final isLoading = false.obs;
   String query = '';
-  final deliveryPlaces = <DeliveryPlaceResposne>[];
+  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
   Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();

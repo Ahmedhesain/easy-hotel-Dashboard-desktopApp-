@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/saled_for_period_request.dart';
 
 import 'package:toby_bills/app/modules/account_statement/bindings/account_statement_binding.dart';
 import 'package:toby_bills/app/modules/account_statement/views/account_statement_view.dart';
@@ -28,6 +29,8 @@ import 'package:toby_bills/app/modules/reports/balance_galary_paid/bindings/bala
 import 'package:toby_bills/app/modules/reports/balance_galary_paid/views/balance_galary_paid_view.dart';
 import 'package:toby_bills/app/modules/reports/balance_galary_unpaid/bindings/balance_galary_unpaid_binding.dart';
 import 'package:toby_bills/app/modules/reports/balance_galary_unpaid/views/balance_galary_unpaid_view.dart';
+import 'package:toby_bills/app/modules/reports/categories_items/bindings/categories_items_binding.dart';
+import 'package:toby_bills/app/modules/reports/categories_items/views/categories_items_view.dart';
 import 'package:toby_bills/app/modules/reports/categories_totals/bindings/categories_totals_binding.dart';
 import 'package:toby_bills/app/modules/reports/categories_totals/views/categories_totals_view.dart';
 import 'package:toby_bills/app/modules/reports/clients_no_movement/bindings/clients_no_movement_binding.dart';
@@ -42,6 +45,8 @@ import 'package:toby_bills/app/modules/reports/find_statement_of_bonds_by_branch
 import 'package:toby_bills/app/modules/reports/find_statement_of_bonds_by_branch_report/views/find_statement_of_bonds_by_branch_report_view.dart';
 import 'package:toby_bills/app/modules/reports/inv_item/bindings/inv_item_binding.dart';
 import 'package:toby_bills/app/modules/reports/inv_item/views/inv_item_view.dart';
+import 'package:toby_bills/app/modules/reports/invoice_movement/bindings/invoice_movement_binding.dart';
+import 'package:toby_bills/app/modules/reports/invoice_movement/views/invoice_movement_view.dart';
 import 'package:toby_bills/app/modules/reports/invoice_status/bindings/invoice_status_binding.dart';
 import 'package:toby_bills/app/modules/reports/invoice_status/views/invoice_status_view.dart';
 import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/bindings/invoices_without_swing_binding.dart';
@@ -50,14 +55,16 @@ import 'package:toby_bills/app/modules/reports/item_balances_statement/bindings/
 import 'package:toby_bills/app/modules/reports/item_balances_statement/views/item_balances_statement_view.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/bindings/item_sales_by_customers_binding.dart';
 import 'package:toby_bills/app/modules/reports/item_sales_by_customers/views/item_sales_by_customers_view.dart';
+import 'package:toby_bills/app/modules/reports/journal_document_dialy/bindings/journal_document_dialy_binding.dart';
+import 'package:toby_bills/app/modules/reports/journal_document_dialy/views/journal_document_dialy_view.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/bindings/profit_sold_binding.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/views/profit_sold_view.dart';
 import 'package:toby_bills/app/modules/reports/safe_account_statement/bindings/safe_account_statement.dart';
 import 'package:toby_bills/app/modules/reports/safe_account_statement/views/safe_account_statement_view.dart';
+import 'package:toby_bills/app/modules/reports/sales_for_period/bindings/sales_for_period_binding.dart';
+import 'package:toby_bills/app/modules/reports/sales_for_period/views/sales_for_period_view.dart';
 import 'package:toby_bills/app/modules/reports/sales_items_by_company/bindings/sales_items_by_company_binding.dart';
 import 'package:toby_bills/app/modules/reports/sales_items_by_company/views/sales_items_by_company_view.dart';
-import 'package:toby_bills/app/modules/sub_account_statement/bindings/sub_account_statement_binding.dart';
-import 'package:toby_bills/app/modules/sub_account_statement/views/sub_account_statement_view.dart';
 
 import '../modules/reports/items_quantity/bindings/production_stages_binding.dart';
 import '../modules/reports/items_quantity/views/quantity_items_view.dart';
@@ -216,9 +223,24 @@ class AppPages {
       binding: CatchReceiptBinding(),
     ),
     GetPage(
-      name: _Paths.SUB_ACCOUNT_STATEMENT,
-      page: () => SubAccountStatementView(),
-      binding: SubAccountStatementBinding(),
+      name: _Paths.CATEGORIES_ITEMS,
+      page: () => CategoriesItemsView(),
+      binding: CategoriesItemsBinding(),
+    ),
+    GetPage(
+      name: _Paths.SALES_FOR_PERIOD,
+      page: () => SalesForPeriodView(),
+      binding: SalesForPeriodBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICE_MOVEMENT,
+      page: () => InvoiceMovementView(),
+      binding: InvoiceMovementBinding(),
+    ),
+    GetPage(
+      name: _Paths.JOURNAL_DOCUMENT_DIALY,
+      page: () => JournalDocumentDailyView(),
+      binding: JournalDocumentDailyBinding(),
     ),
   ];
 }

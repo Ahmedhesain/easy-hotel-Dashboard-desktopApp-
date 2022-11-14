@@ -1,11 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
-import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:toby_bills/app/routes/app_pages.dart';
-import 'package:window_manager/window_manager.dart';
 
 class HomeDrawerWidget extends GetView<HomeController> {
   const HomeDrawerWidget({Key? key}) : super(key: key);
@@ -205,6 +205,23 @@ class HomeDrawerWidget extends GetView<HomeController> {
                     title: "الاصناف حسب الفئات",
                     onTap: () => goTo(Routes.INV_ITEM_DTO, "الاصناف حسب الفئات"),
                   ),
+                  HomeDrawerTileWidget(
+                    title: "الفواتير المسدده لفتره سابقه",
+                    onTap: () => goTo(Routes.CATEGORIES_ITEMS, "الفواتير المسدده لفتره سابقه"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "بيان المبيعات لفتره",
+                    onTap: () => goTo(Routes.SALES_FOR_PERIOD, "بيان المبيعات لفتره"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "حركه الثياب",
+                    onTap: () => goTo(Routes.INVOICE_MOVEMENT, "حركه الثياب"),
+                  ),
+                  HomeDrawerTileWidget(
+                    title: "قيد اليوميه تفصيلي",
+                    onTap: () => goTo(Routes.JOURNAL_DOCUMENT_DIALY, "قيد اليوميه تفصيلي"),
+                  ),
+
                 ],
             ),
             if(list4.isNotEmpty)
@@ -255,9 +272,13 @@ class HomeDrawerWidget extends GetView<HomeController> {
   }
   
   goTo(String to, String title)async{
-    windowManager.setTitle("Toby Bills -> $title");
+    if(Platform.isWindows) {
+      windowManager.setTitle("Toby Bills -> $title");
+    }
     await Get.toNamed(to);
-    windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+    if(Platform.isWindows) {
+      windowManager.setTitle("Toby Bills -> شاشة المشتريات");
+    }
   }
 }
 
