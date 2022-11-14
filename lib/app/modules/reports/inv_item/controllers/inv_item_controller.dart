@@ -28,6 +28,13 @@ class InvItemController extends GetxController{
   var categoryController = TextEditingController();
   final groups = <AllGroupResponse>[].obs;
   RxList <AllGroupResponse> selectedGroup = RxList();
+  final Map<int, String> discBasis = {
+    1: "عرض",
+    2: "عرضين",
+
+  };
+  final selectedStatus=1.obs;
+  final checkBoxValue =false.obs;
 
 
 
@@ -47,8 +54,8 @@ class InvItemController extends GetxController{
       dateFrom:dateFrom.value,
       proGroupDtoList: selectedGroup.map((e) => ProGroupDtoList(id: e.id)).toList(),
       branchId:UserManager().branchId,
-      isUsed: true,
-      itemNatural: 1,
+      isUsed: checkBoxValue.value,
+      itemNatural: selectedStatus.value,
       lastCost: categoryController.text
     );
     ReportsRepository().InvItem(request,

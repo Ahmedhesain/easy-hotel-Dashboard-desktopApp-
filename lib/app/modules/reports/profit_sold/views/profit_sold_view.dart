@@ -12,6 +12,7 @@ import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
+import 'package:toby_bills/app/core/values/app_constants.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
@@ -27,21 +28,8 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    DateTime enddate =DateTime.now();
-    DateTime startdate =DateTime.now();
 
 
-    var numController = TextEditingController();
-    var itemQuantityController = TextEditingController();
-    var clientController = TextEditingController();
-    var priceController = TextEditingController();
-    var invoiceController = TextEditingController();
-    var infoController = TextEditingController();
-    final Map<String, int> discBasis = {
-      'Age': 1,
-      'Ancestry': 2,
-
-    };
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
@@ -154,22 +142,19 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
                                                 child:
-                                                Obx(() {
-                                                  return DropdownSearch<AllGroupResponse>(
-                                                    // showSearchBox: true,
-                                                    items: controller.groups,
-                                                    itemAsString: (AllGroupResponse e) => e.name!,
-                                                    onChanged: controller.selectedGroup,
-                                                    selectedItem: controller.selectedGroup.value,
-                                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                                      dropdownSearchDecoration: InputDecoration(
-                                                        border: OutlineInputBorder(),
-                                                        contentPadding: EdgeInsets.all(10),
-                                                        isDense: true,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }),                                              ),
+                                                DropdownButton<int>(
+                                                  hint:  Text("Select an option"),
+                                                  value: controller.selectedStatus.value,
+                                                  onChanged: (int? newVal) {
+                                                    controller.selectedStatus.value = newVal!;
+                                                  },
+                                                  items: controller.discBasis.entries.map((e) {
+                                                    return DropdownMenuItem<int>(
+                                                      value: e.key,
+                                                      child: Text(e.value),
+                                                    );
+                                                  }).toList(),                                              ),
+                                              ),
                                             ),
                                             SizedBox(width: size.width*.05,)
                                             , Text('الفئه',style: smallTextStyleNormal(size)),
@@ -245,41 +230,41 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: size.width*.2,)
-                                            ,Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                              child: Text('نوع الفاتوره',style: smallTextStyleNormal(size)),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                TextFormField(
-                                                  // focusNode: quantityFocus,
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  /////////////quantity
-                                                  // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  // controller: controller.selectedStatus,
-                                                  // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
-                                                  // inputFormatters: [doubleFilter],
-                                                  onChanged: (value)  {
+                                            SizedBox(width: size.width*.2,),
+                                            const SizedBox(width: 15),
+                                            const Center(
+                                                child: Text(
+                                                  'نوع الفاتوره:',
+                                                )),
+                                            const SizedBox(width: 5),
+                                            Center(
+                                              child: SizedBox(
+                                                width: 190,
+                                                child: DropdownSearch<String>(
+                                                  items: AppConstants.invoiceTypeList,
+                                                  selectedItem: AppConstants.invoiceTypeList[controller.invoiceTypeSelected == null? 0 : controller.invoiceTypeSelected!+1],
+                                                  onChanged: (value) {
+                                                    if (value == AppConstants.invoiceTypeList.first) {
+                                                      controller.invoiceTypeSelected = null;
+                                                    } else {
+                                                      controller.invoiceTypeSelected = AppConstants.invoiceTypeList.indexOf(value!) - 1;
+                                                    }
                                                   },
+                                                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                                                    dropdownSearchDecoration: InputDecoration(
+                                                      border: OutlineInputBorder(),
+                                                      contentPadding: EdgeInsets.all(10),
+                                                      isDense: true,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                            const SizedBox(width: 15),
+
+                                          ]
                                       ),
-                                    ),
+                                    ),),
                                     Center(
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
