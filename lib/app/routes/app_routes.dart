@@ -41,6 +41,7 @@ abstract class Routes {
   static const SALES_FOR_PERIOD = _Paths.SALES_FOR_PERIOD;
   static const INVOICE_MOVEMENT = _Paths.INVOICE_MOVEMENT;
   static const JOURNAL_DOCUMENT_DIALY = _Paths.JOURNAL_DOCUMENT_DIALY;
+  static const SUB_ACCOUNT_STATEMENT = _Paths.SUB_ACCOUNT_STATEMENT;
 
 
 
@@ -84,6 +85,7 @@ abstract class _Paths {
   static const SALES_FOR_PERIOD = '/sales-for-period';
   static const INVOICE_MOVEMENT = '/invoice-movement';
   static const JOURNAL_DOCUMENT_DIALY = '/journal-document-dialy';
+  static const SUB_ACCOUNT_STATEMENT = '/journal-document-dialy';
 
 
 
