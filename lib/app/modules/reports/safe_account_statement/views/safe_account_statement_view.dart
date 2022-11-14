@@ -131,10 +131,10 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
                 child: const Text("رجوع"),
               ),
               const SizedBox(width: 15),
-              // ElevatedButton(
-              //   onPressed: () => PrintingHelper().treasuryStatement(context, provider.treasuries, provider.dateFrom, provider.dateTo),
-              //   child: const Text("طباعة"),
-              // ),
+              ElevatedButton(
+                onPressed: () => PrintingHelper().treasuryStatement(context, controller.treasuries, controller.dateFrom.value, controller.dateTo.value),
+                child: const Text("طباعة"),
+              ),
               const SizedBox(width: 15),
               // ElevatedButton(
               //   onPressed: () {
@@ -146,450 +146,452 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
           },
         ),
         const Divider(),
-      //   Expanded(
-      //     child:Obx(( () {
-      //           const boldStyle = TextStyle(fontWeight: FontWeight.bold,fontFamily: "CairoBold");
-      //           const normalStyle = TextStyle(fontFamily: "Cairo");
-      //           final grey = Colors.grey.shade400;
-      //           return CustomScrollView(
-      //             slivers: [
-      //               for(final bank in treasuries)
-      //                 ...[
-      //                   SliverToBoxAdapter(
-      //                     child: Container(
-      //                       margin: const EdgeInsets.symmetric(horizontal: 15),
-      //                       child: Column(
-      //                         children: [
-      //                           divider,
-      //                           IntrinsicHeight(
-      //                             child: Row(
-      //                               children: [
-      //                                 verticalDivider,
-      //                                 const SizedBox(width: 6),
-      //                                 Expanded(
-      //                                   flex: 9,
-      //                                   child: Padding(
-      //                                     padding: const EdgeInsets.symmetric(horizontal: 15),
-      //                                     child: Text(bank.bankName ?? "",textAlign: TextAlign.right,style: normalStyle,),
-      //                                   ),
-      //                                 ),
-      //                                 verticalDivider,
-      //                                 Expanded(
-      //                                   flex: 2,
-      //                                   child: Container(
-      //                                       decoration: BoxDecoration(
-      //                                         color: Colors.grey.shade400,
-      //                                       ),
-      //                                       // margin: const EdgeInsets.only(left: 15),
-      //                                       alignment: Alignment.center,
-      //                                       child: const Text("اسم البنك", style: boldStyle,)),
-      //                                 ),
-      //                                 verticalDivider,
-      //                               ],
-      //                             ),
-      //                           ),
-      //                           divider,
-      //                         ],
-      //                       ),
-      //                     ),
-      //                   ),
-      //                   SliverToBoxAdapter(
-      //                     child: Padding(
-      //                       padding: const EdgeInsets.symmetric(horizontal: 15),
-      //                       child: IntrinsicHeight(
-      //                         child: Row(
-      //                           children: [
-      //                             verticalDivider,
-      //                             Expanded(
-      //                               child: ColoredBox(
-      //                                 color: grey,
-      //                                 child: const Center(
-      //                                   child: Text(
-      //                                     "الرصيد",
-      //                                     style: boldStyle,
-      //                                     textDirection: TextDirection.rtl,
-      //                                     textAlign: TextAlign.center,
-      //                                   ),
-      //                                 ),
-      //                               ),
-      //                             ),
-      //                             verticalDivider,
-      //                             Expanded(
-      //                               child: ColoredBox(
-      //                                 color: grey,
-      //                                 child: const Center(
-      //                                   child: Text(
-      //                                     "مدين",
-      //                                     style: boldStyle,
-      //                                     textDirection: TextDirection.rtl,
-      //                                     textAlign: TextAlign.center,
-      //                                   ),
-      //                                 ),
-      //                               ),
-      //                             ),
-      //                             verticalDivider,
-      //                             Expanded(
-      //                               child: ColoredBox(
-      //                                 color: grey,
-      //                                 child: const Center(
-      //                                   child: Text(
-      //                                     "البيان",
-      //                                     style: boldStyle,
-      //                                     textDirection: TextDirection.rtl,
-      //                                     textAlign: TextAlign.center,
-      //                                   ),
-      //                                 ),
-      //                               ),
-      //                             ),
-      //                             verticalDivider,
-      //                             Expanded(
-      //                               child: ColoredBox(
-      //                                 color: grey,
-      //                                 child: const Center(
-      //                                   child: Text(
-      //                                     "مناولة",
-      //                                     style: boldStyle,
-      //                                     textDirection: TextDirection.rtl,
-      //                                     textAlign: TextAlign.center,
-      //                                   ),
-      //                                 ),
-      //                               ),
-      //                             ),
-      //                             verticalDivider,
-      //                             Expanded(
-      //                               flex: 2,
-      //                               child: ColoredBox(
-      //                                 color: grey,
-      //                                 child: const Center(
-      //                                   child: Text(
-      //                                     "اسم العميل",
-      //                                     style: boldStyle,
-      //                                     textDirection: TextDirection.rtl,
-      //                                     textAlign: TextAlign.center,
-      //                                   ),
-      //                                 ),
-      //                               ),
-      //                             ),
-      //                             verticalDivider,
-      //                             Expanded(
-      //                                 child: ColoredBox(
-      //                                   color: grey,
-      //                                   child: const Center(
-      //                                     child: Text(
-      //                                       "كود العميل",
-      //                                       style: boldStyle,
-      //                                       textDirection: TextDirection.rtl,
-      //                                       textAlign: TextAlign.center,
-      //                                     ),
-      //                                   ),
-      //                                 )),
-      //                             verticalDivider,
-      //                             Expanded(
-      //                                 child: ColoredBox(
-      //                                   color: grey,
-      //                                   child: const Center(
-      //                                     child: Text(
-      //                                       "رقم الفاتورة",
-      //                                       style: boldStyle,
-      //                                       textDirection: TextDirection.rtl,
-      //                                       textAlign: TextAlign.center,
-      //                                     ),
-      //                                   ),
-      //                                 )),
-      //                             verticalDivider,
-      //                             Expanded(
-      //                                 child: ColoredBox(
-      //                                   color: grey,
-      //                                   child: const Center(
-      //                                     child: Text(
-      //                                       "نوع الحركة",
-      //                                       style: boldStyle,
-      //                                       textDirection: TextDirection.rtl,
-      //                                       textAlign: TextAlign.center,
-      //                                     ),
-      //                                   ),
-      //                                 )),
-      //                             verticalDivider,
-      //                             Expanded(
-      //                                 child: ColoredBox(
-      //                                   color: grey,
-      //                                   child: const Center(
-      //                                     child: Text(
-      //                                       "رقم",
-      //                                       style: boldStyle,
-      //                                       textDirection: TextDirection.rtl,
-      //                                       textAlign: TextAlign.center,
-      //                                     ),
-      //                                   ),
-      //                                 )),
-      //                             verticalDivider,
-      //                             Expanded(
-      //                                 child: ColoredBox(
-      //                                   color: grey,
-      //                                   child: const Center(
-      //                                     child: Text(
-      //                                       "التاريخ",
-      //                                       style: boldStyle,
-      //                                       textDirection: TextDirection.rtl,
-      //                                       textAlign: TextAlign.center,
-      //                                     ),
-      //                                   ),
-      //                                 )),
-      //                             verticalDivider,
-      //                           ],
-      //                         ),
-      //                       ),
-      //                     ),
-      //                   ),
-      //                   SliverList(
-      //                     delegate: SliverChildBuilderDelegate(
-      //                           (BuildContext context, int index) {
-      //                         final statement = bank.statements[index];
-      //                         return Padding(
-      //                           padding: const EdgeInsets.symmetric(horizontal: 15),
-      //                           child: Column(
-      //                             children: [
-      //                               divider,
-      //                               IntrinsicHeight(
-      //                                 child: Row(
-      //                                   crossAxisAlignment: CrossAxisAlignment.start,
-      //                                   children: [
-      //                                     verticalDivider,
-      //                                     Expanded(
-      //                                         child: Center(
-      //                                           child: Text(
-      //                                             statement.balance?.toStringAsFixed(2) ?? " ",
-      //                                             style: normalStyle,
-      //                                             textAlign: TextAlign.center,
-      //                                             textDirection: TextDirection.rtl,
-      //                                           ),
-      //                                         )),
-      //                                     verticalDivider,
-      //                                     Expanded(
-      //                                         child: Center(
-      //                                           child: Text(
-      //                                             statement.debitAmount?.toStringAsFixed(2) ?? " ",
-      //                                             style: normalStyle,
-      //                                             textAlign: TextAlign.center,
-      //                                             textDirection: TextDirection.rtl,
-      //                                           ),
-      //                                         )),
-      //                                     verticalDivider,
-      //                                     Expanded(
-      //                                         child: Center(
-      //                                           child: Text(
-      //                                             statement.remark ?? " ",
-      //                                             style: normalStyle,
-      //                                             textAlign: TextAlign.center,
-      //                                             textDirection: TextDirection.rtl,
-      //                                           ),
-      //                                         )),
-      //                                     verticalDivider,
-      //                                     Expanded(
-      //                                         child: Center(
-      //                                           child: Text(
-      //                                             statement.remark2 ?? " ",
-      //                                             style: normalStyle,
-      //                                             textAlign: TextAlign.center,
-      //                                             textDirection: TextDirection.rtl,
-      //                                           ),
-      //                                         )),
-      //                                     verticalDivider,
-      //                                     Expanded(
-      //                                       flex: 2,
-      //                                       child: Center(
-      //                                         child: Text(
-      //                                           statement.customerName ?? " ",
-      //                                           style: normalStyle,
-      //                                           textAlign: TextAlign.center,
-      //                                           textDirection: TextDirection.rtl,
-      //                                         ),
-      //                                       ),
-      //                                     ),
-      //                                     verticalDivider,
-      //                                     Expanded(
-      //                                         child: Center(
-      //                                           child: Text(
-      //                                             statement.customerCode ?? " ",
-      //                                             style: normalStyle,
-      //                                             textAlign: TextAlign.center,
-      //                                             textDirection: TextDirection.rtl,
-      //                                           ),
-      //                                         )),
-      //                                     verticalDivider,
-      //                                     Expanded(
-      //                                         child: Center(
-      //                                           child: Text(
-      //                                             statement.invoiceNumber?.toString() ?? "",
-      //                                             style: normalStyle,
-      //                                             textAlign: TextAlign.center,
-      //                                             textDirection: TextDirection.rtl,
-      //                                           ),
-      //                                         )),
-      //                                     verticalDivider,
-      //                                     Expanded(
-      //                                         child: Center(
-      //                                           child: Text(
-      //                                             statement.transactionType ?? " ",
-      //                                             style: normalStyle,
-      //                                             textAlign: TextAlign.center,
-      //                                             textDirection: TextDirection.rtl,
-      //                                           ),
-      //                                         )),
-      //                                     verticalDivider,
-      //                                     Expanded(
-      //                                         child: Center(
-      //                                           child: Text(
-      //                                             statement.serial?.toString() ?? " ",
-      //                                             style: normalStyle,
-      //                                             textAlign: TextAlign.center,
-      //                                             textDirection: TextDirection.rtl,
-      //                                           ),
-      //                                         )),
-      //                                     verticalDivider,
-      //                                     Expanded(
-      //                                         child: Center(
-      //                                           child: Text(
-      //                                             statement.date == null ? "" : DateFormat("MM-dd-yyyy").format(statement.date!),
-      //                                             style: normalStyle,
-      //                                             textAlign: TextAlign.center,
-      //                                             textDirection: TextDirection.rtl,
-      //                                           ),
-      //                                         )),
-      //                                     verticalDivider,
-      //                                   ],
-      //                                 ),
-      //                               ),
-      //                               // const Divider(height: 2,thickness: 2,color: Colors.black)
-      //                             ],
-      //                           ),
-      //                         );
-      //                       },
-      //                       childCount: bank.statements.length,
-      //                     ),
-      //                   ),
-      //                   SliverToBoxAdapter(
-      //                     child: Container(
-      //                       margin: const EdgeInsets.symmetric(horizontal: 15),
-      //                       child: Column(
-      //                         children: [
-      //                           divider,
-      //                           IntrinsicHeight(
-      //                             child: Row(
-      //                               children: [
-      //                                 verticalDivider,
-      //                                 const Spacer(),
-      //                                 Expanded(
-      //                                   child: Text(
-      //                                     bank.statements.first.totalDebit?.toStringAsFixed(2) ?? "",
-      //                                     style: normalStyle,
-      //                                     textAlign: TextAlign.center,
-      //                                   ),
-      //                                 ),
-      //                                 verticalDivider,
-      //                                 Container(
-      //                                   width: 4,
-      //                                   decoration: BoxDecoration(
-      //                                       color: grey,
-      //                                       border: Border(right: BorderSide(color: grey,width: 4))
-      //                                   ),
-      //                                 ),
-      //                                 Expanded(
-      //                                   flex: 9,
-      //                                   child: Container(
-      //                                     color: grey,
-      //                                     padding: const EdgeInsets.only(right: 15),
-      //                                     child: const Text("الاجمالي", style: boldStyle,textAlign: TextAlign.right,),
-      //                                   ),
-      //                                 ),
-      //                                 verticalDivider,
-      //                               ],
-      //                             ),
-      //                           ),
-      //                           divider,
-      //                         ],
-      //                       ),
-      //                     ),
-      //                   ),
-      //                   const SliverToBoxAdapter(child: SizedBox(height: 30)),
-      //                 ],
-      //             ],
-      //           );
-      //         }),
-      //   ),
-      //   // Expanded(
-      //   //   child: Selector<TreasuryStatementProvider, List<TreasuryModel>>(
-      //   //       selector: (_, provider) => provider.treasuries,
-      //   //       builder: (context, treasuries, _) {
-      //   //         return Scrollbar(
-      //   //           controller: controller,
-      //   //           thumbVisibility: true,
-      //   //           child: ListView.separated(
-      //   //               itemCount: provider.treasuries.length,
-      //   //               controller: controller,
-      //   //               separatorBuilder: (_,__) => const SizedBox(height: 10),
-      //   //               itemBuilder: (context, index) {
-      //   //                 final purchases = treasuries[index].statements;
-      //   //                 return SizedBox(
-      //   //                   height: purchases.length * 50 + 40,
-      //   //                   child: Directionality(
-      //   //                     textDirection: TextDirection.rtl,
-      //   //                     child: TableWidget(
-      //   //                       disableScroll: true,
-      //   //                       header: [
-      //   //                         "التاريخ",
-      //   //                         "رقم",
-      //   //                         "نوع الحركة",
-      //   //                         "رقم الفاتورة",
-      //   //                         "كود العميل",
-      //   //                         "اسم العميل",
-      //   //                         "مناولة",
-      //   //                         "البيان",
-      //   //                         "مدين",
-      //   //                         "رصيد",
-      //   //                       ]
-      //   //                           .map((e) => Padding(
-      //   //                         padding: const EdgeInsets.symmetric(horizontal: 7),
-      //   //                         child: Text(e, textAlign: TextAlign.center),
-      //   //                       ))
-      //   //                           .toList(),
-      //   //                       headerHeight: 40,
-      //   //                       rows: purchases
-      //   //                           .map((e) => <String>[
-      //   //                         e.date == null?"":DateFormat("yyyy-MM-dd").format(e.date!),
-      //   //                         e.serial ?? "",
-      //   //                         e.transactionType ??"",
-      //   //                         "${e.invoiceNumber}",
-      //   //                         e.customerCode ??"",
-      //   //                         e.customerName ?? "",
-      //   //                         (e.remark2 ?? ""),
-      //   //                         e.remark ?? "",
-      //   //                         "${e.debitAmount}",
-      //   //                         "${e.balance}",
-      //   //                       ].map((d) {
-      //   //                         return Padding(
-      //   //                           padding: const EdgeInsets.symmetric(horizontal: 7),
-      //   //                           child: Text(
-      //   //                             d,
-      //   //                             maxLines: 2,
-      //   //                             textAlign: TextAlign.center,
-      //   //                           ),
-      //   //                         );
-      //   //                       }).toList())
-      //   //                           .toList(),
-      //   //                       minimumCellWidth: 120,
-      //   //                       rowHeight: 50,
-      //   //                     ),
-      //   //                   ),
-      //   //                 );
-      //   //               }
-      //   //           ),
-      //   //         );
-      //   //       }),
-      //   // ),
-      //   ],
-      // ),
-
+        Expanded(
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Builder(
+              builder: (context){
+                const boldStyle = TextStyle(fontWeight: FontWeight.bold,fontFamily: "CairoBold");
+                const normalStyle = TextStyle(fontFamily: "Cairo");
+                final grey = Colors.grey.shade400;
+                return CustomScrollView(
+                  slivers: [
+                    for(final bank in controller.treasuries)
+                      ...[
+                        SliverToBoxAdapter(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Column(
+                              children: [
+                                const Divider(),
+                                IntrinsicHeight(
+                                  child: Row(
+                                    children: [
+                                      const VerticalDivider(),
+                                      const SizedBox(width: 6),
+                                      Expanded(
+                                        flex: 9,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                                          child: Text(bank.bankName ?? "",textAlign: TextAlign.right,style: normalStyle,),
+                                        ),
+                                      ),
+                                      const VerticalDivider(),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey.shade400,
+                                            ),
+                                            // margin: const EdgeInsets.only(left: 15),
+                                            alignment: Alignment.center,
+                                            child: const Text("اسم البنك", style: boldStyle,)),
+                                      ),
+                                      const VerticalDivider(),
+                                    ],
+                                  ),
+                                ),
+                                const Divider(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: IntrinsicHeight(
+                              child: Row(
+                                children: [
+                                  const VerticalDivider(),
+                                  Expanded(
+                                    child: ColoredBox(
+                                      color: grey,
+                                      child: const Center(
+                                        child: Text(
+                                          "الرصيد",
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                    child: ColoredBox(
+                                      color: grey,
+                                      child: const Center(
+                                        child: Text(
+                                          "مدين",
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                    child: ColoredBox(
+                                      color: grey,
+                                      child: const Center(
+                                        child: Text(
+                                          "البيان",
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                    child: ColoredBox(
+                                      color: grey,
+                                      child: const Center(
+                                        child: Text(
+                                          "مناولة",
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                    flex: 2,
+                                    child: ColoredBox(
+                                      color: grey,
+                                      child: const Center(
+                                        child: Text(
+                                          "اسم العميل",
+                                          style: boldStyle,
+                                          textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                      child: ColoredBox(
+                                        color: grey,
+                                        child: const Center(
+                                          child: Text(
+                                            "كود العميل",
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      )),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                      child: ColoredBox(
+                                        color: grey,
+                                        child: const Center(
+                                          child: Text(
+                                            "رقم الفاتورة",
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      )),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                      child: ColoredBox(
+                                        color: grey,
+                                        child: const Center(
+                                          child: Text(
+                                            "نوع الحركة",
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      )),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                      child: ColoredBox(
+                                        color: grey,
+                                        child: const Center(
+                                          child: Text(
+                                            "رقم",
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      )),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                      child: ColoredBox(
+                                        color: grey,
+                                        child: const Center(
+                                          child: Text(
+                                            "التاريخ",
+                                            style: boldStyle,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      )),
+                                  const VerticalDivider(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                              final statement = bank.statements[index];
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                child: Column(
+                                  children: [
+                                    const Divider(),
+                                    IntrinsicHeight(
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const VerticalDivider(),
+                                          Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  statement.balance?.toStringAsFixed(2) ?? " ",
+                                                  style: normalStyle,
+                                                  textAlign: TextAlign.center,
+                                                  textDirection: TextDirection.rtl,
+                                                ),
+                                              )),
+                                          const VerticalDivider(),
+                                          Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  statement.debitAmount?.toStringAsFixed(2) ?? " ",
+                                                  style: normalStyle,
+                                                  textAlign: TextAlign.center,
+                                                  textDirection: TextDirection.rtl,
+                                                ),
+                                              )),
+                                          const VerticalDivider(),
+                                          Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  statement.remark ?? " ",
+                                                  style: normalStyle,
+                                                  textAlign: TextAlign.center,
+                                                  textDirection: TextDirection.rtl,
+                                                ),
+                                              )),
+                                          const VerticalDivider(),
+                                          Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  statement.remark2 ?? " ",
+                                                  style: normalStyle,
+                                                  textAlign: TextAlign.center,
+                                                  textDirection: TextDirection.rtl,
+                                                ),
+                                              )),
+                                          const VerticalDivider(),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Center(
+                                              child: Text(
+                                                statement.customerName ?? " ",
+                                                style: normalStyle,
+                                                textAlign: TextAlign.center,
+                                                textDirection: TextDirection.rtl,
+                                              ),
+                                            ),
+                                          ),
+                                          const VerticalDivider(),
+                                          Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  statement.customerCode ?? " ",
+                                                  style: normalStyle,
+                                                  textAlign: TextAlign.center,
+                                                  textDirection: TextDirection.rtl,
+                                                ),
+                                              )),
+                                          const VerticalDivider(),
+                                          Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  statement.invoiceNumber?.toString() ?? "",
+                                                  style: normalStyle,
+                                                  textAlign: TextAlign.center,
+                                                  textDirection: TextDirection.rtl,
+                                                ),
+                                              )),
+                                          const VerticalDivider(),
+                                          Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  statement.transactionType ?? " ",
+                                                  style: normalStyle,
+                                                  textAlign: TextAlign.center,
+                                                  textDirection: TextDirection.rtl,
+                                                ),
+                                              )),
+                                          const VerticalDivider(),
+                                          Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  statement.serial?.toString() ?? " ",
+                                                  style: normalStyle,
+                                                  textAlign: TextAlign.center,
+                                                  textDirection: TextDirection.rtl,
+                                                ),
+                                              )),
+                                          const VerticalDivider(),
+                                          Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  statement.date == null ? "" : DateFormat("MM-dd-yyyy").format(statement.date!),
+                                                  style: normalStyle,
+                                                  textAlign: TextAlign.center,
+                                                  textDirection: TextDirection.rtl,
+                                                ),
+                                              )),
+                                          const VerticalDivider(),
+                                        ],
+                                      ),
+                                    ),
+                                    // const Divider(height: 2,thickness: 2,color: Colors.black)
+                                  ],
+                                ),
+                              );
+                            },
+                            childCount: bank.statements.length,
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Column(
+                              children: [
+                                const Divider(),
+                                IntrinsicHeight(
+                                  child: Row(
+                                    children: [
+                                      const VerticalDivider(),
+                                      const Spacer(),
+                                      Expanded(
+                                        child: Text(
+                                          bank.statements.first.totalDebit?.toStringAsFixed(2) ?? "",
+                                          style: normalStyle,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      const VerticalDivider(),
+                                      Container(
+                                        width: 4,
+                                        decoration: BoxDecoration(
+                                            color: grey,
+                                            border: Border(right: BorderSide(color: grey,width: 4))
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 9,
+                                        child: Container(
+                                          color: grey,
+                                          padding: const EdgeInsets.only(right: 15),
+                                          child: const Text("الاجمالي", style: boldStyle,textAlign: TextAlign.right,),
+                                        ),
+                                      ),
+                                      const VerticalDivider(),
+                                    ],
+                                  ),
+                                ),
+                                const Divider(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SliverToBoxAdapter(child: SizedBox(height: 30)),
+                      ],
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+          // Expanded(
+          //   child: Selector<TreasuryStatementProvider, List<TreasuryModel>>(
+          //       selector: (_, provider) => provider.treasuries,
+          //       builder: (context, treasuries, _) {
+          //         return Scrollbar(
+          //           controller: controller,
+          //           thumbVisibility: true,
+          //           child: ListView.separated(
+          //               itemCount: provider.treasuries.length,
+          //               controller: controller,
+          //               separatorBuilder: (_,__) => const SizedBox(height: 10),
+          //               itemBuilder: (context, index) {
+          //                 final purchases = treasuries[index].statements;
+          //                 return SizedBox(
+          //                   height: purchases.length * 50 + 40,
+          //                   child: Directionality(
+          //                     textDirection: TextDirection.rtl,
+          //                     child: TableWidget(
+          //                       disableScroll: true,
+          //                       header: [
+          //                         "التاريخ",
+          //                         "رقم",
+          //                         "نوع الحركة",
+          //                         "رقم الفاتورة",
+          //                         "كود العميل",
+          //                         "اسم العميل",
+          //                         "مناولة",
+          //                         "البيان",
+          //                         "مدين",
+          //                         "رصيد",
+          //                       ]
+          //                           .map((e) => Padding(
+          //                         padding: const EdgeInsets.symmetric(horizontal: 7),
+          //                         child: Text(e, textAlign: TextAlign.center),
+          //                       ))
+          //                           .toList(),
+          //                       headerHeight: 40,
+          //                       rows: purchases
+          //                           .map((e) => <String>[
+          //                         e.date == null?"":DateFormat("yyyy-MM-dd").format(e.date!),
+          //                         e.serial ?? "",
+          //                         e.transactionType ??"",
+          //                         "${e.invoiceNumber}",
+          //                         e.customerCode ??"",
+          //                         e.customerName ?? "",
+          //                         (e.remark2 ?? ""),
+          //                         e.remark ?? "",
+          //                         "${e.debitAmount}",
+          //                         "${e.balance}",
+          //                       ].map((d) {
+          //                         return Padding(
+          //                           padding: const EdgeInsets.symmetric(horizontal: 7),
+          //                           child: Text(
+          //                             d,
+          //                             maxLines: 2,
+          //                             textAlign: TextAlign.center,
+          //                           ),
+          //                         );
+          //                       }).toList())
+          //                           .toList(),
+          //                       minimumCellWidth: 120,
+          //                       rowHeight: 50,
+          //                     ),
+          //                   ),
+          //                 );
+          //               }
+          //           ),
+          //         );
+          //       }),
+          // ),
 
 
          ] ),

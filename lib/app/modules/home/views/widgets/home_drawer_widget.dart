@@ -29,17 +29,14 @@ class HomeDrawerWidget extends GetView<HomeController> {
     ];
     final list2 = [];
     final list3 = <HomeDrawerTileWidget>[
-      // HomeDrawerTileWidget(
-      //   title: "كشف حساب",
-      //   onTap: () {
-      //     if(Get.find<HomeController>().selectedCustomer.value == null) {
-      //       showPopupText(text: "يجب اختيار عميل اولاً");
-      //       return;
-      //     }
-      //     goTo(Routes.ACCOUNT_STATEMENT,"كشف حساب");
-      //   },
-      // ),
-
+      HomeDrawerTileWidget(
+        title: "كشف حساب خزنة",
+        onTap: () => goTo(Routes.SAFE_ACCOUNT_SATATMENT, "كشف حساب خزنة"),
+      ),
+      HomeDrawerTileWidget(
+        title: "بيان بالسندات الصادره حسب الفرع",
+        onTap: () => goTo(Routes.FIND_STATEMENT_OF_BONDS_BY_BRANCH, "بيان بالسندات الصادره حسب الفرع"),
+      ),
     ];
     final list4 = [
       if(sections["notesreceivablesadmin"]?.view??false)
@@ -129,10 +126,6 @@ class HomeDrawerWidget extends GetView<HomeController> {
                     onTap: () => goTo(Routes.ITEMS_SALES_BY_CUSTOMERS, "مبيعات الأصناف حسب العملاء تفصيلي"),
                   ),
                   HomeDrawerTileWidget(
-                    title: "كشف حساب خزنة",
-                    onTap: () => goTo(Routes.SAFE_ACCOUNT_SATATMENT, "كشف حساب خزنة"),
-                  ),
-                  HomeDrawerTileWidget(
                     title: "الاصناف",
                     onTap: () => goTo(Routes.ITEMS, "الاصناف"),
                   ),
@@ -163,10 +156,6 @@ class HomeDrawerWidget extends GetView<HomeController> {
                   HomeDrawerTileWidget(
                     title: "ارصده العملاء",
                     onTap: () => goTo(Routes.FIND_CUSTOMER_BALANCE, "ارصده العملاء"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "بيان بالسندات الصادره حسب الفرع",
-                    onTap: () => goTo(Routes.FIND_STATEMENT_OF_BONDS_BY_BRANCH, "بيان بالسندات الصادره حسب الفرع"),
                   ),
                   HomeDrawerTileWidget(
                     title: "بيان الفواتير حسب الضريبه تفصيلي",
