@@ -167,7 +167,7 @@ class ReportsRepository {
         convertor: GlPayDTO.fromList,
       );
 
-  getAllBanks(
+  getAllGlPay(
       AllInvoicesRequest allInvoicesRequest, {
         Function()? onComplete,
         Function(List<GlPayDTO> data)? onSuccess,

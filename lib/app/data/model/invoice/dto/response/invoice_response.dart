@@ -107,7 +107,7 @@ class InvoiceResponse {
   String? invoiceNumber;
   num? length;
   num? noticeCredit;
-  int? noticeDebit;
+  num? noticeDebit;
   int? proof;
   int? checkSendSms;
   num? remain;

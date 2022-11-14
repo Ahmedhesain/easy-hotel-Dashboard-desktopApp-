@@ -19,7 +19,7 @@ import '../../../core/utils/show_popup_text.dart';
 
 class EditBillsController extends GetxController {
 
-  final List<GlPayDTO> reports = [];
+  final reports = <GlPayDTO>[].obs;
   final isLoading = false.obs;
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
@@ -73,22 +73,10 @@ class EditBillsController extends GetxController {
     return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
   }
 
-  getCustomersByCode() {
-    isLoading(true);
-    final request = FindCustomerRequest(code: findSideCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
-    CustomerRepository().findCustomerByCode(request,
-        onSuccess: (data) {
-          customers.assignAll(data);
-          // findSideCustomerFieldFocusNode.requestFocus();
-        },
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
-  }
-
-  getCustomersByCodeForInvoice(String code, FocusNode node) {
+  getCustomersByCodeForInvoice(String code, FocusNode node, int reportId) {
+    final request = FindCustomerRequest(code: code, branchId: UserManager().branchId, gallaryIdAPI: reports.singleWhere((element) => element.id == reportId).gallaryId);
     isLoading(true);
     node.unfocus();
-    final request = FindCustomerRequest(code: code, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
@@ -101,7 +89,7 @@ class EditBillsController extends GetxController {
   getAllBanks() {
     isLoading(true);
     final request = AllInvoicesRequest(id: UserManager().id, branchId: UserManager().branchId);
-    ReportsRepository().getAllBanks(request,
+    ReportsRepository().getAllGlPay(request,
         onSuccess: (data) {
           banks.assignAll(data);
         },
@@ -121,7 +109,6 @@ class EditBillsController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-
   void getInvoiceListForCustomer(int id, void Function() onSuccess) {
     if(balances.containsKey(id)) return;
     isLoading(true);
@@ -136,14 +123,13 @@ class EditBillsController extends GetxController {
     );
   }
 
-
-  editInvoice(GlPayDTO bankSelected) {
-    if(balances[bankSelected.customerId!] != null && balances[bankSelected.customerId!]!.invoicesList.every((element) => element.serial != bankSelected.invoiceSerial)){
+  editInvoice(GlPayDTO dto) {
+    if(balances[dto.customerId!] != null && balances[dto.customerId!]!.invoicesList.every((element) => element.serial != dto.invoiceSerial)){
       showPopupText(text: "رقم الفاتورة غير صحيح");
       return;
     }
     isLoading(true);
-    final request = GlBankTransactionApi(glPayDTOAPIList:[bankSelected], branchId: user.branchId, createdBy: user.id, companyId: user.companyId );
+    final request = GlBankTransactionApi(glPayDTOAPIList:[dto], branchId: user.branchId, createdBy: user.id, companyId: user.companyId, customerId: dto.customerId,remark: dto.remark, date: dto.date );
     ReportsRepository().saveInvoicesStatement(request,
         onSuccess: (data) {
           showPopupText(text: "تم التعديل بنجاح", type: MsgType.success);

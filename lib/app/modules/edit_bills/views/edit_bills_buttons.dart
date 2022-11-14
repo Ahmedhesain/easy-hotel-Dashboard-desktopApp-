@@ -35,74 +35,74 @@ class EditBillsButtons extends GetView<EditBillsController> {
               controller: controller.selectedStatusController,
             ),
           ),
-          const SizedBox(width: 30),
-          const Text("من تاريخ"),
-          const SizedBox(width: 10),
-          MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: Stack(
-              children: [
-                GestureDetector(
-                  onTap: () => controller.pickFromDate(),
-                  child: Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(5.0)
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-                    child: Obx(() {
-                      return Center(child: Text(controller.dateFrom.value == null?"----/--/--":DateFormat("yyyy/MM/dd").format(controller.dateFrom.value!)));
-                    }),
-                  ),
-                ),
-                Positioned(
-                  left: -2,
-                  top: 0,
-                  bottom: 0,
-                  child: IconButtonWidget(
-                    icon: Icons.clear_rounded,
-                    onPressed: () => controller.dateFrom.value = null,
-                    iconSize: 15,
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(width: 30),
-          const Text("الى تاريخ"),
-          const SizedBox(width: 10),
-          MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: Stack(
-              children: [
-                GestureDetector(
-                  onTap: () => controller.pickToDate(),
-                  child: Container(
-                    width: 150,
-                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(5.0)
-                    ),
-                    child: Obx(() {
-                      return Center(child: Text(controller.dateTo.value == null?"----/--/--":DateFormat("yyyy/MM/dd").format(controller.dateTo.value!)));
-                    }),
-                  ),
-                ),
-                Positioned(
-                  left: -2,
-                  top: 0,
-                  bottom: 0,
-                  child: IconButtonWidget(
-                    icon: Icons.clear_rounded,
-                    onPressed: () => controller.dateTo.value = null,
-                    iconSize: 15,
-                  ),
-                )
-              ],
-            ),
-          ),
+          // const SizedBox(width: 30),
+          // const Text("من تاريخ"),
+          // const SizedBox(width: 10),
+          // MouseRegion(
+          //   cursor: SystemMouseCursors.click,
+          //   child: Stack(
+          //     children: [
+          //       GestureDetector(
+          //         onTap: () => controller.pickFromDate(),
+          //         child: Container(
+          //           width: 150,
+          //           decoration: BoxDecoration(
+          //               border: Border.all(),
+          //               borderRadius: BorderRadius.circular(5.0)
+          //           ),
+          //           padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+          //           child: Obx(() {
+          //             return Center(child: Text(controller.dateFrom.value == null?"----/--/--":DateFormat("yyyy/MM/dd").format(controller.dateFrom.value!)));
+          //           }),
+          //         ),
+          //       ),
+          //       Positioned(
+          //         left: -2,
+          //         top: 0,
+          //         bottom: 0,
+          //         child: IconButtonWidget(
+          //           icon: Icons.clear_rounded,
+          //           onPressed: () => controller.dateFrom.value = null,
+          //           iconSize: 15,
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
+          // const SizedBox(width: 30),
+          // const Text("الى تاريخ"),
+          // const SizedBox(width: 10),
+          // MouseRegion(
+          //   cursor: SystemMouseCursors.click,
+          //   child: Stack(
+          //     children: [
+          //       GestureDetector(
+          //         onTap: () => controller.pickToDate(),
+          //         child: Container(
+          //           width: 150,
+          //           padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+          //           decoration: BoxDecoration(
+          //               border: Border.all(),
+          //               borderRadius: BorderRadius.circular(5.0)
+          //           ),
+          //           child: Obx(() {
+          //             return Center(child: Text(controller.dateTo.value == null?"----/--/--":DateFormat("yyyy/MM/dd").format(controller.dateTo.value!)));
+          //           }),
+          //         ),
+          //       ),
+          //       Positioned(
+          //         left: -2,
+          //         top: 0,
+          //         bottom: 0,
+          //         child: IconButtonWidget(
+          //           icon: Icons.clear_rounded,
+          //           onPressed: () => controller.dateTo.value = null,
+          //           iconSize: 15,
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
           const Spacer(),
           Container(
             // decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors.appGreyDark),

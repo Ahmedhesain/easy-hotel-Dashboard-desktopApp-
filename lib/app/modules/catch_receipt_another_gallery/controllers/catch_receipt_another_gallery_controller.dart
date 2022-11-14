@@ -19,7 +19,7 @@ import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
 import '../../../data/model/customer/dto/response/find_customer_response.dart';
 
-class CatchReceiptController extends GetxController {
+class CatchReceiptAnotherGalleryController extends GetxController {
   final isLoading = false.obs;
   final customers = <FindCustomerResponse>[];
   final banks = <GlPayDTO>[];
@@ -58,7 +58,7 @@ class CatchReceiptController extends GetxController {
     isLoading(true);
     customerFocusNode.unfocus();
     final request = FindCustomerRequest(code: search, branchId: user.branchId, gallaryIdAPI: selectedGallery.value?.id);
-    await CustomerRepository().findCustomerByCode(request,
+    await CustomerRepository().findCustomerByCodeAnotherGallery(request,
         onSuccess: (data) {
           customers.assignAll(data);
           customerFocusNode.requestFocus();
@@ -103,6 +103,7 @@ class CatchReceiptController extends GetxController {
       value: itemPayController.text.tryToParseToNum,
       invoiceId: itemInvoice!.id,
       invoiceSerial: itemInvoice!.serial,
+      movementType: 1
     ));
     clearItemFields();
     itemInvoiceFocus.requestFocus();

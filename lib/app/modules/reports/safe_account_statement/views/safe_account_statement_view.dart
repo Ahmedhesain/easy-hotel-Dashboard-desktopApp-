@@ -16,10 +16,6 @@ class SafeAccountStatementView extends GetView<SafeAccountStatmentController>{
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
-    final orientation = MediaQuery.of(context).size;
     return Obx((){
       return AppLoadingOverlay(
         isLoading: controller.isLoading.value,
@@ -33,8 +29,34 @@ class SafeAccountStatementView extends GetView<SafeAccountStatmentController>{
           textDirection: TextDirection.rtl,
           children: (isScrollable) {
             return [
+              // const Text(
+              //   "اختر معرض: ",
+              //   textDirection: TextDirection.rtl,
+              // ),
+              // Obx( () {
+              //       return SizedBox(
+              //         width: 300,
+              //         height: 35,
+              //         child: DropDownMultiSelect(
+              //           options: controller.galleries.map((e) => e.name??"").toList(),
+              //           selectedValues: controller.selectedGalleries.map((e) => e.name??"").toList(),
+              //           onChanged: controller.selectNewGalleries,
+              //           isDense: true,
+              //           childBuilder: (List<String> values) {
+              //             return Padding(
+              //               padding: const EdgeInsets.all(8.0),
+              //               child: Text(
+              //                 values.isEmpty ? "يرجى تحديد معرض على الاقل" : values.join(', '),
+              //                 maxLines: 1,
+              //               ),
+              //             );
+              //           },
+              //         ),
+              //       );
+              //     }),
+              // const SizedBox(width: 15),
               const Text(
-                "اختر معرض: ",
+                "اختر خزائن: ",
                 textDirection: TextDirection.rtl,
               ),
               Obx( () {

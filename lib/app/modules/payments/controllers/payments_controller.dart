@@ -170,7 +170,7 @@ class PaymentsController extends GetxController {
 
   printPayment(BuildContext context){
     isLoading(true);
-    PaymentRepository().findPaymentBySerial(FindPaymentRequest(branchId: user.branchId, serial: searchPaymentIdController.text.tryToParseToNum?.toInt()),
+    PaymentRepository().findPaymentBySerial(FindPaymentRequest(branchId: user.branchId, serial: payment.value?.serial, id: payment.value?.id),
         onSuccess: (data){
           PrintingHelper().printPayments(context, data);
         },

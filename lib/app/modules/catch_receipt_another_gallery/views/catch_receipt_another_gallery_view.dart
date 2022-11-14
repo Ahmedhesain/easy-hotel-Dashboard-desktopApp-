@@ -13,14 +13,12 @@ import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
-import 'package:toby_bills/app/modules/catch_receipt/views/widgets/catch_receipt_buttons_widget.dart';
-import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
-
+import 'package:toby_bills/app/modules/catch_receipt_another_gallery/views/widgets/catch_receipt_another_gallery_buttons_widget.dart';
 import '../../../data/model/invoice/dto/response/gallery_response.dart';
-import '../controllers/catch_receipt_controller.dart';
+import '../controllers/catch_receipt_another_gallery_controller.dart';
 
-class CatchReceiptView extends GetView<CatchReceiptController> {
-  const CatchReceiptView({super.key});
+class CatchReceiptAnotherGalleryView extends GetView<CatchReceiptAnotherGalleryController> {
+  const CatchReceiptAnotherGalleryView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,7 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
         child: Scaffold(
           body: Column(
             children: [
-              const CatchReceiptButtonsWidget(),
+              const CatchReceiptAnotherGalleryButtonsWidget(),
               Expanded(
                 child: Container(
                     decoration: BoxDecoration(

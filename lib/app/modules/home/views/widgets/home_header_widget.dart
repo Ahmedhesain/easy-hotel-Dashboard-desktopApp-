@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
-import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:toby_bills/app/routes/app_pages.dart';
+import 'package:window_manager/window_manager.dart';
 
 class HomeHeaderWidget extends GetView<HomeController> {
   const HomeHeaderWidget({Key? key}) : super(key: key);
@@ -30,6 +30,36 @@ class HomeHeaderWidget extends GetView<HomeController> {
                 return Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    ButtonWidget(text: "كشف حساب عميل", onPressed: () async {
+                      if(Get.find<HomeController>().selectedCustomer.value?.id == null) {
+                        showPopupText(text: "يجب اختيار عميل اولاً");
+                        return;
+                      }
+                      windowManager.setTitle("Toby Bills -> كشف حساب عميل");
+                      await Get.toNamed(Routes.ACCOUNT_STATEMENT);
+                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                    }),
+                    const SizedBox(width: 5),
+                    ButtonWidget(text: "حالة الفاتورة", onPressed: () async {
+                      if(Get.find<HomeController>().invoice.value?.id == null) {
+                        showPopupText(text: "يجب اختيار فاتورة اولاً");
+                        return;
+                      }
+                      windowManager.setTitle("Toby Bills -> حالة الفاتورة");
+                      await Get.toNamed(Routes.INVOICE_STATUS);
+                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                    }),
+                    const SizedBox(width: 5),
+                    ButtonWidget(text: "مراحل الانتاج", onPressed: () async {
+                      if(Get.find<HomeController>().invoice.value?.id == null) {
+                        showPopupText(text: "يجب اختيار فاتورة اولاً");
+                        return;
+                      }
+                      windowManager.setTitle("Toby Bills -> مراحل الانتاج");
+                      await Get.toNamed(Routes.PRODUCTION_STAGES);
+                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                    }),
+                    const SizedBox(width: 5),
                     ButtonWidget(text: "تنزيل عرض", onPressed: () {}),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "تحديث", onPressed: () => controller.getItems()),
@@ -53,6 +83,8 @@ class HomeHeaderWidget extends GetView<HomeController> {
                       ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "حذف هللة", onPressed: () => controller.removeHalala()),
+                    const SizedBox(width: 5),
+                    ButtonWidget(text: "إرجاع هللة", onPressed: () => controller.retreiveHalala()),
                     if((permissions.delete ?? false) && controller.invoice.value?.id != null)
                       const SizedBox(width: 5),
                     if((permissions.delete ?? false) && controller.invoice.value?.id != null)
