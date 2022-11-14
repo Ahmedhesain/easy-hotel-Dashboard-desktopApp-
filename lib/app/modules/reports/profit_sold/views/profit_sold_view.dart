@@ -37,7 +37,11 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
     var priceController = TextEditingController();
     var invoiceController = TextEditingController();
     var infoController = TextEditingController();
+    final Map<String, int> discBasis = {
+      'Age': 1,
+      'Ancestry': 2,
 
+    };
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
@@ -150,22 +154,22 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
                                                 child:
-                                                TextFormField(
-                                                  // focusNode: quantityFocus,
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  /////////////quantity
-                                                  // onEditingComplete: () => FocusScope.of(context).requestFocus(priceFocus),
-                                                  controller: controller.categoryController,
-                                                  // readOnly: provider.selectedItem != null && provider.selectedItem!.proGroupId == 1,
-                                                  // inputFormatters: [doubleFilter],
-                                                  onChanged: (value)  {
-                                                    controller.categoryController.text =value;
-
-                                                  },
-                                                ),
-                                              ),
+                                                Obx(() {
+                                                  return DropdownSearch<AllGroupResponse>(
+                                                    // showSearchBox: true,
+                                                    items: controller.groups,
+                                                    itemAsString: (AllGroupResponse e) => e.name!,
+                                                    onChanged: controller.selectedGroup,
+                                                    selectedItem: controller.selectedGroup.value,
+                                                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                                                      dropdownSearchDecoration: InputDecoration(
+                                                        border: OutlineInputBorder(),
+                                                        contentPadding: EdgeInsets.all(10),
+                                                        isDense: true,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),                                              ),
                                             ),
                                             SizedBox(width: size.width*.05,)
                                             , Text('الفئه',style: smallTextStyleNormal(size)),
@@ -678,5 +682,13 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
           )
       );
     });
+  }
+  List<DropdownMenuItem<String>> get dropdownItems{
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("USA"),value: "1"),
+      DropdownMenuItem(child: Text("Canada"),value: "2"),
+
+    ];
+    return menuItems;
   }
 }
