@@ -10,7 +10,7 @@ import 'package:toby_bills/app/modules/reports/items_quantity/views/widgets/sear
 
 import '../controllers/safe_account_statement_controller.dart';
 
-class SafeAccountStatementView extends GetView<SafeAccountStatmentController>{
+class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
   const SafeAccountStatementView({super.key});
 
 
@@ -64,16 +64,19 @@ class SafeAccountStatementView extends GetView<SafeAccountStatmentController>{
                       width: 300,
                       height: 35,
                       child: DropDownMultiSelect(
-                        options: controller.galleries.map((e) => e.name??"").toList(),
-                        selectedValues: controller.selectedGalleries.map((e) => e.name??"").toList(),
-                        onChanged: controller.selectNewGalleries,
+                        options: controller.banks.map((e) => e.bankName??"").toList(),
+                        selectedValues: controller.selectedBanks.map((e) => e.bankName??"").toList(),
+                        onChanged: controller.selectNewBank,
                         isDense: true,
                         childBuilder: (List<String> values) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              values.isEmpty ? "يرجى تحديد معرض على الاقل" : values.join(', '),
-                              maxLines: 1,
+                          return Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0).copyWith(left: 15),
+                              child: Text(
+                                values.isEmpty ? "يرجى تحديد خزينة على الاقل" : values.join(', '),
+                                maxLines: 1,
+                              ),
                             ),
                           );
                         },

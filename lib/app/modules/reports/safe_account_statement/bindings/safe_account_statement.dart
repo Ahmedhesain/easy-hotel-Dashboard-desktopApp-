@@ -6,7 +6,7 @@ class SafeAccountStatementBinding extends Bindings {
 
   @override
   void dependencies() {
-    Get.lazyPut<SafeAccountStatmentController>(() => SafeAccountStatmentController());
+    Get.lazyPut<SafeAccountStatementController>(() => SafeAccountStatementController());
   }
 
 }

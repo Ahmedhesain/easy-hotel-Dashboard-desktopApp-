@@ -1,3 +1,4 @@
+import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 
 class SafeAccountStatementRequest {
@@ -12,7 +13,7 @@ class SafeAccountStatementRequest {
 
   });
   final  Map<String, int> glYearSelected;
-  final List<GalleryResponse> glBankDTOListSelected;
+  final List<GlPayDTO> glBankDTOListSelected;
   final int branchId;
   final DateTime dateFrom;
   final DateTime dateTo;
@@ -23,7 +24,7 @@ class SafeAccountStatementRequest {
   Map<String, dynamic> toJson(){
     return {
       "glYearSelected" : {"id": 73},
-      "glBankDTOListSelected" :glBankDTOListSelected.map((e) => {"id" : e.id}).toList(),
+      "glBankDTOListSelected" :glBankDTOListSelected.map((e) => {"id" : e.bankId}).toList(),
       "branchId": branchId,
       "dateFrom": dateFrom.toIso8601String(),
       "dateTo": dateTo.toIso8601String(),

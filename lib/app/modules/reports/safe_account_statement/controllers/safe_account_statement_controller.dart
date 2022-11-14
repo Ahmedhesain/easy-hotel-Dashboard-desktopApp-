@@ -2,32 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/safe_account_statement_request.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/quantity_items_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/safe_account_statement_response.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
-import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
-import '../../../../data/model/reports/dto/request/quantity_items_request.dart';
-
-class SafeAccountStatmentController extends GetxController{
+class SafeAccountStatementController extends GetxController{
 
   final galleries = <GalleryResponse>[].obs;
   final selectedGalleries = RxList<GalleryResponse>();
+  final banks = <GlPayDTO>[].obs;
+  final selectedBanks = RxList<GlPayDTO>();
   final statements = RxList<BankStatement>();
   String? error;
   final isLoading = false.obs;
   final dateFrom = DateTime.now().obs;
   final dateTo = DateTime.now().obs;
   final treasuries = List<TreasuryModel>.empty(growable: true);
+  final user = UserManager();
 
   @override
   onInit(){
     super.onInit();
-    getGalleries();
+    getBanks();
+  }
+
+  getBanks() async {
+    isLoading(true);
+    error =null;
+    ReportsRepository().getAllGlPay(AllInvoicesRequest(id: user.id, branchId: user.branchId),
+      onSuccess: (data){
+        banks.assignAll([GlPayDTO(bankName: "تحديد الكل")]);
+        banks.addAll(data);
+        selectedBanks.assignAll(data);
+      },
+      onError: (e)=> error=e,
+      onComplete:()=> isLoading(false),
+
+    );
   }
 
   getGalleries() async {
@@ -48,8 +64,8 @@ class SafeAccountStatmentController extends GetxController{
     isLoading(true);
     error =null;
     final request = SafeAccountStatementRequest(
-      glBankDTOListSelected: selectedGalleries,
-        glYearSelected:{"id": 73},
+      glBankDTOListSelected: selectedBanks,
+      glYearSelected:{"id": 73},
       branchId: UserManager().branchId,
       dateFrom: dateFrom.value,
       dateTo: dateTo.value,
@@ -73,7 +89,18 @@ class SafeAccountStatmentController extends GetxController{
     );
   }
 
-
+  selectNewBank(List<String> values) {
+    if (!values.contains("تحديد الكل") && selectedBanks.any((element) => element.bankName == "تحديد الكل")) {
+      selectedBanks.clear();
+    } else if (!selectedBanks.any((element) => element.bankName == "تحديد الكل") && values.contains("تحديد الكل")) {
+      selectedBanks.assignAll(banks);
+    } else {
+      if (values.length < selectedBanks.length && values.contains("تحديد الكل")) {
+        values.remove("تحديد الكل");
+      }
+      selectedBanks.assignAll(banks.where((element) => values.contains(element.bankName)));
+    }
+  }
 
   // getYears(BuildContext context) async {
   //   if (!isLoadingGalleries || error != null) {
