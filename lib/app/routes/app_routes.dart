@@ -87,7 +87,7 @@ abstract class _Paths {
   static const SALES_FOR_PERIOD = '/sales-for-period';
   static const INVOICE_MOVEMENT = '/invoice-movement';
   static const JOURNAL_DOCUMENT_DIALY = '/journal-document-dialy';
-  static const SUB_ACCOUNT_STATEMENT = '/journal-document-dialy';
+  static const SUB_ACCOUNT_STATEMENT = '/sub-account-statement';
 
 
 

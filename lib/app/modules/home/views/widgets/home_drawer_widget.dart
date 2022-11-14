@@ -65,6 +65,10 @@ class HomeDrawerWidget extends GetView<HomeController> {
         title: "كشف حساب فرعي",
         onTap: () => goTo(Routes.SUB_ACCOUNT_STATEMENT,"كشف حساب فرعي"),
       ),
+      HomeDrawerTileWidget(
+        title: "قيد اليوميه تفصيلي",
+        onTap: () => goTo(Routes.JOURNAL_DOCUMENT_DIALY, "قيد اليوميه تفصيلي"),
+      ),
 
     ];
     return Drawer(
@@ -192,10 +196,6 @@ class HomeDrawerWidget extends GetView<HomeController> {
                   HomeDrawerTileWidget(
                     title: "حركه الثياب",
                     onTap: () => goTo(Routes.INVOICE_MOVEMENT, "حركه الثياب"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "قيد اليوميه تفصيلي",
-                    onTap: () => goTo(Routes.JOURNAL_DOCUMENT_DIALY, "قيد اليوميه تفصيلي"),
                   ),
 
                 ],
