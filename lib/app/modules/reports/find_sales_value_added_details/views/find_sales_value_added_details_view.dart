@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/colors.dart';
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
@@ -31,17 +32,6 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    DateTime enddate =DateTime.now();
-    DateTime startdate =DateTime.now();
-
-
-    var numController = TextEditingController();
-    var itemQuantityController = TextEditingController();
-    var clientController = TextEditingController();
-    var priceController = TextEditingController();
-    var invoiceController = TextEditingController();
-    var infoController = TextEditingController();
-
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
@@ -52,7 +42,7 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                   child: Container(width: size.width*.97,
                       height: size.height*.96,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
+                          borderRadius: const BorderRadius.all(
                               Radius.circular(10)),
                           color: Colors.white,
                           border: Border.all(color: Colors.grey)),
@@ -62,7 +52,7 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                             padding: const EdgeInsets.fromLTRB(5, 20, 15, 0),
                             child: Container(
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
@@ -84,7 +74,7 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
@@ -146,39 +136,50 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                                 children: [
 
                                                    Text('من تاريخ',style: smallTextStyleNormal(size)),
-                                                  Padding(
-                                                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                    child:
-                                                    Container(
-                                                      width: size.width * .2,
-                                                      height: size.height * .04,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white70,
-                                                        borderRadius: BorderRadius.circular(5),
-
-                                                      ),child:
-
-                                                    Center(
-                                                      child: MouseRegion(
-                                                        cursor: SystemMouseCursors.click,
-                                                        child: GestureDetector(
-                                                            onTap: () {
-                                                              controller.pickFromDate();
-                                                            },
-                                                            child: Obx(() {
-                                                              return Text(
-                                                                controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
-                                                                style: const TextStyle(decoration: TextDecoration.underline),
-                                                              );
-                                                            })),
-                                                      ),
-                                                    ),
-
-
-
-
+                                                  const SizedBox(width: 10),
+                                                  SizedBox(
+                                                    width: size.width * .2,
+                                                    child: DateFieldWidget(
+                                                      fillColor: Colors.white,
+                                                      onComplete: (date){
+                                                        controller.dateFrom(date);
+                                                      },
+                                                      date: controller.dateFrom.value,
                                                     ),
                                                   ),
+                                                  // Padding(
+                                                  //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                  //   child:
+                                                  //   Container(
+                                                  //     width: size.width * .2,
+                                                  //     height: size.height * .04,
+                                                  //     decoration: BoxDecoration(
+                                                  //       color: Colors.white70,
+                                                  //       borderRadius: BorderRadius.circular(5),
+                                                  //
+                                                  //     ),child:
+                                                  //
+                                                  //   Center(
+                                                  //     child: MouseRegion(
+                                                  //       cursor: SystemMouseCursors.click,
+                                                  //       child: GestureDetector(
+                                                  //           onTap: () {
+                                                  //             controller.pickFromDate();
+                                                  //           },
+                                                  //           child: Obx(() {
+                                                  //             return Text(
+                                                  //               controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
+                                                  //               style: const TextStyle(decoration: TextDecoration.underline),
+                                                  //             );
+                                                  //           })),
+                                                  //     ),
+                                                  //   ),
+                                                  //
+                                                  //
+                                                  //
+                                                  //
+                                                  //   ),
+                                                  // ),
 
 
                                                   SizedBox(width: size.width*.05,)
@@ -186,38 +187,49 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                                     padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                                     child: Text('الي تاريخ',style: smallTextStyleNormal(size)),
                                                   ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                    child: Container(
-                                                      width: size.width * .2,
-                                                      height: size.height * .04,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white70,
-                                                        borderRadius: BorderRadius.circular(5),
-
-                                                      ),child:
-
-                                                    Center(
-                                                      child: MouseRegion(
-                                                        cursor: SystemMouseCursors.click,
-                                                        child: GestureDetector(
-                                                            onTap: () {
-                                                              controller.pickToDate();
-                                                            },
-                                                            child: Obx(() {
-                                                              return Text(
-                                                                controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
-                                                                style: const TextStyle(decoration: TextDecoration.underline),
-                                                              );
-                                                            })),
-                                                      ),
-                                                    ),
-
-
-
-
+                                                  const SizedBox(width: 10),
+                                                  SizedBox(
+                                                    width: size.width * .2,
+                                                    child: DateFieldWidget(
+                                                      fillColor: Colors.white,
+                                                      onComplete: (date){
+                                                        controller.dateTo(date);
+                                                      },
+                                                      date: controller.dateTo.value,
                                                     ),
                                                   ),
+                                                  // Padding(
+                                                  //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                  //   child: Container(
+                                                  //     width: size.width * .2,
+                                                  //     height: size.height * .04,
+                                                  //     decoration: BoxDecoration(
+                                                  //       color: Colors.white70,
+                                                  //       borderRadius: BorderRadius.circular(5),
+                                                  //
+                                                  //     ),child:
+                                                  //
+                                                  //   Center(
+                                                  //     child: MouseRegion(
+                                                  //       cursor: SystemMouseCursors.click,
+                                                  //       child: GestureDetector(
+                                                  //           onTap: () {
+                                                  //             controller.pickToDate();
+                                                  //           },
+                                                  //           child: Obx(() {
+                                                  //             return Text(
+                                                  //               controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
+                                                  //               style: const TextStyle(decoration: TextDecoration.underline),
+                                                  //             );
+                                                  //           })),
+                                                  //     ),
+                                                  //   ),
+                                                  //
+                                                  //
+                                                  //
+                                                  //
+                                                  //   ),
+                                                  // ),
                                                 ],
                                               ),
                                             ),
@@ -256,7 +268,7 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                                     height: size.height * .05,
                                                     width: size.width * .1,
                                                     decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.all(
+                                                      borderRadius: const BorderRadius.all(
                                                           Radius.circular(6.00)), color:coloryellow,
                                                     ),
                                                     child: Row(mainAxisAlignment: MainAxisAlignment
@@ -264,7 +276,7 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                                       children: [
                                                         Text('بحث',
                                                           style: smallTextStyleNormal(size,color: Colors.black),),
-                                                        Icon(Icons.search,color: Colors.black,)
+                                                        const Icon(Icons.search,color: Colors.black,)
                                                       ],
                                                     ),
 
@@ -275,12 +287,12 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                                   height: size.height * .048,
                                                   width: size.width * .1,
                                                   decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(6.00)),
                                                     color:coloryellow,
                                                   ),
                                                   child: ElevatedButton(
-                                                    child: Text("رجوع"),
+                                                    child: const Text("رجوع"),
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
@@ -323,7 +335,7 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                               height: size.height*.06,
                               child:
                               Container(width:size.width*.03,
-                                  height: size.height*.03,child:SizedBox()),
+                                  height: size.height*.03,child:const SizedBox()),
                             ),
                           ),
                           Container(
@@ -332,36 +344,36 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
-                                    margin: EdgeInsets.all(0),
+                                    margin: const EdgeInsets.all(0),
                                     child: Table(
                                       defaultColumnWidth: FixedColumnWidth(size.width * .138),
                                       border: TableBorder.all(
-                                          borderRadius: BorderRadius.all(Radius.circular(0)),
+                                          borderRadius: const BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
                                           style: BorderStyle.solid,
                                           width: 1),
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [Text('الفاتوره',
+                                          Column(children: [const Text('الفاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('التاريخ',
+                                          Column(children: [const Text('التاريخ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اسم المعرض',
+                                          Column(children: [const Text('اسم المعرض',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اسم الموظف',
+                                          Column(children: [const Text('اسم الموظف',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('الاجمالي قبل الضريبه',
+                                          Column(children: [const Text('الاجمالي قبل الضريبه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('الاجمالي بعد الضريبه',
+                                          Column(children: [const Text('الاجمالي بعد الضريبه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('الضريبه',
+                                          Column(children: [const Text('الضريبه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -370,7 +382,7 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
 
 
                                         ],
-                                          decoration: BoxDecoration(color: appGreyDark,
+                                          decoration: const BoxDecoration(color: appGreyDark,
                                               borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(0),
                                                   topLeft: Radius.circular(0))),
@@ -383,43 +395,43 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                               Column(children: [
                                                 Text(
                 kha.invoiceNumber==null?"":  kha.invoiceNumber!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     DateFormat("yyyy-MM-dd").format(kha.invoiceDate!),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.galleryName!,
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
 
 
                                               Column(children: [
                                                 Text(
                                                     kha.employeeName!,
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.totalBeforeTax!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),Column(children: [
                                                 Text(
                                                     kha.totalAfterTax!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]), Column(children: [
                                                 Text(
                                                     kha.tax!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
 
 
 
                                             ],
-                                              decoration: BoxDecoration( color: appGreyLight,
+                                              decoration: const BoxDecoration( color: appGreyLight,
                                                   borderRadius: BorderRadius.only(
                                                       topRight: Radius.circular(0),
                                                       topLeft: Radius.circular(0))),

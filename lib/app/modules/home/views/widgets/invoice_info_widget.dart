@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_field_widget.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
@@ -71,32 +72,41 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                 const SizedBox(width: 10),
                 const Text('التاريخ:'),
                 const SizedBox(width: 5),
+                // Expanded(
+                //   flex: 2,
+                //   child: Obx(() {
+                //     return GestureDetector(
+                //       onTap: () async {
+                //         if(controller.invoice.value?.id != null){
+                //           controller.date(await showDatePicker(
+                //               context: context,
+                //               initialDate: controller.date.value,
+                //               firstDate: DateTime(2017),
+                //               lastDate: DateTime.now()
+                //           ));
+                //         }
+                //       },
+                //       child: Align(
+                //         alignment: AlignmentDirectional.centerStart,
+                //         child: Text(
+                //           DateFormat("dd-MM-yyyy").format(controller.date.value),
+                //           textAlign: TextAlign.center,
+                //           style: TextStyle(
+                //             decoration: controller.invoice.value?.id != null ? TextDecoration.underline:null
+                //           ),
+                //         ),
+                //       ),
+                //     );
+                //   }),
+                // ),
                 Expanded(
                   flex: 2,
-                  child: Obx(() {
-                    return GestureDetector(
-                      onTap: () async {
-                        if(controller.invoice.value?.id != null){
-                          controller.date(await showDatePicker(
-                              context: context,
-                              initialDate: controller.date.value,
-                              firstDate: DateTime(2017),
-                              lastDate: DateTime.now()
-                          ));
-                        }
-                      },
-                      child: Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text(
-                          DateFormat("dd-MM-yyyy").format(controller.date.value),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            decoration: controller.invoice.value?.id != null ? TextDecoration.underline:null
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
+                  child: DateFieldWidget(
+                    onComplete: (date){
+                      controller.date(date);
+                    },
+                    date: controller.date.value,
+                  ),
                 ),
                 const SizedBox(width: 10),
                 const Text('تاريخ التسليم:'),

@@ -1,13 +1,12 @@
 import 'package:get/get.dart';
-import 'package:toby_bills/app/data/model/reports/dto/request/saled_for_period_request.dart';
-
 import 'package:toby_bills/app/modules/account_statement/bindings/account_statement_binding.dart';
 import 'package:toby_bills/app/modules/account_statement/views/account_statement_view.dart';
 import 'package:toby_bills/app/modules/catch_receipt/bindings/catch_receipt_binding.dart';
 import 'package:toby_bills/app/modules/catch_receipt/views/catch_receipt_view.dart';
 import 'package:toby_bills/app/modules/catch_receipt_another_gallery/bindings/catch_receipt_another_gallery_binding.dart';
 import 'package:toby_bills/app/modules/catch_receipt_another_gallery/views/catch_receipt_another_gallery_view.dart';
-import 'package:toby_bills/app/modules/catch_receipt_another_gallery/views/widgets/catch_receipt_another_gallery_buttons_widget.dart';
+import 'package:toby_bills/app/modules/customer_account_statement/bindings/customer_account_statement_binding.dart';
+import 'package:toby_bills/app/modules/customer_account_statement/views/customer_account_statement_view.dart';
 import 'package:toby_bills/app/modules/edit_bills/bindings/edit_bills_binding.dart';
 import 'package:toby_bills/app/modules/edit_bills/views/edit_bills_view.dart';
 import 'package:toby_bills/app/modules/home/bindings/home_binding.dart';
@@ -224,38 +223,43 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CATCH_RECEIPT,
-      page: () => CatchReceiptView(),
+      page: () => const CatchReceiptView(),
       binding: CatchReceiptBinding(),
     ),
     GetPage(
       name: _Paths.CATCH_RECEIPT_ANOTHER_GALLERY,
-      page: () => CatchReceiptAnotherGalleryView(),
+      page: () => const CatchReceiptAnotherGalleryView(),
       binding: CatchReceiptAnotherGalleryBinding(),
     ),
     GetPage(
       name: _Paths.CATEGORIES_ITEMS,
-      page: () => CategoriesItemsView(),
+      page: () => const CategoriesItemsView(),
       binding: CategoriesItemsBinding(),
     ),
     GetPage(
       name: _Paths.SALES_FOR_PERIOD,
-      page: () => SalesForPeriodView(),
+      page: () => const SalesForPeriodView(),
       binding: SalesForPeriodBinding(),
     ),
     GetPage(
       name: _Paths.INVOICE_MOVEMENT,
-      page: () => InvoiceMovementView(),
+      page: () => const InvoiceMovementView(),
       binding: InvoiceMovementBinding(),
     ),
     GetPage(
       name: _Paths.JOURNAL_DOCUMENT_DIALY,
-      page: () => JournalDocumentDailyView(),
+      page: () => const JournalDocumentDailyView(),
       binding: JournalDocumentDailyBinding(),
     ),
     GetPage(
       name: _Paths.SUB_ACCOUNT_STATEMENT,
       page: () => const SubAccountStatementView(),
       binding: SubAccountStatementBinding(),
+    ),
+    GetPage(
+      name: _Paths.CUSTOMER_ACCOUNT_STATEMENT,
+      page: () => const CustomerAccountStatementView(),
+      binding: CustomerAccountStatementBinding(),
     ),
   ];
 }

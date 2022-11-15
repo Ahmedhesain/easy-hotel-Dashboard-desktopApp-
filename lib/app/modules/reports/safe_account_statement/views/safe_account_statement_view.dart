@@ -3,10 +3,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/scrollable_row.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
-import 'package:toby_bills/app/modules/reports/items_quantity/views/widgets/CardShadow.dart';
-import 'package:toby_bills/app/modules/reports/items_quantity/views/widgets/search_widget.dart';
 
 import '../controllers/safe_account_statement_controller.dart';
 
@@ -88,37 +87,51 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
                 "من تاريخ: ",
                 textDirection: TextDirection.rtl,
               ),
-              Obx( () {
-                    return MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                          onTap: () {
-                            controller.pickFromDate();
-                          },
-                          child: Text(
-                            DateFormat("yyyy-MM-dd").format(controller.dateFrom.value),
-                            style: const TextStyle(decoration: TextDecoration.underline),
-                          )),
-                    );
-                  }),
+              SizedBox(
+                width: 100,
+                child: DateFieldWidget(
+                  onComplete: controller.dateFrom,
+                  date: controller.dateFrom.value,
+                ),
+              ),
+              // Obx( () {
+              //       return MouseRegion(
+              //         cursor: SystemMouseCursors.click,
+              //         child: GestureDetector(
+              //             onTap: () {
+              //               controller.pickFromDate();
+              //             },
+              //             child: Text(
+              //               DateFormat("yyyy-MM-dd").format(controller.dateFrom.value),
+              //               style: const TextStyle(decoration: TextDecoration.underline),
+              //             )),
+              //       );
+              //     }),
               const SizedBox(width: 15),
               const Text(
                 "الى تاريخ: ",
                 textDirection: TextDirection.rtl,
               ),
-              Obx( () {
-                    return MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                          onTap: () {
-                            controller.pickToDate();
-                          },
-                          child: Text(
-                            DateFormat("yyyy-MM-dd").format(controller.dateTo.value),
-                            style: const TextStyle(decoration: TextDecoration.underline),
-                          )),
-                    );
-                  }),
+              SizedBox(
+                width: 100,
+                child: DateFieldWidget(
+                  onComplete: controller.dateTo,
+                  date: controller.dateTo.value,
+                ),
+              ),
+              // Obx( () {
+              //       return MouseRegion(
+              //         cursor: SystemMouseCursors.click,
+              //         child: GestureDetector(
+              //             onTap: () {
+              //               controller.pickToDate();
+              //             },
+              //             child: Text(
+              //               DateFormat("yyyy-MM-dd").format(controller.dateTo.value),
+              //               style: const TextStyle(decoration: TextDecoration.underline),
+              //             )),
+              //       );
+              //     }),
               if (!isScrollable) const Spacer(),
               if (isScrollable) const SizedBox(width: 15),
               ElevatedButton(

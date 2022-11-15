@@ -1,52 +1,26 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/intl.dart';
-import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/colors.dart';
-import 'package:toby_bills/app/components/icon_button_widget.dart';
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/data/model/cost_center/dto/response/cost_center_response.dart';
-import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/categories_items_response.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/invoice_movement_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/journal_document_dialy_response.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
-import 'package:toby_bills/app/modules/reports/categories_items/controllers/categories_items_controller.dart';
-import 'package:toby_bills/app/modules/reports/invoice_movement/controllers/invoice_movement_controller.dart';
 import 'package:toby_bills/app/modules/reports/journal_document_dialy/controllers/journal_document_dialy_controller.dart';
-import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
-import 'package:toby_bills/app/modules/reports/sales_for_period/controllers/sales_for_period_controller.dart';
-
 
 class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
   const JournalDocumentDailyView({super.key});
 
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    DateTime enddate =DateTime.now();
-    DateTime startdate =DateTime.now();
-
-
-    var numController = TextEditingController();
-    var itemQuantityController = TextEditingController();
-    var clientController = TextEditingController();
-    var priceController = TextEditingController();
-    var invoiceController = TextEditingController();
-    var infoController = TextEditingController();
-
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
@@ -57,7 +31,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                   child: Container(width: size.width*.97,
                       height: size.height*.96,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
+                          borderRadius: const BorderRadius.all(
                               Radius.circular(10)),
                           color: Colors.white,
                           border: Border.all(color: Colors.grey)),
@@ -67,11 +41,11 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                             padding: const EdgeInsets.fromLTRB(5, 20, 15, 0),
                             child: Container(
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
-                                height: size.height*.3,
+                                // height: size.height*.3,
                                 width: size.width*.95,
                                 child: Column(
                                   children: [
@@ -84,77 +58,95 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
 
                                             SizedBox(width: size.width*.1,)
                                             , Text('من تاريخ',style: smallTextStyleNormal(size)),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child:
-                                              Container(
-                                                width: size.width * .3,
-                                                height: size.height * .04,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white70,
-                                                  borderRadius: BorderRadius.circular(5),
-
-                                                ),child:
-
-                                              Center(
-                                                child: MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: GestureDetector(
-                                                      onTap: () {
-                                                        controller.pickFromDate();
-                                                      },
-                                                      child: Obx(() {
-                                                        return Text(
-                                                          controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
-                                                          style: const TextStyle(decoration: TextDecoration.underline),
-                                                        );
-                                                      })),
-                                                ),
-                                              ),
-
-
-
-
+                                            const SizedBox(width: 10),
+                                            SizedBox(
+                                              width: size.width * .3,
+                                              child: DateFieldWidget(
+                                                onComplete: controller.dateFrom,
+                                                date: controller.dateFrom.value,
+                                                fillColor: Colors.white,
                                               ),
                                             ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                            //   child:
+                                            //   Container(
+                                            //     width: size.width * .3,
+                                            //     height: size.height * .04,
+                                            //     decoration: BoxDecoration(
+                                            //       color: Colors.white70,
+                                            //       borderRadius: BorderRadius.circular(5),
+                                            //
+                                            //     ),child:
+                                            //
+                                            //   Center(
+                                            //     child: MouseRegion(
+                                            //       cursor: SystemMouseCursors.click,
+                                            //       child: GestureDetector(
+                                            //           onTap: () {
+                                            //             controller.pickFromDate();
+                                            //           },
+                                            //           child: Obx(() {
+                                            //             return Text(
+                                            //               controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
+                                            //               style: const TextStyle(decoration: TextDecoration.underline),
+                                            //             );
+                                            //           })),
+                                            //     ),
+                                            //   ),
+                                            //
+                                            //
+                                            //
+                                            //
+                                            //   ),
+                                            // ),
 
                                             SizedBox(width: size.width*.1,)
                                             ,Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                               child: Text('الي تاريخ',style: smallTextStyleNormal(size)),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .3,
-                                                height: size.height * .04,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white70,
-                                                  borderRadius: BorderRadius.circular(5),
-
-                                                ),child:
-
-                                              Center(
-                                                child: MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: GestureDetector(
-                                                      onTap: () {
-                                                        controller.pickToDate();
-                                                      },
-                                                      child: Obx(() {
-                                                        return Text(
-                                                          controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
-                                                          style: const TextStyle(decoration: TextDecoration.underline),
-                                                        );
-                                                      })),
-                                                ),
-                                              ),
-
-
-
-
+                                            const SizedBox(width: 10),
+                                            SizedBox(
+                                              width: size.width * .3,
+                                              child: DateFieldWidget(
+                                                onComplete: controller.dateTo,
+                                                date: controller.dateTo.value,
+                                                fillColor: Colors.white,
                                               ),
                                             ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                            //   child: Container(
+                                            //     width: size.width * .3,
+                                            //     height: size.height * .04,
+                                            //     decoration: BoxDecoration(
+                                            //       color: Colors.white70,
+                                            //       borderRadius: BorderRadius.circular(5),
+                                            //
+                                            //     ),child:
+                                            //
+                                            //   Center(
+                                            //     child: MouseRegion(
+                                            //       cursor: SystemMouseCursors.click,
+                                            //       child: GestureDetector(
+                                            //           onTap: () {
+                                            //             controller.pickToDate();
+                                            //           },
+                                            //           child: Obx(() {
+                                            //             return Text(
+                                            //               controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
+                                            //               style: const TextStyle(decoration: TextDecoration.underline),
+                                            //             );
+                                            //           })),
+                                            //     ),
+                                            //   ),
+                                            //
+                                            //
+                                            //
+                                            //
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ),
@@ -169,14 +161,14 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                               padding: const EdgeInsets.fromLTRB(0,10,10,0),
                                               child: Row(
                                                 children: [
-                                                  Container(child: Text("من الحساب ")),
+                                                  Container(child: const Text("من الحساب ")),
                                                   Padding(
                                                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                                     child: Container(
                                                       width: size.width * .15,
                                                       height: size.height * .045,
                                                       decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.all(
+                                                          borderRadius: const BorderRadius.all(
                                                               Radius.circular(5)),
                                                           color: Colors.white,
                                                           border: Border.all(color: Colors.grey)),
@@ -207,14 +199,14 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                               padding: const EdgeInsets.fromLTRB(0,10,10,0),
                                               child: Row(
                                                 children: [
-                                                  Container(child: Text("الي الحساب ")),
+                                                  Container(child: const Text("الي الحساب ")),
                                                   Padding(
                                                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                                     child: Container(
                                                       width: size.width * .15,
                                                       height: size.height * .045,
                                                       decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.all(
+                                                          borderRadius: const BorderRadius.all(
                                                               Radius.circular(5)),
                                                           color: Colors.white,
                                                           border: Border.all(color: Colors.grey)),
@@ -245,14 +237,14 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                               padding: const EdgeInsets.fromLTRB(0,10,10,0),
                                               child: Row(
                                                 children: [
-                                                  Container(child: Text("من مركز تكلفه ")),
+                                                  Container(child: const Text("من مركز تكلفه ")),
                                                   Padding(
                                                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                                     child: Container(
                                                       width: size.width * .15,
                                                       height: size.height * .045,
                                                       decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.all(
+                                                          borderRadius: const BorderRadius.all(
                                                               Radius.circular(5)),
                                                           color: Colors.white,
                                                           border: Border.all(color: Colors.grey)),
@@ -283,14 +275,14 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                               padding: const EdgeInsets.fromLTRB(0,10,10,0),
                                               child: Row(
                                                 children: [
-                                                  Container(child: Text("من مركز تكلفه ")),
+                                                  Container(child: const Text("من مركز تكلفه ")),
                                                   Padding(
                                                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                                     child: Container(
                                                       width: size.width * .15,
                                                       height: size.height * .045,
                                                       decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.all(
+                                                          borderRadius: const BorderRadius.all(
                                                               Radius.circular(5)),
                                                           color: Colors.white,
                                                           border: Border.all(color: Colors.grey)),
@@ -334,7 +326,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
@@ -365,7 +357,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
@@ -400,7 +392,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
@@ -431,7 +423,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
@@ -512,7 +504,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                                     height: size.height * .05,
                                                     width: size.width * .1,
                                                     decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.all(
+                                                      borderRadius: const BorderRadius.all(
                                                           Radius.circular(6.00)), color:coloryellow,
                                                     ),
                                                     child: Row(mainAxisAlignment: MainAxisAlignment
@@ -520,7 +512,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                                       children: [
                                                         Text('بحث',
                                                           style: smallTextStyleNormal(size,color: Colors.black),),
-                                                        Icon(Icons.search,color: Colors.black,)
+                                                        const Icon(Icons.search,color: Colors.black,)
                                                       ],
                                                     ),
 
@@ -531,12 +523,12 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                                   height: size.height * .048,
                                                   width: size.width * .1,
                                                   decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(6.00)),
                                                     color:coloryellow,
                                                   ),
                                                   child: ElevatedButton(
-                                                    child: Text("رجوع"),
+                                                    child: const Text("رجوع"),
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
@@ -589,7 +581,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                               height: size.height*.06,
                               child:
                               Container(width:size.width*.03,
-                                  height: size.height*.03,child:SizedBox()),
+                                  height: size.height*.03,child:const SizedBox()),
                             ),
                           ),
                           Container(
@@ -598,11 +590,11 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
-                                    margin: EdgeInsets.all(0),
+                                    margin: const EdgeInsets.all(0),
                                     child: Table(
                                       defaultColumnWidth: FixedColumnWidth(size.width * .138),
                                       border: TableBorder.all(
-                                          borderRadius: BorderRadius.all(Radius.circular(0)),
+                                          borderRadius: const BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
                                           style: BorderStyle.solid,
                                           width: 1),
@@ -610,29 +602,29 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
 
                                         TableRow(children: [
 
-                                          Column(children: [Text('بيان القيد',
+                                          Column(children: [const Text('بيان القيد',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('مدخل القيد',
+                                          Column(children: [const Text('مدخل القيد',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('وزن القيد',
+                                          Column(children: [const Text('وزن القيد',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('مراجعه القيد ',
+                                          Column(children: [const Text('مراجعه القيد ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('التاريخ',
+                                          Column(children: [const Text('التاريخ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('رقم السند',
+                                          Column(children: [const Text('رقم السند',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('رقم القيد',
+                                          Column(children: [const Text('رقم القيد',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
                                         ],
-                                          decoration: BoxDecoration(color: appGreyDark,
+                                          decoration: const BoxDecoration(color: appGreyDark,
                                               borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(0),
                                                   topLeft: Radius.circular(0))),
@@ -645,43 +637,43 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                               Column(children: [
                                                 Text(
                                                     kha.generalStatement!,
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
-                                                Text(
+                                                const Text(
                                                    "",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
-                                                Text(
+                                                const Text(
                                                    "",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
-                                                Text(
+                                                const Text(
                                                     "",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                  DateFormat("yyyy-MM-dd").format(kha.generalDate!),                                                    style: TextStyle(fontSize: 20.0))
+                                                  DateFormat("yyyy-MM-dd").format(kha.generalDate!),                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.generalNumber!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                 kha.serial!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
 
 
 
 
                                             ],
-                                              decoration: BoxDecoration( color: appGreyLight,
+                                              decoration: const BoxDecoration( color: appGreyLight,
                                                   borderRadius: BorderRadius.only(
                                                       topRight: Radius.circular(0),
                                                       topLeft: Radius.circular(0))),

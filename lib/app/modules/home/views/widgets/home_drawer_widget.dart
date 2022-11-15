@@ -69,6 +69,10 @@ class HomeDrawerWidget extends GetView<HomeController> {
         title: "قيد اليوميه تفصيلي",
         onTap: () => goTo(Routes.JOURNAL_DOCUMENT_DIALY, "قيد اليوميه تفصيلي"),
       ),
+      HomeDrawerTileWidget(
+        title: "كشف حساب عميل",
+        onTap: () => goTo(Routes.CUSTOMER_ACCOUNT_STATEMENT, "كشف حساب عميل"),
+      ),
 
     ];
     return Drawer(

@@ -32,17 +32,6 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    DateTime enddate =DateTime.now();
-    DateTime startdate =DateTime.now();
-
-
-    var numController = TextEditingController();
-    var itemQuantityController = TextEditingController();
-    var clientController = TextEditingController();
-    var priceController = TextEditingController();
-    var invoiceController = TextEditingController();
-    var infoController = TextEditingController();
-
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,

@@ -43,7 +43,7 @@ class FindSalesValueAddedController extends GetxController{
 
   }
 
-  FindValesValueAdded() async {
+  findValesValueAdded() async {
     isLoading(true);
     final request = SalesOfItemsByCompanyRequest(
       dateTo: dateTo.value,
