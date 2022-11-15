@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/modules/reports/items_quantity/views/widgets/CardShadow.dart';
 import 'package:toby_bills/app/modules/reports/items_quantity/views/widgets/search_widget.dart';
@@ -27,13 +26,13 @@ class QuantityItemsView extends GetView<QuantityItemsController>{
             leadingWidth: size.width*0 ,
             title:  Container(width: size.width*.2,
               height: size.height*.06,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(
                     Radius.circular(6.00)),
                 color: Colors.blueAccent,
               ),
               child: TextButton(
-                child: Center(child: Text("رجوع")),
+                child: const Center(child: Text("رجوع",style: TextStyle(color: Colors.white),)),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -51,8 +50,8 @@ class QuantityItemsView extends GetView<QuantityItemsController>{
                 const SizedBox(
                   height: 20.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text('الاصناف')
                 ),
                 Padding(

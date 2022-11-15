@@ -1,45 +1,24 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/intl.dart';
 import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/colors.dart';
-import 'package:toby_bills/app/components/icon_button_widget.dart';
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
-import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_items_response.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/modules/reports/categories_items/controllers/categories_items_controller.dart';
-import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
 
 
 class CategoriesItemsView extends GetView<CategoriesItemsController> {
   const CategoriesItemsView({super.key});
 
-
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    DateTime enddate =DateTime.now();
-    DateTime startdate =DateTime.now();
-
-
-    var numController = TextEditingController();
-    var itemQuantityController = TextEditingController();
-    var clientController = TextEditingController();
-    var priceController = TextEditingController();
-    var invoiceController = TextEditingController();
-    var infoController = TextEditingController();
-
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
@@ -50,7 +29,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                   child: Container(width: size.width*.97,
                       height: size.height*.96,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
+                          borderRadius: const BorderRadius.all(
                               Radius.circular(10)),
                           color: Colors.white,
                           border: Border.all(color: Colors.grey)),
@@ -60,7 +39,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                             padding: const EdgeInsets.fromLTRB(5, 20, 15, 0),
                             child: Container(
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
@@ -82,7 +61,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
@@ -151,39 +130,50 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
 
                                             SizedBox(width: size.width*.1,)
                                             , Text('من تاريخ',style: smallTextStyleNormal(size)),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child:
-                                              Container(
-                                                width: size.width * .3,
-                                                height: size.height * .04,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white70,
-                                                  borderRadius: BorderRadius.circular(5),
-
-                                                ),child:
-
-                                              Center(
-                                                child: MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: GestureDetector(
-                                                      onTap: () {
-                                                        controller.pickFromDate();
-                                                      },
-                                                      child: Obx(() {
-                                                        return Text(
-                                                          controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
-                                                          style: const TextStyle(decoration: TextDecoration.underline),
-                                                        );
-                                                      })),
-                                                ),
-                                              ),
-
-
-
-
+                                            const SizedBox(width: 10),
+                                            SizedBox(
+                                              width: size.width * .3,
+                                              child: DateFieldWidget(
+                                                fillColor: Colors.white,
+                                                onComplete: (date){
+                                                  controller.dateFrom(date);
+                                                },
+                                                date: controller.dateFrom.value,
                                               ),
                                             ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                            //   child:
+                                            //   Container(
+                                            //     width: size.width * .3,
+                                            //     height: size.height * .04,
+                                            //     decoration: BoxDecoration(
+                                            //       color: Colors.white70,
+                                            //       borderRadius: BorderRadius.circular(5),
+                                            //
+                                            //     ),child:
+                                            //
+                                            //   Center(
+                                            //     child: MouseRegion(
+                                            //       cursor: SystemMouseCursors.click,
+                                            //       child: GestureDetector(
+                                            //           onTap: () {
+                                            //             controller.pickFromDate();
+                                            //           },
+                                            //           child: Obx(() {
+                                            //             return Text(
+                                            //               controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
+                                            //               style: const TextStyle(decoration: TextDecoration.underline),
+                                            //             );
+                                            //           })),
+                                            //     ),
+                                            //   ),
+                                            //
+                                            //
+                                            //
+                                            //
+                                            //   ),
+                                            // ),
                                             Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                       child: Text('رصيد اقل من',style: smallTextStyleNormal(size)),
@@ -194,7 +184,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                         width: size.width * .2,
                                         height: size.height * .045,
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
+                                            borderRadius: const BorderRadius.all(
                                                 Radius.circular(5)),
                                             color: Colors.white,
                                             border: Border.all(color: Colors.grey)),
@@ -249,7 +239,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                                     height: size.height * .05,
                                                     width: size.width * .1,
                                                     decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.all(
+                                                      borderRadius: const BorderRadius.all(
                                                           Radius.circular(6.00)), color:coloryellow,
                                                     ),
                                                     child: Row(mainAxisAlignment: MainAxisAlignment
@@ -257,7 +247,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                                       children: [
                                                         Text('بحث',
                                                           style: smallTextStyleNormal(size,color: Colors.black),),
-                                                        Icon(Icons.search,color: Colors.black,)
+                                                        const Icon(Icons.search,color: Colors.black,)
                                                       ],
                                                     ),
 
@@ -268,12 +258,12 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                                   height: size.height * .048,
                                                   width: size.width * .1,
                                                   decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(6.00)),
                                                     color:coloryellow,
                                                   ),
                                                   child: ElevatedButton(
-                                                    child: Text("رجوع"),
+                                                    child: const Text("رجوع"),
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
@@ -316,7 +306,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                               height: size.height*.06,
                               child:
                               Container(width:size.width*.03,
-                                  height: size.height*.03,child:SizedBox()),
+                                  height: size.height*.03,child:const SizedBox()),
                             ),
                           ),
                           Container(
@@ -325,11 +315,11 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
-                                    margin: EdgeInsets.all(0),
+                                    margin: const EdgeInsets.all(0),
                                     child: Table(
                                       defaultColumnWidth: FixedColumnWidth(size.width * .11),
                                       border: TableBorder.all(
-                                          borderRadius: BorderRadius.all(Radius.circular(0)),
+                                          borderRadius: const BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
                                           style: BorderStyle.solid,
                                           width: 1),
@@ -337,32 +327,32 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
 
                                         TableRow(children: [
 
-                                          Column(children: [Text('المعرض',
+                                          Column(children: [const Text('المعرض',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('رقم',
+                                          Column(children: [const Text('رقم',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('التاريخ',
+                                          Column(children: [const Text('التاريخ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('رقم العميل',
+                                          Column(children: [const Text('رقم العميل',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('العميل',
+                                          Column(children: [const Text('العميل',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('رقم الفاتوره',
+                                          Column(children: [const Text('رقم الفاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
-                                          Column(children: [Text('صافي الفاتوره',
+                                          Column(children: [const Text('صافي الفاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('المسدد',
+                                          Column(children: [const Text('المسدد',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('الباقي',
+                                          Column(children: [const Text('الباقي',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -370,7 +360,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
 
 
                                         ],
-                                          decoration: BoxDecoration(color: appGreyDark,
+                                          decoration: const BoxDecoration(color: appGreyDark,
                                               borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(0),
                                                   topLeft: Radius.circular(0))),
@@ -383,53 +373,53 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                               Column(children: [
                                                 Text(
                                                     kha.galleryName!,
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.serial!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
 
                                               Column(children: [
                                                 Text(
                                                     DateFormat("yyyy-MM-dd").format(kha.invoiceDate!),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.code!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.name!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.invNoticeValue!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.totalNet!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.paid!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.remain!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
 
 
                                             ],
-                                              decoration: BoxDecoration( color: appGreyLight,
+                                              decoration: const BoxDecoration( color: appGreyLight,
                                                   borderRadius: BorderRadius.only(
                                                       topRight: Radius.circular(0),
                                                       topLeft: Radius.circular(0))),

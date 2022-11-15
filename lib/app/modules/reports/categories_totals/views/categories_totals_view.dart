@@ -1,10 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:multiselect/multiselect.dart';
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_constants.dart';
 
@@ -105,21 +104,30 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                 textDirection: TextDirection.rtl,
               ),
             ),
-            Center(
-              child: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                    onTap: () {
-                      controller.pickFromDate();
-                    },
-                    child: Obx(() {
-                      return Text(
-                        DateFormat("yyyy-MM-dd").format(controller.dateFrom.value),
-                        style: const TextStyle(decoration: TextDecoration.underline),
-                      );
-                    })),
+            SizedBox(
+              width: 150,
+              child: DateFieldWidget(
+                onComplete: (date){
+                  controller.dateFrom(date);
+                },
+                date: controller.dateFrom.value,
               ),
             ),
+            // Center(
+            //   child: MouseRegion(
+            //     cursor: SystemMouseCursors.click,
+            //     child: GestureDetector(
+            //         onTap: () {
+            //           controller.pickFromDate();
+            //         },
+            //         child: Obx(() {
+            //           return Text(
+            //             DateFormat("yyyy-MM-dd").format(controller.dateFrom.value),
+            //             style: const TextStyle(decoration: TextDecoration.underline),
+            //           );
+            //         })),
+            //   ),
+            // ),
             const SizedBox(width: 15),
             const Center(
               child: Text(
@@ -127,21 +135,30 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                 textDirection: TextDirection.rtl,
               ),
             ),
-            Center(
-              child: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                    onTap: () {
-                      controller.pickToDate();
-                    },
-                    child: Obx(() {
-                      return Text(
-                        DateFormat("yyyy-MM-dd").format(controller.dateTo.value),
-                        style: const TextStyle(decoration: TextDecoration.underline),
-                      );
-                    })),
+            SizedBox(
+              width: 150,
+              child: DateFieldWidget(
+                onComplete: (date){
+                  controller.dateTo(date);
+                },
+                date: controller.dateTo.value,
               ),
             ),
+            // Center(
+            //   child: MouseRegion(
+            //     cursor: SystemMouseCursors.click,
+            //     child: GestureDetector(
+            //         onTap: () {
+            //           controller.pickToDate();
+            //         },
+            //         child: Obx(() {
+            //           return Text(
+            //             DateFormat("yyyy-MM-dd").format(controller.dateTo.value),
+            //             style: const TextStyle(decoration: TextDecoration.underline),
+            //           );
+            //         })),
+            //   ),
+            // ),
           ],
         ),
         actions: [

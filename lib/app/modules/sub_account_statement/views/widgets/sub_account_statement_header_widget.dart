@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/data/model/cost_center/dto/response/cost_center_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:toby_bills/app/modules/sub_account_statement/controllers/sub_account_statement_controller.dart';
@@ -23,48 +24,64 @@ class SubAccountStatementHeaderWidget extends GetView<SubAccountStatementControl
                 Row(
                   children: [
                     const Expanded(child: Text("من تاريخ")),
+                    const SizedBox(width: 10),
                     Expanded(
-                      child: MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: GestureDetector(
-                          onTap: () => controller.pickFromDate(),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(),
-                                borderRadius: BorderRadius.circular(5.0)
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                            child: Obx(() {
-                              return Center(child: Text(controller.dateFrom.value == null ? "----/--/--" : DateFormat("yyyy/MM/dd").format(controller.dateFrom.value!)));
-                            }),
-                          ),
-                        ),
+                      child: DateFieldWidget(
+                        onComplete: controller.dateFrom,
+                        date: controller.dateFrom.value,
+                        fillColor: Colors.white,
                       ),
                     ),
+                    // Expanded(
+                    //   child: MouseRegion(
+                    //     cursor: SystemMouseCursors.click,
+                    //     child: GestureDetector(
+                    //       onTap: () => controller.pickFromDate(),
+                    //       child: Container(
+                    //         decoration: BoxDecoration(
+                    //             border: Border.all(),
+                    //             borderRadius: BorderRadius.circular(5.0)
+                    //         ),
+                    //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    //         child: Obx(() {
+                    //           return Center(child: Text(controller.dateFrom.value == null ? "----/--/--" : DateFormat("yyyy/MM/dd").format(controller.dateFrom.value!)));
+                    //         }),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
                     const Expanded(child: Text("الى تاريخ")),
+                    const SizedBox(width: 10),
                     Expanded(
-                      child: MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: GestureDetector(
-                          onTap: () => controller.pickToDate(),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                            decoration: BoxDecoration(
-                                border: Border.all(),
-                                borderRadius: BorderRadius.circular(5.0)
-                            ),
-                            child: Obx(() {
-                              return Center(child: Text(controller.dateTo.value == null ? "----/--/--" : DateFormat("yyyy/MM/dd").format(controller.dateTo.value!)));
-                            }),
-                          ),
-                        ),
+                      child: DateFieldWidget(
+                        onComplete: controller.dateTo,
+                        date: controller.dateTo.value,
+                        fillColor: Colors.white,
                       ),
                     ),
+                    // Expanded(
+                    //   child: MouseRegion(
+                    //     cursor: SystemMouseCursors.click,
+                    //     child: GestureDetector(
+                    //       onTap: () => controller.pickToDate(),
+                    //       child: Container(
+                    //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    //         decoration: BoxDecoration(
+                    //             border: Border.all(),
+                    //             borderRadius: BorderRadius.circular(5.0)
+                    //         ),
+                    //         child: Obx(() {
+                    //           return Center(child: Text(controller.dateTo.value == null ? "----/--/--" : DateFormat("yyyy/MM/dd").format(controller.dateTo.value!)));
+                    //         }),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 const SizedBox(height: 10),

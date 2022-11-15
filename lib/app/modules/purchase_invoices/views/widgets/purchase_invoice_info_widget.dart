@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
@@ -56,25 +57,33 @@ class PurchaseInvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                       children: [
                         const Text('تاريخ فاتورة المورد:'),
                         const SizedBox(width: 5),
-                        MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: GestureDetector(
-                            onTap: () async {
-                              final date = await showDatePicker(
-                                  context: context,
-                                  initialDate: controller.supplierDate.value ?? DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime.now()
-                              );
-                              controller.supplierDate(date);
-                            },
-                            child: Text(
-                              controller.supplierDate.value == null ? "dd-mm-yyyy" : DateFormat("dd-MM-yyyy").format(controller.supplierDate.value!),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(decoration: TextDecoration.underline),
-                            ),
+                        Expanded(
+                          child: DateFieldWidget(
+                              onComplete: (date){
+                                controller.supplierDate(date);
+                              },
+                            date: controller.supplierDate.value,
                           ),
                         ),
+                        // MouseRegion(
+                        //   cursor: SystemMouseCursors.click,
+                        //   child: GestureDetector(
+                        //     onTap: () async {
+                        //       final date = await showDatePicker(
+                        //           context: context,
+                        //           initialDate: controller.supplierDate.value ?? DateTime.now(),
+                        //           firstDate: DateTime(2000),
+                        //           lastDate: DateTime.now()
+                        //       );
+                        //       controller.supplierDate(date);
+                        //     },
+                        //     child: Text(
+                        //       controller.supplierDate.value == null ? "dd-mm-yyyy" : DateFormat("dd-MM-yyyy").format(controller.supplierDate.value!),
+                        //       textAlign: TextAlign.center,
+                        //       style: const TextStyle(decoration: TextDecoration.underline),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -88,23 +97,12 @@ class PurchaseInvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                         children: [
                           const Text('تاريخ الاستحقاق:'),
                           const SizedBox(width: 5),
-                          MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: GestureDetector(
-                              onTap: () async {
-                                final date = await showDatePicker(
-                                    context: context,
-                                    initialDate: controller.dueDate.value ?? DateTime.now(),
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime.now()
-                                );
+                          Expanded(
+                            child: DateFieldWidget(
+                              onComplete: (date){
                                 controller.dueDate(date);
                               },
-                              child: Text(
-                                controller.dueDate.value == null ? "dd-mm-yyyy" : DateFormat("dd-MM-yyyy").format(controller.dueDate.value!),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(decoration: TextDecoration.underline),
-                              ),
+                              date: controller.dueDate.value,
                             ),
                           ),
                         ],

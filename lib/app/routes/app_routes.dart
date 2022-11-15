@@ -43,6 +43,7 @@ abstract class Routes {
   static const INVOICE_MOVEMENT = _Paths.INVOICE_MOVEMENT;
   static const JOURNAL_DOCUMENT_DIALY = _Paths.JOURNAL_DOCUMENT_DIALY;
   static const SUB_ACCOUNT_STATEMENT = _Paths.SUB_ACCOUNT_STATEMENT;
+  static const CUSTOMER_ACCOUNT_STATEMENT = _Paths.CUSTOMER_ACCOUNT_STATEMENT;
 
 
 
@@ -54,6 +55,7 @@ abstract class _Paths {
   static const CATEGORIES_TOTALS = '/categories-totals';
   static const INVOICE_STATUS = '/invoice-status';
   static const ACCOUNT_STATEMENT = '/account-statement';
+  static const CUSTOMER_ACCOUNT_STATEMENT = '/customer-account-statement';
   static const PRODUCTION_STAGES = '/production-stages';
   static const ITEMS_QUANTITY = '/items-quantity';
   static const ITEMS_SALES = '/items-sales';

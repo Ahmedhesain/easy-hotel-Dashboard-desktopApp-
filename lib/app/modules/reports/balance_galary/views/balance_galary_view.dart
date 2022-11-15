@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/colors.dart';
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
@@ -31,17 +32,6 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    DateTime enddate =DateTime.now();
-    DateTime startdate =DateTime.now();
-
-
-    var numController = TextEditingController();
-    var itemQuantityController = TextEditingController();
-    var clientController = TextEditingController();
-    var priceController = TextEditingController();
-    var invoiceController = TextEditingController();
-    var infoController = TextEditingController();
-
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
@@ -52,7 +42,7 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                   child: Container(width: size.width*.97,
                       height: size.height*.96,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
+                          borderRadius: const BorderRadius.all(
                               Radius.circular(10)),
                           color: Colors.white,
                           border: Border.all(color: Colors.grey)),
@@ -62,7 +52,7 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                             padding: const EdgeInsets.fromLTRB(5, 20, 15, 0),
                             child: Container(
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
@@ -84,7 +74,7 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
@@ -146,39 +136,50 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                                                 children: [
 
                                                    Text('من تاريخ',style: smallTextStyleNormal(size)),
-                                                  Padding(
-                                                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                    child:
-                                                    Container(
-                                                      width: size.width * .2,
-                                                      height: size.height * .04,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white70,
-                                                        borderRadius: BorderRadius.circular(5),
-
-                                                      ),child:
-
-                                                    Center(
-                                                      child: MouseRegion(
-                                                        cursor: SystemMouseCursors.click,
-                                                        child: GestureDetector(
-                                                            onTap: () {
-                                                              controller.pickFromDate();
-                                                            },
-                                                            child: Obx(() {
-                                                              return Text(
-                                                                controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
-                                                                style: const TextStyle(decoration: TextDecoration.underline),
-                                                              );
-                                                            })),
-                                                      ),
-                                                    ),
-
-
-
-
+                                                  const SizedBox(width: 10),
+                                                  SizedBox(
+                                                    width: size.width * .2,
+                                                    child: DateFieldWidget(
+                                                      fillColor: Colors.white,
+                                                      onComplete: (date){
+                                                        controller.dateFrom(date);
+                                                      },
+                                                      date: controller.dateFrom.value,
                                                     ),
                                                   ),
+                                                  // Padding(
+                                                  //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                  //   child:
+                                                  //   Container(
+                                                  //     width: size.width * .2,
+                                                  //     height: size.height * .04,
+                                                  //     decoration: BoxDecoration(
+                                                  //       color: Colors.white70,
+                                                  //       borderRadius: BorderRadius.circular(5),
+                                                  //
+                                                  //     ),child:
+                                                  //
+                                                  //   Center(
+                                                  //     child: MouseRegion(
+                                                  //       cursor: SystemMouseCursors.click,
+                                                  //       child: GestureDetector(
+                                                  //           onTap: () {
+                                                  //             controller.pickFromDate();
+                                                  //           },
+                                                  //           child: Obx(() {
+                                                  //             return Text(
+                                                  //               controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
+                                                  //               style: const TextStyle(decoration: TextDecoration.underline),
+                                                  //             );
+                                                  //           })),
+                                                  //     ),
+                                                  //   ),
+                                                  //
+                                                  //
+                                                  //
+                                                  //
+                                                  //   ),
+                                                  // ),
 
 
                                                   SizedBox(width: size.width*.05,)
@@ -186,38 +187,49 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                                                     padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                                     child: Text('الي تاريخ',style: smallTextStyleNormal(size)),
                                                   ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                    child: Container(
-                                                      width: size.width * .2,
-                                                      height: size.height * .04,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white70,
-                                                        borderRadius: BorderRadius.circular(5),
-
-                                                      ),child:
-
-                                                    Center(
-                                                      child: MouseRegion(
-                                                        cursor: SystemMouseCursors.click,
-                                                        child: GestureDetector(
-                                                            onTap: () {
-                                                              controller.pickToDate();
-                                                            },
-                                                            child: Obx(() {
-                                                              return Text(
-                                                                controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
-                                                                style: const TextStyle(decoration: TextDecoration.underline),
-                                                              );
-                                                            })),
-                                                      ),
-                                                    ),
-
-
-
-
+                                                  const SizedBox(width: 10),
+                                                  SizedBox(
+                                                    width: size.width * .2,
+                                                    child: DateFieldWidget(
+                                                      fillColor: Colors.white,
+                                                      onComplete: (date){
+                                                        controller.dateTo(date);
+                                                      },
+                                                      date: controller.dateTo.value,
                                                     ),
                                                   ),
+                                                  // Padding(
+                                                  //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                  //   child: Container(
+                                                  //     width: size.width * .2,
+                                                  //     height: size.height * .04,
+                                                  //     decoration: BoxDecoration(
+                                                  //       color: Colors.white70,
+                                                  //       borderRadius: BorderRadius.circular(5),
+                                                  //
+                                                  //     ),child:
+                                                  //
+                                                  //   Center(
+                                                  //     child: MouseRegion(
+                                                  //       cursor: SystemMouseCursors.click,
+                                                  //       child: GestureDetector(
+                                                  //           onTap: () {
+                                                  //             controller.pickToDate();
+                                                  //           },
+                                                  //           child: Obx(() {
+                                                  //             return Text(
+                                                  //               controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
+                                                  //               style: const TextStyle(decoration: TextDecoration.underline),
+                                                  //             );
+                                                  //           })),
+                                                  //     ),
+                                                  //   ),
+                                                  //
+                                                  //
+                                                  //
+                                                  //
+                                                  //   ),
+                                                  // ),
                                                 ],
                                               ),
                                             ),
@@ -256,7 +268,7 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                                                     height: size.height * .05,
                                                     width: size.width * .1,
                                                     decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.all(
+                                                      borderRadius: const BorderRadius.all(
                                                           Radius.circular(6.00)), color:coloryellow,
                                                     ),
                                                     child: Row(mainAxisAlignment: MainAxisAlignment
@@ -264,7 +276,7 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                                                       children: [
                                                         Text('بحث',
                                                           style: smallTextStyleNormal(size,color: Colors.black),),
-                                                        Icon(Icons.search,color: Colors.black,)
+                                                        const Icon(Icons.search,color: Colors.black,)
                                                       ],
                                                     ),
 
@@ -275,12 +287,12 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                                                   height: size.height * .048,
                                                   width: size.width * .1,
                                                   decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(6.00)),
                                                     color:coloryellow,
                                                   ),
                                                   child: ElevatedButton(
-                                                    child: Text("رجوع"),
+                                                    child: const Text("رجوع"),
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
@@ -323,7 +335,7 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                               height: size.height*.06,
                               child:
                               Container(width:size.width*.03,
-                                  height: size.height*.03,child:SizedBox()),
+                                  height: size.height*.03,child:const SizedBox()),
                             ),
                           ),
                           Container(
@@ -332,27 +344,27 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
-                                    margin: EdgeInsets.all(0),
+                                    margin: const EdgeInsets.all(0),
                                     child: Table(
                                       defaultColumnWidth: FixedColumnWidth(size.width * .2425),
                                       border: TableBorder.all(
-                                          borderRadius: BorderRadius.all(Radius.circular(0)),
+                                          borderRadius: const BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
                                           style: BorderStyle.solid,
                                           width: 1),
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [Text('المعرض',
+                                          Column(children: [const Text('المعرض',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('النوع',
+                                          Column(children: [const Text('النوع',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اسم البنك',
+                                          Column(children: [const Text('اسم البنك',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('القيمه',
+                                          Column(children: [const Text('القيمه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -361,7 +373,7 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
 
 
                                         ],
-                                          decoration: BoxDecoration(color: appGreyDark,
+                                          decoration: const BoxDecoration(color: appGreyDark,
                                               borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(0),
                                                   topLeft: Radius.circular(0))),
@@ -374,30 +386,30 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                                               Column(children: [
                                                 Text(
                                                     controller.selectedDeliveryPlace[0].name,
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.transactionType??"",
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.bankName??"",
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
 
 
                                               Column(children: [
                                                 Text(
                                                     kha.value?.toString()??"",
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
 
 
 
                                             ],
-                                              decoration: BoxDecoration( color: appGreyLight,
+                                              decoration: const BoxDecoration( color: appGreyLight,
                                                   borderRadius: BorderRadius.only(
                                                       topRight: Radius.circular(0),
                                                       topLeft: Radius.circular(0))),

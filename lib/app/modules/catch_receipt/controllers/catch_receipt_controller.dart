@@ -40,9 +40,9 @@ class CatchReceiptController extends GetxController {
   InvoiceList? itemInvoice;
   GlPayDTO? itemBank;
   Rxn<FindCustomerResponse> selectedCustomer = Rxn();
+  Rxn<GalleryResponse> selectedGallery = Rxn();
   Rxn<GlBankTransactionApi> glBankTransactionApi = Rxn();
   Rxn<FindCustomerBalanceResponse> customerBalance = Rxn();
-  Rxn<GalleryResponse> selectedGallery = Rxn();
 
   @override
   onInit(){

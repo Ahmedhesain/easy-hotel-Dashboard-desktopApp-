@@ -3,6 +3,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
@@ -89,31 +90,40 @@ class EditBillsView extends GetView<EditBillsController> {
                                 TableRow(
                                   children: [
                                     SizedBox(height: 40, child: Center(child: Text(kha.serial!.toString(), style: const TextStyle(fontSize: 20.0)))),
+                                    // SizedBox(
+                                    //   height: 40,
+                                    //   child: Center(
+                                    //     child: GetBuilder<EditBillsController>(
+                                    //         id: kha.id.toString(),
+                                    //         builder: (_) {
+                                    //           return MouseRegion(
+                                    //             cursor: SystemMouseCursors.click,
+                                    //             child: GestureDetector(
+                                    //               onTap: () async {
+                                    //                 final date = await showDatePicker(
+                                    //                     context: context,
+                                    //                     initialDate: kha.date ?? DateTime.now(),
+                                    //                     firstDate: DateTime(2017),
+                                    //                     lastDate: DateTime.now());
+                                    //                 kha.date = date ?? kha.date;
+                                    //                 controller.update([kha.id.toString()]);
+                                    //               },
+                                    //               child: Text(
+                                    //                 DateFormat("yyyy-MM-dd").format(kha.date!),
+                                    //                 style: const TextStyle(decoration: TextDecoration.underline, fontSize: 18),
+                                    //               ),
+                                    //             ),
+                                    //           );
+                                    //         }),
+                                    //   ),
+                                    // ),
                                     SizedBox(
                                       height: 40,
-                                      child: Center(
-                                        child: GetBuilder<EditBillsController>(
-                                            id: kha.id.toString(),
-                                            builder: (_) {
-                                              return MouseRegion(
-                                                cursor: SystemMouseCursors.click,
-                                                child: GestureDetector(
-                                                  onTap: () async {
-                                                    final date = await showDatePicker(
-                                                        context: context,
-                                                        initialDate: kha.date ?? DateTime.now(),
-                                                        firstDate: DateTime(2017),
-                                                        lastDate: DateTime.now());
-                                                    kha.date = date ?? kha.date;
-                                                    controller.update([kha.id.toString()]);
-                                                  },
-                                                  child: Text(
-                                                    DateFormat("yyyy-MM-dd").format(kha.date!),
-                                                    style: const TextStyle(decoration: TextDecoration.underline, fontSize: 18),
-                                                  ),
-                                                ),
-                                              );
-                                            }),
+                                      child: DateFieldWidget(
+                                        onComplete: (DateTime date) {
+                                          kha.date = date;
+                                        },
+                                        date: kha.date,
                                       ),
                                     ),
                                     Container(

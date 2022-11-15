@@ -1,20 +1,15 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/intl.dart';
 import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/colors.dart';
-import 'package:toby_bills/app/components/icon_button_widget.dart';
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
-import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
 
@@ -27,17 +22,6 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    DateTime enddate =DateTime.now();
-    DateTime startdate =DateTime.now();
-
-
-    var numController = TextEditingController();
-    var itemQuantityController = TextEditingController();
-    var clientController = TextEditingController();
-    var priceController = TextEditingController();
-    var invoiceController = TextEditingController();
-    var infoController = TextEditingController();
-
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
@@ -282,80 +266,102 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                         child: Row(
                                           children: [
 
-                                            SizedBox(width: size.width*.1,)
-                                            , Text('من تاريخ',style: smallTextStyleNormal(size)),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child:
-                                              Container(
-                                                width: size.width * .3,
-                                                height: size.height * .04,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white70,
-                                                  borderRadius: BorderRadius.circular(5),
-
-                                                ),child:
-
-                                              Center(
-                                                child: MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: GestureDetector(
-                                                      onTap: () {
-                                                        controller.pickFromDate();
-                                                      },
-                                                      child: Obx(() {
-                                                        return Text(
-                                                          controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
-                                                          style: const TextStyle(decoration: TextDecoration.underline),
-                                                        );
-                                                      })),
-                                                ),
-                                              ),
-
-
-
-
+                                            SizedBox(width: size.width*.1,),
+                                            Text('من تاريخ',style: smallTextStyleNormal(size)),
+                                            const SizedBox(width: 10),
+                                            SizedBox(
+                                              width: size.width * .25,
+                                              child: DateFieldWidget(
+                                                fillColor: Colors.white,
+                                                onComplete: (date){
+                                                  controller.dateFrom(date);
+                                                },
+                                                date: controller.dateFrom.value,
                                               ),
                                             ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                            //   child:
+                                            //   Container(
+                                            //     width: size.width * .3,
+                                            //     height: size.height * .04,
+                                            //     decoration: BoxDecoration(
+                                            //       color: Colors.white70,
+                                            //       borderRadius: BorderRadius.circular(5),
+                                            //
+                                            //     ),child:
+                                            //
+                                            //   Center(
+                                            //     child: MouseRegion(
+                                            //       cursor: SystemMouseCursors.click,
+                                            //       child: GestureDetector(
+                                            //           onTap: () {
+                                            //             controller.pickFromDate();
+                                            //           },
+                                            //           child: Obx(() {
+                                            //             return Text(
+                                            //               controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
+                                            //               style: const TextStyle(decoration: TextDecoration.underline),
+                                            //             );
+                                            //           })),
+                                            //     ),
+                                            //   ),
+                                            //
+                                            //
+                                            //
+                                            //
+                                            //   ),
+                                            // ),
 
 
-                                            SizedBox(width: size.width*.1,)
-                                            ,Padding(
+                                            SizedBox(width: size.width*.1,),
+                                            Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                               child: Text('الي تاريخ',style: smallTextStyleNormal(size)),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .3,
-                                                height: size.height * .04,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white70,
-                                                  borderRadius: BorderRadius.circular(5),
-
-                                                ),child:
-
-                                              Center(
-                                                child: MouseRegion(
-                                                  cursor: SystemMouseCursors.click,
-                                                  child: GestureDetector(
-                                                      onTap: () {
-                                                        controller.pickToDate();
-                                                      },
-                                                      child: Obx(() {
-                                                        return Text(
-                                                          controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
-                                                          style: const TextStyle(decoration: TextDecoration.underline),
-                                                        );
-                                                      })),
-                                                ),
-                                              ),
-
-
-
-
+                                            const SizedBox(width: 10),
+                                            SizedBox(
+                                              width: size.width * .25,
+                                              child: DateFieldWidget(
+                                                fillColor: Colors.white,
+                                                onComplete: (date){
+                                                  controller.dateTo(date);
+                                                },
+                                                date: controller.dateTo.value,
                                               ),
                                             ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                            //   child: Container(
+                                            //     width: size.width * .3,
+                                            //     height: size.height * .04,
+                                            //     decoration: BoxDecoration(
+                                            //       color: Colors.white70,
+                                            //       borderRadius: BorderRadius.circular(5),
+                                            //
+                                            //     ),child:
+                                            //
+                                            //   Center(
+                                            //     child: MouseRegion(
+                                            //       cursor: SystemMouseCursors.click,
+                                            //       child: GestureDetector(
+                                            //           onTap: () {
+                                            //             controller.pickToDate();
+                                            //           },
+                                            //           child: Obx(() {
+                                            //             return Text(
+                                            //               controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
+                                            //               style: const TextStyle(decoration: TextDecoration.underline),
+                                            //             );
+                                            //           })),
+                                            //     ),
+                                            //   ),
+                                            //
+                                            //
+                                            //
+                                            //
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
 import 'package:toby_bills/app/core/utils/double_filter.dart';
@@ -98,28 +99,34 @@ class PaymentsHeaderWidget extends GetView<PaymentsController> {
                   children: [
                     const Expanded(child: Text("التاريخ")),
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () async {
-                          final date = await showDatePicker(
-                            context: context,
-                            initialDate: controller.date.value ?? DateTime.now(),
-                            firstDate: DateTime(2016),
-                            lastDate: DateTime.now(),
-                          );
-                          if (date != null) {
-                            controller.date(date);
-                          }
-                        },
-                        child: Obx(
-                          () {
-                            return Text(
-                              controller.date.value == null ? "dd/mm/yyyy" : DateFormat("dd/MM/yyyy").format(controller.date.value!),
-                              style: const TextStyle(decoration: TextDecoration.underline),
-                            );
-                          },
-                        ),
+                      child: DateFieldWidget(
+                        onComplete: controller.date,
+                        date: controller.date.value,
                       ),
-                    )
+                    ),
+                    // Expanded(
+                    //   child: GestureDetector(
+                    //     onTap: () async {
+                    //       final date = await showDatePicker(
+                    //         context: context,
+                    //         initialDate: controller.date.value ?? DateTime.now(),
+                    //         firstDate: DateTime(2016),
+                    //         lastDate: DateTime.now(),
+                    //       );
+                    //       if (date != null) {
+                    //         controller.date(date);
+                    //       }
+                    //     },
+                    //     child: Obx(
+                    //       () {
+                    //         return Text(
+                    //           controller.date.value == null ? "dd/mm/yyyy" : DateFormat("dd/MM/yyyy").format(controller.date.value!),
+                    //           style: const TextStyle(decoration: TextDecoration.underline),
+                    //         );
+                    //       },
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
                 const SizedBox(height: 10),
