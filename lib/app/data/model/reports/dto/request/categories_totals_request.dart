@@ -1,6 +1,8 @@
+import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
+
 class CategoriesTotalsRequest {
   CategoriesTotalsRequest({
-    this.gallaryId,
+    this.gallaryList,
     this.branchId,
     this.dateFrom,
     this.tobAndKhiata,
@@ -9,7 +11,7 @@ class CategoriesTotalsRequest {
     this.symbolDtoapiList,
   });
 
-  int? gallaryId;
+  List<SymbolDtoapiList>? gallaryList;
   int? branchId;
   DateTime? dateFrom;
   int? tobAndKhiata;
@@ -18,12 +20,12 @@ class CategoriesTotalsRequest {
   int? invoiceType;
 
   Map<String, dynamic> toJson() => {
-    "gallaryId": gallaryId,
     "branchId": branchId,
     "dateFrom": dateFrom?.toIso8601String(),
     "tobAndKhiata": tobAndKhiata,
     "dateTo": dateTo?.toIso8601String(),
     "symbolDTOAPIList": List<dynamic>.from((symbolDtoapiList??[]).map((x) => x.toJson())),
+    "gallaryList": List<dynamic>.from((gallaryList??[]).map((x) => x.toJson())),
     "invoiceType": invoiceType,
   };
 }

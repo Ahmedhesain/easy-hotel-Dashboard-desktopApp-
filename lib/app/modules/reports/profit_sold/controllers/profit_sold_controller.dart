@@ -26,6 +26,14 @@ class ProfitSoldController extends GetxController{
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
   var categoryController = TextEditingController();
+  final Map<int, String> discBasis = {
+    1: "امر شغل",
+    2: "فاتوره",
+
+  };
+  final selectedStatus=1.obs;
+  int? invoiceTypeSelected;
+
 
 
 
@@ -46,7 +54,7 @@ class ProfitSoldController extends GetxController{
     final request = ProfitOfItemsSoldRequest(
       dateTo: dateTo.value,
       dateFrom:dateFrom.value,
-      invType: 4,
+      invType: invoiceTypeSelected,
       invoiceType:categoryController.text,
       invInventoryDtoList: deliveryPlaces.map((e) => DtoList(id: e.id)).toList(),
       proGroupDtoList: groups.map((e) => DtoList(id: e.id)).toList(),

@@ -137,6 +137,17 @@ class InvItemView extends GetView<InvItemController> {
                                               padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                               child: Text('الاصناف المستخدمه',style: smallTextStyleNormal(size)),
                                             ),
+                                     Padding(
+                                  padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                              child:  Checkbox(value: controller.checkBoxValue.value,
+                              activeColor: Colors.green,
+                              onChanged:(bool? newValue){
+
+                            controller.checkBoxValue.value = newValue!;
+                                      },
+                                 ),
+                                 ),
+
                                           ],
                                         ),
                                       ),
@@ -187,6 +198,32 @@ class InvItemView extends GetView<InvItemController> {
                                               padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                               child: Text('طبيعه الصنف',style: smallTextStyleNormal(size)),
                                             ),
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                              child: Container(
+                                                width: size.width * .2,
+                                                height: size.height * .045,
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(5)),
+                                                    color: Colors.white,
+                                                    border: Border.all(color: Colors.grey)),
+                                                child:
+                                                DropdownButton<int>(
+                                                  hint:  Text("Select an option"),
+                                                  value: controller.selectedStatus.value,
+                                                  onChanged: (int? newVal) {
+                                                    controller.selectedStatus.value = newVal!;
+                                                  },
+                                                  items: controller.discBasis.entries.map((e) {
+                                                    return DropdownMenuItem<int>(
+                                                      value: e.key,
+                                                      child: Text(e.value),
+                                                    );
+                                                  }).toList(),                                              ),
+                                              ),
+                                            ),
+
                                           ],
                                         ),
                                       ),
