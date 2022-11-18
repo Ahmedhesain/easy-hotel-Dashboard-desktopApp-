@@ -1,7 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
@@ -23,7 +22,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         foregroundColor: Colors.black,
-        titleTextStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.normal,color: Colors.black),
+        titleTextStyle: const TextStyle(fontSize: 14,fontWeight: FontWeight.normal,color: Colors.black),
         title: Row(
           children: [
             const Center(
@@ -47,7 +46,6 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                       contentPadding: EdgeInsets.symmetric(vertical: 10),
                       border: OutlineInputBorder(),
                     ),
-
                     childBuilder: (List<String> values) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -64,7 +62,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                 ),
               );
             }),
-            const SizedBox(width: 15),
+            const SizedBox(width: 10),
             const Center(
                 child: Text(
                   'نوع الفاتوره:',
@@ -73,7 +71,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
             const SizedBox(width: 5),
             Center(
               child: SizedBox(
-                width: 190,
+                width: 150,
                 child: Directionality(
                   textDirection: TextDirection.rtl,
                   child: DropdownSearch<String>(
@@ -97,7 +95,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                 ),
               ),
             ),
-            const SizedBox(width: 15),
+            const SizedBox(width: 10),
             const Center(
                 child: Text(
                   'المعرض :',
@@ -114,7 +112,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                       width: 200,
                       child: DropDownMultiSelect(
                         key: UniqueKey(),
-                        options: controller.deliveryPlaces.map((e) => e.name ?? "").toList(),
+                        options: controller.deliveryPlaces.map((e) => e.name).toList(),
                         selectedValues: controller.selectedDeliveryPlace.map((e) => e.name ?? "").toList(),
                         onChanged: controller.selectNewDeliveryplace,
                         decoration: const InputDecoration(
@@ -141,7 +139,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                 ),
               ),
             ),
-            const SizedBox(width: 15),
+            const SizedBox(width: 10),
             const Center(
               child: Text(
                 "من تاريخ: ",
@@ -149,7 +147,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               ),
             ),
             SizedBox(
-              width: 150,
+              width: 110,
               child: DateFieldWidget(
                 onComplete: (date){
                   controller.dateFrom(date);
@@ -172,7 +170,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
             //         })),
             //   ),
             // ),
-            const SizedBox(width: 15),
+            const SizedBox(width: 10),
             const Center(
               child: Text(
                 "الى تاريخ: ",
@@ -180,7 +178,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               ),
             ),
             SizedBox(
-              width: 150,
+              width: 110,
               child: DateFieldWidget(
                 onComplete: (date){
                   controller.dateTo(date);
@@ -212,7 +210,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               onPressed: () => controller.getReports(),
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 5),
           UnconstrainedBox(
             child: Obx(() {
               return ElevatedButton(
@@ -221,7 +219,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               );
             }),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 5),
           UnconstrainedBox(
             child: Obx(() {
               return ElevatedButton(
@@ -230,14 +228,14 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               );
             }),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 5),
           UnconstrainedBox(
             child: ElevatedButton(
-              child: Text("رجوع"),
+              child: const Text("رجوع"),
               onPressed: () => Get.back(),
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 5),
         ],
       ),
       body: Obx(() {
@@ -246,7 +244,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
           isLoading: controller.isLoading.value,
           child: Directionality(
             textDirection: TextDirection.rtl,
-            child: reports == null?SizedBox():TableWidget(
+            child: reports.isEmpty?const SizedBox():TableWidget(
               header: [
                 "الكود",
                 "الفئة",
