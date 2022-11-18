@@ -135,4 +135,7 @@ class ItemResponse {
     "lastCost": lastCost,
     "variationsList": variationsList == null ? null : List<dynamic>.from(variationsList!.map((x) => x)),
   };
+
+  @override
+  String toString() => "$name $code";
 }

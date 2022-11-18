@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
@@ -157,8 +157,8 @@ class EditBillsView extends GetView<EditBillsController> {
                                             controller: kha.textFieldController1,
                                             focusNode: kha.focusNode1,
                                             textDirection: TextDirection.rtl,
-                                            onEditingComplete: () =>
-                                                controller.getCustomersByCodeForInvoice(kha.textFieldController1.text, kha.focusNode1, kha.id!),
+                                            onSubmitted: (value) =>
+                                                controller.getCustomersByCodeForInvoice(value, kha.focusNode1, kha.id!),
                                             decoration: const InputDecoration(
                                                 border: OutlineInputBorder(),
                                                 isDense: true,
@@ -196,8 +196,8 @@ class EditBillsView extends GetView<EditBillsController> {
                                             textDirection: TextDirection.rtl,
                                             onTap: () => controller.getInvoiceListForCustomer(kha.customerId!, () => kha.focusNode2.requestFocus()),
                                             onChanged: (value) => kha.invoiceSerial = int.tryParse(value),
-                                            onEditingComplete: () =>
-                                                controller.getCustomersByCodeForInvoice(kha.textFieldController1.text, kha.focusNode1, kha.id!),
+                                            onSubmitted: (value) =>
+                                                controller.getCustomersByCodeForInvoice(value, kha.focusNode1, kha.id!),
                                             decoration: const InputDecoration(
                                                 border: OutlineInputBorder(),
                                                 isDense: true,

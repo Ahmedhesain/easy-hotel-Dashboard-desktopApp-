@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toby_bills/main.dart';
 import 'app/routes/app_pages.dart';
 
 class MyApp extends StatelessWidget{
@@ -10,9 +11,9 @@ class MyApp extends StatelessWidget{
     return GetMaterialApp(
       title: "Topy Bills",
       debugShowCheckedModeBanner: false,
-      initialRoute: AppPages.initialRoute,
+      initialRoute: windowArgs["route"] ?? AppPages.initialRoute,
       getPages: AppPages.routes,
-      locale: Locale("ar"),
+      locale: const Locale("ar"),
     );
   }
 }

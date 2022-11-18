@@ -1,17 +1,13 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
-import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_field_widget.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
-import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
-
 import '../../../../components/text_widget.dart';
 
 class SideWidget extends GetView<HomeController> {
@@ -22,7 +18,6 @@ class SideWidget extends GetView<HomeController> {
     final size = MediaQuery
         .of(context)
         .size;
-    print(UserManager().id);
     return Container(
       width: size.width * .17,
       height: size.height,
@@ -62,7 +57,7 @@ class SideWidget extends GetView<HomeController> {
                             child: Text(e.value),
                           ))
                           .toList(),
-                      onChanged: (value){
+                      onChanged: (value) {
                         controller.selectedDiscountType(value);
                         controller.calcInvoiceValues();
                       },
@@ -93,12 +88,11 @@ class SideWidget extends GetView<HomeController> {
                         controller: controller.invoiceDiscountController,
                         focusNode: controller.invoiceDiscountFieldFocusNode,
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(bottom: 5),
-                          isDense: true,
-                          suffixIcon: Text(!isDiscountValue?"%":""),
-                          suffixIconConstraints: const BoxConstraints(minHeight: 10)
-                        ),
-                        onChanged: (value){
+                            contentPadding: const EdgeInsets.only(bottom: 5),
+                            isDense: true,
+                            suffixIcon: Text(!isDiscountValue ? "%" : ""),
+                            suffixIconConstraints: const BoxConstraints(minHeight: 10)),
+                        onChanged: (value) {
                           if (value.isEmpty || num.tryParse(value) == null) {
                             controller.invoiceDiscountController.text = "0";
                           }
@@ -131,62 +125,72 @@ class SideWidget extends GetView<HomeController> {
           ),
           const SizedBox(height: 10),
           TypeAheadFormField<FindCustomerResponse>(
-              itemBuilder: (context, client) {
-                return SizedBox(
-                  height: 50,
-                  child: Center(
-                    child: Text("${client.name} ${client.code}"),
-                  ),
-                );
-              },
-              suggestionsCallback: (filter) => controller.customers,
-              onSuggestionSelected: controller.getInvoiceListForCustomer,
-              textFieldConfiguration: TextFieldConfiguration(
-                textInputAction: TextInputAction.next,
-                controller: controller.findSideCustomerController,
-                focusNode: controller.findSideCustomerFieldFocusNode,
-                onEditingComplete: () => controller.getCustomersByCode(),
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    // disabledBorder: InputBorder.none,
-                    // enabledBorder: InputBorder.none,
-                    // focusedBorder: InputBorder.none,
-                    hintText: "ابحث عن فاتورة لعميل معين",
-                    isDense: true,
-                    hintMaxLines: 2,
-                    contentPadding: EdgeInsets.all(5),
-                    suffixIconConstraints: BoxConstraints(maxWidth: 50),
-                    suffixIcon: IconButtonWidget(
-                      icon: Icons.search,
-                      onPressed: () {
-                        controller.getCustomersByCode();
-                      },
-                    )),
-              )),
+            key: UniqueKey(),
+            itemBuilder: (context, client) {
+              return Center(
+                child: Text(client.name.toString(), textAlign: TextAlign.center),
+              );
+            },
+            onSuggestionSelected: (FindCustomerResponse client) => controller.getInvoiceListForCustomer(client),
+            suggestionsCallback: (filter) =>
+                controller.customers.where((element) => element.name.toString().contains(filter) || element.code.toString().contains(filter)),
+            textFieldConfiguration: TextFieldConfiguration(
+              focusNode: controller.findSideCustomerFieldFocusNode,
+              controller: controller.findSideCustomerController,
+              onSubmitted: (value) => controller.getCustomersByCode(),
+            ),
+            noItemFoundText: "لايوجد بيانات",
+          ),
+          // TypeAheadFormField<FindCustomerResponse>(
+          //     itemBuilder: (context, client) {
+          //       return SizedBox(
+          //         height: 50,
+          //         child: Center(
+          //           child: Text("${client.name} ${client.code}"),
+          //         ),
+          //       );
+          //     },
+          //     suggestionsCallback: (filter) => controller.customers,
+          //     onSuggestionSelected: controller.getInvoiceListForCustomer,
+          //     textFieldConfiguration: TextFieldConfiguration(
+          //       textInputAction: TextInputAction.next,
+          //       controller: controller.findSideCustomerController,
+          //       focusNode: controller.findSideCustomerFieldFocusNode,
+          //       onEditingComplete: () => controller.getCustomersByCode(),
+          //       decoration: InputDecoration(
+          //           border: const OutlineInputBorder(),
+          //           // disabledBorder: InputBorder.none,
+          //           // enabledBorder: InputBorder.none,
+          //           // focusedBorder: InputBorder.none,
+          //           hintText: "ابحث عن فاتورة لعميل معين",
+          //           isDense: true,
+          //           hintMaxLines: 2,
+          //           contentPadding: const EdgeInsets.all(5),
+          //           suffixIconConstraints: const BoxConstraints(maxWidth: 50),
+          //           suffixIcon: IconButtonWidget(
+          //             icon: Icons.search,
+          //             onPressed: () {
+          //               controller.getCustomersByCode();
+          //             },
+          //           )),
+          //     )),
           const SizedBox(height: 10),
           TypeAheadFormField<InvoiceList>(
-              itemBuilder: (context, inv) {
-                return SizedBox(
-                  height: 50,
-                  child: Center(
-                    child: Text((inv.serial).toString()),
-                  ),
-                );
-              },
-              suggestionsCallback: (filter) {
-                return (controller.findCustomerBalanceResponse != null) ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null).toList() : [];
-              },
-              onSuggestionSelected: (value) {
-                controller.searchForInvoiceById(value.serial.toString());
-              },
-              textFieldConfiguration: TextFieldConfiguration(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    isDense: true,
-                    hintText: "ابحث عن رقم الفاتورة",
-                    // contentPadding: EdgeInsets.symmetric(horizontal: 5)
-                  ),
-                  controller: controller.searchedInvoiceController)),
+            suggestionsCallback: (filter) =>
+            (controller.findCustomerBalanceResponse != null)
+                ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null).toList()
+                : [],
+            onSuggestionSelected: (value) {
+              controller.searchForInvoiceById(value.serial.toString());
+            },
+            itemBuilder: (context, inv) {
+              return SizedBox(
+                height: 50,
+                child: Text(inv.serial.toString(), textAlign: TextAlign.center),
+              );
+            },
+            textFieldConfiguration: TextFieldConfiguration(controller: controller.searchedInvoiceController),
+          ),
           const SizedBox(height: 10),
           ButtonWidget(
             text: "بحث",

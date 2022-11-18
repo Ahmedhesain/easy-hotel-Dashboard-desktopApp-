@@ -1,6 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
@@ -43,7 +43,7 @@ class PurchaseInvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesControl
                       ),
                       SizedBox(
                         height: 30,
-                        child: TypeAheadField<ItemResponse>(
+                        child: TypeAheadFormField<ItemResponse>(
                           suggestionsCallback: (filter) => controller.filterItems(filter),
                           onSuggestionSelected: controller.selectItem,
                           itemBuilder: (context, item) {
@@ -62,8 +62,8 @@ class PurchaseInvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesControl
                                 filled: true,
                                 fillColor: Colors.white70,
                               ),
-                              onEditingComplete: () {
-                                final items = controller.filterItems(controller.itemNameController.text);
+                              onSubmitted: (value) {
+                                final items = controller.filterItems(value);
                                 if(controller.selectedItem.value != null){
                                   controller.itemQuantityFocusNode.requestFocus();
                                   return;

@@ -1,18 +1,14 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/data/model/cost_center/dto/response/cost_center_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
-import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
-import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/modules/payments/controllers/payments_controller.dart';
 import '../../../../components/icon_button_widget.dart';
 import '../../../../core/utils/double_filter.dart';
-import '../../../../data/model/inventory/dto/response/inventory_response.dart';
 
 class PaymentsDetailsWidget extends GetView<PaymentsController> {
   const PaymentsDetailsWidget({Key? key}) : super(key: key);
@@ -64,9 +60,9 @@ class PaymentsDetailsWidget extends GetView<PaymentsController> {
                           textInputAction: TextInputAction.next,
                           controller: detail.textFieldController1,
                           focusNode: detail.focusNode1,
-                          onEditingComplete: () {
+                          onSubmitted: (value) {
                             detail.focusNode1.unfocus();
-                            controller.getCustomers(detail.textFieldController1.text).whenComplete(() => detail.focusNode1.requestFocus());
+                            controller.getCustomers(value).whenComplete(() => detail.focusNode1.requestFocus());
                           },
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),

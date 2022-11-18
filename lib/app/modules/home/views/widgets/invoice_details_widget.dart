@@ -1,6 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
@@ -35,7 +35,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   flex: 4,
                   child: SizedBox(
                     height: 30,
-                    child: TypeAheadField<ItemResponse>(
+                    child: TypeAheadFormField<ItemResponse>(
                       suggestionsCallback: (filter) => controller.filterItems(filter),
                       onSuggestionSelected: (item) => controller.getItemData(
                           itemId: item.id!,
@@ -60,7 +60,6 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           controller: TextEditingController(text: "${detail.value.name} ${detail.value.code}"),
                           textInputAction: TextInputAction.next,
                           textAlignVertical: TextAlignVertical.center,
-                          enabled: true,
                           decoration: const InputDecoration(
                               contentPadding: EdgeInsets.symmetric(horizontal: 10), border: OutlineInputBorder(), filled: true, fillColor: Colors.white70),
                           onSubmitted: (value) {

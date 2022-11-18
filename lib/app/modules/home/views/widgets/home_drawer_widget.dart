@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
@@ -7,7 +8,7 @@ import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:toby_bills/app/routes/app_pages.dart';
-// import 'package:window_manager/window_manager.dart';
+import 'package:window_manager/window_manager.dart';
 
 class HomeDrawerWidget extends GetView<HomeController> {
   const HomeDrawerWidget({Key? key}) : super(key: key);
@@ -16,10 +17,12 @@ class HomeDrawerWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final sections = UserManager().user.userScreens;
     final list1 = [
-      if(sections["invpurchaseinvoice_1"]?.view ??false)
+      // if(sections["invpurchaseinvoice_1"]?.view ??false)
         HomeDrawerTileWidget(
           title: "فواتير الشراء",
-          onTap: () => goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء"),
+          onTap: () async {
+            return goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء");
+          },
         ),
       if(sections["customeraddnotice"]?.view??false)
         HomeDrawerTileWidget(
@@ -251,14 +254,23 @@ class HomeDrawerWidget extends GetView<HomeController> {
     );
   }
   
-  goTo(String to, String title)async{
-    if(Platform.isWindows) {
-      // windowManager.setTitle("Toby Bills -> $title");
-    }
-    await Get.toNamed(to);
-    if(Platform.isWindows) {
-      // windowManager.setTitle("Toby Bills -> شاشة المشتريات");
-    }
+  goTo(String to, String title) async {
+
+    final window = await DesktopMultiWindow.createWindow(jsonEncode({
+      'route': to,
+    }));
+    window
+      ..setFrame(const Offset(0, 0) & const Size(1280, 720))
+      ..center()
+      ..setTitle(title)
+      ..show();
+    // if(Platform.isWindows) {
+    //   windowManager.setTitle("Toby Bills -> $title");
+    // }
+    // await Get.toNamed(to);
+    // if(Platform.isWindows) {
+    //   windowManager.setTitle("Toby Bills -> شاشة المشتريات");
+    // }
   }
 }
 

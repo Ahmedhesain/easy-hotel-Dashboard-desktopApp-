@@ -84,4 +84,7 @@ class GlAccountResponse {
     "shotCode": shotCode == null ? null : shotCode,
     "status": status == null ? null : status,
   };
+
+  @override
+  String toString() => "$name";
 }

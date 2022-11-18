@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/date_field_widget.dart';
@@ -268,7 +268,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                 ),
               ),
               const SizedBox(width: 10),
-              Text('العميل:'),
+              const Text('العميل:'),
               const SizedBox(width: 4),
               Expanded(
                 child: Container(
@@ -307,7 +307,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                         textInputAction: TextInputAction.next,
                         controller: controller.invoiceCustomerController,
                         focusNode: controller.invoiceCustomerFieldFocusNode,
-                        onEditingComplete: () => controller.getCustomersByCodeForInvoice(),
+                        onSubmitted: (_) => controller.getCustomersByCodeForInvoice(),
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             // disabledBorder: InputBorder.none,
