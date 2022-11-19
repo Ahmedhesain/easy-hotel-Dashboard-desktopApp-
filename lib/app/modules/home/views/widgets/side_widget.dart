@@ -15,9 +15,7 @@ class SideWidget extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
     return Container(
       width: size.width * .17,
       height: size.height,
@@ -51,11 +49,10 @@ class SideWidget extends GetView<HomeController> {
                       value: controller.selectedDiscountType.value,
                       elevation: 0,
                       items: controller.discountType.entries
-                          .map((e) =>
-                          DropdownMenuItem<int>(
-                            value: e.key,
-                            child: Text(e.value),
-                          ))
+                          .map((e) => DropdownMenuItem<int>(
+                                value: e.key,
+                                child: Text(e.value),
+                              ))
                           .toList(),
                       onChanged: (value) {
                         controller.selectedDiscountType(value);
@@ -135,10 +132,10 @@ class SideWidget extends GetView<HomeController> {
             suggestionsCallback: (filter) =>
                 controller.customers.where((element) => element.name.toString().contains(filter) || element.code.toString().contains(filter)),
             textFieldConfiguration: TextFieldConfiguration(
-              focusNode: controller.findSideCustomerFieldFocusNode,
-              controller: controller.findSideCustomerController,
-              onSubmitted: (value) => controller.getCustomersByCode(),
-            ),
+                focusNode: controller.findSideCustomerFieldFocusNode,
+                controller: controller.findSideCustomerController,
+                onSubmitted: (value) => controller.getCustomersByCode(),
+                decoration: InputDecoration(border: OutlineInputBorder(), hintText: "ابحث عن عميل", isDense: true)),
             noItemFoundText: "لايوجد بيانات",
           ),
           // TypeAheadFormField<FindCustomerResponse>(
@@ -176,8 +173,7 @@ class SideWidget extends GetView<HomeController> {
           //     )),
           const SizedBox(height: 10),
           TypeAheadFormField<InvoiceList>(
-            suggestionsCallback: (filter) =>
-            (controller.findCustomerBalanceResponse != null)
+            suggestionsCallback: (filter) => (controller.findCustomerBalanceResponse != null)
                 ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null).toList()
                 : [],
             onSuggestionSelected: (value) {
@@ -189,7 +185,15 @@ class SideWidget extends GetView<HomeController> {
                 child: Text(inv.serial.toString(), textAlign: TextAlign.center),
               );
             },
-            textFieldConfiguration: TextFieldConfiguration(controller: controller.searchedInvoiceController),
+            textFieldConfiguration: TextFieldConfiguration(
+              controller: controller.searchedInvoiceController,
+              onSubmitted: controller.searchForInvoiceById,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "ابحث عن فاتورة",
+                isDense: true,
+              ),
+            ),
           ),
           const SizedBox(height: 10),
           ButtonWidget(

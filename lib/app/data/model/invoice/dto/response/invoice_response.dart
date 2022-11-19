@@ -53,14 +53,17 @@ class InvoiceResponse {
       required this.remain,
       required this.returnPurchaseValue,
       required this.serialTax,
+      required this.invoiceType,
       required this.shoulder,
       required this.status,
       required this.step,
       required this.supplierInvoiceNumber,
       required this.generalJournalId,
+      required this.typeInv,
       required this.totalNet, this.supplierDate});
 
   String? type;
+  int? typeInv;
   int? branchId;
   int? companyId;
   String? supplierInvoiceNumber;
@@ -139,8 +142,10 @@ class InvoiceResponse {
         generalJournalId: json["generalJournalId"],
        supplierInvoiceNumber: json["supplierInvoiceNumber"],
         createdBy: json["createdBy"],
+        invoiceType: json["invoicetype"],
         createdDate: DateTime.parse(json["createdDate"]),
         id: json["id"],
+        typeInv: json["typeInv"],
         customerId: json["customerId"],
         daribaValue: json["daribaValue"],
         date: DateTime.parse(json["date"]),
@@ -198,6 +203,7 @@ class InvoiceResponse {
         "branchId": branchId,
         "companyId": companyId,
         "generalJournalId": generalJournalId,
+        "typeInv": typeInv,
         "createdBy": createdBy,
         "createdDate": createdDate?.toIso8601String(),
         "id": id,
@@ -219,7 +225,7 @@ class InvoiceResponse {
         "segilValue": segilValue,
         "taxvalue": taxvalue,
         "supplierDate:": supplierDate?.toIso8601String(),
-        "invoiceType": invoiceType,
+        "invoicetype": invoiceType,
         "proof": proof,
         "totalNetAfterDiscount": totalNetAfterDiscount,
         "invoiceDetailApiList": invoiceDetailApiList?.map((e) => e.toJson()).toList(),

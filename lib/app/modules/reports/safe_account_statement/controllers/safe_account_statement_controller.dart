@@ -40,8 +40,8 @@ class SafeAccountStatementController extends GetxController{
         banks.addAll(data);
         selectedBanks.assignAll(data);
       },
-      onError: (e)=> error=e,
-      onComplete:()=> isLoading(false),
+      onError: (e) => error = e,
+      onComplete: () => isLoading(false),
 
     );
   }
