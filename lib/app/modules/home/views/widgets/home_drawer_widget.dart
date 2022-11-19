@@ -17,12 +17,17 @@ class HomeDrawerWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final sections = UserManager().user.userScreens;
     final list1 = [
-      // if(sections["invpurchaseinvoice_1"]?.view ??false)
+      HomeDrawerTileWidget(
+        title: "تفاصيل الفسح",
+        onTap: (){
+          // Get.toNamed(Routes.FASEH_DETAILS);
+          goTo(Routes.FASEH_DETAILS, "تفاصيل الفسح");
+        },
+      ),
+      if(sections["invpurchaseinvoice_1"]?.view ??false)
         HomeDrawerTileWidget(
           title: "فواتير الشراء",
-          onTap: () async {
-            return goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء");
-          },
+          onTap: () => goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء"),
         ),
       if(sections["customeraddnotice"]?.view??false)
         HomeDrawerTileWidget(

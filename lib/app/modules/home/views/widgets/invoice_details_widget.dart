@@ -374,7 +374,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                     onPressed: () {
                       final deleted = controller.invoiceDetails.removeAt(index);
                       if (controller.invoice.value?.id != null) {
-                        controller.invoice.value!.invoiceDetailApiListDeleted.add(deleted.value);
+                        controller.invoice.value!.invoiceDetailApiListDeleted!.add(deleted.value);
                       }
                       controller.calcInvoiceValues();
                     },

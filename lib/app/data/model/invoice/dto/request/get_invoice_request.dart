@@ -1,8 +1,8 @@
 class GetInvoiceRequest {
   GetInvoiceRequest({
-    required this.branchId,
-    required this.serial,
-    required this.gallaryId,
+    this.branchId,
+    this.serial,
+    this.gallaryId,
     this.typeInv,
   });
 

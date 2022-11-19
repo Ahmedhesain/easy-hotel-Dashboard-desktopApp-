@@ -37,16 +37,15 @@ abstract class Routes {
   static const NOTIFICATIONS = _Paths.NOTIFICATIONS;
   static const PAYMENTS = _Paths.PAYMENTS;
   static const CATCH_RECEIPT = _Paths.CATCH_RECEIPT;
-  static const CATCH_RECEIPT_ANOTHER_GALLERY = _Paths.CATCH_RECEIPT_ANOTHER_GALLERY;
+  static const CATCH_RECEIPT_ANOTHER_GALLERY =
+      _Paths.CATCH_RECEIPT_ANOTHER_GALLERY;
   static const CATEGORIES_ITEMS = _Paths.CATEGORIES_ITEMS;
   static const SALES_FOR_PERIOD = _Paths.SALES_FOR_PERIOD;
   static const INVOICE_MOVEMENT = _Paths.INVOICE_MOVEMENT;
   static const JOURNAL_DOCUMENT_DIALY = _Paths.JOURNAL_DOCUMENT_DIALY;
   static const SUB_ACCOUNT_STATEMENT = _Paths.SUB_ACCOUNT_STATEMENT;
   static const CUSTOMER_ACCOUNT_STATEMENT = _Paths.CUSTOMER_ACCOUNT_STATEMENT;
-
-
-
+  static const FASEH_DETAILS = _Paths.FASEH_DETAILS;
 }
 
 abstract class _Paths {
@@ -90,7 +89,5 @@ abstract class _Paths {
   static const INVOICE_MOVEMENT = '/invoice-movement';
   static const JOURNAL_DOCUMENT_DIALY = '/journal-document-dialy';
   static const SUB_ACCOUNT_STATEMENT = '/sub-account-statement';
-
-
-
+  static const FASEH_DETAILS = '/faseh-details';
 }

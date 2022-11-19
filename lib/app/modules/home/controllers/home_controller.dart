@@ -109,7 +109,7 @@ class HomeController extends GetxController {
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
   Rxn<GetDueDateResponse> dueDate = Rxn();
   Rx<DateTime> date = Rx(DateTime.now());
-  Rxn<InvoiceResponse> invoice = Rxn();
+  Rxn<InvoiceModel> invoice = Rxn();
 
   Map<int, String> priceTypes = {
     1: "رجالي",
@@ -562,7 +562,7 @@ class HomeController extends GetxController {
       glPayDTOList: [],
       invDelegatorId: selectedDelegator.value?.id,
       invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(),
-      invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted.map((element) => element).toList(),
+      invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted!.map((element) => element).toList(),
       invoiceType: AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0 ? null : AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
       pricetype: selectedPriceType.value,
       typeInv: 4,
