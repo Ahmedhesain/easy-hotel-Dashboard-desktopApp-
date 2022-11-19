@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
+import 'package:toby_bills/app/components/keys_widget.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/shortcuts/intents.dart';
 import 'package:toby_bills/app/modules/home/views/widgets/home_drawer_widget.dart';
@@ -19,33 +20,18 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return FocusScope(
-      autofocus: true,
-      onKeyEvent: (focusNode, keyEvent){
-        print(focusNode);
-        if(!controller.isLoading.value){
-          if(keyEvent.logicalKey == LogicalKeyboardKey.f5){
-            controller.saveInvoice();
-          } else if(keyEvent.logicalKey == LogicalKeyboardKey.f6){
-            controller.newInvoice();
-          } else if(keyEvent.logicalKey == LogicalKeyboardKey.f7){
-            controller.printInvoice(context);
-          } else if(keyEvent.logicalKey == LogicalKeyboardKey.f8){
-            controller.printGeneralJournal(context);
-          } else {
-            return KeyEventResult.ignored;
-          }
-          return KeyEventResult.handled;
-        }
-        return KeyEventResult.ignored;
-
-      },
-      child: GestureDetector(
-        onSecondaryTap: (){
-          controller.scaffoldKey.currentState!.openEndDrawer();
-        },
-        child: Obx(() {
-          return AppLoadingOverlay(
+    return Obx(() {
+      return KeysWidget(
+        enabled: !controller.isLoading.value,
+        newFunc: ()=> controller.newInvoice(),
+        printFunc: () => controller.printInvoice(context),
+        printJournalFunc: () => controller.printGeneralJournal(context),
+        saveFunc: () => controller.saveInvoice(),
+        child: GestureDetector(
+          onSecondaryTap: () {
+            controller.scaffoldKey.currentState!.openEndDrawer();
+          },
+          child: AppLoadingOverlay(
             isLoading: controller.isLoading.value,
             child: Scaffold(
               key: controller.scaffoldKey,
@@ -90,9 +76,9 @@ class HomeView extends GetView<HomeController> {
                 ],
               ),
             ),
-          );
-        }),
-      ),
-    );
+          ),
+        ),
+      );
+    });
   }
 }
