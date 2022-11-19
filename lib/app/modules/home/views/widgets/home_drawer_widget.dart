@@ -261,21 +261,21 @@ class HomeDrawerWidget extends GetView<HomeController> {
   
   goTo(String to, String title) async {
 
-    final window = await DesktopMultiWindow.createWindow(jsonEncode({
-      'route': to,
-    }));
-    window
-      ..setFrame(const Offset(0, 0) & const Size(1280, 720))
-      ..center()
-      ..setTitle(title)
-      ..show();
-    // if(Platform.isWindows) {
-    //   windowManager.setTitle("Toby Bills -> $title");
-    // }
-    // await Get.toNamed(to);
-    // if(Platform.isWindows) {
-    //   windowManager.setTitle("Toby Bills -> شاشة المشتريات");
-    // }
+    // final window = await DesktopMultiWindow.createWindow(jsonEncode({
+    //   'route': to,
+    // }));
+    // window
+    //   ..setFrame(const Offset(0, 0) & const Size(1280, 720))
+    //   ..center()
+    //   ..setTitle(title)
+    //   ..show();
+    if(Platform.isWindows) {
+      windowManager.setTitle("Toby Bills -> $title");
+    }
+    await Get.toNamed(to);
+    if(Platform.isWindows) {
+      windowManager.setTitle("Toby Bills -> شاشة المشتريات");
+    }
   }
 }
 

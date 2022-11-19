@@ -3,8 +3,11 @@ import 'package:get/get.dart';
 import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/find_faseh_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/faseh_invoice_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
@@ -16,12 +19,15 @@ class FasehDetailsController extends GetxController {
   final remarksController = TextEditingController();
   final itemCodeController = TextEditingController();
   final itemNumberController = TextEditingController();
+  final galleryController = TextEditingController();
   final numberFocus = FocusNode();
   final itemNameFocus = FocusNode();
 
   final isLoading = false.obs;
   final isSaved = false.obs;
 
+  Rxn<GalleryResponse> selectedGallery = Rxn();
+  final galleries = <GalleryResponse>[];
   final items = RxList<ItemResponse>();
   final invoiceDetailsList = RxList<InvoiceDetailsModel>();
   FasehInvoiceResponse? findInvoiceModel;
@@ -31,17 +37,35 @@ class FasehDetailsController extends GetxController {
   @override
   onInit() {
     super.onInit();
+    getGalleries();
     getItems();
+  }
+
+  Future<void> getGalleries() {
+    isLoading(true);
+    return InvoiceRepository().getGalleries(
+      GalleryRequest(branchId: UserManager().branchId, id: UserManager().id),
+      onSuccess: (data) {
+        galleries.assignAll(data);
+        if (galleries.any((element) => element.id == UserManager().galleryId)) {
+          selectedGallery(galleries.singleWhere((element) => element.id == UserManager().galleryId));
+        } else if (galleries.isNotEmpty) {
+          selectedGallery(galleries.first);
+        }
+      },
+      onError: (error) => showPopupText(text: error.toString()),
+    );
   }
 
   getItems() {
     isLoading(true);
-    ItemRepository().getAllItemsLocal(onSuccess: items.assignAll, onError: (e) => showPopupText(text: e.toString()), onComplete: () => isLoading(false));
+    ItemRepository()
+        .getAllItemsLocal(onSuccess: items.assignAll, onError: (e) => showPopupText(text: e.toString()), onComplete: () => isLoading(false));
   }
 
   search() async {
     isLoading(true);
-    InvoiceRepository().findFasehInvoice(GetInvoiceRequest(serial: searchController.text),
+    InvoiceRepository().findFasehInvoice(FindFasehInvoiceRequest(invSerial: searchController.text),
         onSuccess: (data) {
           findInvoiceModel = data;
         },
@@ -65,7 +89,7 @@ class FasehDetailsController extends GetxController {
       createdDate: DateTime.now(),
       date: DateTime.now(),
       branchId: UserManager().branchId,
-      gallaryId: UserManager().galleryId,
+      gallaryId: selectedGallery.value?.id,
       companyId: UserManager().companyId,
       createdBy: UserManager().id,
       customerCode: findInvoiceModel!.iosCode,
@@ -79,6 +103,7 @@ class FasehDetailsController extends GetxController {
     InvoiceRepository().saveFasehInvoice(invoiceModel!,
         onSuccess: (data) {
           invoiceModel!.serial = data;
+          isSaved(true);
           showPopupText(text: "تم الحفظ بنجاح", type: MsgType.success);
         },
         onError: (error) {
@@ -88,17 +113,23 @@ class FasehDetailsController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  selectNewItem(ItemResponse item) {
+  selectNewItem(ItemResponse item) async {
     itemCodeController.text = "${item.name!} ${item.code!}";
     itemNumberController.text = "1";
-    numberFocus.requestFocus();
     _selectedItem = item;
+    await Future.delayed(const Duration(milliseconds: 100));
+    numberFocus.requestFocus();
   }
 
   addItem() {
     if (_selectedItem != null) {
       final model = InvoiceDetailsModel(
-          code: _selectedItem!.code, itemId: _selectedItem!.id, unitId: _selectedItem!.unitId, name: _selectedItem!.name.toString(), quantity: num.parse(itemNumberController.text));
+        code: _selectedItem!.code,
+        itemId: _selectedItem!.id,
+        unitId: _selectedItem!.unitId,
+        name: _selectedItem!.name.toString(),
+        quantity: num.parse(itemNumberController.text),
+      );
       invoiceDetailsList.add(model);
       itemCodeController.clear();
       itemNumberController.clear();

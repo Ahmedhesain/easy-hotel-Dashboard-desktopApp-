@@ -100,6 +100,10 @@ class GalleryResponse {
     "segilValue": segilValue,
     "sellerName": sellerName,
   };
+
+  @override
+  String toString() => name.toString();
+
 }
 
 class AccountId {

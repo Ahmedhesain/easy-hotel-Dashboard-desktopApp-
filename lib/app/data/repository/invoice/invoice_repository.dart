@@ -1,5 +1,6 @@
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/delete_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/find_faseh_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
@@ -207,7 +208,7 @@ class InvoiceRepository {
 
 
   findFasehInvoice(
-      GetInvoiceRequest getInvoiceRequest, {
+      FindFasehInvoiceRequest fasehInvoiceRequest, {
         Function()? onComplete,
         Function(FasehInvoiceResponse data)? onSuccess,
         Function(dynamic error)? onError,
@@ -215,7 +216,7 @@ class InvoiceRepository {
       ApiProvider().post<FasehInvoiceResponse,Map<String,dynamic>>('permisionOrder/findInvoiceDataDis',
         onComplete: onComplete,
         onSuccess: onSuccess,
-        data: getInvoiceRequest.toJson(),
+        data: fasehInvoiceRequest.toJson(),
         onError: onError,
         convertor: FasehInvoiceResponse.fromJson,
       );
