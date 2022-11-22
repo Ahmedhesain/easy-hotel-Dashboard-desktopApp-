@@ -62,6 +62,7 @@ class SalesItemsByCompanyController extends GetxController{
     return InvoiceRepository().findInventoryByBranch(
       DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
+        data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
           // selectedDeliveryPlace(deliveryPlaces.first);

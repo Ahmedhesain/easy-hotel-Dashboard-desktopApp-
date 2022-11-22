@@ -64,6 +64,7 @@ class FindCustomerBalanceController extends GetxController{
     return InvoiceRepository().findInventoryByBranch(
       DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
+
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
           selectedDeliveryPlace(deliveryPlaces.first);

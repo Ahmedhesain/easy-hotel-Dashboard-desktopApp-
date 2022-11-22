@@ -29,11 +29,12 @@ class InvItemController extends GetxController{
   final groups = <AllGroupResponse>[].obs;
   RxList <AllGroupResponse> selectedGroup = RxList();
   final Map<int, String> discBasis = {
+    0:"الكل",
     1: "عرض",
     2: "عرضين",
 
   };
-  final selectedStatus=1.obs;
+  final selectedStatus=0.obs;
   final checkBoxValue =false.obs;
 
 
@@ -67,18 +68,6 @@ class InvItemController extends GetxController{
         onComplete: () => isLoading(false)
     );
   }
-  Future<void> getDeliveryPlaces() {
-    return InvoiceRepository().findInventoryByBranch(
-      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
-      onSuccess: (data) {
-        deliveryPlaces.assignAll(data);
-        if (deliveryPlaces.isNotEmpty) {
-          selectedDeliveryPlace(deliveryPlaces.first);
-        }
-      },
-      onError: (error) => showPopupText(text: error.toString()),
-    );
-  }
   pickFromDate() async {
     dateFrom(await _pickDate(initialDate: dateFrom.value ?? DateTime.now(), firstDate: DateTime(2019), lastDate: dateTo.value ?? DateTime.now()));
   }
@@ -94,6 +83,8 @@ class InvItemController extends GetxController{
     return ReportsRepository().groupStatement(
       AllGroupsRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
+        data.insert(0, AllGroupResponse(name: "تحديد الكل"));
+
         groups.assignAll(data);
         if (groups.isNotEmpty) {
         }

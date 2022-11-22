@@ -166,7 +166,7 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printCustomersBalance(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printCustomersBalance(context, controller.reports,controller.selectedDeliveryPlace.value),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),

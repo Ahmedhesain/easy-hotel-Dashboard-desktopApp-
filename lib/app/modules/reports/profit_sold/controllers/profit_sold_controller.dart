@@ -100,6 +100,7 @@ class ProfitSoldController extends GetxController{
     return ReportsRepository().groupStatement(
       AllGroupsRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
+        data.insert(0, AllGroupResponse(name: "تحديد الكل"));
         groups.assignAll(data);
         if (groups.isNotEmpty) {
           // selectedGroup(groups.first);

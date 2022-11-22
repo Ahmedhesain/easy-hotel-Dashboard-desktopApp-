@@ -57,6 +57,7 @@ class CategoriesTotalsController extends GetxController {
     ReportsRepository().getGroupList(
       request,
       onSuccess: (data) {
+
         symbols.assignAll(data);
         if(symbols.isNotEmpty){
           symbols.insert(0, const GroupListResponse(name: "تحديد الكل", id: -1));

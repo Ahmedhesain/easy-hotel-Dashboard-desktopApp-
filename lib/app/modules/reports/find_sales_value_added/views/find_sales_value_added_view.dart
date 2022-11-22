@@ -297,7 +297,7 @@ class FindSalesValueAddedView extends GetView<FindSalesValueAddedController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printSalesValueAdded(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printSalesValueAdded(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!,controller.selectedDeliveryPlace),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),

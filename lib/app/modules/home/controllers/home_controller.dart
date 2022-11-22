@@ -39,7 +39,7 @@ import 'package:toby_bills/app/data/repository/general_journal/general_journal_r
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
-import 'package:window_manager/window_manager.dart';
+// import 'package:window_manager/window_manager.dart';
 
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
@@ -126,7 +126,7 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+    // windowManager.setTitle("Toby Bills -> شاشة المبيعات");
     isLoading(true);
     _addItemFieldsListener();
     items.addAll(_getItemsFromStorage());

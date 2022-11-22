@@ -288,7 +288,7 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printBalanceGallary(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printBalanceGallary(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!,controller.selectedDeliveryPlace),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),
