@@ -105,7 +105,7 @@ class ExcelHelper {
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i), report.openningBalance);
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i), report.adding);
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: i), report.exitt);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: i), report.remarks);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: i), report.balance);
     }
     List<int>? x = excel.save(fileName: "كشف حساب.xlsx");
     await saveFile("كشف حساب.xlsx", x!, context);
