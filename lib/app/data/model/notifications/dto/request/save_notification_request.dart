@@ -6,6 +6,7 @@ class SaveNotificationRequest{
     this.serial,
     this.date,
     this.organizationSiteId,
+    this.organizationSiteName,
     this.remark,
     this.typeNotice,
     this.gallaryId,
@@ -24,6 +25,7 @@ class SaveNotificationRequest{
   DateTime? date;
   int? organizationSiteId;
   String? remark;
+  String? organizationSiteName;
   int? typeNotice;
   int? invInvoice;
   int? invInvoiceSerial;
@@ -37,6 +39,7 @@ class SaveNotificationRequest{
     "id": id,
     "gallaryId": gallaryId,
     "invInvoice": invInvoice,
+    "organizationSiteName": organizationSiteName,
     "invInvoiceSerial": invInvoiceSerial,
     "serial": serial,
     "date": date?.toIso8601String(),

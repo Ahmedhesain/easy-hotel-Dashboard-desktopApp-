@@ -11,7 +11,7 @@ class NotificationsButtonsWidget extends GetView<NotificationsController> {
 
   @override
   Widget build(BuildContext context) {
-    final permission = UserManager().user.userScreens["customeraddnotice"]!;
+    final permission = UserManager().user.userScreens["customeraddnotice"];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 15.0),
       child: Row(
@@ -45,14 +45,13 @@ class NotificationsButtonsWidget extends GetView<NotificationsController> {
               return Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if((permission.edit ?? false) || controller.invoice.value?.id == null)
-                    const SizedBox(width: 5),
-                  if((permission.edit ?? false) || controller.invoice.value?.id == null)
-                    ButtonWidget(text: "حفظ", onPressed: () => controller.saveNotification()),
+                  ButtonWidget(text: "إضافة", onPressed: () => controller.addNotification()),
                   const SizedBox(width: 5),
-                  if((permission.add ?? false))
+                  if((permission?.edit ?? false) || controller.invoice.value?.id == null)
+                    ButtonWidget(text: "حفظ", onPressed: () => controller.saveNotification()),
+                  if((permission?.add ?? false))
                     const SizedBox(width: 5),
-                  if((permission.add ?? false))
+                  if((permission?.add ?? false))
                     ButtonWidget(text: "جديد", onPressed: () => controller.newInvoice()),
                   if(controller.notification.value?.id != null)
                     Row(
@@ -60,9 +59,9 @@ class NotificationsButtonsWidget extends GetView<NotificationsController> {
                       children: [
                         const SizedBox(width: 5),
                         ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printGeneralJournal(context)),
-                        if((permission.delete ?? false) && controller.invoice.value?.id != null)
+                        if((permission?.delete ?? false) && controller.invoice.value?.id != null)
                           const SizedBox(width: 5),
-                        if((permission.delete ?? false) && controller.invoice.value?.id != null)
+                        if((permission?.delete ?? false) && controller.invoice.value?.id != null)
                           ButtonWidget(text: "حذف", onPressed: () => controller.deleteNotification()),
                       ],
                     ),

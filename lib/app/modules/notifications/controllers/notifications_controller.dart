@@ -34,6 +34,7 @@ class NotificationsController extends GetxController {
   Rxn<GalleryResponse> selectedGallery = Rxn();
   Rxn<InvoiceModel> invoice = Rxn();
   Rxn<FindNotificationResponse> notification = Rxn();
+  final notifications = RxList<SaveNotificationRequest>();
   FindCustomerBalanceResponse? findCustomerBalanceResponse;
   final user = UserManager();
   final searchedInvoiceController = TextEditingController();
@@ -87,7 +88,7 @@ class NotificationsController extends GetxController {
   }
 
 
-  newInvoice() {
+  newInvoice({bool clearList = true}) {
     date(DateTime.now());
     selectedCustomer.value = null;
     invoice.value = null;
@@ -97,6 +98,9 @@ class NotificationsController extends GetxController {
     findSideCustomerController.clear();
     priceController.clear();
     remarksController.clear();
+    if(clearList){
+      notifications.clear();
+    }
   }
 
   Future<void> getGalleries() {
@@ -137,24 +141,8 @@ class NotificationsController extends GetxController {
   }
 
   saveNotification(){
-    final request = SaveNotificationRequest(
-      serial: notification.value?.serial,
-      typeNotice: notificationType.value,
-      branchId: user.branchId,
-      id: notification.value?.id,
-      value: priceController.text.tryToParseToNum?.toDouble(),
-      companyId: user.companyId,
-      createdBy: user.id,
-      createdDate: notification.value?.createdDate,
-      date: date.value,
-      invInvoice: notification.value?.invInvoice ?? invoice.value?.id,
-      invInvoiceSerial: notification.value?.invInvoiceSerial ?? invoice.value?.serial,
-      gallaryId: selectedGallery.value?.id,
-      organizationSiteId: notification.value?.organizationSiteId ?? selectedCustomer.value?.id,
-      remark: remarksController.text
-    );
     isLoading(true);
-    NotificationsRepository().saveInvoiceNotice(request,
+    NotificationsRepository().saveInvoiceNotice(notifications,
       onSuccess: (data) {
         notification(data);
         showPopupText(text: "تم الحفظ بنجاح",type: MsgType.success);
@@ -162,6 +150,28 @@ class NotificationsController extends GetxController {
       onError: (e) => showPopupText(text: e.toString()),
       onComplete: () => isLoading(false)
     );
+  }
+
+  addNotification(){
+    final item = SaveNotificationRequest(
+        serial: notification.value?.serial,
+        typeNotice: notificationType.value,
+        branchId: user.branchId,
+        id: notification.value?.id,
+        organizationSiteName: notification.value?.organizationSiteName ?? selectedCustomer.value?.name,
+        value: priceController.text.tryToParseToNum?.toDouble(),
+        companyId: user.companyId,
+        createdBy: user.id,
+        createdDate: notification.value?.createdDate,
+        date: date.value,
+        invInvoice: notification.value?.invInvoice ?? invoice.value?.id,
+        invInvoiceSerial: notification.value?.invInvoiceSerial ?? invoice.value?.serial,
+        gallaryId: selectedGallery.value?.id,
+        organizationSiteId: notification.value?.organizationSiteId ?? selectedCustomer.value?.id,
+        remark: remarksController.text
+    );
+    notifications.add(item);
+    newInvoice(clearList: false);
   }
 
   printGeneralJournal(BuildContext context){
