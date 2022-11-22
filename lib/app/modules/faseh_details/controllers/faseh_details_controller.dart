@@ -18,15 +18,14 @@ class FasehDetailsController extends GetxController {
   final searchController = TextEditingController();
   final remarksController = TextEditingController();
   final itemCodeController = TextEditingController();
-  final itemNumberController = TextEditingController();
+  final itemQuantityController = TextEditingController();
   final galleryController = TextEditingController();
-  final numberFocus = FocusNode();
+  final quantityFocus = FocusNode();
   final itemNameFocus = FocusNode();
 
   final isLoading = false.obs;
   final isSaved = false.obs;
 
-  Rxn<GalleryResponse> selectedGallery = Rxn();
   final galleries = <GalleryResponse>[];
   final items = RxList<ItemResponse>();
   final invoiceDetailsList = RxList<InvoiceDetailsModel>();
@@ -37,25 +36,9 @@ class FasehDetailsController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    getGalleries();
     getItems();
   }
 
-  Future<void> getGalleries() {
-    isLoading(true);
-    return InvoiceRepository().getGalleries(
-      GalleryRequest(branchId: UserManager().branchId, id: UserManager().id),
-      onSuccess: (data) {
-        galleries.assignAll(data);
-        if (galleries.any((element) => element.id == UserManager().galleryId)) {
-          selectedGallery(galleries.singleWhere((element) => element.id == UserManager().galleryId));
-        } else if (galleries.isNotEmpty) {
-          selectedGallery(galleries.first);
-        }
-      },
-      onError: (error) => showPopupText(text: error.toString()),
-    );
-  }
 
   getItems() {
     isLoading(true);
@@ -89,7 +72,7 @@ class FasehDetailsController extends GetxController {
       createdDate: DateTime.now(),
       date: DateTime.now(),
       branchId: UserManager().branchId,
-      gallaryId: selectedGallery.value?.id,
+      gallaryId: findInvoiceModel!.gallaryId,
       companyId: UserManager().companyId,
       createdBy: UserManager().id,
       customerCode: findInvoiceModel!.iosCode,
@@ -115,10 +98,10 @@ class FasehDetailsController extends GetxController {
 
   selectNewItem(ItemResponse item) async {
     itemCodeController.text = "${item.name!} ${item.code!}";
-    itemNumberController.text = "1";
+    itemQuantityController.text = "1";
     _selectedItem = item;
     await Future.delayed(const Duration(milliseconds: 100));
-    numberFocus.requestFocus();
+    quantityFocus.requestFocus();
   }
 
   addItem() {
@@ -128,12 +111,12 @@ class FasehDetailsController extends GetxController {
         itemId: _selectedItem!.id,
         unitId: _selectedItem!.unitId,
         name: _selectedItem!.name.toString(),
-        quantity: num.parse(itemNumberController.text),
+        quantityOfOneUnit: num.parse(itemQuantityController.text),
       );
       invoiceDetailsList.add(model);
       itemCodeController.clear();
-      itemNumberController.clear();
-      if (numberFocus.hasFocus) numberFocus.unfocus();
+      itemQuantityController.clear();
+      if (quantityFocus.hasFocus) quantityFocus.unfocus();
       itemNameFocus.requestFocus();
     }
   }
@@ -147,9 +130,9 @@ class FasehDetailsController extends GetxController {
     invoiceModel = null;
     findInvoiceModel = null;
     remarksController.clear();
-    itemNumberController.clear();
+    itemQuantityController.clear();
     searchController.clear();
-    itemNumberController.clear();
+    itemQuantityController.clear();
     invoiceDetailsList.clear();
     isSaved(false);
   }

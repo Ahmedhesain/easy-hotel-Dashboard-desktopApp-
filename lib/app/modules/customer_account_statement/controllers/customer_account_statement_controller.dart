@@ -12,8 +12,6 @@ import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import '../../../core/utils/show_popup_text.dart';
 
 class CustomerAccountStatementController extends GetxController {
-
-
   final List<AccountStatementResponse> reports = [];
   final isLoading = false.obs;
   final user = UserManager();
@@ -28,7 +26,7 @@ class CustomerAccountStatementController extends GetxController {
   void onInit() {
     super.onInit();
     galleries.assignAll(Get.find<HomeController>().galleries);
-    if(galleries.any((element) => element.id == user.galleryId)) {
+    if (galleries.any((element) => element.id == user.galleryId)) {
       selectedGallery(galleries.singleWhere((element) => element.id == user.galleryId));
     }
   }
@@ -50,11 +48,16 @@ class CustomerAccountStatementController extends GetxController {
     isLoading(true);
     final request = AccountStatementRequest(id: selectedCustomer.value!.id!);
     CustomerRepository().getCustomerAccountStatement(request,
-        onSuccess: (data) => reports.assignAll(data),
+        onSuccess: (data) {
+          if (data.isNotEmpty) {
+            data.first.balance = data.first.sub;
+          }
+          for (var i = 1; i < data.length; i++) {
+            data[i].balance = data[i].sub + data[i-1].balance;
+          }
+          reports.assignAll(data);
+        },
         onError: (e) => showPopupText(text: e.toString()),
-        onComplete: () => isLoading(false)
-    );
+        onComplete: () => isLoading(false));
   }
-
-
 }

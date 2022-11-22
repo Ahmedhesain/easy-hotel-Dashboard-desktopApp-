@@ -2529,45 +2529,9 @@ class PrintingHelper {
               TableRow(children: [
                 Container(
                     color: grey,
-                    width: 45,
-                    child: Center(
-                        child: Text("رقم الفاتورة",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    width: 45,
-                    child: Center(
-                        child: Text("التاريخ",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    width: 55,
-                    child: Center(
-                        child: Text("عميل",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    width: 60,
-                    child: Center(
-                        child: Text("نوع الحركة",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
                     width: 40,
                     child: Center(
-                        child: Text("رقم فاتورة المبيعات",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    width: 40,
-                    child: Center(
-                        child: Text("الخزينة",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    width: 40,
-                    child: Center(
-                        child: Text("مدين",
+                        child: Text("الرصيد",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
@@ -2579,71 +2543,53 @@ class PrintingHelper {
                     color: grey,
                     width: 40,
                     child: Center(
-                        child: Text("الرصيد",
+                        child: Text("مدين",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("الخزينة",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("رقم فاتورة المبيعات",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 60,
+                    child: Center(
+                        child: Text("نوع الحركة",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 55,
+                    child: Center(
+                        child: Text("عميل",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 45,
+                    child: Center(
+                        child: Text("التاريخ",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 45,
+                    child: Center(
+                        child: Text("رقم الفاتورة",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
               ]),
               //table content
               for (int i = 0; i < data.length; i++)
                 TableRow(children: [
                   Container(
-                      width: 55,
-                      child: Center(
-                          child: Text(
-                            data[i].serial.toString(),
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 45,
-                      child: Center(
-                          child: Text(
-                            data[i].date == null ? "" : DateFormat("MM-dd-yyy").format(data[i].date!),
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 55,
-                      child: Center(
-                          child: Text(
-                            data[i].organizationName,
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 60,
-                      child: Center(
-                          child: Text(
-                            data[i].screenName,
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
                       width: 40,
                       child: Center(
                           child: Text(
-                            data[i].invoiceSerial?.toString() ?? "",
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 40,
-                      child: Center(
-                          child: Text(
-                            data[i].openningBalance.toStringAsFixed(2),
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 40,
-                      child: Center(
-                          child: Text(
-                            data[i].adding.toString(),
+                            data[i].balance.toStringAsFixed(2),
                             style: boldStyle,
                             textAlign: TextAlign.center,
                             textDirection: TextDirection.rtl,
@@ -2661,7 +2607,61 @@ class PrintingHelper {
                       width: 40,
                       child: Center(
                           child: Text(
-                            data[i].remarks ?? "",
+                            data[i].adding.toString(),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].openningBalance.toStringAsFixed(2),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].invoiceSerial?.toString() ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 60,
+                      child: Center(
+                          child: Text(
+                            data[i].screenName,
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 55,
+                      child: Center(
+                          child: Text(
+                            data[i].organizationName,
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 45,
+                      child: Center(
+                          child: Text(
+                            data[i].date == null ? "" : DateFormat("MM-dd-yyy").format(data[i].date!),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 55,
+                      child: Center(
+                          child: Text(
+                            data[i].serial.toString(),
                             style: boldStyle,
                             textAlign: TextAlign.center,
                             textDirection: TextDirection.rtl,

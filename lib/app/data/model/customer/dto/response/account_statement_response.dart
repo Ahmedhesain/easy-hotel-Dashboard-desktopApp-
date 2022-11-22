@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 class AccountStatementResponse {
 
   AccountStatementResponse({
@@ -18,6 +20,7 @@ class AccountStatementResponse {
   final num adding;
   final num exitt;
   final num openningBalance;
+  num balance = 0;
   final String organizationCode;
   final String organizationName;
   final num organizationSiteId;
@@ -26,6 +29,8 @@ class AccountStatementResponse {
   final num serial;
   final DateTime? date;
   final num? invoiceSerial;
+
+  num get sub => adding - exitt;
 
   static List<AccountStatementResponse> fromList(List<dynamic> json) => List<AccountStatementResponse>.from(json.map((e) => AccountStatementResponse.fromJson(e)));
 

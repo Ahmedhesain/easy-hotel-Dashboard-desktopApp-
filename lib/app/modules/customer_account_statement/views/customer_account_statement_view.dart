@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:toby_bills/app/components/flutter_typeahead.dart';
 
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
@@ -164,7 +164,7 @@ class CustomerAccountStatementView extends GetView<CustomerAccountStatementContr
             ]
                 .map((e) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 7),
-                      child: Text(e),
+                      child: Text(e, textAlign: TextAlign.center,),
                     ))
                 .toList(),
             headerHeight: 40,
@@ -178,13 +178,13 @@ class CustomerAccountStatementView extends GetView<CustomerAccountStatementContr
                       "${e.openningBalance}",
                       "${e.adding}",
                       "${e.exitt}",
-                      "${e.remarks}"
+                      "${e.balance}"
                     ].map((d) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 7),
                         child: Text(
                           d,
-                          maxLines: 2,
+                          maxLines: 2, textAlign: TextAlign.center, textDirection: TextDirection.ltr,
                         ),
                       );
                     }).toList())
