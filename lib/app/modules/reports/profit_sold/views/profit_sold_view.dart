@@ -1,6 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -13,8 +12,6 @@ import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/values/app_constants.dart';
-import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
 import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
@@ -28,8 +25,6 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-
     return Obx(() {
       return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
@@ -40,7 +35,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                   child: Container(width: size.width*.97,
                       height: size.height*.96,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
+                          borderRadius: const BorderRadius.all(
                               Radius.circular(10)),
                           color: Colors.white,
                           border: Border.all(color: Colors.grey)),
@@ -50,7 +45,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                             padding: const EdgeInsets.fromLTRB(5, 20, 15, 0),
                             child: Container(
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
@@ -72,7 +67,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
@@ -138,13 +133,13 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
                                                 child:
                                                 DropdownButton<int>(
-                                                  hint:  Text("Select an option"),
+                                                  hint:  const Text("Select an option"),
                                                   value: controller.selectedStatus.value,
                                                   onChanged: (int? newVal) {
                                                     controller.selectedStatus.value = newVal!;
@@ -165,7 +160,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
@@ -222,7 +217,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                 width: size.width * .2,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
                                                     border: Border.all(color: Colors.grey)),
@@ -410,7 +405,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                     height: size.height * .05,
                                                     width: size.width * .1,
                                                     decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.all(
+                                                      borderRadius: const BorderRadius.all(
                                                           Radius.circular(6.00)), color:coloryellow,
                                                     ),
                                                     child: Row(mainAxisAlignment: MainAxisAlignment
@@ -418,7 +413,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                       children: [
                                                         Text('بحث',
                                                           style: smallTextStyleNormal(size,color: Colors.black),),
-                                                        Icon(Icons.search,color: Colors.black,)
+                                                        const Icon(Icons.search,color: Colors.black,)
                                                       ],
                                                     ),
 
@@ -429,12 +424,12 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                   height: size.height * .048,
                                                   width: size.width * .1,
                                                   decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
+                                                    borderRadius: const BorderRadius.all(
                                                         Radius.circular(6.00)),
                                                     color:coloryellow,
                                                   ),
                                                   child: ElevatedButton(
-                                                    child: Text("رجوع"),
+                                                    child: const Text("رجوع"),
                                                     onPressed: () => Get.back(),
                                                   ),
                                                 ),
@@ -477,7 +472,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                               height: size.height*.06,
                               child:
                               Container(width:size.width*.03,
-                                  height: size.height*.03,child:SizedBox()),
+                                  height: size.height*.03,child:const SizedBox()),
                             ),
                           ),
                           Container(
@@ -486,36 +481,36 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
-                                    margin: EdgeInsets.all(0),
+                                    margin: const EdgeInsets.all(0),
                                     child: Table(
                                       defaultColumnWidth: FixedColumnWidth(size.width * .138),
                                       border: TableBorder.all(
-                                          borderRadius: BorderRadius.all(Radius.circular(0)),
+                                          borderRadius: const BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
                                           style: BorderStyle.solid,
                                           width: 1),
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [Text('الكود',
+                                          Column(children: const [Text('الكود',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('الاسم',
+                                          Column(children: const [Text('الاسم',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('متوسط التكلفه',
+                                          Column(children: const [Text('متوسط التكلفه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('كميه المبيعات',
+                                          Column(children: const [Text('كميه المبيعات',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('عدد المبيعات',
+                                          Column(children: const [Text('عدد المبيعات',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('الخصم الكلي',
+                                          Column(children: const [Text('الخصم الكلي',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('اجمالي سعر البيع',
+                                          Column(children: const [Text('اجمالي سعر البيع',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -523,67 +518,57 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
 
 
                                         ],
-                                          decoration: BoxDecoration(color: appGreyDark,
+                                          decoration: const BoxDecoration(color: appGreyDark,
                                               borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(0),
                                                   topLeft: Radius.circular(0))),
                                         ),
-                                        if(controller.reports != null)
-
-
-                                          for(ProfitOfItemsSoldResponse kha in controller.reports??[] )
+                                        for(ProfitOfItemsSoldResponse kha in controller.reports??[] )
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
                                                     kha.code!,
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.name!,
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
 
                                               Column(children: [
                                                 Text(
                                                     kha.costAverage!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.costAverage!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.costAverage!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.costAverage!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
                                                     kha.costAverage!.toString(),
-                                                    style: TextStyle(fontSize: 20.0))
+                                                    style: const TextStyle(fontSize: 20.0))
                                               ]),
 
 
                                             ],
-                                              decoration: BoxDecoration( color: appGreyLight,
+                                              decoration: const BoxDecoration( color: appGreyLight,
                                                   borderRadius: BorderRadius.only(
                                                       topRight: Radius.circular(0),
                                                       topLeft: Radius.circular(0))),
                                             )
-
-
-
-
-
-
-
 
                                       ],
                                     ),
@@ -704,8 +689,8 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
   }
   List<DropdownMenuItem<String>> get dropdownItems{
     List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(child: Text("USA"),value: "1"),
-      DropdownMenuItem(child: Text("Canada"),value: "2"),
+      const DropdownMenuItem(child: Text("USA"),value: "1"),
+      const DropdownMenuItem(child: Text("Canada"),value: "2"),
 
     ];
     return menuItems;

@@ -71,8 +71,8 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                                     width: 200,
                                                     child: DropDownMultiSelect(
                                                       key: UniqueKey(),
-                                                      options: controller.deliveryPlaces.map((e) => e.name).toList(),
-                                                      selectedValues: controller.selectedDeliveryPlace.map((e) => e.name).toList(),
+                                                      options: controller.deliveryPlaces.map((e) => e.name??"").toList(),
+                                                      selectedValues: controller.selectedDeliveryPlace.map((e) => e.name??"").toList(),
                                                       onChanged: controller.selectNewDeliveryplace,
                                                       decoration: const InputDecoration(
                                                         isDense: true,
