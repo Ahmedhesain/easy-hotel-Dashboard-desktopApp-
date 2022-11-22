@@ -17,7 +17,7 @@ class BalanceGalaryResponse {
 
   String ?bankName;
   String ?transactionType;
-  double ?value;
+  num ?value;
 
   static List<BalanceGalaryResponse> fromList(List<dynamic> json) => List.from(json.map((e) => BalanceGalaryResponse.fromJson(e)));
 
@@ -25,7 +25,7 @@ class BalanceGalaryResponse {
   factory BalanceGalaryResponse.fromJson(Map<String, dynamic> json) => BalanceGalaryResponse(
     bankName: json["bankName"] == null ? null : json["bankName"],
     transactionType: json["transactionType"] == null ? null : json["transactionType"],
-    value: json["value"] == null ? null : json["value"].toDouble(),
+    value: json["value"] == null ? null : json["value"],
   );
 
   Map<String, dynamic> toJson() => {

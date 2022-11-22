@@ -150,7 +150,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                   return DropdownSearch<DeliveryPlaceResposne>(
                     // showSearchBox: true,
                     items: controller.deliveryPlaces,
-                    itemAsString: (DeliveryPlaceResposne e) => e.name,
+                    itemAsString: (DeliveryPlaceResposne e) => e.name ?? "",
                     onChanged: controller.selectedDeliveryPlace,
                     selectedItem: controller.selectedDeliveryPlace.value,
                     dropdownDecoratorProps: const DropDownDecoratorProps(

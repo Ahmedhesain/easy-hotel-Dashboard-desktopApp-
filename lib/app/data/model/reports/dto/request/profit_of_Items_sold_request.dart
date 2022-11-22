@@ -23,7 +23,7 @@ class ProfitOfItemsSoldRequest {
   DateTime? dateFrom;
   DateTime ?dateTo;
   int ?invType;
-  String? invoiceType;
+  int? invoiceType;
   List<DtoList>? invInventoryDtoList;
   List<DtoList>? proGroupDtoList;
 

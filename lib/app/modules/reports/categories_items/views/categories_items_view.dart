@@ -71,8 +71,8 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                                     width: 200,
                                                     child: DropDownMultiSelect(
                                                       key: UniqueKey(),
-                                                      options: controller.deliveryPlaces.map((e) => e.name).toList(),
-                                                      selectedValues: controller.selectedDeliveryPlace.map((e) => e.name).toList(),
+                                                      options: controller.deliveryPlaces.map((e) => e.name??"").toList(),
+                                                      selectedValues: controller.selectedDeliveryPlace.map((e) => e.name??"").toList(),
                                                       onChanged: controller.selectNewDeliveryplace,
                                                       decoration: const InputDecoration(
                                                         isDense: true,
@@ -316,7 +316,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                   Container(
                                     margin: const EdgeInsets.all(0),
                                     child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .11),
+                                      defaultColumnWidth: FixedColumnWidth(size.width * .1075),
                                       border: TableBorder.all(
                                           borderRadius: const BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,

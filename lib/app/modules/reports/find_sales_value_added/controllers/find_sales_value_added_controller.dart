@@ -43,6 +43,8 @@ class FindSalesValueAddedController extends GetxController{
 
   }
 
+
+
   findValesValueAdded() async {
     isLoading(true);
     final request = SalesOfItemsByCompanyRequest(
@@ -99,6 +101,9 @@ class FindSalesValueAddedController extends GetxController{
       selectedDeliveryPlace.assignAll(deliveryPlaces.where((element) => values.contains(element.name)));
     }
   }
+
+
+
 
 // Future<void> searchItem() async {
   //   reports.clear();

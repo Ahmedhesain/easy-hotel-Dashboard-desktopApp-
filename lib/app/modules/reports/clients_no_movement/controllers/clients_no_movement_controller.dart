@@ -24,7 +24,7 @@ class ClientsNoMovementController extends GetxController{
   final isLoading = false.obs;
   String query = '';
   final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
-  Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
+  RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
 
@@ -46,7 +46,8 @@ class ClientsNoMovementController extends GetxController{
     final request = ClientsNoMovementRequest(
       branchId: UserManager().branchId,
       dateFrom:dateFrom.value,
-      gallarySellected: GallarySellected(id: selectedDeliveryPlace.value!.id),
+      invInventoryDtoList:selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
+      // GallarySellected(id: selectedDeliveryPlace.value!.id),
       // invInventoryDtoList: deliveryPlaces.map((e) => DtoList(id: e.id)).toList(),
     );
     ReportsRepository().ClientsNoMovement(request,
@@ -64,7 +65,7 @@ class ClientsNoMovementController extends GetxController{
       onSuccess: (data) {
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
-          selectedDeliveryPlace(deliveryPlaces.first);
+          // selectedDeliveryPlace(deliveryPlaces.first);
         }
       },
       onError: (error) => showPopupText(text: error.toString()),
@@ -79,6 +80,18 @@ class ClientsNoMovementController extends GetxController{
     return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
   }
 
+  selectNewDeliveryplace(List<String> values) {
+    if (!values.contains("تحديد الكل") && selectedDeliveryPlace.any((element) => element.name == "تحديد الكل")) {
+      selectedDeliveryPlace.clear();
+    } else if (!selectedDeliveryPlace.any((element) => element.name == "تحديد الكل") && values.contains("تحديد الكل")) {
+      selectedDeliveryPlace.assignAll(deliveryPlaces);
+    } else {
+      if (values.length < selectedDeliveryPlace.length && values.contains("تحديد الكل")) {
+        values.remove("تحديد الكل");
+      }
+      selectedDeliveryPlace.assignAll(deliveryPlaces.where((element) => values.contains(element.name)));
+    }
+  }
 
 // Future<void> searchItem() async {
   //   reports.clear();

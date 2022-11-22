@@ -373,7 +373,7 @@ class BalanceGallaryView extends GetView<BalanceGallaryController> {
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
-                                                    controller.selectedDeliveryPlace[0].name,
+                                                    controller.selectedDeliveryPlace[0].name ?? "",
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [

@@ -319,7 +319,7 @@ class ReportsRepository {
         Function(List<FindSalesValueAddedResponse> data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-      ApiProvider().post<List<FindSalesValueAddedResponse>,List<dynamic>>('salesValueAdded/FindSalesValueAddedDetails',
+      ApiProvider().post<List<FindSalesValueAddedResponse>,List<dynamic>>('salesValueAdded/FindSalesValueAdded',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: salesOfItemsByCompanyRequest.toJson(),

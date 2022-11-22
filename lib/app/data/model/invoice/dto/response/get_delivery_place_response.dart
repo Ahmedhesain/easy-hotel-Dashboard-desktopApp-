@@ -1,49 +1,49 @@
 class DeliveryPlaceResposne {
   DeliveryPlaceResposne({
-    required this.type,
-    required this.markEdit,
-    required this.name,
-    required this.branchId,
-    required this.companyId,
-    required this.createdBy,
-    required this.createdDate,
-    required this.id,
-    required this.index,
-    required this.code,
-    required this.costAccount,
-    required this.costCenterId,
-    required this.daribaValue,
-    required this.invName,
-    required this.invType,
-    required this.runningAccount,
-    required this.segilValue,
-    required this.sellerName,
-    required this.accountId,
-    required this.customerAccount,
-    required this.phone,
+    this.type,
+    this.markEdit,
+    this.name,
+    this.branchId,
+    this.companyId,
+    this.createdBy,
+    this.createdDate,
+    this.id,
+    this.index,
+    this.code,
+    this.costAccount,
+    this.costCenterId,
+    this.daribaValue,
+    this.invName,
+    this.invType,
+    this.runningAccount,
+    this.segilValue,
+    this.sellerName,
+    this.accountId,
+    this.customerAccount,
+    this.phone,
   });
 
-  final String type;
-  final bool markEdit;
-  final String name;
-  final int? branchId;
-  final int? companyId;
-  final int? createdBy;
-  final DateTime? createdDate;
-  final int? id;
-  final int? index;
-  final String? code;
-  final AccountId? costAccount;
-  final AccountId? costCenterId;
-  final String? daribaValue;
-  final int? invName;
-  final int? invType;
-  final AccountId? runningAccount;
-  final String? segilValue;
-  final String? sellerName;
-  final AccountId? accountId;
-  final AccountId? customerAccount;
-  final String? phone;
+  String? type;
+  bool? markEdit;
+  String? name;
+  int? branchId;
+  int? companyId;
+  int? createdBy;
+  DateTime? createdDate;
+  int? id;
+  int? index;
+  String? code;
+  AccountId? costAccount;
+  AccountId? costCenterId;
+  String? daribaValue;
+  int? invName;
+  int? invType;
+  AccountId? runningAccount;
+  String? segilValue;
+  String? sellerName;
+  AccountId? accountId;
+  AccountId? customerAccount;
+  String? phone;
 
   static List<DeliveryPlaceResposne> getList(List<dynamic> json) => List<DeliveryPlaceResposne>.from(json.map((x) => DeliveryPlaceResposne.fromJson(x)));
 

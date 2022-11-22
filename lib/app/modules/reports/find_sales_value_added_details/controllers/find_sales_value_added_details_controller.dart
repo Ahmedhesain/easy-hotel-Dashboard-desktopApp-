@@ -62,9 +62,11 @@ class FindValesValueAddedDetailsController extends GetxController{
       DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
         deliveryPlaces.assignAll(data);
-        if (deliveryPlaces.isNotEmpty) {
-          // selectedDeliveryPlace(deliveryPlaces.first);
-        }
+        // if (deliveryPlaces.isNotEmpty) {
+        //   // deliveryPlaces.insert(0, );
+        //
+        //   // selectedDeliveryPlace(deliveryPlaces.first);
+        // }
       },
       onError: (error) => showPopupText(text: error.toString()),
     );

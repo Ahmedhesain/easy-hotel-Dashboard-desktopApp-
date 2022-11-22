@@ -4,29 +4,31 @@
 
 import 'dart:convert';
 
+import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
+
 ClientsNoMovementRequest clientsNoMovementRequestFromJson(String str) => ClientsNoMovementRequest.fromJson(json.decode(str));
 
 String clientsNoMovementRequestToJson(ClientsNoMovementRequest data) => json.encode(data.toJson());
 
 class ClientsNoMovementRequest {
   ClientsNoMovementRequest({
-    this.gallarySellected,
+    this.invInventoryDtoList,
     this.branchId,
     this.dateFrom,
   });
 
-  GallarySellected ?gallarySellected;
+  List<DtoList>? invInventoryDtoList;
   int ?branchId;
   DateTime? dateFrom;
 
   factory ClientsNoMovementRequest.fromJson(Map<String, dynamic> json) => ClientsNoMovementRequest(
-    gallarySellected: json["gallarySellected"] == null ? null : GallarySellected.fromJson(json["gallarySellected"]),
+    invInventoryDtoList: json["invInventoryDTOList"] == null ? null : List<DtoList>.from(json["invInventoryDTOList"].map((x) => DtoList.fromJson(x))),
     branchId: json["branchId"] == null ? null : json["branchId"],
     dateFrom: json["dateFrom"] == null ? null : DateTime.parse(json["dateFrom"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "gallarySellected": gallarySellected == null ? null : gallarySellected!.toJson(),
+    "invInventoryDTOList": invInventoryDtoList == null ? null : List<dynamic>.from(invInventoryDtoList!.map((x) => x.toJson())),
     "branchId": branchId == null ? null : branchId,
     "dateFrom": dateFrom == null ? null : dateFrom?.toIso8601String(),
   };

@@ -52,12 +52,12 @@ class InvoiceStatementByCaseController extends GetxController {
     isLoading(true);
 
     final request = InvoiceStatementByCaseRequest(
-      gallaryList: selectedGalleries,
+      gallarySelected: selectedGalleries,
       dateTo: dateTo.value,
       dateFrom: dateFrom.value,
       branchId: UserManager().branchId,
-      dayNumber: 4,
-      selectedStatus: selectedStatus.value
+      dayNumbers: 4,
+      invoiceStatus: selectedStatus.value
     );
     ReportsRepository().getInvoiceStatementByCase(request,
       onSuccess: invoices.assignAll,

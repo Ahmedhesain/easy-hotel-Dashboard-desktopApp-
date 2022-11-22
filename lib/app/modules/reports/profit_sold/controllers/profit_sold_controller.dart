@@ -20,18 +20,19 @@ class ProfitSoldController extends GetxController{
   final isLoading = false.obs;
   String query = '';
   final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
-  final groups = <AllGroupResponse>[];
-   RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
-  Rxn<AllGroupResponse> selectedGroup = Rxn();
+  RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
+  final groups = <AllGroupResponse>[].obs;
+  RxList <AllGroupResponse> selectedGroup = RxList();
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
   var categoryController = TextEditingController();
   final Map<int, String> discBasis = {
-    1: "امر شغل",
-    2: "فاتوره",
-
+    4: "امر شغل",
+    0: "فواتير مشتريات",
+    2: "مردود مشتريات",
+    3: "مردود مبيعات",
   };
-  final selectedStatus=1.obs;
+  final selectedStatus=4.obs;
   int? invoiceTypeSelected;
 
 
@@ -54,10 +55,10 @@ class ProfitSoldController extends GetxController{
     final request = ProfitOfItemsSoldRequest(
       dateTo: dateTo.value,
       dateFrom:dateFrom.value,
-      invType: invoiceTypeSelected,
-      invoiceType:categoryController.text,
-      invInventoryDtoList: deliveryPlaces.map((e) => DtoList(id: e.id)).toList(),
-      proGroupDtoList: groups.map((e) => DtoList(id: e.id)).toList(),
+      invType: selectedStatus.value,
+      invoiceType: invoiceTypeSelected,
+      invInventoryDtoList: selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
+      proGroupDtoList: selectedGroup.map((e) => DtoList(id: e.id)).toList(),
       branchId:UserManager().branchId,
     );
     ReportsRepository().profitSoldStatement(request,
@@ -73,6 +74,7 @@ class ProfitSoldController extends GetxController{
     return InvoiceRepository().findInventoryByBranch(
       DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
+        data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         // if (deliveryPlaces.isNotEmpty) {
         //   // deliveryPlaces.insert(0, );
@@ -100,7 +102,7 @@ class ProfitSoldController extends GetxController{
       onSuccess: (data) {
         groups.assignAll(data);
         if (groups.isNotEmpty) {
-          selectedGroup(groups.first);
+          // selectedGroup(groups.first);
         }
       },
       onError: (error) => showPopupText(text: error.toString()),
@@ -116,6 +118,18 @@ class ProfitSoldController extends GetxController{
         values.remove("تحديد الكل");
       }
       selectedDeliveryPlace.assignAll(deliveryPlaces.where((element) => values.contains(element.name)));
+    }
+  }
+  selectNewGroups(List<String> values) {
+    if (!values.contains("تحديد الكل") && selectedGroup.any((element) => element.name == "تحديد الكل")) {
+      selectedGroup.clear();
+    } else if (!selectedGroup.any((element) => element.name == "تحديد الكل") && values.contains("تحديد الكل")) {
+      selectedGroup.assignAll(groups);
+    } else {
+      if (values.length < selectedGroup.length && values.contains("تحديد الكل")) {
+        values.remove("تحديد الكل");
+      }
+      selectedGroup.assignAll(groups.where((element) => values.contains(element.name)));
     }
   }
 

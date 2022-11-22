@@ -10,6 +10,7 @@ import 'package:toby_bills/app/data/model/customer/dto/response/account_statemen
 import 'package:toby_bills/app/data/model/general_journal/dto/response/account_summary_response.dart';
 import 'package:toby_bills/app/data/model/general_journal/generaljournaldetail_model.dart';
 import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_status_response.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
@@ -4637,7 +4638,7 @@ class PrintingHelper {
         });
   }
 
-  void printProfitSold(m.BuildContext context, List<ProfitOfItemsSoldResponse> data) async {
+  void printProfitSold(m.BuildContext context, List<ProfitOfItemsSoldResponse> data,DateTime datefrom,DateTime dateto,List<DeliveryPlaceResposne> deliverysel,String stat) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
     final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
@@ -4661,33 +4662,56 @@ class PrintingHelper {
         pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
         build: (Context context) {
           return [
-            SizedBox(height: 50.5),
+            Column(
+              children: [
+                Center(
+                    child: Container(
+                        decoration: const BoxDecoration(color: PdfColors.grey400),
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                        child: Text(
+                          "مبيعات الاصناف",
+                          style: boldStyle.copyWith(fontSize: 10),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.center,
+                        ))),
+                SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(deliverysel[0].name??"",  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("المعرض", style:boldStyle),
+                    SizedBox(width: 100),
+                    Text(DateFormat("dd-MM-yyyy").format(datefrom),  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("من تاريخ:", style:boldStyle),
+                    SizedBox(width: 15),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(stat,  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("الحاله", style:boldStyle),
+                    SizedBox(width: 100),
+                    Text(DateFormat("dd-MM-yyyy").format(dateto),  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("الي تاريخ:", style:boldStyle),
+                    SizedBox(width: 15),
+                  ],
+                ),
+                SizedBox(height: 15),
+              ],
+            ),
+
+            SizedBox(height: 20.5),
             Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
               TableRow(decoration: BoxDecoration(color: grey),children: [
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("الكود",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    child: Center(
-                        child: Text("الاسم",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    child: Center(
-                        child: Text("متوسط التكلفه",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    child: Center(
-                        child: Text("كميه المبيعات",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    child: Center(
-                        child: Text("عدد المبيعات",
+                        child: Text("اجمالي سعرالبيع",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
@@ -4697,8 +4721,31 @@ class PrintingHelper {
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("اجمالي سعرالبيع",
+                        child: Text("عدد المبيعات",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("كميه المبيعات",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("متوسط التكلفه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الاسم",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("الكود",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+
 
 
               ],),
@@ -4707,14 +4754,28 @@ class PrintingHelper {
                 TableRow(children: [
                   Center(
                       child: Text(
-                        data[i].code!.toString() ?? "",
+                        data[i].totallSell?.toString() ?? "",
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
                   Center(
                       child: Text(
-                        data[i].name! ?? "",
+                        data[i].totallDiscount?.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].totallNumber?.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].totallNet?.toString() ?? "",
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
@@ -4728,25 +4789,14 @@ class PrintingHelper {
                       )),
                   Center(
                       child: Text(
-                        data[i].totallNet?.toString() ?? "",
+                        data[i].name! ?? "",
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
-                      )),    Center(
+                      )),
+                  Center(
                       child: Text(
-                        data[i].totallNumber?.toString() ?? "",
-                        style: normalStyle,
-                        textAlign: TextAlign.center,
-                        textDirection: TextDirection.rtl,
-                      )),    Center(
-                      child: Text(
-                        data[i].totallDiscount?.toString() ?? "",
-                        style: normalStyle,
-                        textAlign: TextAlign.center,
-                        textDirection: TextDirection.rtl,
-                      )),    Center(
-                      child: Text(
-                        data[i].totallSell?.toString() ?? "",
+                        data[i].code!.toString() ?? "",
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
@@ -5544,7 +5594,7 @@ class PrintingHelper {
         });
   }
 
-  void printSalesValueAdded(m.BuildContext context, List<FindSalesValueAddedResponse> data) async {
+  void printSalesValueAdded(m.BuildContext context, List<FindSalesValueAddedResponse> data,DateTime datefrom,DateTime dateto) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
     final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
@@ -5565,18 +5615,48 @@ class PrintingHelper {
         pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
         build: (Context context) {
           return [
-            SizedBox(height: 50.5),
-            Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
+            Column(
+              children: [
+                Center(
+                    child: Container(
+                        decoration: const BoxDecoration(color: PdfColors.grey400),
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                        child: Text(
+                          "بيان الفواتير حسب الضريبه",
+                          style: boldStyle.copyWith(fontSize: 10),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.center,
+                        ))),
+                SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(DateFormat("dd-MM-yyyy").format(datefrom),  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("من تاريخ:", style:boldStyle),
+                    SizedBox(width: 15),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(DateFormat("dd-MM-yyyy").format(dateto),  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("الي تاريخ:", style:boldStyle),
+                    SizedBox(width: 15),
+                  ],
+                ),
+                SizedBox(height: 15),
+              ],
+            ),
+
+            SizedBox(height: 20.5),
+            Directionality(textDirection: TextDirection.rtl, child:  Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
               TableRow(decoration: BoxDecoration(color: grey),children: [
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("اسم المعرض",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    child: Center(
-                        child: Text("الاجمالي قبل الضريبه",
+                        child: Text("الضريبه",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
@@ -5586,7 +5666,12 @@ class PrintingHelper {
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("الضريبه",
+                        child: Text("الاجمالي قبل الضريبه",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اسم المعرض",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
 
 
@@ -5597,19 +5682,9 @@ class PrintingHelper {
               //table content
               for (int i = 0; i < data.length; i++)
                 TableRow(children: [
-
-
                   Center(
                       child: Text(
-                        data[i].galleryName ?? "",
-
-                        style: normalStyle,
-                        textAlign: TextAlign.center,
-                        textDirection: TextDirection.rtl,
-                      )),
-                  Center(
-                      child: Text(
-                        data[i].totalBeforeTax.toString() ?? "",
+                        data[i].tax.toString() ?? "",
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
@@ -5623,7 +5698,15 @@ class PrintingHelper {
                       )),
                   Center(
                       child: Text(
-                        data[i].tax.toString() ?? "",
+                        data[i].totalBeforeTax.toString() ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        data[i].galleryName ?? "",
+
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
@@ -5631,7 +5714,9 @@ class PrintingHelper {
 
 
                 ]),
-            ]),
+
+            ]),),
+
             SizedBox(height: 5),
           ];
         }));
@@ -6441,12 +6526,12 @@ class PrintingHelper {
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("الباقي",
+                        child: Text("المسدد",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("المسدد",
+                        child: Text("الباقي",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
 
                 Container(
