@@ -27,13 +27,9 @@ class SalesForPeriodController extends GetxController{
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
   var categoryController = TextEditingController();
+  final List<bool>check=[true,false].obs;
 
-
-
-
-
-
-  @override
+@override
   void onInit() {
     super.onInit();
     getDeliveryPlaces();

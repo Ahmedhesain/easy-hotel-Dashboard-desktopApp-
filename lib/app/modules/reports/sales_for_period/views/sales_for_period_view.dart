@@ -55,7 +55,7 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
-                                height: size.height*.2,
+                                height: size.height*.23,
                                 width: size.width*.95,
                                 child: Column(
                                   children: [
@@ -239,6 +239,46 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                         ),
                                       ),
                                     ),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                              child:Row(children: [
+                                                Text('اختيار الفواتير التي لها باقي فقط',style: smallTextStyleNormal(size)),
+                                                const SizedBox(width: 10),
+                                                 Radio<bool>(
+                                                    value: controller.check.first,
+                                                    groupValue: controller.check.first,
+                                                    onChanged: ( value) {
+                                                      // controller.check.first=value;
+
+                                                    },
+                                                  ),
+                                                Text('اختيار الفواتير التي ليس لها باقي فقط',style: smallTextStyleNormal(size)),
+                                                const SizedBox(width: 10),
+                                                 Radio<bool>(
+                                                  value: controller.check.first,
+                                                  groupValue: controller.check.first,
+                                                  onChanged: ( value) {
+                                                    // controller.check.first=value;
+
+                                                  },
+                                                ),
+
+
+
+                                              ],)
+
+                                            ),
+
+
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                     Padding(
                                       padding: EdgeInsets.fromLTRB(0, size.height * .01, 0, 0),
                                       child: Row(
@@ -338,7 +378,7 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                           ),
                           Container(
                               width:size.width,
-                              height:size.height*.66,
+                              height:size.height*.63,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
@@ -358,7 +398,7 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                               children: [const Text('المعرض',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('المعرض',
+                                          Column(children: [const Text('رقم',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
                                           Column(children: [const Text('التاريخ',
@@ -383,7 +423,7 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
                                           Column(
-                                              children: [const Text('الباقي',
+                                              children: [const Text(' الباقي',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
                                           Column(

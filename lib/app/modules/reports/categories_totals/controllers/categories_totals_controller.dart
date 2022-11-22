@@ -68,17 +68,6 @@ class CategoriesTotalsController extends GetxController {
     );
   }
 
-  pickFromDate() async {
-    dateFrom(await _pickDate(initialDate: dateFrom.value, firstDate: DateTime(2019), lastDate: dateTo.value));
-  }
-
-  pickToDate() async {
-    dateTo(await _pickDate(initialDate: dateTo.value, firstDate: dateFrom.value, lastDate: DateTime.now()));
-  }
-
-  _pickDate({required DateTime initialDate, required DateTime firstDate, required DateTime lastDate}) {
-    return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
-  }
 
   selectNewSymbols(List<String> values) {
     if (!values.contains("تحديد الكل") && selectedSymbols.any((element) => element.name == "تحديد الكل")) {
@@ -92,6 +81,8 @@ class CategoriesTotalsController extends GetxController {
       selectedSymbols.assignAll(symbols.where((element) => values.contains(element.name)));
     }
   }
+
+
   selectNewDeliveryplace(List<String> values) {
     if (!values.contains("تحديد الكل") && selectedDeliveryPlace.any((element) => element.name == "تحديد الكل")) {
       selectedDeliveryPlace.clear();
@@ -104,6 +95,19 @@ class CategoriesTotalsController extends GetxController {
       selectedDeliveryPlace.assignAll(deliveryPlaces.where((element) => values.contains(element.name)));
     }
   }
+
+  pickFromDate() async {
+    dateFrom(await _pickDate(initialDate: dateFrom.value, firstDate: DateTime(2019), lastDate: dateTo.value));
+  }
+
+  pickToDate() async {
+    dateTo(await _pickDate(initialDate: dateTo.value, firstDate: dateFrom.value, lastDate: DateTime.now()));
+  }
+
+  _pickDate({required DateTime initialDate, required DateTime firstDate, required DateTime lastDate}) {
+    return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
+  }
+
   Future<void> getDeliveryPlaces() {
     return InvoiceRepository().findInventoryByBranch(
       DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),

@@ -80,7 +80,8 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                 Obx(() {
                                                   return SizedBox(
                                                     width: 200,
-                                                    child: DropDownMultiSelect(
+                                                    child:
+                                                    DropDownMultiSelect(
                                                       key: UniqueKey(),
                                                       options: controller.deliveryPlaces.map((e) => e.name ?? "").toList(),
                                                       selectedValues: controller.selectedDeliveryPlace.map((e) => e.name ?? "").toList(),
@@ -170,20 +171,31 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                     border: Border.all(color: Colors.grey)),
                                                 child:
                                                 Obx(() {
-                                                  return DropdownSearch<AllGroupResponse>(
-                                                    // showSearchBox: true,
-                                                    items: controller.groups,
-                                                    itemAsString: (AllGroupResponse e) => e.name!,
-                                                    onChanged: controller.selectedGroup,
-                                                    selectedItem: controller.selectedGroup.value,
-                                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                                      dropdownSearchDecoration: InputDecoration(
-                                                        border: OutlineInputBorder(),
-                                                        contentPadding: EdgeInsets.all(10),
-                                                        isDense: true,
-                                                      ),
+                                                  return  DropDownMultiSelect(
+                                                    key: UniqueKey(),
+                                                    options: controller.groups.map((e) => e.name ?? "").toList(),
+                                                    selectedValues: controller.selectedGroup.map((e) => e.name ?? "").toList(),
+                                                    onChanged: controller.selectNewGroups,
+                                                    decoration: const InputDecoration(
+                                                      isDense: true,
+                                                      contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                                      border: OutlineInputBorder(),
                                                     ),
+
+                                                    childBuilder: (List<String> values) {
+                                                      return Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Align(
+                                                          alignment: Alignment.centerRight,
+                                                          child: Text(
+                                                            values.isEmpty ? "يرجى تحديد نوع على الاقل" : values.where((element) => element != "تحديد الكل").join(', '),
+                                                            maxLines: 1,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
                                                   );
+
                                                 }),                                              ),
                                             ),
                                           ],
@@ -430,7 +442,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printProfitSold(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printProfitSold(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!,controller.selectedDeliveryPlace,""),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),

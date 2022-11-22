@@ -277,16 +277,16 @@ class ItemsBalancesStatementView extends GetView<ItemsBalancesStatementControlle
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [Text('الاسم',
+                                          Column(children: [Text('رقم الصنف',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('كود ',
+                                          Column(children: [Text('اسم الصنف ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text('المتوسط ',
+                                          Column(children: [Text('متوسط التكلفه ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [Text(' المرتب',
+                                          Column(children: [Text(' سعر البيع',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 

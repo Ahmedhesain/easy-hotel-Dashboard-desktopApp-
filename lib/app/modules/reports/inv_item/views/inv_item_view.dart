@@ -67,86 +67,87 @@ class InvItemView extends GetView<InvItemController> {
 
 
 
-                                            SizedBox(width: size.width*.08,)
-                                            , Text('الفئه',style: smallTextStyleNormal(size)),
+                                            SizedBox(width: size.width*.08,),
                                             Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: const BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                Obx(() {
-                                                  return SizedBox(
-                                                    width: 200,
-                                                    child: DropDownMultiSelect(
-                                                      key: UniqueKey(),
-                                                      options: controller.groups.map((e) => e.name ?? "").toList(),
-                                                      selectedValues: controller.selectedGroup.map((e) => e.name ?? "").toList(),
-                                                      onChanged: controller.selectNewDeliveryplace,
-                                                      decoration: const InputDecoration(
-                                                        isDense: true,
-                                                        contentPadding: EdgeInsets.symmetric(vertical: 10),
-                                                        border: OutlineInputBorder(),
-                                                        // contentPadding: EdgeInsets.all(10),
-                                                        // isDense: true,
-                                                      ),
-
-                                                      childBuilder: (List<String> values) {
-                                                        return Padding(
-                                                          padding: const EdgeInsets.all(8.0),
-                                                          child: Align(
-                                                            alignment: Alignment.centerRight,
-                                                            child: Text(
-                                                              values.isEmpty ? "يرجى تحديد نوع على الاقل" : values.where((element) => element != "تحديد الكل").join(', '),
-                                                              maxLines: 1,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ),
-                                                  );
-                                                }),
-                                                // Obx(() {
-                                                //   return DropdownSearch<DeliveryPlaceResposne>(
-                                                //     // showSearchBox: true,
-                                                //     items: controller.deliveryPlaces,
-                                                //     itemAsString: (DeliveryPlaceResposne e) => e.name,
-                                                //     onChanged: controller.selectedDeliveryPlace,
-                                                //     selectedItem: controller.selectedDeliveryPlace.value,
-                                                //     dropdownDecoratorProps: const DropDownDecoratorProps(
-                                                //       dropdownSearchDecoration: InputDecoration(
-                                                //         border: OutlineInputBorder(),
-                                                //         contentPadding: EdgeInsets.all(10),
-                                                //         isDense: true,
-                                                //       ),
-                                                //     ),
-                                                //   );
-                                                // }),                                              ),
-                                              ),
-
-
-                                            ),
-                                            SizedBox(width: size.width*.2,),
-
+                                padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                    child: Text('الاصناف المستخدمه',style: smallTextStyleNormal(size)),
+                  ),
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                              child: Text('الاصناف المستخدمه',style: smallTextStyleNormal(size)),
-                                            ),
-                                     Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                              child:  Checkbox(value: controller.checkBoxValue.value,
-                              activeColor: Colors.green,
-                              onChanged:(bool? newValue){
+                                              child:  Checkbox(value: controller.checkBoxValue.value,
+                                                activeColor: Colors.green,
+                                                onChanged:(bool? newValue){
 
-                            controller.checkBoxValue.value = newValue!;
-                                      },
-                                 ),
-                                 ),
+                                                  controller.checkBoxValue.value = newValue!;
+                                                },
+                                              ),
+                                            ),
+
+
+                                            SizedBox(width: size.width*.2,),
+                                               Text('الفئه',style: smallTextStyleNormal(size)),
+                                              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Container(
+                  width: size.width * .2,
+                  height: size.height * .045,
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                          Radius.circular(5)),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey)),
+                  child:
+                  Obx(() {
+                    return SizedBox(
+                      width: 200,
+                      child: DropDownMultiSelect(
+                        key: UniqueKey(),
+                        options: controller.groups.map((e) => e.name ?? "").toList(),
+                        selectedValues: controller.selectedGroup.map((e) => e.name ?? "").toList(),
+                        onChanged: controller.selectNewDeliveryplace,
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.symmetric(vertical: 10),
+                          border: OutlineInputBorder(),
+                          // contentPadding: EdgeInsets.all(10),
+                          // isDense: true,
+                        ),
+
+                        childBuilder: (List<String> values) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                values.isEmpty ? "يرجى تحديد نوع على الاقل" : values.where((element) => element != "تحديد الكل").join(', '),
+                                maxLines: 1,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }),
+                  // Obx(() {
+                  //   return DropdownSearch<DeliveryPlaceResposne>(
+                  //     // showSearchBox: true,
+                  //     items: controller.deliveryPlaces,
+                  //     itemAsString: (DeliveryPlaceResposne e) => e.name,
+                  //     onChanged: controller.selectedDeliveryPlace,
+                  //     selectedItem: controller.selectedDeliveryPlace.value,
+                  //     dropdownDecoratorProps: const DropDownDecoratorProps(
+                  //       dropdownSearchDecoration: InputDecoration(
+                  //         border: OutlineInputBorder(),
+                  //         contentPadding: EdgeInsets.all(10),
+                  //         isDense: true,
+                  //       ),
+                  //     ),
+                  //   );
+                  // }),                                              ),
+                ),
+
+
+              ),
 
                                           ],
                                         ),
@@ -192,99 +193,105 @@ class InvItemView extends GetView<InvItemController> {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: size.width*.2,),
 
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                              child: Text('طبيعه الصنف',style: smallTextStyleNormal(size)),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                DropdownButton<int>(
-                                                  hint:  Text("Select an option"),
-                                                  value: controller.selectedStatus.value,
-                                                  onChanged: (int? newVal) {
-                                                    controller.selectedStatus.value = newVal!;
-                                                  },
-                                                  items: controller.discBasis.entries.map((e) {
-                                                    return DropdownMenuItem<int>(
-                                                      value: e.key,
-                                                      child: Text(e.value),
-                                                    );
-                                                  }).toList(),                                              ),
-                                              ),
-                                            ),
+
 
                                           ],
                                         ),
                                       ),
                                     ),
+               Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: Row(
+  children: [
+    Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+      child: Text('طبيعه الصنف',style: smallTextStyleNormal(size)),
+    ),
+    Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+      child: Container(
+        width: size.width * .25,
+        height: size.height * .04,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+                  Radius.circular(5)),
+            color: Colors.white,
+            border: Border.all(color: Colors.grey)),
+        child:
+        DropdownButton<int>(
+          value: controller.selectedStatus.value,
+          onChanged: (int? newVal) {
+            controller.selectedStatus.value = newVal!;
+          },
+          items: controller.discBasis.entries.map((e) {
+            return DropdownMenuItem<int>(
+              value: e.key,
+              child: Text(e.value),
+            );
+          }).toList(),                                              ),
+      ),
+    ),
+    Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+        child: Row(
+          children: [
 
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
-                                        child: Row(
-                                          children: [
+            SizedBox(width: size.width*.1,)
+            , Text('من تاريخ',style: smallTextStyleNormal(size)),
+            const SizedBox(width: 10),
+            SizedBox(
+              width: size.width * .3,
+              child: DateFieldWidget(
+                  fillColor: Colors.white,
+                  onComplete: (date){
+                    controller.dateFrom(date);
+                  },
+                  date: controller.dateFrom.value,
+              ),
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            //   child:
+            //   Container(
+            //     width: size.width * .3,
+            //     height: size.height * .04,
+            //     decoration: BoxDecoration(
+            //       color: Colors.white70,
+            //       borderRadius: BorderRadius.circular(5),
+            //
+            //     ),child:
+            //
+            //   Center(
+            //     child: MouseRegion(
+            //       cursor: SystemMouseCursors.click,
+            //       child: GestureDetector(
+            //           onTap: () {
+            //             controller.pickFromDate();
+            //           },
+            //           child: Obx(() {
+            //             return Text(
+            //               controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
+            //               style: const TextStyle(decoration: TextDecoration.underline),
+            //             );
+            //           })),
+            //     ),
+            //   ),
+            //
+            //
+            //
+            //
+            //   ),
+            // ),
+          ],
+        ),
+      ),
+    ),
 
-                                            SizedBox(width: size.width*.1,)
-                                            , Text('من تاريخ',style: smallTextStyleNormal(size)),
-                                            const SizedBox(width: 10),
-                                            SizedBox(
-                                              width: size.width * .3,
-                                              child: DateFieldWidget(
-                                                fillColor: Colors.white,
-                                                onComplete: (date){
-                                                  controller.dateFrom(date);
-                                                },
-                                                date: controller.dateFrom.value,
-                                              ),
-                                            ),
-                                            // Padding(
-                                            //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                            //   child:
-                                            //   Container(
-                                            //     width: size.width * .3,
-                                            //     height: size.height * .04,
-                                            //     decoration: BoxDecoration(
-                                            //       color: Colors.white70,
-                                            //       borderRadius: BorderRadius.circular(5),
-                                            //
-                                            //     ),child:
-                                            //
-                                            //   Center(
-                                            //     child: MouseRegion(
-                                            //       cursor: SystemMouseCursors.click,
-                                            //       child: GestureDetector(
-                                            //           onTap: () {
-                                            //             controller.pickFromDate();
-                                            //           },
-                                            //           child: Obx(() {
-                                            //             return Text(
-                                            //               controller.dateFrom.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateFrom.value!),
-                                            //               style: const TextStyle(decoration: TextDecoration.underline),
-                                            //             );
-                                            //           })),
-                                            //     ),
-                                            //   ),
-                                            //
-                                            //
-                                            //
-                                            //
-                                            //   ),
-                                            // ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+  ],
+),
+               ),
                                     Padding(
                                       padding: EdgeInsets.fromLTRB(0, size.height * .01, 0, 0),
                                       child: Row(
@@ -399,44 +406,50 @@ class InvItemView extends GetView<InvItemController> {
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [const Text('الكود',
+                                          Column(children: [const Text('رقم الصنف',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('الاسم',
+                                          Column(children: [const Text('اسم الصنف',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('متوسط التكلفه',
+                                          Column(children: [const Text('التكلفه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('كميه المبيعات',
+                                          Column(children: [const Text('اعلي سعر للرجال',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('عدد المبيعات',
+                                          Column(children: [const Text('اعلي سعر للشباب',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('الخصم الكلي',
+                                          Column(children: [const Text('اقل سعر للرجال',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('اجمالي سعر البيع',
+                                          Column(children: [const Text('اقل سعر للشباب',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('الاسم',
+                                          Column(children: [const Text('عدد الامتار المجانيه للرجال',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('متوسط التكلفه',
+                                          Column(children: [const Text('عدد الامتار المجانيه للشباب',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('كميه المبيعات',
+                                          Column(children: [const Text('عدد الامتار للرجال',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('عدد المبيعات',
-                                              style: TextStyle(fontSize: 20.0))
+                                          Column(children: [Center(
+                                            child: const Text('عدد الامتار للشباب',
+                                                style: TextStyle(fontSize: 20.0)),
+                                          )
                                           ]),
-                                          Column(children: [const Text('الخصم الكلي',
-                                              style: TextStyle(fontSize: 20.0))
+                                          Column(children: [Center(
+                                            child: const Text('طبيعه الصنف',
+                                                style: TextStyle(fontSize: 20.0)),
+                                          )
                                           ]),
-                                          Column(children: [const Text('اجمالي سعر البيع',
-                                              style: TextStyle(fontSize: 20.0))
+                                          Column(children: [Center(
+                                            child: const Text('المتاح',
+                                                style: TextStyle(fontSize: 20.0)),
+                                          )
                                           ]),
 
 
@@ -508,7 +521,7 @@ class InvItemView extends GetView<InvItemController> {
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.type!.toString(),
+                                                    kha.itemNatural!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]), Column(children: [
                                                 Text(

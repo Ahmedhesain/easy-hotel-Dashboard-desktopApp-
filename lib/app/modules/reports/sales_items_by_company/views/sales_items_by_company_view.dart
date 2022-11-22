@@ -354,7 +354,7 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                   Container(
                                     margin: EdgeInsets.all(0),
                                     child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .32),
+                                      defaultColumnWidth: FixedColumnWidth(size.width * .24),
                                       border: TableBorder.all(
                                           borderRadius: BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
@@ -363,7 +363,9 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                       children: [
 
                                         TableRow(children: [
-
+                                          Column(children: [Text('المعرض',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
                                           Column(children: [Text('كود الشركه',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
@@ -390,13 +392,18 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                           for(SalesOfItemsByCompanyResponse kha in controller.reports??[] )
                                             TableRow(children: [
                                               Column(children: [
+                                                Column(children: [
+                                                  Text(
+                                                      kha.gallaryName??"",
+                                                      style: TextStyle(fontSize: 20.0))
+                                                ]),
                                                 Text(
                                                     kha.gallaryId?.toString()??"",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.gallaryName??"",
+                                                    kha.companyName??"",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 

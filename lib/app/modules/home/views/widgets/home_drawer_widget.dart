@@ -142,7 +142,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
                     onTap: () => goTo(Routes.INVOICE_STATEMENT_BY_CASE, "بيان الفواتير حسب الحالة"),
                   ),
                   HomeDrawerTileWidget(
-                    title: "ارباح مبيعات الاصناف",
+                    title: " مبيعات الاصناف",
                     onTap: () => goTo(Routes.PROFITSOLD, "ارباح مبيعات الاصناف"),
                   ),
                   HomeDrawerTileWidget(
