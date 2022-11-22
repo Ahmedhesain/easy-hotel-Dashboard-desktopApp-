@@ -31,6 +31,7 @@ class ItemsSalesByCustomersController extends GetxController{
     error =null;
     InvoiceRepository().getGalleries(GalleryRequest(branchId: UserManager().branchId,id: UserManager().id),
     onSuccess: (data){
+      data.insert(0, GalleryResponse(name: "تحديد الكل"));
       galleries.assignAll(data);
       selectedGalleries.assignAll(data);
     },

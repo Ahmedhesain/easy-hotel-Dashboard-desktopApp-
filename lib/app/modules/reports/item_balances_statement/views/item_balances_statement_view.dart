@@ -222,7 +222,7 @@ class ItemsBalancesStatementView extends GetView<ItemsBalancesStatementControlle
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printItemsBalance(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printItemsBalance(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),

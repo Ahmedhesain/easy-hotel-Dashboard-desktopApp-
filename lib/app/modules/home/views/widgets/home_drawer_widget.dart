@@ -8,7 +8,7 @@ import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:toby_bills/app/routes/app_pages.dart';
-import 'package:window_manager/window_manager.dart';
+// import 'package:window_manager/window_manager.dart';
 
 class HomeDrawerWidget extends GetView<HomeController> {
   const HomeDrawerWidget({Key? key}) : super(key: key);
@@ -158,7 +158,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
                     onTap: () => goTo(Routes.SALES_ITEMS_BY_COMPANY, "المبيعات حسب الشركات لفتره"),
                   ),
                   HomeDrawerTileWidget(
-                    title: "رصيد الاصناف",
+                    title: "ارصده الاصناف",
                     onTap: () => goTo(Routes.ITEMS_BALANCES_STATEMENT, "رصيد الاصناف"),
                   ),
                   HomeDrawerTileWidget(
@@ -166,8 +166,8 @@ class HomeDrawerWidget extends GetView<HomeController> {
                     onTap: () => goTo(Routes.INVOICES_WITHOUT_SWING, "فواتير الشركات بدون خياطه"),
                   ),
                   HomeDrawerTileWidget(
-                    title: "عملاء ليس لديهم حركه",
-                    onTap: () => goTo(Routes.CLIENTS_NO_MOVEMENT, "عملاء ليس لديهم حركه"),
+                    title: " عملاء ليس لديهم حركه من تاريخ",
+                    onTap: () => goTo(Routes.CLIENTS_NO_MOVEMENT, "عملاء ليس لديهم حركه من تاريخ"),
                   ),
                   HomeDrawerTileWidget(
                     title: "ارصده العملاء",
@@ -270,11 +270,11 @@ class HomeDrawerWidget extends GetView<HomeController> {
     //   ..setTitle(title)
     //   ..show();
     if(Platform.isWindows) {
-      windowManager.setTitle("Toby Bills -> $title");
+      // windowManager.setTitle("Toby Bills -> $title");
     }
     await Get.toNamed(to);
     if(Platform.isWindows) {
-      windowManager.setTitle("Toby Bills -> شاشة المشتريات");
+      // windowManager.setTitle("Toby Bills -> شاشة المشتريات");
     }
   }
 }

@@ -437,7 +437,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printProfitSold(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!,controller.selectedDeliveryPlace,""),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printProfitSold(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!,controller.selectedDeliveryPlace,controller.selectedStatus.value.toString()),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),

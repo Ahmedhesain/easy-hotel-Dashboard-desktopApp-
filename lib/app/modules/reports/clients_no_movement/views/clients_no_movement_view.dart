@@ -253,7 +253,7 @@ class ClientNoMovementView extends GetView<ClientsNoMovementController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printCustomersNoMovement(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printCustomersNoMovement(context, controller.reports,controller.selectedDeliveryPlace,controller.dateFrom.value!),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),

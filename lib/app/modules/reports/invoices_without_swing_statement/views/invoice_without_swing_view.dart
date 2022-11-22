@@ -237,7 +237,7 @@ class InvoicesWithoutSwingView extends GetView<InvoicesWithoutSwingController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printInvoicesWithoutSweing(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printInvoicesWithoutSweing(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),
