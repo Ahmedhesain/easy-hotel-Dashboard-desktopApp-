@@ -32,7 +32,7 @@ class NotificationsController extends GetxController {
   final customers = <FindCustomerResponse>[];
   final galleries = <GalleryResponse>[];
   Rxn<GalleryResponse> selectedGallery = Rxn();
-  Rxn<InvoiceResponse> invoice = Rxn();
+  Rxn<InvoiceModel> invoice = Rxn();
   Rxn<FindNotificationResponse> notification = Rxn();
   FindCustomerBalanceResponse? findCustomerBalanceResponse;
   final user = UserManager();

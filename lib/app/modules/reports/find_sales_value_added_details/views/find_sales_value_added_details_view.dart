@@ -1,6 +1,4 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -9,19 +7,11 @@ import 'package:multiselect/multiselect.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/colors.dart';
 import 'package:toby_bills/app/components/date_field_widget.dart';
-import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
-import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/find_sales_value_added_details_response.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
-import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
 import 'package:toby_bills/app/modules/reports/find_sales_value_added_details/controllers/find_sales_value_added_details_controller.dart';
-import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
-import 'package:toby_bills/app/modules/reports/sales_items_by_company/controllers/sales_items_by_company_controller.dart';
 
 
 class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsController> {

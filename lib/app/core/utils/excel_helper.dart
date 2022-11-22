@@ -8,6 +8,7 @@ import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/account_statement_response.dart';
 import 'package:toby_bills/app/data/model/general_journal/dto/response/account_summary_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_status_response.dart';
+import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/balance_galary_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/balance_galary_unpaid_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_items_response.dart';
@@ -766,19 +767,19 @@ class ExcelHelper {
   //   return excel;
   // }
   //
-  // static Future<Excel> fashExcel(List<InvoiceDetailsModel> reports, BuildContext context) async {
-  //   var excel = Excel.createExcel();
-  //   excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), "البند");
-  //   excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "العدد");
-  //   for (var i = 1; i <= reports.length; i++) {
-  //     final report = reports[i - 1];
-  //     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i), "${report.name} ${report.code}");
-  //     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i), report.quantity);
-  //   }
-  //   List<int>? x = excel.save(fileName: "تفاصيل الفسح.xlsx");
-  //   await saveFile("تفاصيل الفسح.xlsx", x!, context);
-  //   return excel;
-  // }
+  static Future<Excel> fashExcel(List<InvoiceDetailsModel> reports, BuildContext context) async {
+    var excel = Excel.createExcel();
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), "البند");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "العدد");
+    for (var i = 1; i <= reports.length; i++) {
+      final report = reports[i - 1];
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i), "${report.name} ${report.code}");
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i), report.quantity);
+    }
+    List<int>? x = excel.save(fileName: "تفاصيل الفسح.xlsx");
+    await saveFile("تفاصيل الفسح.xlsx", x!, context);
+    return excel;
+  }
 
   static saveFile(String fullName, List<int> bytes, BuildContext context) async {
     final directory = await getApplicationDocumentsDirectory();

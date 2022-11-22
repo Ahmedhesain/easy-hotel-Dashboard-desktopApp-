@@ -1,6 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
@@ -108,7 +108,7 @@ class CatchReceiptAnotherGalleryView extends GetView<CatchReceiptAnotherGalleryC
                                         return SizedBox(
                                           height: 50,
                                           child: Center(
-                                            child: Text(client.name!),
+                                            child: Text(client.name.toString()),
                                           ),
                                         );
                                       },
@@ -119,18 +119,12 @@ class CatchReceiptAnotherGalleryView extends GetView<CatchReceiptAnotherGalleryC
                                         controller.selectedCustomer(value);
                                         controller.getInvoiceListForCustomer(value, () {});
                                       },
-                                      textFieldConfiguration: TextFieldConfiguration(
+                                    textFieldConfiguration: TextFieldConfiguration(
                                         controller: controller.customerController,
                                         focusNode: controller.customerFocusNode,
-                                        onSubmitted: (search) => controller.getCustomers(search),
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          disabledBorder: InputBorder.none,
-                                          enabledBorder: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          isDense: true
-                                        ),
-                                      )),
+                                        onSubmitted: (search) => controller.getCustomers(search)
+                                    ),
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -217,15 +211,15 @@ class CatchReceiptAnotherGalleryView extends GetView<CatchReceiptAnotherGalleryC
                                         borderRadius: BorderRadius.circular(5),
                                       ),
                                       child: TypeAheadFormField<InvoiceList>(
-                                          itemBuilder: (context, inv) {
-                                            return SizedBox(
-                                              height: 50,
-                                              child: Center(
-                                                child: Text(inv.serial.toString()),
-                                              ),
-                                            );
-                                          },
-                                          suggestionsCallback: (filter) => controller.customerBalance.value?.invoicesList.where((inv) => inv.serial != null && controller.banksToPay.every((element) => element.invoiceId != inv.id) && inv.serial.toString().contains(filter)) ?? [],
+                                        itemBuilder: (context, inv) {
+                                          return SizedBox(
+                                            height: 50,
+                                            child: Center(
+                                              child: Text(inv.serial.toString()),
+                                            ),
+                                          );
+                                        },
+                                          suggestionsCallback:  (filter) => controller.customerBalance.value?.invoicesList.where((inv) => inv.serial != null && controller.banksToPay.every((element) => element.invoiceId != inv.id) && inv.serial.toString().contains(filter)) ?? [],
                                           onSuggestionSelected: (value) {
                                             controller.itemInvoiceController.text = value.serial.toString();
                                             controller.itemRemainController.text = "0";
@@ -233,17 +227,11 @@ class CatchReceiptAnotherGalleryView extends GetView<CatchReceiptAnotherGalleryC
                                             controller.itemPayFocus.requestFocus();
                                             controller.itemInvoice = value;
                                           },
-                                          textFieldConfiguration: TextFieldConfiguration(
-                                            controller: controller.itemInvoiceController,
-                                            focusNode: controller.itemInvoiceFocus,
-                                            decoration: const InputDecoration(
-                                              border: InputBorder.none,
-                                              isDense: true,
-                                              disabledBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                            ),
-                                          )),
+                                        textFieldConfiguration: TextFieldConfiguration(
+                                          controller: controller.itemInvoiceController,
+                                          focusNode: controller.itemInvoiceFocus,
+                                        ),
+                                          ),
                                     ),
                                   ])),
                               const SizedBox(width: 15),
@@ -360,16 +348,11 @@ class CatchReceiptAnotherGalleryView extends GetView<CatchReceiptAnotherGalleryC
                                             controller.addNewDetail();
                                           }
                                         },
-                                        textFieldConfiguration: TextFieldConfiguration(
-                                          controller: controller.itemBankController,
-                                          focusNode: controller.itemBankFocus,
-                                          decoration: const InputDecoration(
-                                              border: InputBorder.none,
-                                              disabledBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                              isDense: true),
-                                        )),
+                                    textFieldConfiguration: TextFieldConfiguration(
+
+                                        controller: controller.itemBankController,
+                                        focusNode: controller.itemBankFocus
+                                    )),
                                   ),
                                 ]),
                               ),

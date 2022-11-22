@@ -4,7 +4,7 @@ import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 
 class CreateInvoiceRequest {
 
-  final num? discountHalala;
+  final num? discHalala;
   final String? offerCopoun;
   final int? invDelegatorId;
   final int? pricetype;
@@ -34,6 +34,7 @@ class CreateInvoiceRequest {
   final int? gallaryId;
   final num? totalNetAfterDiscount;
   final num? finalNet;
+  final num? totalNet;
   final num? taxvalue;
   final int? checkSendSms;
   final int? serial;
@@ -47,7 +48,7 @@ class CreateInvoiceRequest {
     this.supplierInvoiceNumber,
     this.typeInv,
     this.supplierDate,
-    this.discountHalala,
+    this.discHalala,
     this.discountType,
     this.offerCopoun,
     this.serial,
@@ -78,6 +79,7 @@ class CreateInvoiceRequest {
     this.gallaryId,
     this.totalNetAfterDiscount,
     this.finalNet,
+    this.totalNet,
     this.taxvalue,
     this.checkSendSms,
   });
@@ -113,11 +115,13 @@ class CreateInvoiceRequest {
     "supplierInvoiceNumber": supplierInvoiceNumber,
     "gallaryDeliveryId": gallaryDeliveryId,
     "gallaryDeliveryName": gallaryDeliveryName,
-    "invoiceType": invoiceType,
+    "invoicetype": invoiceType,
     "totalNetAfterDiscount": totalNetAfterDiscount,
     "finalNet": finalNet,
     "taxvalue": taxvalue,
     "serial": serial,
     "branchId": branchId,
+    "totalNet": totalNet,
+    "discHalala": discHalala,
   };
 }

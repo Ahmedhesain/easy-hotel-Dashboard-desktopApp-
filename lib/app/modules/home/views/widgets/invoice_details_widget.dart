@@ -1,6 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
@@ -35,7 +35,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   flex: 4,
                   child: SizedBox(
                     height: 30,
-                    child: TypeAheadField<ItemResponse>(
+                    child: TypeAheadFormField<ItemResponse>(
                       suggestionsCallback: (filter) => controller.filterItems(filter),
                       onSuggestionSelected: (item) => controller.getItemData(
                           itemId: item.id!,
@@ -60,7 +60,6 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           controller: TextEditingController(text: "${detail.value.name} ${detail.value.code}"),
                           textInputAction: TextInputAction.next,
                           textAlignVertical: TextAlignVertical.center,
-                          enabled: true,
                           decoration: const InputDecoration(
                               contentPadding: EdgeInsets.symmetric(horizontal: 10), border: OutlineInputBorder(), filled: true, fillColor: Colors.white70),
                           onSubmitted: (value) {
@@ -91,11 +90,12 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                                 onSuccess: (itemData) {
                                   detail.value.availableQuantityRow = itemData.availableQuantity;
                                   if (!detail.value.numberFocus.hasFocus) {
-                                    if (detail.value.availableQuantityRow != null && detail.value.availableQuantityRow! < detail.value.number! * detail.value.quantity!) {
+                                    if (detail.value.availableQuantityRow != null && detail.value.availableQuantityRow! < detail.value.number! * detail.value.quantityOfOneUnit!) {
                                       showPopupText(text: "لايمكن إضافة هذا العدد");
                                       detail(detail.value.copyWith(number: oldValue));
                                     } else {
                                       detail(detail.value.copyWith(number: detail.value.number));
+                                      controller.calcInvoiceValues();
                                     }
                                   }
                                 });
@@ -117,26 +117,48 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   child: SizedBox(
                     height: 30,
                     child: Builder(builder: (context) {
-                      num? oldValue = detail.value.quantity;
+                      num? oldValue = detail.value.quantityOfOneUnit;
                       return TextFormField(
-                        controller: TextEditingController(text: detail.value.quantity?.toString()),
+                        controller: TextEditingController(text: detail.value.quantityOfOneUnit?.toString()),
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
                         // enabled: (detail.value.progroupId ?? 1) != 1,
-                        onChanged: (value) => detail.value.quantity = value.tryToParseToNum ?? 0,
+                        onChanged: (value) => detail.value.quantityOfOneUnit = value.tryToParseToNum ?? 0,
                         focusNode: detail.value.quantityFocus
                           ..addListener(() {
-                            if (oldValue == detail.value.quantity) return;
+                            if (oldValue == detail.value.quantityOfOneUnit || detail.value.quantityFocus.hasFocus) return;
+                            if(controller.items.every((element) => element.id != detail.value.itemId)){
+                              showPopupText(text: "يرجى عمل تحديث للبيانات أولاً");
+                              detail(detail.value.copyWith(quantityOfOneUnit: oldValue));
+                            }
+                            final item = controller.items.singleWhere((element) => element.id == detail.value.itemId);
+                            if(item.isInventoryItem == 0) {
+                              detail(detail.value.copyWith(quantityOfOneUnit: detail.value.quantityOfOneUnit));
+                              controller.calcInvoiceValues();
+                              return;
+                            }
+                            if(detail.value.id != null) {
+                              final oldResult = ((oldValue??1) * (detail.value.number??1)) + (detail.value.availableQuantityRow??0);
+                              if(oldResult < detail.value.totalQuantity){
+                                showPopupText(text: "الكمية اقل من المتاح");
+                                detail(detail.value.copyWith(quantityOfOneUnit: oldValue));
+                              } else {
+                                detail(detail.value.copyWith(quantityOfOneUnit: detail.value.quantityOfOneUnit));
+                                controller.calcInvoiceValues();
+                              }
+                              return;
+                            }
                             controller.getItemData(
                                 itemId: detail.value.itemId!,
                                 onSuccess: (itemData) {
                                   detail.value.availableQuantityRow = itemData.availableQuantity;
                                   if (!detail.value.quantityFocus.hasFocus) {
-                                    if (detail.value.availableQuantityRow != null && detail.value.availableQuantityRow! < detail.value.number! * detail.value.quantity!) {
+                                    if (detail.value.availableQuantityRow != null && detail.value.availableQuantityRow! < detail.value.number! * detail.value.quantityOfOneUnit!) {
                                       showPopupText(text: "لايمكن إضافة هذه الكمية");
-                                      detail(detail.value.copyWith(quantity: oldValue));
+                                      detail(detail.value.copyWith(quantityOfOneUnit: oldValue));
                                     } else {
-                                      detail(detail.value.copyWith(quantity: detail.value.quantity));
+                                      detail(detail.value.copyWith(quantityOfOneUnit: detail.value.quantityOfOneUnit));
+                                      controller.calcInvoiceValues();
                                     }
                                   }
                                 });
@@ -171,7 +193,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                         focusNode: detail.value.priceFocus
                           ..addListener(() {
                             if (!detail.value.priceFocus.hasFocus) {
-                              if (!detail.value.isValidPrice(controller.selectedPriceType.value!)) {
+                              if (detail.value.id == null && !detail.value.isValidPrice(controller.selectedPriceType.value!)) {
                                 showPopupText(text: "المبلغ اقل من الحد الادنى للسعر");
                                 detail(detail.value.copyWith(price: oldValue));
                               } else {
@@ -352,7 +374,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                     onPressed: () {
                       final deleted = controller.invoiceDetails.removeAt(index);
                       if (controller.invoice.value?.id != null) {
-                        controller.invoice.value!.invoiceDetailApiListDeleted.add(deleted.value);
+                        controller.invoice.value!.invoiceDetailApiListDeleted!.add(deleted.value);
                       }
                       controller.calcInvoiceValues();
                     },

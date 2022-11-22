@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
@@ -153,7 +153,7 @@ class PurchaseSideWidget extends GetView<PurchaseInvoicesController> {
                 textInputAction: TextInputAction.next,
                 controller: controller.findSideCustomerController,
                 focusNode: controller.findSideCustomerFieldFocusNode,
-                onEditingComplete: () => controller.getSuppliersByCode(),
+                onSubmitted: (_) => controller.getSuppliersByCode(),
                 decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: "ابحث عن فاتورة لمورد معين",

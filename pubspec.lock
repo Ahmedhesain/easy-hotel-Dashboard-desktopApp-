@@ -81,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  desktop_multi_window:
+    dependency: "direct main"
+    description:
+      name: desktop_multi_window
+      sha256: "29971186ae0790e32b156f127f9c22c5ee77bdb94b14f7cea23f2356d0c76cfc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   dio:
     dependency: "direct main"
     description:
@@ -143,7 +151,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_keyboard_visibility:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_keyboard_visibility
       sha256: "86b71bbaffa38e885f5c21b1182408b9be6951fd125432cf6652c636254cef2d"
@@ -216,14 +224,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_typeahead:
-    dependency: "direct main"
-    description:
-      name: flutter_typeahead
-      sha256: "0ec56e1deac7556f3616f3cd53c9a25bf225dc8b72e9f44b5a7717e42bb467b5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.1.1"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -510,10 +510,10 @@ packages:
     dependency: transitive
     description:
       name: string_scanner
-      sha256: "862015c5db1f3f3c4ea3b94dc2490363a84262994b88902315ed74be1155612f"
+      sha256: "556692adab6cfa87322a115640c11f13cb77b3f076ddcc5d6ae3c20242bedcde"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   term_glyph:
     dependency: transitive
     description:
@@ -526,10 +526,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: c9aba3b3dbfe8878845dfab5fa096eb8de7b62231baeeb1cea8e3ee81ca8c6d8
+      sha256: ad540f65f92caa91bf21dfc8ffb8c589d6e4dc0c2267818b4cc2792857706206
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.15"
+    version: "0.4.16"
   typed_data:
     dependency: transitive
     description:

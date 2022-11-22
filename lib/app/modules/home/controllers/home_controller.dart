@@ -39,6 +39,7 @@ import 'package:toby_bills/app/data/repository/general_journal/general_journal_r
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
+import 'package:window_manager/window_manager.dart';
 
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
@@ -87,6 +88,7 @@ class HomeController extends GetxController {
   final itemDiscountController = TextEditingController();
   final itemDiscountValueController = TextEditingController();
 
+  final searchedInvoiceFocusNode = FocusNode();
   final findSideCustomerFieldFocusNode = FocusNode();
   final invoiceCustomerFieldFocusNode = FocusNode();
   final invoiceDiscountFieldFocusNode = FocusNode();
@@ -98,7 +100,7 @@ class HomeController extends GetxController {
   final itemDiscountFocusNode = FocusNode();
   final itemDiscountValueFocusNode = FocusNode();
 
-  final customers = <FindCustomerResponse>[];
+  final customers = <FindCustomerResponse>[].obs;
   final deliveryPlaces = <DeliveryPlaceResposne>[];
   final delegators = <DelegatorResponse>[];
   final inventories = <InventoryResponse>[];
@@ -107,7 +109,7 @@ class HomeController extends GetxController {
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
   Rxn<GetDueDateResponse> dueDate = Rxn();
   Rx<DateTime> date = Rx(DateTime.now());
-  Rxn<InvoiceResponse> invoice = Rxn();
+  Rxn<InvoiceModel> invoice = Rxn();
 
   Map<int, String> priceTypes = {
     1: "رجالي",
@@ -124,7 +126,7 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    // windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+    windowManager.setTitle("Toby Bills -> شاشة المبيعات");
     isLoading(true);
     _addItemFieldsListener();
     items.addAll(_getItemsFromStorage());
@@ -234,7 +236,7 @@ class HomeController extends GetxController {
     );
   }
 
-  void getInvoiceListForCustomer(FindCustomerResponse value) {
+  getInvoiceListForCustomer(FindCustomerResponse value) {
     findSideCustomerController.text = "${value.name} ${value.code}";
     isLoading(true);
     CustomerRepository().findCustomerInvoicesData(FindCustomerBalanceRequest(id: value.id),
@@ -272,6 +274,7 @@ class HomeController extends GetxController {
   searchForInvoiceById(String id) async {
     newInvoice();
     isLoading(true);
+    searchedInvoiceFocusNode.unfocus();
     await InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
         onSuccess: (data) {
           invoice(data);
@@ -307,6 +310,7 @@ class HomeController extends GetxController {
             detail.maxPriceYoung = item.maxPriceYoung;
             detail.minPriceMen = item.minPriceMen;
             detail.minPriceYoung = item.minPriceYoung;
+            detail.typeInv = data.typeInv;
           }
           invoiceDetails.assignAll((data.invoiceDetailApiList ?? []).map((e) => Rx(e)).toList().obs);
           selectedCustomer(FindCustomerResponse(
@@ -321,6 +325,7 @@ class HomeController extends GetxController {
             length: data.length,
           ));
           invoiceCustomerController.text = "${data.customerName} ${data.customerCode}";
+          discountHalala(data.discHalala);
           calcInvoiceValues();
         },
         onError: (error) => showPopupText(text: error.toString()),
@@ -372,7 +377,9 @@ class HomeController extends GetxController {
     itemAvailableQuantity.value = null;
     itemNet.value = null;
     itemTotalQuantity.value = null;
-    selectedInventory(inventories.first);
+    if(inventories.isNotEmpty) {
+      selectedInventory(inventories.first);
+    }
   }
 
   selectItem(ItemResponse item, {void Function()? noQuantity}) {
@@ -469,13 +476,13 @@ class HomeController extends GetxController {
             remark: itemNotesController.text,
             name: item.name!,
             number: itemNumberController.text.parseToNum,
-            quantityOfOneUnit: item.itemData?.quantityOfUnit,
+            quantityOfOneUnit: itemQuantityController.text.parseToNum,
             code: item.code,
             minPriceMen: item.minPriceMen,
             minPriceYoung: item.minPriceYoung,
             maxPriceMen: item.maxPriceMen,
             maxPriceYoung: item.maxPriceYoung,
-            quantity: itemQuantityController.text.parseToNum,
+            quantity: itemQuantityController.text.parseToNum * itemNumberController.text.parseToNum,
             net: itemNet.value,
             availableQuantityRow: itemAvailableQuantity.value,
             price: itemPriceController.text.parseToNum,
@@ -537,10 +544,11 @@ class HomeController extends GetxController {
       customerCode: selectedCustomer.value!.code,
       customerMobile: selectedCustomer.value!.mobile,
       customerName: selectedCustomer.value!.name,
-      discountHalala: discountHalala.value,
+      discHalala: discountHalala.value,
       dueDate: dueDate.value?.dueDate,
       dueperiod: dueDate.value?.dayNumber,
       finalNet: finalNet.value,
+      totalNet: totalNet.value,
       gallaryDeliveryId: selectedDeliveryPlace.value?.id,
       gallaryDeliveryName: selectedDeliveryPlace.value?.name,
       gallaryName: UserManager().galleryName,
@@ -554,7 +562,7 @@ class HomeController extends GetxController {
       glPayDTOList: [],
       invDelegatorId: selectedDelegator.value?.id,
       invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(),
-      invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted.map((element) => element).toList(),
+      invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted!.map((element) => element).toList(),
       invoiceType: AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0 ? null : AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
       pricetype: selectedPriceType.value,
       typeInv: 4,
@@ -572,6 +580,7 @@ class HomeController extends GetxController {
     InvoiceRepository().saveInvoice(request,
         onSuccess: (data) async {
           invoice(data);
+          invoiceDetails.assignAll((data.invoiceDetailApiList??[]).map((e) => e.obs).toList());
           // await InvoiceRepository().saveTarhil(data,
           //     onSuccess: (data) {
           //       invoice.value!.serial = data.serial;

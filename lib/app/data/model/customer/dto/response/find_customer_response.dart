@@ -66,4 +66,10 @@ class FindCustomerResponse {
     "step": step,
     "balanceLimit": balanceLimit,
   };
+
+
+  @override
+  String toString() {
+    return name??"";
+  }
 }

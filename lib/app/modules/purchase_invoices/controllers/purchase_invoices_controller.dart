@@ -114,7 +114,7 @@ class PurchaseInvoicesController extends GetxController {
   final galleries = <GalleryResponse>[];
   final glAccounts = <GlAccountResponse>[];
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
-  Rxn<InvoiceResponse> invoice = Rxn();
+  Rxn<InvoiceModel> invoice = Rxn();
 
   Map<int, String> priceTypes = {
     1: "رجالي",
@@ -448,7 +448,7 @@ class PurchaseInvoicesController extends GetxController {
       glPayDTOList: [],
       invDelegatorId: selectedDelegator.value?.id,
       invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(),
-      invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted.map((element) => element).toList(),
+      invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted!.map((element) => element).toList(),
       typeInv: 0,
       proof: isProof.value ? 1 : 0,
       remarks: invoiceRemarkController.text,

@@ -1,11 +1,13 @@
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/delete_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/find_faseh_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gl_account_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/invoice_status_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/faseh_invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
@@ -108,34 +110,34 @@ class InvoiceRepository {
   findInvPurchaseInvoiceBySerialNew(
       GetInvoiceRequest getInvoiceRequest, {
         Function()? onComplete,
-        Function(InvoiceResponse data)? onSuccess,
+        Function(InvoiceModel data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-    ApiProvider().post<InvoiceResponse,Map<String, dynamic>>('sales/findInvPurchaseInvoiceByserialNew',
+    ApiProvider().post<InvoiceModel,Map<String, dynamic>>('sales/findInvPurchaseInvoiceByserialNew',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: getInvoiceRequest.toJson(),
         onError: onError,
-        convertor: InvoiceResponse.fromJson,
+        convertor: InvoiceModel.fromJson,
     );
 
 
   saveInvoice(
       CreateInvoiceRequest createInvoiceRequest, {
         Function()? onComplete,
-        Function(InvoiceResponse data)? onSuccess,
+        Function(InvoiceModel data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-    ApiProvider().post<InvoiceResponse,Map<String, dynamic>>('sales/saveDeskTop',
+    ApiProvider().post<InvoiceModel,Map<String, dynamic>>('sales/saveDeskTop',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: createInvoiceRequest.toJson(),
         onError: onError,
-        convertor: InvoiceResponse.fromJson,
+        convertor: InvoiceModel.fromJson,
     );
 
   saveTarhil(
-      InvoiceResponse invoiceModel, {
+      InvoiceModel invoiceModel, {
         Function()? onComplete,
         Function(SaveTarhilResponse data)? onSuccess,
         Function(dynamic error)? onError,
@@ -202,6 +204,36 @@ class InvoiceRepository {
         data: deleteInvoiceRequest.toJson(),
         onError: onError,
         convertor: (_){},
+      );
+
+
+  findFasehInvoice(
+      FindFasehInvoiceRequest fasehInvoiceRequest, {
+        Function()? onComplete,
+        Function(FasehInvoiceResponse data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<FasehInvoiceResponse,Map<String,dynamic>>('permisionOrder/findInvoiceDataDis',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: fasehInvoiceRequest.toJson(),
+        onError: onError,
+        convertor: FasehInvoiceResponse.fromJson,
+      );
+
+
+  saveFasehInvoice(
+      InvoiceModel invoiceModel, {
+        Function()? onComplete,
+        Function(int data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<int,Map<String,dynamic>>('permisionOrder/saveDeskTop',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: invoiceModel.toJson(),
+        onError: onError,
+        convertor: (data) => data["serial"],
       );
 
 }

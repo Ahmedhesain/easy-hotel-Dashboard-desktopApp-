@@ -86,6 +86,11 @@ class GlPayDTO with FormMixin{
     "gallaryId": gallaryId,
 
   };
+
+  @override
+  String toString() {
+    return bankName??"";
+  }
 }
 
 class Bank {

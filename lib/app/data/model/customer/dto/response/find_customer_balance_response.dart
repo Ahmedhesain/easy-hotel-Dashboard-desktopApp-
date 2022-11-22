@@ -54,5 +54,8 @@ class InvoiceList {
     "remarks": remarks,
     "salesStatementForThePeriod": salesStatementForThePeriod.toJson(),
   };
+
+  @override
+  String toString() => serial.toString();
 }
 

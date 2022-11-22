@@ -71,8 +71,8 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                                     width: 200,
                                                     child: DropDownMultiSelect(
                                                       key: UniqueKey(),
-                                                      options: controller.deliveryPlaces.map((e) => e.name ?? "").toList(),
-                                                      selectedValues: controller.selectedDeliveryPlace.map((e) => e.name ?? "").toList(),
+                                                      options: controller.deliveryPlaces.map((e) => e.name).toList(),
+                                                      selectedValues: controller.selectedDeliveryPlace.map((e) => e.name).toList(),
                                                       onChanged: controller.selectNewDeliveryplace,
                                                       decoration: const InputDecoration(
                                                         isDense: true,
@@ -128,8 +128,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                         child: Row(
                                           children: [
 
-                                            SizedBox(width: size.width*.1,)
-                                            , Text('من تاريخ',style: smallTextStyleNormal(size)),
+                                            SizedBox(width: size.width*.1,), Text('من تاريخ',style: smallTextStyleNormal(size)),
                                             const SizedBox(width: 10),
                                             SizedBox(
                                               width: size.width * .3,
@@ -305,11 +304,11 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                               width:size.width*.97,
                               height: size.height*.06,
                               child:
-                              Container(width:size.width*.03,
+                              SizedBox(width:size.width*.03,
                                   height: size.height*.03,child:const SizedBox()),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                               width:size.width,
                               height:size.height*.66,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
@@ -327,32 +326,32 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
 
                                         TableRow(children: [
 
-                                          Column(children: [const Text('المعرض',
+                                          Column(children: const [Text('المعرض',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('رقم',
+                                          Column(children: const [Text('رقم',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('التاريخ',
+                                          Column(children: const [Text('التاريخ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('رقم العميل',
+                                          Column(children: const [Text('رقم العميل',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('العميل',
+                                          Column(children: const [Text('العميل',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('رقم الفاتوره',
+                                          Column(children: const [Text('رقم الفاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
-                                          Column(children: [const Text('صافي الفاتوره',
+                                          Column(children: const [Text('صافي الفاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('المسدد',
+                                          Column(children: const [Text('المسدد',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: [const Text('الباقي',
+                                          Column(children: const [Text('الباقي',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -365,10 +364,8 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                                   topRight: Radius.circular(0),
                                                   topLeft: Radius.circular(0))),
                                         ),
-                                        if(controller.reports != null)
 
-
-                                          for(CategoriesItemsResponse kha in controller.reports??[] )
+                                          for(CategoriesItemsResponse kha in controller.reports)
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(

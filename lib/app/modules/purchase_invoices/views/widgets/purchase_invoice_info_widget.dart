@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/date_field_widget.dart';
@@ -166,7 +166,7 @@ class PurchaseInvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                         textInputAction: TextInputAction.next,
                         controller: controller.invoiceCustomerController,
                         focusNode: controller.invoiceCustomerFieldFocusNode,
-                        onEditingComplete: () => controller.getCustomersByCodeForInvoice(),
+                        onSubmitted: (_) => controller.getCustomersByCodeForInvoice(),
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             hintText: "ابحث عن مورد",

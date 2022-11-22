@@ -1,9 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
@@ -14,8 +14,6 @@ import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_ba
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/modules/catch_receipt/views/widgets/catch_receipt_buttons_widget.dart';
-import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
-
 import '../../../data/model/invoice/dto/response/gallery_response.dart';
 import '../controllers/catch_receipt_controller.dart';
 
@@ -106,33 +104,28 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                       color: Colors.white,
                                       border: Border.all(color: Colors.grey)),
                                   child: TypeAheadFormField<FindCustomerResponse>(
-                                      itemBuilder: (context, client) {
-                                        return SizedBox(
-                                          height: 50,
-                                          child: Center(
-                                            child: Text(client.name!),
-                                          ),
-                                        );
-                                      },
+                                    itemBuilder: (context, client) {
+                                      return SizedBox(
+                                        height: 50,
+                                        child: Center(
+                                          child: Text(client.name.toString()),
+                                        ),
+                                      );
+                                    },
+                                    onSuggestionSelected: (value) {
+                                      controller.customerController.text = value.name ?? "";
+                                      controller.selectedCustomer(value);
+                                      controller.getInvoiceListForCustomer(value, () {});
+                                    },
+                                    textFieldConfiguration: TextFieldConfiguration(
+                                      controller: controller.customerController,
+                                      focusNode: controller.customerFocusNode,
+                                      onSubmitted: (search) => controller.getCustomers(search),
+                                      decoration: null,
+                                    ),
                                       suggestionsCallback: (filter) => controller.customers
                                           .where((element) => (element.name ?? "").contains(filter) || (element.code ?? "").contains(filter)),
-                                      onSuggestionSelected: (value) {
-                                        controller.customerController.text = value.name ?? "";
-                                        controller.selectedCustomer(value);
-                                        controller.getInvoiceListForCustomer(value, () {});
-                                      },
-                                      textFieldConfiguration: TextFieldConfiguration(
-                                        controller: controller.customerController,
-                                        focusNode: controller.customerFocusNode,
-                                        onSubmitted: (search) => controller.getCustomers(search),
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          disabledBorder: InputBorder.none,
-                                          enabledBorder: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          isDense: true
-                                        ),
-                                      )),
+                                      ),
                                 ),
                               ),
                               SizedBox(
@@ -235,17 +228,10 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                             controller.itemPayFocus.requestFocus();
                                             controller.itemInvoice = value;
                                           },
-                                          textFieldConfiguration: TextFieldConfiguration(
-                                            controller: controller.itemInvoiceController,
-                                            focusNode: controller.itemInvoiceFocus,
-                                            decoration: const InputDecoration(
-                                              border: InputBorder.none,
-                                              isDense: true,
-                                              disabledBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                            ),
-                                          )),
+                                      textFieldConfiguration: TextFieldConfiguration(
+                                          controller: controller.itemInvoiceController,
+                                          focusNode: controller.itemInvoiceFocus
+                                      ),),
                                     ),
                                   ])),
                               const SizedBox(width: 15),
@@ -345,14 +331,14 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: TypeAheadFormField<GlPayDTO>(
-                                        itemBuilder: (context, bank) {
-                                          return SizedBox(
-                                            height: 50,
-                                            child: Center(
-                                              child: Text(bank.bankName!),
-                                            ),
-                                          );
-                                        },
+                                      itemBuilder: (context, bank) {
+                                        return SizedBox(
+                                          height: 50,
+                                          child: Center(
+                                            child: Text(bank.bankName.toString()),
+                                          ),
+                                        );
+                                      },
                                         suggestionsCallback: (filter) =>
                                             controller.banks.where((element) => element.bankName.toString().trim().contains(filter.trim())),
                                         onSuggestionSelected: (value) {
@@ -362,16 +348,11 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                             controller.addNewDetail();
                                           }
                                         },
-                                        textFieldConfiguration: TextFieldConfiguration(
-                                          controller: controller.itemBankController,
-                                          focusNode: controller.itemBankFocus,
-                                          decoration: const InputDecoration(
-                                              border: InputBorder.none,
-                                              disabledBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                              isDense: true),
-                                        )),
+                                      textFieldConfiguration: TextFieldConfiguration(
+                                        controller: controller.itemBankController,
+                                        focusNode: controller.itemBankFocus,
+                                      ),
+                                        ),
                                   ),
                                 ]),
                               ),

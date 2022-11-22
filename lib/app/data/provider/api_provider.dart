@@ -237,15 +237,15 @@ bool handleRemoteError(Response response) {
     return true;
   }
   if (statusCode == 401) {
-    throw NetworkException(ErrorCode.unauthenticated, "unauthenticated", statusCode);
+    throw NetworkException(ErrorCode.unauthenticated, "يرجى تسجيل الدخول", statusCode);
   } else if (statusCode == 403) {
-    throw NetworkException(ErrorCode.forbidden, "forbidden", statusCode);
+    throw NetworkException(ErrorCode.forbidden, "لايمكنك الوصول", statusCode);
   } else if (statusCode == 404) {
-    throw NetworkException(ErrorCode.notFound, "not found", statusCode);
+    throw NetworkException(ErrorCode.notFound, "الرابط غير موجود", statusCode);
   } else if (statusCode == 409) {
     throw NetworkException(ErrorCode.conflict, "conflict", statusCode);
   } else if (statusCode == 400) {
-    throw NetworkException(ErrorCode.badRequest, "server error", statusCode);
+    throw NetworkException(ErrorCode.badRequest, "يوجد مشكلة في المخدم", statusCode);
   }
-  throw NetworkException(ErrorCode.serverError, "server error", statusCode);
+  throw NetworkException(ErrorCode.serverError, "يوجد مشكلة في المخدم", statusCode);
 }

@@ -116,9 +116,9 @@ class ItemsBalancesStatementView extends GetView<ItemsBalancesStatementControlle
                                                     child: DateFieldWidget(
                                                       fillColor: Colors.white,
                                                       onComplete: (date){
-                                                        controller.dateFrom(date);
+                                                        controller.dateTo(date);
                                                       },
-                                                      date: controller.dateFrom.value,
+                                                      date: controller.dateTo.value,
                                                     ),
                                                   ),
                                                   // Padding(

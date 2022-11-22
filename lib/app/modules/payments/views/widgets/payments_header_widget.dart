@@ -1,6 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:toby_bills/app/components/date_field_widget.dart';

@@ -1,8 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/core/utils/double_filter.dart';
@@ -85,7 +84,7 @@ class NotificationsHeaderWidget extends GetView<NotificationsController> {
                             textInputAction: TextInputAction.next,
                             controller: controller.findSideCustomerController,
                             focusNode: controller.findSideCustomerFieldFocusNode,
-                            onEditingComplete: () => controller.getCustomersByCode(),
+                            onSubmitted: (_) => controller.getCustomersByCode(),
                             decoration: InputDecoration(
                                 border: const OutlineInputBorder(),
                                 isDense: true,
