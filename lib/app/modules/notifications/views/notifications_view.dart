@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
 import 'package:toby_bills/app/components/keys_widget.dart';
+import 'package:toby_bills/app/components/table.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/modules/notifications/views/widgets/notifications_header_widget.dart';
 
@@ -31,8 +33,48 @@ class NotificationsView extends GetView<NotificationsController> {
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white, border: Border.all(color: Colors.grey)),
                     margin: const EdgeInsets.all(20),
                     clipBehavior: Clip.antiAlias,
-                    child: NotificationsHeaderWidget(),
+                    child: const NotificationsHeaderWidget(),
                   ),
+                  Expanded(
+                    child: TableWidget(
+                      header: [
+                        "العميل",
+                        "رقم الفاتورة",
+                        "نوع الإشعار",
+                        "التاريخ",
+                        "المبلغ",
+                        "ملحوظات",
+                        "المعرض",
+                      ]
+                          .map((e) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 7),
+                        child: Text(e, textAlign: TextAlign.center,),
+                      ))
+                          .toList(),
+                      headerHeight: 40,
+                      rows: controller.notifications
+                          .map((e) => [
+                        "${e.organizationSiteName}",
+                        "${e.invInvoiceSerial}",
+                        (e.typeNotice == 0 ? "مدين" : e.typeNotice == 1 ? "خصم" : "دائن"),
+                        (e.date == null ? "" : DateFormat("yyy-MM-dd").format(e.date!)),
+                        "${e.value}",
+                        "${e.remark}",
+                        "${controller.galleries.singleWhere((element) => element.id == e.gallaryId).name}",
+                      ].map((d) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 7),
+                          child: Text(
+                            d,
+                            maxLines: 2, textAlign: TextAlign.center
+                          ),
+                        );
+                      }).toList())
+                          .toList(),
+                      minimumCellWidth: 150,
+                      rowHeight: 50,
+                    ),
+                  )
                 ],
               )
           ),

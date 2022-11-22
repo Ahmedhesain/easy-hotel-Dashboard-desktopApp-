@@ -77,24 +77,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                           children: [
                             _row(
                                 "المعرض:",
-                                SizedBox(
-                                  width: 250,
-                                  child: Obx(() {
-                                    return DropdownSearch<GalleryResponse>(
-                                      items: controller.galleries,
-                                      selectedItem: controller.selectedGallery.value,
-                                      onChanged: controller.selectedGallery,
-                                      itemAsString: (gallery) => gallery.name ?? "",
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                          isDense: true,
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                                          // border: OutlineInputBorder(),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                )),
+                                Text(controller.findInvoiceModel?.gallaryName??"")),
                             const SizedBox(height: 10),
                             _row(
                                 "رقم فاتورة المبيعات:",
@@ -251,14 +234,14 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                                   textDirection: TextDirection.rtl,
                                                   keyboardType: TextInputType.number,
 
-                                                  focusNode: controller.numberFocus,
+                                                  focusNode: controller.quantityFocus,
                                                   decoration: const InputDecoration(
                                                     border: OutlineInputBorder(),
                                                     contentPadding: EdgeInsets.zero,
                                                   ),
                                                   textAlign: TextAlign.center,
                                                   inputFormatters: [doubleInputFilter],
-                                                  controller: controller.itemNumberController,
+                                                  controller: controller.itemQuantityController,
                                                   onFieldSubmitted: (value) {
                                                     if (value.isNotEmpty) {
                                                       controller.addItem();
@@ -299,10 +282,10 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                               const SizedBox(width: 10),
                                               Expanded(
                                                 child: TextFormField(
-                                                  initialValue: (controller.invoiceDetailsList[index].quantity ?? '').toString(),
+                                                  initialValue: (controller.invoiceDetailsList[index].quantityOfOneUnit ?? '').toString(),
                                                   onChanged: (value) {
                                                     if (value.isEmpty) return;
-                                                    controller.invoiceDetailsList[index].quantity = num.parse(value);
+                                                    controller.invoiceDetailsList[index].quantityOfOneUnit = num.parse(value);
                                                   },
                                                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),

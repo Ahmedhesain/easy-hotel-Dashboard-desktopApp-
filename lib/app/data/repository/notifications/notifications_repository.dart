@@ -62,7 +62,7 @@ class NotificationsRepository {
 
 
   saveInvoiceNotice(
-      SaveNotificationRequest saveNotificationRequest, {
+      List<SaveNotificationRequest> saveNotificationRequest, {
         Function()? onComplete,
         Function(FindNotificationResponse data)? onSuccess,
         Function(dynamic error)? onError,
@@ -70,7 +70,7 @@ class NotificationsRepository {
     ApiProvider().post<FindNotificationResponse,Map<String,dynamic>>('invNotice/saveDeskTopInvNotice',
         onComplete: onComplete,
         onSuccess: onSuccess,
-        data: saveNotificationRequest.toJson(),
+        data: saveNotificationRequest.map((e) => e.toJson()).toList(),
         onError: onError,
         convertor: FindNotificationResponse.fromJson,
     );
