@@ -35,7 +35,97 @@ class HomeDrawerWidget extends GetView<HomeController> {
           onTap: () => goTo(Routes.NOTIFICATIONS, "الإشعارات"),
         ),
     ];
-    final list2 = [];
+    final list2 = [
+      HomeDrawerTileWidget(
+        title: "إجماليات الفئات",
+        onTap: () {
+          goTo(Routes.CATEGORIES_TOTALS, "إجماليات الفئات");
+        },
+      ),
+      HomeDrawerTileWidget(
+        title: "كميه الاصناف بالمعرض",
+        onTap: () {
+          if(Get.find<HomeController>().invoice.value == null) {
+            showPopupText(text: "يجب اختيار فاتورة اولاً");
+            return;
+          }
+          goTo(Routes.ITEMS_QUANTITY, "كميه الاصناف بالمعرض");
+        },
+      ),
+      HomeDrawerTileWidget(
+        title: "مبيعات الأصناف حسب العملاء تفصيلي",
+        onTap: () => goTo(Routes.ITEMS_SALES_BY_CUSTOMERS, "مبيعات الأصناف حسب العملاء تفصيلي"),
+      ),
+      HomeDrawerTileWidget(
+        title: "الاصناف",
+        onTap: () => goTo(Routes.ITEMS, "الاصناف"),
+      ),
+      HomeDrawerTileWidget(
+        title: "بيان الفواتير حسب الحالة",
+        onTap: () => goTo(Routes.INVOICE_STATEMENT_BY_CASE, "بيان الفواتير حسب الحالة"),
+      ),
+      HomeDrawerTileWidget(
+        title: " مبيعات الاصناف",
+        onTap: () => goTo(Routes.PROFITSOLD, " مبيعات الاصناف"),
+      ),
+      HomeDrawerTileWidget(
+        title: "المبيعات حسب الشركات لفتره",
+        onTap: () => goTo(Routes.SALES_ITEMS_BY_COMPANY, "المبيعات حسب الشركات لفتره"),
+      ),
+      HomeDrawerTileWidget(
+        title: "ارصده الاصناف",
+        onTap: () => goTo(Routes.ITEMS_BALANCES_STATEMENT, "رصيد الاصناف"),
+      ),
+      HomeDrawerTileWidget(
+        title: "فواتير الشركات بدون خياطه",
+        onTap: () => goTo(Routes.INVOICES_WITHOUT_SWING, "فواتير الشركات بدون خياطه"),
+      ),
+      HomeDrawerTileWidget(
+        title: " عملاء ليس لديهم حركه من تاريخ",
+        onTap: () => goTo(Routes.CLIENTS_NO_MOVEMENT, "عملاء ليس لديهم حركه من تاريخ"),
+      ),
+      HomeDrawerTileWidget(
+        title: "ارصده العملاء",
+        onTap: () => goTo(Routes.FIND_CUSTOMER_BALANCE, "ارصده العملاء"),
+      ),
+      HomeDrawerTileWidget(
+        title: "بيان الفواتير حسب الضريبه تفصيلي",
+        onTap: () => goTo(Routes.FIND_VALES_VALUES_ADDED_DETAILS, "بيان الفواتير حسب الضريبه تفصيلي"),
+      ),
+      HomeDrawerTileWidget(
+        title: "بيان الفواتير حسب الضريبه ",
+        onTap: () => goTo(Routes.FIND_VALES_VALUES_ADDED, "بيان الفواتير حسب الضريبه "),
+      ),
+      HomeDrawerTileWidget(
+        title: "تقرير العمولات",
+        onTap: () => goTo(Routes.BALANCE_GALLARY, "تقرير العمولات"),
+      ),
+      HomeDrawerTileWidget(
+        title: "تقرير بالمبالغ الغير مسدده",
+        onTap: () => goTo(Routes.BALANCE_GALLARY_UNPAID, "تقرير بالمبالغ الغير مسدده"),
+      ),
+      HomeDrawerTileWidget(
+        title: "تقرير بالمبالغ المسدده",
+        onTap: () => goTo(Routes.BALANCE_GALLARY_PAID, "تقرير بالمبالغ المسدده"),
+      ),
+      HomeDrawerTileWidget(
+        title: "الاصناف حسب الفئات",
+        onTap: () => goTo(Routes.INV_ITEM_DTO, "الاصناف حسب الفئات"),
+      ),
+      HomeDrawerTileWidget(
+        title: "الفواتير المسدده لفتره سابقه",
+        onTap: () => goTo(Routes.CATEGORIES_ITEMS, "الفواتير المسدده لفتره سابقه"),
+      ),
+      HomeDrawerTileWidget(
+        title: "بيان المبيعات لفتره",
+        onTap: () => goTo(Routes.SALES_FOR_PERIOD, "بيان المبيعات لفتره"),
+      ),
+      HomeDrawerTileWidget(
+        title: "حركه الثياب",
+        onTap: () => goTo(Routes.INVOICE_MOVEMENT, "حركه الثياب"),
+      ),
+
+    ];
     final list3 = <HomeDrawerTileWidget>[
       HomeDrawerTileWidget(
         title: "كشف حساب خزنة",
@@ -118,99 +208,10 @@ class HomeDrawerWidget extends GetView<HomeController> {
               title: "حركة المخازن",
               children: list1,
             ),
+            if(list2.isNotEmpty)
             HomeDrawerSectionWidget(
                 title: "تقارير المخازن",
-                children: [
-                  HomeDrawerTileWidget(
-                    title: "إجماليات الفئات",
-                    onTap: () {
-                      goTo(Routes.CATEGORIES_TOTALS, "إجماليات الفئات");
-                    },
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "كميه الاصناف بالمعرض",
-                    onTap: () {
-                      if(Get.find<HomeController>().invoice.value == null) {
-                        showPopupText(text: "يجب اختيار فاتورة اولاً");
-                        return;
-                      }
-                      goTo(Routes.ITEMS_QUANTITY, "كميه الاصناف بالمعرض");
-                    },
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "مبيعات الأصناف حسب العملاء تفصيلي",
-                    onTap: () => goTo(Routes.ITEMS_SALES_BY_CUSTOMERS, "مبيعات الأصناف حسب العملاء تفصيلي"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "الاصناف",
-                    onTap: () => goTo(Routes.ITEMS, "الاصناف"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "بيان الفواتير حسب الحالة",
-                    onTap: () => goTo(Routes.INVOICE_STATEMENT_BY_CASE, "بيان الفواتير حسب الحالة"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: " مبيعات الاصناف",
-                    onTap: () => goTo(Routes.PROFITSOLD, " مبيعات الاصناف"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "المبيعات حسب الشركات لفتره",
-                    onTap: () => goTo(Routes.SALES_ITEMS_BY_COMPANY, "المبيعات حسب الشركات لفتره"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "ارصده الاصناف",
-                    onTap: () => goTo(Routes.ITEMS_BALANCES_STATEMENT, "رصيد الاصناف"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "فواتير الشركات بدون خياطه",
-                    onTap: () => goTo(Routes.INVOICES_WITHOUT_SWING, "فواتير الشركات بدون خياطه"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: " عملاء ليس لديهم حركه من تاريخ",
-                    onTap: () => goTo(Routes.CLIENTS_NO_MOVEMENT, "عملاء ليس لديهم حركه من تاريخ"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "ارصده العملاء",
-                    onTap: () => goTo(Routes.FIND_CUSTOMER_BALANCE, "ارصده العملاء"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "بيان الفواتير حسب الضريبه تفصيلي",
-                    onTap: () => goTo(Routes.FIND_VALES_VALUES_ADDED_DETAILS, "بيان الفواتير حسب الضريبه تفصيلي"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "بيان الفواتير حسب الضريبه ",
-                    onTap: () => goTo(Routes.FIND_VALES_VALUES_ADDED, "بيان الفواتير حسب الضريبه "),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "تقرير العمولات",
-                    onTap: () => goTo(Routes.BALANCE_GALLARY, "تقرير العمولات"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "تقرير بالمبالغ الغير مسدده",
-                    onTap: () => goTo(Routes.BALANCE_GALLARY_UNPAID, "تقرير بالمبالغ الغير مسدده"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "تقرير بالمبالغ المسدده",
-                    onTap: () => goTo(Routes.BALANCE_GALLARY_PAID, "تقرير بالمبالغ المسدده"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "الاصناف حسب الفئات",
-                    onTap: () => goTo(Routes.INV_ITEM_DTO, "الاصناف حسب الفئات"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "الفواتير المسدده لفتره سابقه",
-                    onTap: () => goTo(Routes.CATEGORIES_ITEMS, "الفواتير المسدده لفتره سابقه"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "بيان المبيعات لفتره",
-                    onTap: () => goTo(Routes.SALES_FOR_PERIOD, "بيان المبيعات لفتره"),
-                  ),
-                  HomeDrawerTileWidget(
-                    title: "حركه الثياب",
-                    onTap: () => goTo(Routes.INVOICE_MOVEMENT, "حركه الثياب"),
-                  ),
-
-                ],
+                children: list2,
             ),
             if(list4.isNotEmpty)
             HomeDrawerSectionWidget(
