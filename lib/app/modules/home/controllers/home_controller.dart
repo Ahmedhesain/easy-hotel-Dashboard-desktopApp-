@@ -16,6 +16,7 @@ import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_re
 import 'package:toby_bills/app/data/model/general_journal/dto/request/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/delete_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
@@ -23,6 +24,7 @@ import 'package:toby_bills/app/data/model/invoice/dto/request/get_delegator_requ
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/offerone_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
@@ -34,12 +36,16 @@ import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dar
 import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/model/payments/dto/request/delete_payment_request.dart';
+import 'package:toby_bills/app/data/model/payments/dto/request/find_payment_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
 import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
-// import 'package:window_manager/window_manager.dart';
+import 'package:toby_bills/app/data/repository/payment/payment_repository.dart';
+import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
+import 'package:window_manager/window_manager.dart';
 
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
@@ -57,6 +63,7 @@ class HomeController extends GetxController {
   final tax = RxNum(0.0);
   final finalNet = RxNum(0.0);
   final remain = RxNum(0.0);
+  final payed = RxNum(0.0);
   final itemAvailableQuantity = RxnNum();
   final itemNet = RxnNum();
   final itemTotalQuantity = RxnNum();
@@ -106,6 +113,7 @@ class HomeController extends GetxController {
   final inventories = <InventoryResponse>[];
   final items = <ItemResponse>[];
   final galleries = <GalleryResponse>[];
+  final glPayDtoList = <GlPayDTO>[];
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
   Rxn<GetDueDateResponse> dueDate = Rxn();
   Rx<DateTime> date = Rx(DateTime.now());
@@ -126,7 +134,7 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    // windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+    windowManager.setTitle("Toby Bills -> شاشة المبيعات");
     isLoading(true);
     _addItemFieldsListener();
     items.addAll(_getItemsFromStorage());
@@ -134,7 +142,7 @@ class HomeController extends GetxController {
       getItems();
     }
     await getGalleries();
-    Future.wait([getDueDate(), getDeliveryPlaces(), getDelegators(), getInventories()]).whenComplete(() => isLoading(false));
+    Future.wait([getDueDate(), getGlPayDtoList(), getDeliveryPlaces(), getDelegators(), getInventories()]).whenComplete(() => isLoading(false));
   }
 
   getCustomersByCode() {
@@ -167,6 +175,15 @@ class HomeController extends GetxController {
     return InvoiceRepository().findDueDateDTOAPI(
       GetDueDateRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) => dueDate(data),
+      onError: (error) => showPopupText(text: error.toString()),
+    );
+  }
+
+
+  Future<void> getGlPayDtoList() {
+    return ReportsRepository().getAllGlPay(
+      AllInvoicesRequest(branchId: UserManager().branchId, id: UserManager().id),
+      onSuccess: (data) => glPayDtoList.assignAll(data),
       onError: (error) => showPopupText(text: error.toString()),
     );
   }
@@ -220,6 +237,10 @@ class HomeController extends GetxController {
 
   void createCustomer(CreateCustomerRequest newCustomer) {
     isLoading(true);
+    newCustomer.companyId = UserManager().companyId;
+    newCustomer.createdBy = UserManager().id;
+    newCustomer.branchId = UserManager().branchId;
+    newCustomer.accountIdAPI = UserManager().accountIdAPI;
     CustomerRepository().createCustomer(
       newCustomer,
       onSuccess: (data) {
@@ -540,6 +561,7 @@ class HomeController extends GetxController {
     final isEdit = invoice.value != null;
     final request = CreateInvoiceRequest(
       id: invoice.value?.id,
+      payed: payed.value,
       customerId: selectedCustomer.value!.id,
       customerCode: selectedCustomer.value!.code,
       customerMobile: selectedCustomer.value!.mobile,
@@ -559,7 +581,7 @@ class HomeController extends GetxController {
       companyId: UserManager().companyId,
       createdBy: UserManager().id,
       createdDate: DateTime.now(),
-      glPayDTOList: [],
+      glPayDTOList: glPayDtoList,
       invDelegatorId: selectedDelegator.value?.id,
       invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(),
       invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted!.map((element) => element).toList(),
@@ -581,6 +603,9 @@ class HomeController extends GetxController {
         onSuccess: (data) async {
           invoice(data);
           invoiceDetails.assignAll((data.invoiceDetailApiList??[]).map((e) => e.obs).toList());
+          for (var element in glPayDtoList) {
+            element.value = 0;
+          }
           // await InvoiceRepository().saveTarhil(data,
           //     onSuccess: (data) {
           //       invoice.value!.serial = data.serial;
@@ -619,6 +644,9 @@ class HomeController extends GetxController {
     discountHalala(0);
     calcInvoiceValues();
     invoice.value = null;
+    for (var element in glPayDtoList) {
+      element.value = 0;
+    }
   }
 
   calcInvoiceValues() {
@@ -636,9 +664,8 @@ class HomeController extends GetxController {
     totalAfterDiscount(net - discountHalala.value - discount);
     tax(totalAfterDiscount.value * 0.15);
     finalNet((totalAfterDiscount.value + tax.value).fixed(2));
-    // num payed = glPayDTOList.fold<num>(0, (p, e) => p+(e.value??0));
-    num payed = 0;
-    remain(finalNet.value - payed);
+    payed(glPayDtoList.fold<num>(0, (p, e) => p+(e.value??0)));
+    remain(finalNet.value - payed.value);
   }
 
   removeHalala() {
@@ -771,6 +798,19 @@ class HomeController extends GetxController {
       },
       onError: (e)=>showPopupText(text: e.toString()),
       onComplete: () => isLoading(false)
+    );
+  }
+
+  offerOne() {
+    final request = OfferOneRequest(invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(), galleryType: UserManager().galleryType);
+    isLoading(true);
+    InvoiceRepository().offerOne(request,
+      onSuccess: (data){
+        invoiceDetails.assignAll(data.map((e) => e.obs));
+        calcInvoiceValues();
+      },
+      onError: (e) => showPopupText(text: e.toString()),
+      onComplete: ()=> isLoading(false)
     );
   }
 }

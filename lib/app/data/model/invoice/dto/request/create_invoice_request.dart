@@ -42,8 +42,10 @@ class CreateInvoiceRequest {
   final int? supplierInvoiceNumber;
   final num? discount;
   final num? discountType;
+  final num? payed;
 
   CreateInvoiceRequest({
+    this.payed,
     this.discount,
     this.supplierInvoiceNumber,
     this.typeInv,
@@ -98,6 +100,7 @@ class CreateInvoiceRequest {
     "date": date?.toIso8601String(),
     "supplierDate": supplierDate?.toIso8601String(),
     "discount": discount,
+    "payed": payed,
     "discountType": discountType,
     "dueDate": dueDate?.toIso8601String(),
     "dueperiod": dueperiod,

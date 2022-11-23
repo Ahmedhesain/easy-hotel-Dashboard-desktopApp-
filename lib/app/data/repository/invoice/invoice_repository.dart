@@ -7,6 +7,7 @@ import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_reque
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gl_account_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/invoice_status_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/offerone_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/faseh_invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
@@ -15,6 +16,7 @@ import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_res
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_status_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/save_tarhil_response.dart';
+import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
 import '../../model/customer/dto/request/find_customer_request.dart';
 import '../../model/customer/dto/response/find_customer_response.dart';
@@ -234,6 +236,21 @@ class InvoiceRepository {
         data: invoiceModel.toJson(),
         onError: onError,
         convertor: (data) => data["serial"],
+      );
+
+
+  offerOne(
+      OfferOneRequest offerOneRequest, {
+        Function()? onComplete,
+        Function(List<InvoiceDetailsModel> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<InvoiceDetailsModel>,List<dynamic>>('sales/offerone',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: offerOneRequest.toJson(),
+        onError: onError,
+        convertor: (data) => List<InvoiceDetailsModel>.from(data.map((e) => InvoiceDetailsModel.fromJson(e))),
       );
 
 }
