@@ -102,7 +102,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                 Expanded(
                   flex: 2,
                   child: DateFieldWidget(
-                    key: UniqueKey(),
+                    // key: UniqueKey(),
                     onComplete: (date){
                       controller.date(date);
                     },

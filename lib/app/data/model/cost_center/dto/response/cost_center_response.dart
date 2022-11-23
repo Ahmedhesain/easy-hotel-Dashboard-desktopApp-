@@ -42,4 +42,8 @@ class CostCenterResponse {
     "code": code,
     "name": name,
   };
+
+  @override
+  toString() => "$name";
+
 }

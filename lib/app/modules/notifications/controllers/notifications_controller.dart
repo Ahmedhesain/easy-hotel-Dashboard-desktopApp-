@@ -123,7 +123,7 @@ class NotificationsController extends GetxController {
 
   searchByNotification() {
     isLoading(true);
-    final request =FindNotificationRequest(branchId: user.branchId, typeNotice: notificationType.value, serial: notificationNumberController.text.tryToParseToNum?.toInt()??0);
+    final request = FindNotificationRequest(branchId: user.branchId, typeNotice: notificationType.value, serial: notificationNumberController.text.tryToParseToNum?.toInt()??0);
     NotificationsRepository().findInvoiceNotice(request,
       onSuccess: (data){
         notification(data);

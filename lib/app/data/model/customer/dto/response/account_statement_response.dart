@@ -17,20 +17,20 @@ class AccountStatementResponse {
     required this.invoiceSerial,
   });
 
-  final num adding;
-  final num exitt;
-  final num openningBalance;
+  num? adding;
+  num? exitt;
+  num? openningBalance;
   num balance = 0;
-  final String organizationCode;
-  final String organizationName;
-  final num organizationSiteId;
-  final String? remarks;
-  final String screenName;
-  final num serial;
-  final DateTime? date;
-  final num? invoiceSerial;
+  String? organizationCode;
+  String? organizationName;
+  num? organizationSiteId;
+  String? remarks;
+  String? screenName;
+  num? serial;
+  DateTime? date;
+  num? invoiceSerial;
 
-  num get sub => adding - exitt;
+  num get sub => (exitt??0) - (adding??0);
 
   static List<AccountStatementResponse> fromList(List<dynamic> json) => List<AccountStatementResponse>.from(json.map((e) => AccountStatementResponse.fromJson(e)));
 

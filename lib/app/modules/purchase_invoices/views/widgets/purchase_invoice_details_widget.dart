@@ -177,7 +177,7 @@ class PurchaseInvoiceDetailsWidget extends GetView<PurchaseInvoicesController> {
                   child: DropdownSearch<GlAccountResponse>(
                     key: UniqueKey(),
                     items: controller.glAccounts,
-                    itemAsString: (GlAccountResponse account) => "${account.name} ${account.accNumber}",
+                    itemAsString: (GlAccountResponse account) => "${account.name}",
                     onChanged: (GlAccountResponse? account) {
                       detail(detail.value.copyWith(account: account?.id));
                     },

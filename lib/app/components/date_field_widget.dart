@@ -26,6 +26,13 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
     }
   }
 
+  @override
+  void didUpdateWidget(covariant DateFieldWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if(widget.date != null){
+      controller.text = widget.date!.toIso8601String().split("T").first.replaceAll("-", "/").split("/").reversed.join("/");
+    }
+  }
 
   bool isDaysInMonthValid(int days, int month, int year){
     return ([1,3,5,7,8,10,12].contains(month) && days <= 31

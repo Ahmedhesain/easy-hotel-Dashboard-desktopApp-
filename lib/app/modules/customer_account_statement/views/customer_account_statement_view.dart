@@ -94,7 +94,7 @@ class CustomerAccountStatementView extends GetView<CustomerAccountStatementContr
                         suggestionsCallback: (filter) => controller.customers
                             .where((element) => (element.name ?? "").contains(filter) || (element.code ?? "").contains(filter)),
                         onSuggestionSelected: (value) {
-                          controller.customerController.text = value.name ?? "";
+                          controller.customerController.text = "${value.name} ${value.code}";
                           controller.selectedCustomer(value);
                         },
                         textFieldConfiguration: TextFieldConfiguration(
@@ -154,30 +154,29 @@ class CustomerAccountStatementView extends GetView<CustomerAccountStatementContr
             header: [
               "رقم الفاتورة",
               "التاريخ",
-              "عميل",
+              // "عميل",
               "نوع الحركة",
               "رقم فاتورة المبيعات",
               "الخزينة",
               "مدين",
               "دائن",
               "الرصيد",
-            ]
-                .map((e) => Padding(
+            ].map((e) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 7),
                       child: Text(e, textAlign: TextAlign.center,),
-                    ))
-                .toList(),
+                    )
+            ).toList(),
             headerHeight: 40,
             rows: controller.reports
                 .map((e) => [
                       "${e.serial}",
                       (e.date == null ? "" : DateFormat("yyy-MM-dd").format(e.date!)),
-                      (e.organizationName),
-                      (e.screenName),
+                      // "${e.organizationName}",
+                      "${e.screenName}",
                       "${e.invoiceSerial}",
                       "${e.openningBalance}",
-                      "${e.adding}",
                       "${e.exitt}",
+                      "${e.adding}",
                       "${e.balance}"
                     ].map((d) {
                       return Padding(

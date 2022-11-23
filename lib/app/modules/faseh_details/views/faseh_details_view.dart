@@ -27,7 +27,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
           enabled: !controller.isLoading.value,
           saveFunc: () => controller.save(),
           newFunc: () => controller.newInvoice(),
-          printFunc: ()=> PrintingHelper().fash(context, controller.invoiceDetailsList, controller.invoiceModel!),
+          printFunc: () => PrintingHelper().fash(context, controller.invoiceDetailsList, controller.invoiceModel!),
           child: AppLoadingOverlay(
             isLoading: controller.isLoading.value,
             child: Directionality(
@@ -40,25 +40,26 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                         color: AppColors.appGreyDark,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      padding: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2.5),
                       child: Obx(() {
                         return Row(
                           // mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            ButtonWidget(text: 'رجوع', onPressed: () => Navigator.pop(context)),
-                            const SizedBox(width: 5),
-                            if(!controller.isSaved.value)
-                              ButtonWidget(text: 'حفظ', onPressed: () => controller.save()),
-                            if(controller.isSaved.value)
-                              ButtonWidget(text: 'طباعة',
-                                  onPressed: () => PrintingHelper().fash(context, controller.invoiceDetailsList, controller.invoiceModel!)),
-                            const SizedBox(width: 5),
-                            ButtonWidget(text: 'جديد', onPressed: () => controller.newInvoice()),
-                            if(controller.isSaved.value)
-                              const SizedBox(width: 5),
-                            if(controller.isSaved.value)
-                              ButtonWidget(text: 'تصدير الى اكسل', onPressed: () => ExcelHelper.fashExcel(controller.invoiceDetailsList, context)),
+                            ButtonWidget(text: 'رجوع', onPressed: () => Navigator.pop(context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                            if (!controller.isSaved.value)
+                              ButtonWidget(text: 'حفظ', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                            // ButtonWidget(text: 'بحث', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                            // ButtonWidget(text: 'حذف', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                            if (controller.isSaved.value)
+                              ButtonWidget(
+                                text: 'طباعة',
+                                onPressed: () => PrintingHelper().fash(context, controller.invoiceDetailsList, controller.invoiceModel!),
+                                margin: const EdgeInsets.symmetric(horizontal: 2.5),
+                              ),
+                            ButtonWidget(text: 'جديد', onPressed: () => controller.newInvoice(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                            if (controller.isSaved.value)
+                              ButtonWidget(text: 'تصدير الى اكسل', onPressed: () => ExcelHelper.fashExcel(controller.invoiceDetailsList, context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                           ],
                         );
                       }),
@@ -75,9 +76,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _row(
-                                "المعرض:",
-                                Text(controller.findInvoiceModel?.gallaryName??"")),
+                            _row("المعرض:", Text(controller.findInvoiceModel?.gallaryName ?? "")),
                             const SizedBox(height: 10),
                             _row(
                                 "رقم فاتورة المبيعات:",
@@ -95,22 +94,29 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                           },
                                           child: const Padding(
                                             padding: EdgeInsets.all(5.0),
-                                            child: Icon(Icons.search, size: 15,),
+                                            child: Icon(
+                                              Icons.search,
+                                              size: 15,
+                                            ),
                                           ),
-                                        )
-                                    ),
+                                        )),
                                     onFieldSubmitted: (_) {
                                       controller.search();
                                     },
                                   ),
                                 )),
                             const SizedBox(height: 10),
-                            _row("تاريخ فاتورة العميل:", controller.findInvoiceModel?.invDate == null ? const SizedBox.shrink() : Text(
-                                DateFormat("yyyy-MM-dd hh:mm aa").format(controller.findInvoiceModel!.invDate!))),
+                            _row(
+                                "تاريخ فاتورة العميل:",
+                                controller.findInvoiceModel?.invDate == null
+                                    ? const SizedBox.shrink()
+                                    : Text(DateFormat("yyyy-MM-dd hh:mm aa").format(controller.findInvoiceModel!.invDate!))),
                             const SizedBox(height: 10),
-                            _row("العميل:", controller.findInvoiceModel == null ? const SizedBox.shrink() : Text(
-                                "${controller.findInvoiceModel!.iosName} ${controller.findInvoiceModel!.iosCode} ${controller.findInvoiceModel!
-                                    .iosMobile}")),
+                            _row(
+                                "العميل:",
+                                controller.findInvoiceModel == null
+                                    ? const SizedBox.shrink()
+                                    : Text("${controller.findInvoiceModel!.iosName} ${controller.findInvoiceModel!.iosCode} ${controller.findInvoiceModel!.iosMobile}")),
                             const SizedBox(height: 10),
                             _row(
                                 "ملاحظات:",
@@ -118,8 +124,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                   width: 200,
                                   child: TextFormField(
                                     controller: controller.remarksController,
-                                    decoration: const InputDecoration(isDense: true,
-                                        contentPadding: EdgeInsets.all(5)),
+                                    decoration: const InputDecoration(isDense: true, contentPadding: EdgeInsets.all(5)),
                                   ),
                                 )),
                           ],
@@ -130,8 +135,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _row("رقم الفسح:", controller.findInvoiceModel == null ? const SizedBox.shrink() : Text(
-                                controller.findInvoiceModel!.delegatorId.toString())),
+                            _row("رقم الفسح:", controller.findInvoiceModel == null ? const SizedBox.shrink() : Text(controller.findInvoiceModel!.delegatorId.toString())),
                             const SizedBox(height: 10),
                             _row("التاريخ:", Text(DateFormat("yyyy-MM-dd hh:mm aa").format(DateTime.now()))),
                           ],
@@ -144,8 +148,8 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                   ),
                   Expanded(
                       child: Container(
-                        // width: size.width * .75,
-                        // height: size.height * .9,
+                          // width: size.width * .75,
+                          // height: size.height * .9,
                           decoration: BoxDecoration(
                               borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
                               color: Colors.white,
@@ -162,9 +166,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                       Row(
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
-                                          const Padding(
-                                              padding: EdgeInsets.symmetric(horizontal: 10),
-                                              child: Text("#")),
+                                          const Padding(padding: EdgeInsets.symmetric(horizontal: 10), child: Text("#")),
                                           Expanded(
                                             flex: 4,
                                             child: Column(children: [
@@ -186,8 +188,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                                 ),
                                                 child: TypeAheadFormField<ItemResponse>(
                                                   suggestionsCallback: (String pattern) =>
-                                                      controller.items.where((e) =>
-                                                      e.name.toString().contains(pattern) || e.code.toString().contains(pattern)),
+                                                      controller.items.where((e) => e.name.toString().contains(pattern) || e.code.toString().contains(pattern)),
                                                   onSuggestionSelected: (item) {
                                                     controller.selectNewItem(item);
                                                   },
@@ -233,7 +234,6 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                                 child: TextFormField(
                                                   textDirection: TextDirection.rtl,
                                                   keyboardType: TextInputType.number,
-
                                                   focusNode: controller.quantityFocus,
                                                   decoration: const InputDecoration(
                                                     border: OutlineInputBorder(),
@@ -290,9 +290,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                                                   decoration: const InputDecoration(
-                                                      contentPadding: EdgeInsets.symmetric(vertical: 5),
-                                                      border: OutlineInputBorder(),
-                                                      isDense: true),
+                                                      contentPadding: EdgeInsets.symmetric(vertical: 5), border: OutlineInputBorder(), isDense: true),
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ),
@@ -324,6 +322,4 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
       children: [SizedBox(width: 150, child: Text(label)), details],
     );
   }
-
-
 }

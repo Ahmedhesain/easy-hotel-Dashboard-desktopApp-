@@ -8,32 +8,25 @@ import 'package:toby_bills/app/core/utils/app_storage.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/core/values/app_constants.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/create_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_balance_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/general_journal/dto/request/find_general_journal_request.dart';
-import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_invoice_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delegator_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/request/get_due_date_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gl_account_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
-import 'package:toby_bills/app/data/model/item/dto/request/get_item_price_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
-import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
-import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/provider/local_provider.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
@@ -41,9 +34,6 @@ import 'package:toby_bills/app/data/repository/general_journal/general_journal_r
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
-
-import '../../../core/enums/toast_msg_type.dart';
-import '../../../core/values/app_constants.dart';
 import '../../../data/model/invoice/dto/response/get_delivery_place_response.dart';
 
 class PurchaseInvoicesController extends GetxController {
@@ -177,7 +167,8 @@ class PurchaseInvoicesController extends GetxController {
   }
 
   Future<void> getGlAccounts() async {
-    glAccounts.assignAll(LocalProvider().getGlAccounts());
+    glAccounts.assignAll(AppConstants.accounts);
+    // glAccounts.assignAll(LocalProvider().getGlAccounts());
     if(glAccounts.isEmpty) {
       return InvoiceRepository().getGlAccountList(GlAccountRequest(UserManager().branchId),
         onSuccess: (data) {
@@ -185,6 +176,8 @@ class PurchaseInvoicesController extends GetxController {
           LocalProvider().saveGlAccounts(data);
         },
         onError: (error) => showPopupText(text: error.toString()));
+    } else {
+      selectedGlAccount(glAccounts.first);
     }
   }
 
@@ -316,11 +309,10 @@ class PurchaseInvoicesController extends GetxController {
     return items.where((element) => element.code.toString().contains(filter) || element.name.toString().contains(filter)).toList();
   }
 
-  _clearItemFields() {
+  _clearItemFields({bool clearAll = true}) {
     selectedItem.value = null;
     itemNameController.clear();
     itemQuantityController.clear();
-    itemGlAccountController.clear();
     itemYardNumberController.clear();
     // itemQuantityController.clear();
     itemPriceController.clear();
@@ -332,7 +324,11 @@ class PurchaseInvoicesController extends GetxController {
     itemAvailableQuantity.value = null;
     itemNet.value = null;
     itemTotalQuantity.value = null;
-    selectedInventory(inventories.first);
+    if(clearAll) {
+      itemGlAccountController.clear();
+      selectedInventory(inventories.first);
+      selectedGlAccount.value = null;
+    }
   }
 
   selectItem(ItemResponse item, {void Function()? noQuantity}) {
@@ -405,7 +401,7 @@ class PurchaseInvoicesController extends GetxController {
 
     invoiceDetails.add(detail);
     calcInvoiceValues();
-    _clearItemFields();
+    _clearItemFields(clearAll: false);
     itemNameFocusNode.requestFocus();
   }
 

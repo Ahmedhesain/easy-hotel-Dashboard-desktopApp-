@@ -35,23 +35,20 @@ import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dar
 import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
-import 'package:toby_bills/app/data/model/payments/dto/request/delete_payment_request.dart';
-import 'package:toby_bills/app/data/model/payments/dto/request/find_payment_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
 import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
-import 'package:toby_bills/app/data/repository/payment/payment_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 import 'package:window_manager/window_manager.dart';
-
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
 import '../../../data/model/invoice/dto/response/get_delivery_place_response.dart';
 
 class HomeController extends GetxController {
+
   final isLoading = false.obs;
   final isProof = false.obs;
   final checkSendSms = false.obs;
@@ -300,7 +297,7 @@ class HomeController extends GetxController {
   }
 
   searchForInvoiceById(String id) async {
-    newInvoice();
+    newInvoice(resetDueDate: false);
     isLoading(true);
     searchedInvoiceFocusNode.unfocus();
     await InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
@@ -634,7 +631,7 @@ class HomeController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  newInvoice() {
+  newInvoice({bool resetDueDate = true}) {
     _clearItemFields();
     if (priceTypes.keys.isNotEmpty) selectedPriceType(priceTypes.keys.first);
     if (discountType.keys.isNotEmpty) selectedDiscountType(discountType.keys.first);
@@ -654,7 +651,9 @@ class HomeController extends GetxController {
     for (var element in glPayDtoList) {
       element.value = 0;
     }
-    getDueDate(withLoading: true);
+    if(resetDueDate) {
+      getDueDate(withLoading: true);
+    }
   }
 
   calcInvoiceValues() {
