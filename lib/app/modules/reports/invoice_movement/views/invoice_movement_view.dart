@@ -13,6 +13,7 @@ import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_styles.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
+import 'package:toby_bills/app/core/values/app_constants.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
@@ -127,8 +128,37 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
 
 
                                             ),
-                                            SizedBox(width: size.width*.08,)
-
+                                            SizedBox(width: size.width*.2,),
+                                            const SizedBox(width: 15),
+                                            const Center(
+                                                child: Text(
+                                                  'نوع الفاتوره:',
+                                                )),
+                                            const SizedBox(width: 5),
+                                            Center(
+                                              child: SizedBox(
+                                                width: 190,
+                                                child: DropdownSearch<String>(
+                                                  items: AppConstants.invoiceTypeList,
+                                                  selectedItem: AppConstants.invoiceTypeList[controller.invoiceTypeSelected == null? 0 : controller.invoiceTypeSelected!+1],
+                                                  onChanged: (value) {
+                                                    if (value == AppConstants.invoiceTypeList.first) {
+                                                      controller.invoiceTypeSelected = null;
+                                                    } else {
+                                                      controller.invoiceTypeSelected = AppConstants.invoiceTypeList.indexOf(value!) - 1;
+                                                    }
+                                                  },
+                                                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                                                    dropdownSearchDecoration: InputDecoration(
+                                                      border: OutlineInputBorder(),
+                                                      contentPadding: EdgeInsets.all(10),
+                                                      isDense: true,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 15),
 
                                           ],
                                         ),
@@ -311,6 +341,42 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                                         ),
                                       ),
                                     ),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                                padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                child:Row(children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                    child: Text('فواتير لم تكتمل',style: smallTextStyleNormal(size)),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                    child:  Checkbox(value: controller.checkBoxValueNotComplete.value,
+                                                      activeColor: Colors.green,
+                                                      onChanged:(bool? newValue){
+
+                                                        controller.checkBoxValueNotComplete.value = newValue!;
+                                                      },
+                                                    ),
+                                                  ),
+
+
+
+
+                                                ],)
+
+                                            ),
+
+
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
                                     Padding(
                                       padding: EdgeInsets.fromLTRB(0, size.height * .01, 0, 0),
                                       child: Row(
@@ -370,7 +436,7 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printInvoiceMovement(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printInvoiceMovement(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!,int.parse(controller.fromController.text),int.parse(controller.toController.text),controller.selectedDeliveryPlace),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),
@@ -410,7 +476,7 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                           ),
                           SizedBox(
                               width:size.width,
-                              height:size.height*.53,
+                              height:size.height*.59,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
@@ -449,6 +515,9 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                                               style: TextStyle(fontSize: 16.0))
                                           ]),
                                           Column(children: const [SizedBox(height: 5,),Text('عدد الثياب للطيار',
+                                              style: TextStyle(fontSize: 16.0))
+                                          ]),
+                                          Column(children: const [SizedBox(height: 5,),Text('تاريخ الاستلام بالمعرض',
                                               style: TextStyle(fontSize: 16.0))
                                           ]),
                                           Column(children: const [SizedBox(height: 5,),Text('عدد الثياب بالمعرض',
@@ -513,6 +582,13 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                                                     kha.numberTobcustomer!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
+                                              Column(children: [
+                                                Text(
+
+                                              "" ,
+                                              style: const TextStyle(fontSize: 20.0))
+                                              ]),
+
                                               Column(children: [
                                                 Text(
                                                     kha.numberTobgallary!.toString(),

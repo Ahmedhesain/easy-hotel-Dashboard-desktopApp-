@@ -233,8 +233,8 @@ class ExcelHelper {
   static Future<Excel> SalesItemsByCompanyExcel(List<SalesOfItemsByCompanyResponse> reports, BuildContext context) async {
     var excel = Excel.createExcel();
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), "الكود");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "الفئة");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "العدد");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "اسم الشركه");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "اجمالي المبيعات");
 
     for (var i = 1; i <= reports.length; i++) {
       final report = reports[i - 1];
@@ -271,25 +271,25 @@ class ExcelHelper {
 
 
     }
-    List<int>? x = excel.save(fileName: "ارباح المبيعات.xlsx");
-    await saveFile("ارباح المبيعات.xlsx", x!, context);
+    List<int>? x = excel.save(fileName: "مبيعات الاصناف.xlsx");
+    await saveFile("مبيعات الاصناف.xlsx", x!, context);
     return excel;
   }
 
   static Future<Excel> ItemsBalanceExcel(List<ItemsBalanceResponse> reports, BuildContext context) async {
     var excel = Excel.createExcel();
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), "الاسم");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "الكود");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "الخصم");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0), "المرتب");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), "رقم الصنف");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "اسم الصنف");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "سعر البيع");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0), "متوسط التكلفه");
 
 
     for (var i = 1; i <= reports.length; i++) {
       final report = reports[i - 1];
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i), report.name);
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i), report.code);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.costAverage);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i), report.sallary);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.sallary);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i), report.costAverage);
 
 
     }
@@ -415,12 +415,14 @@ class ExcelHelper {
   static Future<Excel> SalesValueAddedDetailsExcel(List<FindSalesValueAddedDetailsResponse> reports, BuildContext context) async {
     var excel = Excel.createExcel();
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), "رقم الفاتوره");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "التاريخ");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "اسم المعرض");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0), "الموظف");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0), "الاجمالي قبل الضريبه");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0), "الاجمالي بعد الضريبه");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0), "الضريبه");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "نوع الفاتوره");
+
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "التاريخ");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0), "اسم المعرض");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0), "الموظف");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0), "الاجمالي قبل الضريبه");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0), "الاجمالي بعد الضريبه");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 0), "الضريبه");
 
 
 
@@ -428,12 +430,13 @@ class ExcelHelper {
     for (var i = 1; i <= reports.length; i++) {
       final report = reports[i - 1];
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i), report.invoiceNumber);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i), report.invoiceDate);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.galleryName);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i), report.employeeName);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i), report.totalBeforeTax);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i), report..totalAfterTax);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i), report.tax);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i), report.invoiceType);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.invoiceDate);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i), report.galleryName);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i), report.employeeName);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i), report.totalBeforeTax);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i), report..totalAfterTax);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: i), report.tax);
 
 
 
@@ -664,7 +667,7 @@ class ExcelHelper {
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), " التاريخ");
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0), "رقم العميل");
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0), "العميل");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0), "رقم الفاتوره");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0), "قيمه الفاتوره");
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0), "صافي الفاتوره");
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 0), "الباقي");
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: 0), "المسدد");
@@ -680,8 +683,8 @@ class ExcelHelper {
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), DateFormat("yyyy-MM-dd").format(report.invoiceDate!));
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.code);
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i), report.name);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i), report.invoiceId);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i),report.totalNet);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i), report.totalAfterTax);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i),report.totalBeforeTax);
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i), report.paid);
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: i), report.remain);
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: i), "");

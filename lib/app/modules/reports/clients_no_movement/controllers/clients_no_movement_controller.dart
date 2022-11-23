@@ -59,6 +59,14 @@ class ClientsNoMovementController extends GetxController{
         onComplete: () => isLoading(false)
     );
   }
+  pickFromDate() async {
+    dateFrom(await _pickDate(initialDate: dateFrom.value ?? DateTime.now(), firstDate: DateTime(2019), lastDate: dateTo.value ?? DateTime.now()));
+  }
+
+
+  _pickDate({required DateTime initialDate, required DateTime firstDate, required DateTime lastDate}) {
+    return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
+  }
   Future<void> getDeliveryPlaces() {
     return InvoiceRepository().findInventoryByBranch(
       DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
@@ -71,14 +79,6 @@ class ClientsNoMovementController extends GetxController{
       },
       onError: (error) => showPopupText(text: error.toString()),
     );
-  }
-  pickFromDate() async {
-    dateFrom(await _pickDate(initialDate: dateFrom.value ?? DateTime.now(), firstDate: DateTime(2019), lastDate: dateTo.value ?? DateTime.now()));
-  }
-
-
-  _pickDate({required DateTime initialDate, required DateTime firstDate, required DateTime lastDate}) {
-    return showDatePicker(context: Get.overlayContext!, initialDate: initialDate, firstDate: firstDate, lastDate: lastDate);
   }
 
   selectNewDeliveryplace(List<String> values) {

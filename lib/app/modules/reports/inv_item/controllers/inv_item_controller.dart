@@ -84,7 +84,6 @@ class InvItemController extends GetxController{
       AllGroupsRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
         data.insert(0, AllGroupResponse(name: "تحديد الكل"));
-
         groups.assignAll(data);
         if (groups.isNotEmpty) {
         }
@@ -92,7 +91,7 @@ class InvItemController extends GetxController{
       onError: (error) => showPopupText(text: error.toString()),
     );
   }
-  selectNewDeliveryplace(List<String> values) {
+  selectGroup(List<String> values) {
     if (!values.contains("تحديد الكل") && selectedGroup.any((element) => element.name == "تحديد الكل")) {
       selectedGroup.clear();
     } else if (!selectedGroup.any((element) => element.name == "تحديد الكل") && values.contains("تحديد الكل")) {

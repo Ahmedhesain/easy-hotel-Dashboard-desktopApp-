@@ -71,7 +71,7 @@ class InvItemView extends GetView<InvItemController> {
                                             Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                     child: Text('الاصناف المستخدمه',style: smallTextStyleNormal(size)),
-                  ),
+                                         ),
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                               child:  Checkbox(value: controller.checkBoxValue.value,
@@ -104,7 +104,7 @@ class InvItemView extends GetView<InvItemController> {
                         key: UniqueKey(),
                         options: controller.groups.map((e) => e.name ?? "").toList(),
                         selectedValues: controller.selectedGroup.map((e) => e.name ?? "").toList(),
-                        onChanged: controller.selectNewDeliveryplace,
+                        onChanged: controller.selectGroup,
                         decoration: const InputDecoration(
                           isDense: true,
                           contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -239,7 +239,7 @@ class InvItemView extends GetView<InvItemController> {
           children: [
 
             SizedBox(width: size.width*.1,)
-            , Text('من تاريخ',style: smallTextStyleNormal(size)),
+            , Text('الاصناف التي لم تستخدم من تاريخ',style: smallTextStyleNormal(size)),
             const SizedBox(width: 10),
             SizedBox(
               width: size.width * .3,

@@ -6,6 +6,7 @@ import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/categories_totals_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/group_list_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/categories_totals_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/group_list_response.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
@@ -37,7 +38,7 @@ class CategoriesTotalsController extends GetxController {
     isLoading(true);
     final request = CategoriesTotalsRequest(
       invoiceType: invoiceTypeSelected,
-      gallaryList:selectedDeliveryPlace.where((e) => e.id != -1).map((e) => SymbolDtoapiList(e.id!)).toList(),
+      gallaryList:selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
       branchId: manager.branchId,
       dateFrom: dateFrom.value,
       dateTo: dateTo.value,
@@ -113,6 +114,7 @@ class CategoriesTotalsController extends GetxController {
     return InvoiceRepository().findInventoryByBranch(
       DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
+        data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         // if (deliveryPlaces.isNotEmpty) {
         //   // deliveryPlaces.insert(0, );

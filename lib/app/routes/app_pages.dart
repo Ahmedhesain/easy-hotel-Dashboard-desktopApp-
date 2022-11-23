@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:toby_bills/app/modules/reports/invoice_statement_by_case/bindings/invoice_statement_by_case_binding.dart';
+import 'package:toby_bills/app/modules/reports/invoice_statement_by_case/views/invoice_statement_by_case_view.dart';
 
 import '../modules/account_statement/bindings/account_statement_binding.dart';
 import '../modules/account_statement/views/account_statement_view.dart';
@@ -14,8 +16,7 @@ import '../modules/faseh_details/bindings/faseh_details_binding.dart';
 import '../modules/faseh_details/views/faseh_details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-import '../modules/invoice_statement_by_case/bindings/invoice_statement_by_case_binding.dart';
-import '../modules/invoice_statement_by_case/views/invoice_statement_by_case_view.dart';
+
 import '../modules/items/bindings/items_binding.dart';
 import '../modules/items/views/items_view.dart';
 import '../modules/login/bindings/login_binding.dart';

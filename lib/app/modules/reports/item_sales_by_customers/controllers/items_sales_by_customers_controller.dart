@@ -3,49 +3,54 @@ import 'package:get/get.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/purchases_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/purchases_response.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 
 class ItemsSalesByCustomersController extends GetxController{
-  final galleries = <GalleryResponse>[].obs;
-  final selectedGalleries = RxList<GalleryResponse>();
+  // final galleries = <GalleryResponse>[].obs;
+  // final selectedGalleries = RxList<GalleryResponse>();
   final List<PurchaseBySupplier> purchases = [];
   final purchasesGroups = RxList<PurchaseBySupplierGroup>();
   String? error;
   final isLoading = false.obs;
   final dateFrom = DateTime.now().obs;
   final dateTo = DateTime.now().obs;
+  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
+  RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
 
 
   @override
   onInit(){
     super.onInit();
-    getGalleries();
+    getDeliveryPlaces();
   }
 
-  getGalleries() async {
-    isLoading(true);
-    error =null;
-    InvoiceRepository().getGalleries(GalleryRequest(branchId: UserManager().branchId,id: UserManager().id),
-    onSuccess: (data){
-      data.insert(0, GalleryResponse(name: "تحديد الكل"));
-      galleries.assignAll(data);
-      selectedGalleries.assignAll(data);
-    },
-    onError: (e)=> error=e,
-    onComplete:()=> isLoading(false),
-
-    );
-  }
+  // getGalleries() async {
+  //   isLoading(true);
+  //   error =null;
+  //   InvoiceRepository().getGalleries(GalleryRequest(branchId: UserManager().branchId,id: UserManager().id),
+  //   onSuccess: (data){
+  //     data.insert(0, GalleryResponse(name: "تحديد الكل"));
+  //     galleries.assignAll(data);
+  //     selectedGalleries.assignAll(data);
+  //   },
+  //   onError: (e)=> error=e,
+  //   onComplete:()=> isLoading(false),
+  //
+  //   );
+  // }
 
   getPurchases() async {
     isLoading(true);
     error =null;
     final request = PurchasesRequest(
-        gallaryList: selectedGalleries,
+        gallaryList: selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
         branchId: UserManager().branchId,
         dateFrom: dateFrom.value,
         dateTo: dateTo.value,
@@ -97,10 +102,36 @@ class ItemsSalesByCustomersController extends GetxController{
     );
   }
 
-  void selectNewGalleries(List<String> values) {
-    selectedGalleries.clear();
-    selectedGalleries.addAll(galleries.where((element) => values.contains(element.name)));
-
+  // void selectNewGalleries(List<String> values) {
+  //   selectedGalleries.clear();
+  //   selectedGalleries.addAll(galleries.where((element) => values.contains(element.name)));
+  //
+  // }
+  Future<void> getDeliveryPlaces() {
+    return InvoiceRepository().findInventoryByBranch(
+      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
+      onSuccess: (data) {
+        data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
+        deliveryPlaces.assignAll(data);
+        if (deliveryPlaces.isNotEmpty) {
+          // selectedDeliveryPlace(deliveryPlaces.first);
+        }
+      },
+      onError: (error) => showPopupText(text: error.toString()),
+    );
   }
+  selectNewDeliveryplace(List<String> values) {
+    if (!values.contains("تحديد الكل") && selectedDeliveryPlace.any((element) => element.name == "تحديد الكل")) {
+      selectedDeliveryPlace.clear();
+    } else if (!selectedDeliveryPlace.any((element) => element.name == "تحديد الكل") && values.contains("تحديد الكل")) {
+      selectedDeliveryPlace.assignAll(deliveryPlaces);
+    } else {
+      if (values.length < selectedDeliveryPlace.length && values.contains("تحديد الكل")) {
+        values.remove("تحديد الكل");
+      }
+      selectedDeliveryPlace.assignAll(deliveryPlaces.where((element) => values.contains(element.name)));
+    }
+  }
+
 
 }

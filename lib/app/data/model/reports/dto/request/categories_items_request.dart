@@ -14,6 +14,8 @@ class CategoriesItemsRequest {
     this.branchId,
     this.dateFrom,
     this.remainBoolean,
+    this.notZeroValue,
+    this.zeroValue,
     this.remain,
     this.invInventoryDtoList,
   });
@@ -21,6 +23,9 @@ class CategoriesItemsRequest {
   int ?branchId;
   DateTime? dateFrom;
   bool ?remainBoolean;
+  bool ?notZeroValue;
+  bool ?zeroValue;
+
   int ?remain;
   List<DtoList>? invInventoryDtoList;
 
@@ -28,6 +33,9 @@ class CategoriesItemsRequest {
     branchId: json["branchId"] == null ? null : json["branchId"],
     dateFrom: json["dateFrom"] == null ? null : DateTime.parse(json["dateFrom"]),
     remainBoolean: json["remainBoolean"] == null ? null : json["remainBoolean"],
+    notZeroValue: json["notZeroValue"] == null ? null : json["notZeroValue"],
+    zeroValue: json["zeroValue"] == null ? null : json["zeroValue"],
+
     remain: json["remain"] == null ? null : json["remain"],
     invInventoryDtoList: json["invInventoryDTOList"] == null ? null : List<DtoList>.from(json["invInventoryDTOList"].map((x) => DtoList.fromJson(x))),
   );
@@ -36,6 +44,9 @@ class CategoriesItemsRequest {
     "branchId": branchId == null ? null : branchId,
     "dateFrom": dateFrom == null ? null : dateFrom?.toIso8601String(),
     "remainBoolean": remainBoolean == null ? null : remainBoolean,
+    "notZeroValue": notZeroValue == null ? null : notZeroValue,
+    "zeroValue": zeroValue == null ? null : zeroValue,
+
     "remain": remain == null ? null : remain,
     "invInventoryDTOList": invInventoryDtoList == null ? null : List<dynamic>.from(invInventoryDtoList!.map((x) => x.toJson())),
   };

@@ -151,7 +151,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
                   ),
                   HomeDrawerTileWidget(
                     title: " مبيعات الاصناف",
-                    onTap: () => goTo(Routes.PROFITSOLD, "ارباح مبيعات الاصناف"),
+                    onTap: () => goTo(Routes.PROFITSOLD, " مبيعات الاصناف"),
                   ),
                   HomeDrawerTileWidget(
                     title: "المبيعات حسب الشركات لفتره",

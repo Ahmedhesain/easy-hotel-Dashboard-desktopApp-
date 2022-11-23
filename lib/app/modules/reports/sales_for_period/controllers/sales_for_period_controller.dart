@@ -27,9 +27,11 @@ class SalesForPeriodController extends GetxController{
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
   var categoryController = TextEditingController();
-  final List<bool>check=[true,false].obs;
+  final checkBoxValueNotZero =false.obs;
+  final checkBoxValueZero =false.obs;
 
-@override
+
+  @override
   void onInit() {
     super.onInit();
     getDeliveryPlaces();
@@ -41,7 +43,8 @@ class SalesForPeriodController extends GetxController{
     isLoading(true);
     final request = SalesForPeriodRequest(
       dateFrom:dateFrom.value,
-      notZeroValue:true,
+      notZeroValue:checkBoxValueNotZero.value,
+      zeroValue: checkBoxValueZero.value,
       dateTo: dateTo.value,
       invInventoryDtoList: selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
       // invInventoryDtoList:    [

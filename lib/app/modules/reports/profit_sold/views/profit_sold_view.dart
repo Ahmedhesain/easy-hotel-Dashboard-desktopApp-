@@ -543,22 +543,22 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.costAverage!.toString(),
+                                                    kha.totallNet!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.costAverage!.toString(),
+                                                    kha.totallNumber!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.costAverage!.toString(),
+                                                    kha.totallDiscount!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.costAverage!.toString(),
+                                                    kha.totallSell!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
 
