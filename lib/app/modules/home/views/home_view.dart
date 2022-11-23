@@ -65,14 +65,14 @@ class HomeView extends GetView<HomeController> {
                       )
                     ],
                   ),
-                  // Positioned(
-                  //   top: 5,
-                  //   left: 10,
-                  //   child: IconButtonWidget(
-                  //     icon: Icons.menu,
-                  //     onPressed: () => controller.scaffoldKey.currentState!.openEndDrawer(),
-                  //   ),
-                  // )
+                  Positioned(
+                    top: 5,
+                    left: 10,
+                    child: IconButtonWidget(
+                      icon: Icons.menu,
+                      onPressed: () => controller.scaffoldKey.currentState!.openEndDrawer(),
+                    ),
+                  )
                 ],
               ),
             ),

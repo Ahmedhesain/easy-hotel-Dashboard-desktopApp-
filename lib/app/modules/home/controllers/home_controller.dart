@@ -30,7 +30,7 @@ import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_due_date_response.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
-import 'package:toby_bills/app/data/model/item/dto/request/get_item_price_request.dart';
+import 'package:toby_bills/app/data/model/item/dto/request/item_price_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
@@ -127,6 +127,8 @@ class HomeController extends GetxController {
   };
 
   static const getBuilderSerial = "getBuilderSerial";
+
+  bool get canEdit => UserManager().user.userScreens["proworkorder"]?.edit??false;
 
   @override
   void onInit() async {
@@ -749,16 +751,19 @@ class HomeController extends GetxController {
       if (selectedPriceType.value == 1 && price < item.minPriceMen!) {
         showPopupText(text: "السعر غير ممكن");
         itemPriceController.text = item.minPriceMen.toString();
-      } else if (selectedPriceType.value == 1 && price > item.maxPriceMen!) {
-        showPopupText(text: "السعر غير ممكن");
-        itemPriceController.text = item.maxPriceMen.toString();
-      } else if (selectedPriceType.value == 0 && price < item.minPriceYoung!) {
+      }
+      // else if (selectedPriceType.value == 1 && price > item.maxPriceMen!) {
+      //   showPopupText(text: "السعر غير ممكن");
+      //   itemPriceController.text = item.maxPriceMen.toString();
+      // }
+      else if (selectedPriceType.value == 0 && price < item.minPriceYoung!) {
         showPopupText(text: "السعر غير ممكن");
         itemPriceController.text = item.minPriceYoung.toString();
-      } else if (selectedPriceType.value == 0 && price > item.maxPriceYoung!) {
-        showPopupText(text: "السعر غير ممكن");
-        itemPriceController.text = item.maxPriceYoung.toString();
       }
+      // else if (selectedPriceType.value == 0 && price > item.maxPriceYoung!) {
+      //   showPopupText(text: "السعر غير ممكن");
+      //   itemPriceController.text = item.maxPriceYoung.toString();
+      // }
     }
   }
 

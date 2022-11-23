@@ -247,6 +247,7 @@ class PurchaseInvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesControl
                           controller: controller.itemDiscountController,
                           onEditingComplete: () {
                             controller.itemGlAccountFocusNode.requestFocus();
+                            controller.addNewInvoiceDetail();
                           },
                         ),
                       ),
@@ -305,13 +306,13 @@ class PurchaseInvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesControl
                               return SizedBox(
                                 height: 50,
                                 child: Center(
-                                  child: Text("${client.name} ${client.accNumber}"),
+                                  child: Text("${client.name} ${client.id}"),
                                 ),
                               );
                             },
                             suggestionsCallback: (filter) => controller.glAccounts.where((element) => (element.name??"").contains(filter) || element.accNumber.toString().contains(filter)),
                             onSuggestionSelected: (value) async {
-                              controller.itemGlAccountController.text = "${value.name} ${value.accNumber}";
+                              controller.itemGlAccountController.text = "${value.name} ${value.id}";
                               controller.selectedGlAccount(value);
                               controller.addNewInvoiceDetail();
                             },

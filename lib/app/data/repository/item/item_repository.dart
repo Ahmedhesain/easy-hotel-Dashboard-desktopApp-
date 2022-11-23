@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:toby_bills/app/core/utils/app_storage.dart';
-import 'package:toby_bills/app/data/model/item/dto/request/get_item_price_request.dart';
+import 'package:toby_bills/app/data/model/item/dto/request/item_price_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
@@ -70,5 +70,20 @@ class ItemRepository {
         data: itemPriceRequest.toJson(),
         onError: onError,
         convertor: ItemPriceResponse.fromJson,
+      );
+
+  getItemCost(
+    ItemPriceRequest itemPriceRequest, {
+    Function()? onComplete,
+    Function(num data)? onSuccess,
+    Function(dynamic error)? onError,
+  }) =>
+      ApiProvider().post<num, Map<String, dynamic>>(
+        'items/findLastCost',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: itemPriceRequest.toJson(),
+        onError: onError,
+        convertor: (data) => data["price"],
       );
 }

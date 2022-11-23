@@ -215,7 +215,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                       controller: TextEditingController(text: detail.value.discount.toString()),
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.ltr,
-                      enabled: false,
+                      enabled: controller.canEdit,
                       onChanged: (value) => detail.value.discount = value.tryToParseToNum ?? 0,
                       focusNode: detail.value.discountFocus
                         ..addListener(() {
@@ -241,7 +241,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                       controller: TextEditingController(text: detail.value.discountValue.toString()),
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.ltr,
-                      enabled: false,
+                      enabled: controller.canEdit,
                       inputFormatters: [doubleInputFilter],
                       onChanged: (value) => detail.value.discountValue = value.tryToParseToNum ?? 0,
                       focusNode: detail.value.discountValueFocus

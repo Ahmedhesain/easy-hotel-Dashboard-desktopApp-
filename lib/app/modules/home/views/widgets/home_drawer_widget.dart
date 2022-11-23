@@ -29,7 +29,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
           title: "فواتير الشراء",
           onTap: () => goTo(Routes.PURCHASE_INVOICES, "فواتير الشراء"),
         ),
-      // if(sections["customeraddnotice"]?.view??false)
+      if(sections["customeraddnotice"]?.view??false)
         HomeDrawerTileWidget(
           title: "الإشعارات",
           onTap: () => goTo(Routes.NOTIFICATIONS, "الإشعارات"),

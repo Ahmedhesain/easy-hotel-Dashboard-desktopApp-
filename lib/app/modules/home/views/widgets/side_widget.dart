@@ -84,7 +84,7 @@ class SideWidget extends GetView<HomeController> {
                       child: TextFormField(
                         controller: controller.invoiceDiscountController,
                         focusNode: controller.invoiceDiscountFieldFocusNode,
-                        enabled: false,
+                        enabled: controller.canEdit,
                         decoration: InputDecoration(
                             contentPadding: const EdgeInsets.only(bottom: 5),
                             isDense: true,

@@ -27,6 +27,7 @@ import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
+import 'package:toby_bills/app/data/model/item/dto/request/item_price_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/provider/local_provider.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
@@ -60,7 +61,7 @@ class PurchaseInvoicesController extends GetxController {
   Rxn<int> selectedDiscountType = Rxn(1);
   Rxn<GalleryResponse> selectedGallery = Rxn();
   Rxn<FindCustomerResponse> selectedCustomer = Rxn();
-  Rxn<GlAccountResponse> selectedGlAccount = Rxn();
+  Rxn<GlAccountResponse> selectedGlAccount = Rxn(AppConstants.accounts.first);
   Rxn<InventoryResponse> selectedInventory = Rxn();
   Rxn<ItemResponse> selectedItem = Rxn();
   Rx<DateTime> dueDate = Rx(DateTime.now());
@@ -70,7 +71,7 @@ class PurchaseInvoicesController extends GetxController {
   final findSideCustomerController = TextEditingController();
   final searchedInvoiceController = TextEditingController();
   final invoiceCustomerController = TextEditingController();
-  final itemGlAccountController = TextEditingController();
+  final itemGlAccountController = TextEditingController(text: AppConstants.accounts.first.name);
   final invoiceDiscountController = TextEditingController();
   final invoiceRemarkController = TextEditingController();
   final invoiceSupplierNumberController = TextEditingController();
@@ -127,6 +128,15 @@ class PurchaseInvoicesController extends GetxController {
       getItems();
     }
     Future.wait([getDelegators(), getInventories(), getGlAccounts()]).whenComplete(() => isLoading(false));
+  }
+
+  getItemPrice(int itemId, Function(num price) onSuccess){
+    isLoading(true);
+    ItemRepository().getItemCost(ItemPriceRequest(id: itemId),
+      onSuccess: onSuccess,
+      onError: (e) => showPopupText(text: e.toString()),
+      onComplete: () => isLoading(false)
+    );
   }
 
   getSuppliersByCode()  => _getSuppliers(findSideCustomerFieldFocusNode);
@@ -332,14 +342,17 @@ class PurchaseInvoicesController extends GetxController {
   }
 
   selectItem(ItemResponse item, {void Function()? noQuantity}) {
-    itemNameFocusNode.unfocus();
-    selectedItem(item);
-    itemNameController.text = "${item.name} ${item.code}";
-    itemQuantityController.text = "0";
-    itemPriceController.text = "0";
-    itemDiscountController.text = "0";
-    Future.delayed(const Duration(milliseconds: 100)).whenComplete(() => itemYardNumberFocusNode.requestFocus());
-    calcItemData();
+    getItemPrice(item.id!,(price){
+      itemNameFocusNode.unfocus();
+      selectedItem(item);
+      itemNameController.text = "${item.name} ${item.code}";
+      itemQuantityController.text = "0";
+      itemPriceController.text = "$price";
+      itemDiscountController.text = "0";
+      Future.delayed(const Duration(milliseconds: 100)).whenComplete(() => itemYardNumberFocusNode.requestFocus());
+      calcItemData();
+
+    });
   }
 
   calcItemData() {

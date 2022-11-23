@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:toby_bills/app/core/utils/app_storage.dart';
 import 'package:toby_bills/app/data/model/cost_center/dto/request/get_cost_center_request.dart';
 import 'package:toby_bills/app/data/model/cost_center/dto/response/cost_center_response.dart';
-import 'package:toby_bills/app/data/model/item/dto/request/get_item_price_request.dart';
+import 'package:toby_bills/app/data/model/item/dto/request/item_price_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/request/item_data_request.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.dart';
