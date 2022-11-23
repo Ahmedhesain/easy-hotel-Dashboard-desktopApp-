@@ -4537,7 +4537,7 @@ class PrintingHelper {
         });
   }
 
-  void printSalesItemsByCompany(m.BuildContext context, List<SalesOfItemsByCompanyResponse> data) async {
+  void printSalesItemsByCompany(m.BuildContext context, List<SalesOfItemsByCompanyResponse> data,DateTime datefrom,DateTime dateto,List<DeliveryPlaceResposne> deliverysel) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
     final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
@@ -4547,33 +4547,75 @@ class PrintingHelper {
     final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
     final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
     final widths = {
-      0:const FlexColumnWidth(1),
-      1:const FlexColumnWidth(1),
-      2:const FlexColumnWidth(1),
+      0:const FlexColumnWidth(2),
+      1:const FlexColumnWidth(2),
+      2:const FlexColumnWidth(2),
+      3:const FlexColumnWidth(2),
+
 
     };
     doc.addPage(MultiPage(
         pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
         build: (Context context) {
           return [
+            Column(
+              children: [
+                Center(
+                    child: Container(
+                        decoration: const BoxDecoration(color: PdfColors.grey400),
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                        child: Text(
+                          "المبيعات حسب الشركات لفتره",
+                          style: boldStyle.copyWith(fontSize: 10),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.center,
+                        ))),
+                SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(deliverysel[0].name??"",  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("المعرض", style:boldStyle),
+                    SizedBox(width: 100),
+                    Text(DateFormat("dd-MM-yyyy").format(dateto),  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("الي تاريخ:", style:boldStyle),
+                    SizedBox(width: 15),
+                    Text(DateFormat("dd-MM-yyyy").format(datefrom),  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("من تاريخ:", style:boldStyle),
+
+                  ],
+                ),
+              ],
+            ),
+
             SizedBox(height: 50.5),
             Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
               TableRow(decoration: BoxDecoration(color: grey),children: [
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("اخر مرحلة",
+                        child: Text("اجمالي المبيعات",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("عدد الثواب",
+                        child: Text("اسم الشركه",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("عدد الايام المتبقية",
+                        child: Text("كود الشركه",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("المعرض",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
 
               ],),
               //table content
@@ -4581,25 +4623,34 @@ class PrintingHelper {
                 TableRow(children: [
                   Center(
                       child: Text(
-          data[i].gallaryId==null?"":  data[i].gallaryId!.toString() ,
+                        data[i].totalSales==null?"":  data[i].totalSales.toString() ,
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
                   Center(
                       child: Text(
-                        data[i].gallaryName! ?? "",
+                        data[i].companyName==null?"الاجمالي":  data[i].companyName! ,
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
                   Center(
                       child: Text(
-          data[i].totalSales==null?"":  data[i].totalSales.toString() ,
+                        data[i].companyCode==null?"":  data[i].companyCode!.toString() ,
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
+
+                  Center(
+                      child: Text(
+                        data[i].gallaryName ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
 
 
                 ]),

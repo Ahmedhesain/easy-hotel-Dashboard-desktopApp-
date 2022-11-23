@@ -232,19 +232,22 @@ class ExcelHelper {
   }
   static Future<Excel> SalesItemsByCompanyExcel(List<SalesOfItemsByCompanyResponse> reports, BuildContext context) async {
     var excel = Excel.createExcel();
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), "الكود");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "اسم الشركه");
-    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "اجمالي المبيعات");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), "المعرض");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "الكود");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "اسم الشركه");
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0), "اجمالي المبيعات");
 
     for (var i = 1; i <= reports.length; i++) {
       final report = reports[i - 1];
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i), report.gallaryId);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i), report.gallaryName);
-      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.totalSales);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i), report.gallaryName);
+
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i), report.companyCode);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.companyName);
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i), report.totalSales);
 
     }
-    List<int>? x = excel.save(fileName: "حسب الشركه.xlsx");
-    await saveFile("حسب الشركه.xlsx", x!, context);
+    List<int>? x = excel.save(fileName: "المبيعات حسب الشركات لفتره.xlsx");
+    await saveFile("المبيعات حسب الشركات لفتره.xlsx", x!, context);
     return excel;
   }
 

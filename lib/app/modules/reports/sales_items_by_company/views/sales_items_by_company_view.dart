@@ -308,7 +308,7 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printSalesItemsByCompany(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printSalesItemsByCompany(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!,controller.selectedDeliveryPlace),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),
@@ -392,18 +392,19 @@ class SalesItemsByCompanyView extends GetView<SalesItemsByCompanyController> {
                                           for(SalesOfItemsByCompanyResponse kha in controller.reports??[] )
                                             TableRow(children: [
                                               Column(children: [
-                                                Column(children: [
-                                                  Text(
-                                                      kha.gallaryName??"",
-                                                      style: TextStyle(fontSize: 20.0))
-                                                ]),
                                                 Text(
-                                                    kha.gallaryId?.toString()??"",
+                                                    kha.gallaryName??"",
+                                                    style: TextStyle(fontSize: 20.0))
+                                              ]),
+
+                                              Column(children: [
+                                                Text(
+                                                    kha.companyCode?.toString()??"",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.companyName??"",
+                                                    kha.companyName??"الاجمالي",
                                                     style: TextStyle(fontSize: 20.0))
                                               ]),
 
