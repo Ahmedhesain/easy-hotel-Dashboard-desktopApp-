@@ -13,6 +13,7 @@ import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
+import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import '../controllers/faseh_details_controller.dart';
 
@@ -34,35 +35,54 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
               textDirection: TextDirection.rtl,
               child: Column(
                 children: [
-                  Center(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.appGreyDark,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2.5),
-                      child: Obx(() {
-                        return Row(
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ButtonWidget(text: 'رجوع', onPressed: () => Navigator.pop(context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                            if (!controller.isSaved.value)
-                              ButtonWidget(text: 'حفظ', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                            // ButtonWidget(text: 'بحث', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                            // ButtonWidget(text: 'حذف', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                            if (controller.isSaved.value)
-                              ButtonWidget(
-                                text: 'طباعة',
-                                onPressed: () => PrintingHelper().fash(context, controller.invoiceDetailsList, controller.invoiceModel!),
-                                margin: const EdgeInsets.symmetric(horizontal: 2.5),
-                              ),
-                            ButtonWidget(text: 'جديد', onPressed: () => controller.newInvoice(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                            if (controller.isSaved.value)
-                              ButtonWidget(text: 'تصدير الى اكسل', onPressed: () => ExcelHelper.fashExcel(controller.invoiceDetailsList, context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                          ],
-                        );
-                      }),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 300,
+                          child: TextField(
+                            controller: controller.fasehSearchController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: "ابحث عن فسح",
+                              isDense: true,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 5,vertical: 10)
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.appGreyDark,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2.5),
+                            child: Obx(() {
+                              return Row(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ButtonWidget(text: 'رجوع', onPressed: () => Navigator.pop(context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                                  if (!controller.isSaved.value)
+                                    ButtonWidget(text: 'حفظ', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                                  ButtonWidget(text: 'بحث', onPressed: () => controller.searchOnFaseh(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                                  if (controller.isSaved.value)
+                                    ButtonWidget(
+                                      text: 'طباعة',
+                                      onPressed: () => PrintingHelper().fash(context, controller.invoiceDetailsList, controller.invoiceModel!),
+                                      margin: const EdgeInsets.symmetric(horizontal: 2.5),
+                                    ),
+                                  ButtonWidget(text: 'جديد', onPressed: () => controller.newInvoice(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                                  if (controller.isSaved.value)
+                                    ButtonWidget(text: 'تصدير الى اكسل', onPressed: () => ExcelHelper.fashExcel(controller.invoiceDetailsList, context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                                ],
+                              );
+                            }),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
@@ -273,12 +293,47 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                               ),
                                               Expanded(
                                                 flex: 4,
-                                                child: Text(
-                                                  "${controller.invoiceDetailsList[index].code!} ${controller.invoiceDetailsList[index].name}",
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                                                child: TypeAheadFormField<ItemResponse>(
+                                                  key: UniqueKey(),
+                                                  suggestionsCallback: (String pattern) =>
+                                                      controller.items.where((e) => e.name.toString().contains(pattern) || e.code.toString().contains(pattern)),
+                                                  onSuggestionSelected: (item) {
+                                                    controller.invoiceDetailsList[index].code = item.code;
+                                                    controller.invoiceDetailsList[index].name = item.name??"";
+                                                    final backup = <InvoiceDetailsModel>[];
+                                                    backup.assignAll(controller.invoiceDetailsList);
+                                                    controller.invoiceDetailsList.clear();
+                                                    controller.invoiceDetailsList.assignAll(backup);
+
+                                                  },
+                                                  itemBuilder: (context, item) {
+                                                    return Center(
+                                                      child: Text("${item.name!} ${item.code!}"),
+                                                    );
+                                                  },
+                                                  initialValue: "${controller.invoiceDetailsList[index].code!} ${controller.invoiceDetailsList[index].name}",
+                                                  textFieldConfiguration: TextFieldConfiguration(
+                                                      textInputAction: TextInputAction.next,
+                                                      textAlignVertical: TextAlignVertical.center,
+                                                      // focusNode: controller.itemNameFocus,
+                                                      // onSubmitted: (value) {
+                                                      //   List<ItemResponse> list = controller.items;
+                                                      //   if (list.isNotEmpty && controller.itemCodeController.text.isNotEmpty) {
+                                                      //     controller.selectNewItem(list.first);
+                                                      //   }
+                                                      // },
+                                                      // controller: controller.itemCodeController
+                                                  ),
                                                 ),
                                               ),
+                                              // Expanded(
+                                              //   flex: 4,
+                                              //   child: Text(
+                                              //     "${controller.invoiceDetailsList[index].code!} ${controller.invoiceDetailsList[index].name}",
+                                              //     textAlign: TextAlign.center,
+                                              //     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                                              //   ),
+                                              // ),
                                               const SizedBox(width: 10),
                                               Expanded(
                                                 child: TextFormField(
