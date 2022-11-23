@@ -4,8 +4,7 @@ import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/find_faseh_invoice_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/find_faseh_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/faseh_invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
@@ -16,6 +15,7 @@ import 'package:toby_bills/app/data/repository/item/item_repository.dart';
 
 class FasehDetailsController extends GetxController {
   final searchController = TextEditingController();
+  final fasehSearchController = TextEditingController();
   final remarksController = TextEditingController();
   final itemCodeController = TextEditingController();
   final itemQuantityController = TextEditingController();
@@ -51,6 +51,16 @@ class FasehDetailsController extends GetxController {
     InvoiceRepository().findFasehInvoice(FindFasehInvoiceRequest(invSerial: searchController.text),
         onSuccess: (data) {
           findInvoiceModel = data;
+        },
+        onComplete: () => isLoading(false),
+        onError: (e) => showPopupText(text: e.toString()));
+  }
+
+  searchOnFaseh() async {
+    isLoading(true);
+    InvoiceRepository().findFasehBySerial(FindFasehRequest(serial: fasehSearchController.text),
+        onSuccess: (data) {
+          invoiceModel = data;
         },
         onComplete: () => isLoading(false),
         onError: (e) => showPopupText(text: e.toString()));
