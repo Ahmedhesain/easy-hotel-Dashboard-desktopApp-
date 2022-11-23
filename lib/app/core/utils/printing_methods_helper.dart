@@ -2588,7 +2588,7 @@ class PrintingHelper {
                       width: 40,
                       child: Center(
                           child: Text(
-                            data[i].exitt.toString(),
+                            data[i].adding.toString(),
                             style: boldStyle,
                             textAlign: TextAlign.center,
                             textDirection: TextDirection.rtl,
@@ -2597,7 +2597,7 @@ class PrintingHelper {
                       width: 40,
                       child: Center(
                           child: Text(
-                            data[i].adding.toString(),
+                            data[i].exitt.toString(),
                             style: boldStyle,
                             textAlign: TextAlign.center,
                             textDirection: TextDirection.rtl,
@@ -2657,6 +2657,26 @@ class PrintingHelper {
                             textDirection: TextDirection.rtl,
                           ))),
                 ]),
+              TableRow(children: [
+                SizedBox(),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text(data.fold<num>(0, (p, e) => p + (e.adding??0)).toStringAsFixed(2),
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text(data.fold<num>(0, (p, e) => p + (e.exitt??0)).toStringAsFixed(2),
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+              ]),
             ]),
             SizedBox(height: 5),
           ];

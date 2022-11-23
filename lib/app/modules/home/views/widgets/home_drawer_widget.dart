@@ -17,6 +17,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final sections = UserManager().user.userScreens;
     final list1 = [
+      if(sections["invpermissionorder_1"]?.view ??false)
       HomeDrawerTileWidget(
         title: "تفاصيل الفسح",
         onTap: (){
@@ -36,6 +37,7 @@ class HomeDrawerWidget extends GetView<HomeController> {
         ),
     ];
     final list2 = [
+      if(sections["summitionItemReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "إجماليات الفئات",
         onTap: () {
@@ -52,74 +54,92 @@ class HomeDrawerWidget extends GetView<HomeController> {
           goTo(Routes.ITEMS_QUANTITY, "كميه الاصناف بالمعرض");
         },
       ),
+      if(sections["summitionItemReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "مبيعات الأصناف حسب العملاء تفصيلي",
         onTap: () => goTo(Routes.ITEMS_SALES_BY_CUSTOMERS, "مبيعات الأصناف حسب العملاء تفصيلي"),
       ),
+      if(sections["summitionItemReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "الاصناف",
         onTap: () => goTo(Routes.ITEMS, "الاصناف"),
       ),
+      if(sections["summitionItemReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "بيان الفواتير حسب الحالة",
         onTap: () => goTo(Routes.INVOICE_STATEMENT_BY_CASE, "بيان الفواتير حسب الحالة"),
       ),
+      if(sections["summitionItemReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: " مبيعات الاصناف",
         onTap: () => goTo(Routes.PROFITSOLD, " مبيعات الاصناف"),
       ),
+      if(sections["SalesOfItemsByCompany"]?.view ??false)
       HomeDrawerTileWidget(
         title: "المبيعات حسب الشركات لفتره",
         onTap: () => goTo(Routes.SALES_ITEMS_BY_COMPANY, "المبيعات حسب الشركات لفتره"),
       ),
+      if(sections["SalesReportByValueAdedDetailsReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "ارصده الاصناف",
         onTap: () => goTo(Routes.ITEMS_BALANCES_STATEMENT, "رصيد الاصناف"),
       ),
+      if(sections["SalesReportByValueAdedDetailsReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "فواتير الشركات بدون خياطه",
         onTap: () => goTo(Routes.INVOICES_WITHOUT_SWING, "فواتير الشركات بدون خياطه"),
       ),
+      if(sections["clientsNoMovmentReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: " عملاء ليس لديهم حركه من تاريخ",
         onTap: () => goTo(Routes.CLIENTS_NO_MOVEMENT, "عملاء ليس لديهم حركه من تاريخ"),
       ),
+      if(sections["CustomerBalancesReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "ارصده العملاء",
         onTap: () => goTo(Routes.FIND_CUSTOMER_BALANCE, "ارصده العملاء"),
       ),
+      if(sections["SalesReportByValueAdedDetailsReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "بيان الفواتير حسب الضريبه تفصيلي",
         onTap: () => goTo(Routes.FIND_VALES_VALUES_ADDED_DETAILS, "بيان الفواتير حسب الضريبه تفصيلي"),
       ),
+      if(sections["SalesReportByValueAdedReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "بيان الفواتير حسب الضريبه ",
         onTap: () => goTo(Routes.FIND_VALES_VALUES_ADDED, "بيان الفواتير حسب الضريبه "),
       ),
+      if(sections["commisionReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "تقرير العمولات",
         onTap: () => goTo(Routes.BALANCE_GALLARY, "تقرير العمولات"),
       ),
+      if(sections["CustomerBalancesReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "تقرير بالمبالغ الغير مسدده",
         onTap: () => goTo(Routes.BALANCE_GALLARY_UNPAID, "تقرير بالمبالغ الغير مسدده"),
       ),
+      if(sections["CustomerBalancesReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "تقرير بالمبالغ المسدده",
         onTap: () => goTo(Routes.BALANCE_GALLARY_PAID, "تقرير بالمبالغ المسدده"),
       ),
+      if(sections["basicdataofitemsbysuppliersreport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "الاصناف حسب الفئات",
         onTap: () => goTo(Routes.INV_ITEM_DTO, "الاصناف حسب الفئات"),
       ),
+      if(sections["SalesStatementForThePeriod"]?.view ??false)
       HomeDrawerTileWidget(
         title: "الفواتير المسدده لفتره سابقه",
         onTap: () => goTo(Routes.CATEGORIES_ITEMS, "الفواتير المسدده لفتره سابقه"),
       ),
+      if(sections["SalesStatementForThePeriod"]?.view ??false)
       HomeDrawerTileWidget(
         title: "بيان المبيعات لفتره",
         onTap: () => goTo(Routes.SALES_FOR_PERIOD, "بيان المبيعات لفتره"),
       ),
+      if(sections["InvoiceMovementReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "حركه الثياب",
         onTap: () => goTo(Routes.INVOICE_MOVEMENT, "حركه الثياب"),
@@ -127,22 +147,24 @@ class HomeDrawerWidget extends GetView<HomeController> {
 
     ];
     final list3 = <HomeDrawerTileWidget>[
+      if(sections["cashaccountsettlement_1"]?.view ??false)
       HomeDrawerTileWidget(
         title: "كشف حساب خزنة",
         onTap: () => goTo(Routes.SAFE_ACCOUNT_SATATMENT, "كشف حساب خزنة"),
       ),
+      if(sections["SalesReportByValueAdedDetailsReport"]?.view ??false)
       HomeDrawerTileWidget(
         title: "بيان بالسندات الصادره حسب الفرع",
         onTap: () => goTo(Routes.FIND_STATEMENT_OF_BONDS_BY_BRANCH, "بيان بالسندات الصادره حسب الفرع"),
       ),
     ];
     final list4 = [
-      if(sections["notesreceivablesadmin"]?.view??false)
+      if(sections["notesreceivables"]?.view??false)
         HomeDrawerTileWidget(
           title: "سند القبض",
           onTap: () => goTo(Routes.CATCH_RECEIPT, "سند القبض"),
         ),
-      if(sections["notesreceivablesadmin"]?.view??false)
+      if(sections["notesreceivables"]?.view??false)
         HomeDrawerTileWidget(
           title: "سداد القبض لفرع آخر",
           onTap: () => goTo(Routes.CATCH_RECEIPT_ANOTHER_GALLERY, "سداد القبض لفرع آخر"),
@@ -159,14 +181,17 @@ class HomeDrawerWidget extends GetView<HomeController> {
         ),
     ];
     final list5 = [
+      if(sections["subaccountsummaryreport"]?.view??false)
       HomeDrawerTileWidget(
         title: "كشف حساب فرعي",
         onTap: () => goTo(Routes.SUB_ACCOUNT_STATEMENT,"كشف حساب فرعي"),
       ),
+      if(sections["journalDocumentDailyReport"]?.view??false)
       HomeDrawerTileWidget(
         title: "قيد اليوميه تفصيلي",
         onTap: () => goTo(Routes.JOURNAL_DOCUMENT_DIALY, "قيد اليوميه تفصيلي"),
       ),
+      if(sections["CustomerBalancesReport"]?.view??false)
       HomeDrawerTileWidget(
         title: "كشف حساب عميل",
         onTap: () => goTo(Routes.CUSTOMER_ACCOUNT_STATEMENT, "كشف حساب عميل"),
