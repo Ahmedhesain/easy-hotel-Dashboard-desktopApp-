@@ -11,7 +11,7 @@ class CategoriesTotalsRequest {
     this.symbolDtoapiList,
   });
 
-  List<SymbolDtoapiList>? gallaryList;
+  List<DtoList>? gallaryList;
   int? branchId;
   DateTime? dateFrom;
   int? tobAndKhiata;

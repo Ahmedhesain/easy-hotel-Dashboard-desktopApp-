@@ -25,6 +25,12 @@ class CategoriesItemsController extends GetxController{
    RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
   final Rxn<DateTime> dateFrom = Rxn();
   var categoryController = TextEditingController();
+  final checkBoxValueNotzero =false.obs;
+  final checkBoxValuezero =false.obs;
+  final checkBoxValueRemain =false.obs;
+
+
+
 
 
 
@@ -44,7 +50,9 @@ class CategoriesItemsController extends GetxController{
     final request = CategoriesItemsRequest(
       dateFrom:dateFrom.value,
       remain: int.parse(categoryController.text),
-      remainBoolean:true,
+      remainBoolean:checkBoxValueRemain.value,
+      notZeroValue: checkBoxValueNotzero.value,
+      zeroValue: checkBoxValuezero.value,
       invInventoryDtoList: selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
       branchId:UserManager().branchId,
     );

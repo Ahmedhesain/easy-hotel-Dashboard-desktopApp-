@@ -203,38 +203,6 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                                 date: controller.dateTo.value,
                                               ),
                                             ),
-                                            // Padding(
-                                            //   padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                            //   child: Container(
-                                            //     width: size.width * .3,
-                                            //     height: size.height * .04,
-                                            //     decoration: BoxDecoration(
-                                            //       color: Colors.white70,
-                                            //       borderRadius: BorderRadius.circular(5),
-                                            //
-                                            //     ),child:
-                                            //
-                                            //   Center(
-                                            //     child: MouseRegion(
-                                            //       cursor: SystemMouseCursors.click,
-                                            //       child: GestureDetector(
-                                            //           onTap: () {
-                                            //             controller.pickToDate();
-                                            //           },
-                                            //           child: Obx(() {
-                                            //             return Text(
-                                            //               controller.dateTo.value == null ? "yyyy-mm-dd":DateFormat("yyyy-MM-dd").format(controller.dateTo.value!),
-                                            //               style: const TextStyle(decoration: TextDecoration.underline),
-                                            //             );
-                                            //           })),
-                                            //     ),
-                                            //   ),
-                                            //
-                                            //
-                                            //
-                                            //
-                                            //   ),
-                                            // ),
                                           ],
                                         ),
                                       ),
@@ -247,27 +215,35 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                               child:Row(children: [
-                                                Text('اختيار الفواتير التي لها باقي فقط',style: smallTextStyleNormal(size)),
-                                                const SizedBox(width: 10),
-                                                 Radio<bool>(
-                                                    value: controller.check.first,
-                                                    groupValue: controller.check.first,
-                                                    onChanged: ( value) {
-                                                      // controller.check.first=value;
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                  child: Text('اختيار الفواتير التي لها باقي فقط',style: smallTextStyleNormal(size)),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                  child:  Checkbox(value: controller.checkBoxValueNotZero.value,
+                                                    activeColor: Colors.green,
+                                                    onChanged:(bool? newValue){
 
+                                                      controller.checkBoxValueNotZero.value = newValue!;
                                                     },
                                                   ),
-                                                Text('اختيار الفواتير التي ليس لها باقي فقط',style: smallTextStyleNormal(size)),
-                                                const SizedBox(width: 10),
-                                                 Radio<bool>(
-                                                  value: controller.check.first,
-                                                  groupValue: controller.check.first,
-                                                  onChanged: ( value) {
-                                                    // controller.check.first=value;
-
-                                                  },
                                                 ),
 
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                  child: Text('اختيار الفواتير التي ليس لها باقي فقط',style: smallTextStyleNormal(size)),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                  child:  Checkbox(value: controller.checkBoxValueZero.value,
+                                                    activeColor: Colors.green,
+                                                    onChanged:(bool? newValue){
+
+                                                      controller.checkBoxValueZero.value = newValue!;
+                                                    },
+                                                  ),
+                                                ),
 
 
                                               ],)
@@ -338,7 +314,7 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printSalesForPeriod(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printSalesForPeriod(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),
@@ -384,7 +360,7 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                   Container(
                                     margin: const EdgeInsets.all(0),
                                     child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .097),
+                                      defaultColumnWidth: FixedColumnWidth(size.width * .08),
                                       border: TableBorder.all(
                                           borderRadius: const BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
@@ -411,13 +387,22 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
                                           Column(
-                                              children: [const Text('رقم الفاتوره',
+                                              children: [const Text('قيمه الفاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
                                           Column(
-                                              children: [const Text('صافي الفاتوره',
+                                              children: [const Text('قيمه المرتجع ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
+                                          Column(
+                                              children: [const Text('اشعار مدين ',
+                                                  style: TextStyle(fontSize: 20.0))
+                                              ]),
+                                          Column(
+                                              children: [const Text('اشعار دائن ',
+                                                  style: TextStyle(fontSize: 20.0))
+                                              ]),
+
                                           Column(
                                               children: [const Text('المسدد',
                                               style: TextStyle(fontSize: 20.0))
@@ -469,12 +454,21 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.invoiceId!.toString(),
+                                                    kha.totalAfterTax!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.totalNet!.toString(),
+                                                    kha.returnPurchaseValue!.toString(),
+                                                    style: const TextStyle(fontSize: 20.0))
+                                              ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.noticeDebit!.toString(),
+                                                    style: const TextStyle(fontSize: 20.0))
+                                              ]), Column(children: [
+                                                Text(
+                                                    kha.noticeCredit!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
@@ -488,8 +482,10 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
-                                                const Text("",
-                                                    style: TextStyle(fontSize: 20.0))
+                                                Text(
+                                                    kha.invoiceStatus??"",
+                                                    style: const TextStyle(fontSize: 20.0))
+
                                               ]),
 
 

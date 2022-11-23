@@ -336,7 +336,7 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                   Container(
                                     margin: const EdgeInsets.all(0),
                                     child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .138),
+                                      defaultColumnWidth: FixedColumnWidth(size.width * .12),
                                       border: TableBorder.all(
                                           borderRadius: const BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
@@ -345,7 +345,10 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [const Text('الفاتوره',
+                                          Column(children: [const Text('رقم الفاتوره',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: [const Text('نوع الفاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
                                           Column(children: [const Text('التاريخ',
@@ -384,9 +387,15 @@ class FindValesValueAddedDetailsView extends GetView<FindValesValueAddedDetailsC
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
-                kha.invoiceNumber==null?"":  kha.invoiceNumber!.toString(),
+                                               kha.invoiceNumber==null?"":  kha.invoiceNumber!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.invoiceType==null?"":  kha.invoiceType!.toString(),
+                                                    style: const TextStyle(fontSize: 20.0))
+                                              ]),
+
                                               Column(children: [
                                                 Text(
                                                     DateFormat("yyyy-MM-dd").format(kha.invoiceDate!),

@@ -1,8 +1,9 @@
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
 
 class PurchasesRequest {
   PurchasesRequest({
-    required this.gallaryList,
+     this.gallaryList,
     required this.branchId,
     required this.dateFrom,
     required this.dateTo,
@@ -11,7 +12,7 @@ class PurchasesRequest {
     required this.topaymentType,
 
   });
-  final List<GalleryResponse> gallaryList;
+   List<dynamic> ? gallaryList;
   final int branchId;
   final DateTime dateFrom;
   final DateTime dateTo;
@@ -22,7 +23,7 @@ class PurchasesRequest {
 
   Map<String, dynamic> toJson(){
     return {
-      "gallaryList" :gallaryList.map((e) => {"id" : e.id}).toList(),
+      "gallaryList": gallaryList == null ? null : List<dynamic>.from(gallaryList!.map((x) => x.toJson())),
       "serial": branchId,
       "dateFrom": dateFrom.toIso8601String(),
       "dateTo": dateTo.toIso8601String(),

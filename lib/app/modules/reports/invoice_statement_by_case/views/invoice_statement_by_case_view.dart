@@ -37,9 +37,9 @@ class InvoiceStatementByCaseView extends GetView<InvoiceStatementByCaseControlle
                             width: 300,
                             height: 35,
                             child: DropDownMultiSelect(
-                              options: controller.galleries.map((e) => e.name??"").toList(),
-                              selectedValues: controller.selectedGalleries.map((e) => e.name??"").toList(),
-                              onChanged: controller.selectNewGalleries,
+                              options: controller.deliveryPlaces.map((e) => e.name??"").toList(),
+                              selectedValues: controller.selectedDeliveryPlace.map((e) => e.name??"").toList(),
+                              onChanged: controller.selectNewDeliveryplace,
                               isDense: true,
                               childBuilder: (List<String> values) {
                                 return Padding(

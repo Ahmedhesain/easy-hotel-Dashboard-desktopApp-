@@ -43,7 +43,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
-                                height: size.height*.2,
+                                height: size.height*.28,
                                 width: size.width*.95,
                                 child: Column(
                                   children: [
@@ -95,22 +95,6 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                                     ),
                                                   );
                                                 }),
-                                                // Obx(() {
-                                                //   return DropdownSearch<DeliveryPlaceResposne>(
-                                                //     // showSearchBox: true,
-                                                //     items: controller.deliveryPlaces,
-                                                //     itemAsString: (DeliveryPlaceResposne e) => e.name,
-                                                //     onChanged: controller.selectedDeliveryPlace,
-                                                //     selectedItem: controller.selectedDeliveryPlace.value,
-                                                //     dropdownDecoratorProps: const DropDownDecoratorProps(
-                                                //       dropdownSearchDecoration: InputDecoration(
-                                                //         border: OutlineInputBorder(),
-                                                //         contentPadding: EdgeInsets.all(10),
-                                                //         isDense: true,
-                                                //       ),
-                                                //     ),
-                                                //   );
-                                                // }),                                              ),
                                             ),
 
 
@@ -128,7 +112,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                         child: Row(
                                           children: [
 
-                                            SizedBox(width: size.width*.1,), Text('من تاريخ',style: smallTextStyleNormal(size)),
+                                         Text('من تاريخ',style: smallTextStyleNormal(size)),
                                             const SizedBox(width: 10),
                                             SizedBox(
                                               width: size.width * .3,
@@ -211,6 +195,92 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                         ),
                                       ),
                                     ),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                                padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                child:Row(children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                    child: Text('اختيار الفواتير التي  لها باقي فقط',style: smallTextStyleNormal(size)),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                    child:  Checkbox(value: controller.checkBoxValueNotzero.value,
+                                                      activeColor: Colors.green,
+                                                      onChanged:(bool? newValue){
+
+                                                        controller.checkBoxValueNotzero.value = newValue!;
+                                                      },
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                    child: Text('اختيار الفواتير التي ليس لها باقي فقط',style: smallTextStyleNormal(size)),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                    child:  Checkbox(value: controller.checkBoxValuezero.value,
+                                                      activeColor: Colors.green,
+                                                      onChanged:(bool? newValue){
+
+                                                        controller.checkBoxValuezero.value = newValue!;
+                                                      },
+                                                    ),
+                                                  ),
+
+
+
+
+                                                ],)
+
+                                            ),
+
+
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                                padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                child:Row(children: [
+
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                    child: Text('اختيار الفواتير التي  لها رصيد اقل من ',style: smallTextStyleNormal(size)),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                                    child:  Checkbox(value: controller.checkBoxValueRemain.value,
+                                                      activeColor: Colors.green,
+                                                      onChanged:(bool? newValue){
+
+                                                        controller.checkBoxValueRemain.value = newValue!;
+                                                      },
+                                                    ),
+                                                  ),
+
+
+
+                                                ],)
+
+                                            ),
+
+
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+
                                     Padding(
                                       padding: EdgeInsets.fromLTRB(0, size.height * .01, 0, 0),
                                       child: Row(
@@ -270,7 +340,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printCategoriesItems(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printCategoriesItems(context, controller.reports,controller.dateFrom.value!),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),
@@ -310,13 +380,13 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                           ),
                           SizedBox(
                               width:size.width,
-                              height:size.height*.66,
+                              height:size.height*.59,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
                                     margin: const EdgeInsets.all(0),
                                     child: Table(
-                                      defaultColumnWidth: FixedColumnWidth(size.width * .1075),
+                                      defaultColumnWidth: FixedColumnWidth(size.width * .0965),
                                       border: TableBorder.all(
                                           borderRadius: const BorderRadius.all(Radius.circular(0)),
                                           color: Colors.grey,
@@ -341,7 +411,7 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                           Column(children: const [Text('العميل',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
-                                          Column(children: const [Text('رقم الفاتوره',
+                                          Column(children: const [Text('قيمه الفاتوره',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -352,6 +422,9 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
                                           Column(children: const [Text('الباقي',
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+                                          Column(children: const [Text('الحاله',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
 
@@ -395,12 +468,12 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.invNoticeValue!.toString(),
+                                                    kha.totalAfterTax!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                    kha.totalNet!.toString(),
+                                                    kha.totalBeforeTax!.toString(),
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
@@ -411,6 +484,11 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                                               Column(children: [
                                                 Text(
                                                     kha.remain!.toString(),
+                                                    style: const TextStyle(fontSize: 20.0))
+                                              ]),
+                                              Column(children: [
+                                                Text(
+                                                    kha.invoiceStatus??"",
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
 
@@ -437,100 +515,6 @@ class CategoriesItemsView extends GetView<CategoriesItemsController> {
                               )
 
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          //   child: Container(
-                          //     color: coloryellow,
-                          //     width:size.width*.97,
-                          //     height: size.height*.06,
-                          //     child: Padding(
-                          //       padding: const EdgeInsets.fromLTRB(0, 0, 50, 0),
-                          //       child: Container(
-                          //           child:Row(children: [
-                          //             index==0?
-                          //             Padding(
-                          //               padding: const EdgeInsets.fromLTRB(0, 0, 70, 0),
-                          //               child: Row(children: [
-                          //                 Padding(
-                          //                   padding: EdgeInsets.fromLTRB(0, size.height * .001, size.width*.75, 0),
-                          //                   child: Row(
-                          //                     mainAxisAlignment: MainAxisAlignment.center,
-                          //                     children: [
-                          //                       GestureDetector(onTap: () {
-                          //                         print('dfjdfjh');
-                          //                         context.read<TobyPayProvider>().save(clientname!.id!,remarkselected.text , context.read<TobyPayProvider>().glPayDtoList,context.read<AuthProvider>().branchId,context.read<AuthProvider>().companyId,context.read<AuthProvider>().id,context);
-                          //                         setState(() {
-                          //                           index++;
-                          //                         });
-                          //
-                          //                         print('2323');
-                          //                       },
-                          //                         child: Container(alignment: Alignment.centerRight,
-                          //
-                          //                           height: size.height * .05,
-                          //                           width: size.width * .05,
-                          //                           decoration: BoxDecoration(
-                          //                             borderRadius: BorderRadius.all(
-                          //                                 Radius.circular(6.00)), color:Colors.green,
-                          //                           ),
-                          //                           child: Row(mainAxisAlignment: MainAxisAlignment
-                          //                               .spaceAround,
-                          //                             children: [
-                          //                               Text('حفظ',
-                          //                                 style: smallTextStyleNormal(size,color: Colors.black),),
-                          //                               Icon(Icons.save,color: Colors.black,)
-                          //                             ],
-                          //                           ),
-                          //
-                          //                         ),
-                          //                       ),
-                          //                     ],
-                          //                   ),
-                          //                 ),
-                          //               ],),
-                          //             ):
-                          //             Padding(
-                          //               padding: EdgeInsets.fromLTRB(0, 0, size.width*.8, 0),
-                          //               child: Row(
-                          //                 mainAxisAlignment: MainAxisAlignment.center,
-                          //                 children: [
-                          //
-                          //                   GestureDetector(onTap: () {
-                          //                     context.read<TobyPayProvider>().preprint(clientname!.id!,remarkselected.text , context.read<TobyPayProvider>().glPayDtoList,182,125,201,clientselected.text, context);
-                          //                     // printInvoice(context.read<tobypayProvider>().glBankTransactionApi!,context);
-                          //                     // create();
-                          //                     // testReceipt('192.168.0.123', port: 9100);
-                          //
-                          //                   },
-                          //                     child: Container(alignment: Alignment.centerRight,
-                          //
-                          //                       height: size.height * .05,
-                          //                       width: size.width * .05,
-                          //                       decoration: BoxDecoration(
-                          //                         borderRadius: BorderRadius.all(
-                          //                             Radius.circular(6.00)),
-                          //                         color: Colors.green,
-                          //                       ),
-                          //                       child: Row(mainAxisAlignment: MainAxisAlignment
-                          //                           .spaceAround,
-                          //                         children: [
-                          //                           Text('طباعه ',
-                          //                             style: smallTextStyleNormal(size),),
-                          //                           Icon(Icons.print)
-                          //                         ],
-                          //                       ),
-                          //
-                          //                     ),
-                          //                   ),
-                          //                 ],
-                          //               ),
-                          //             ),
-                          //
-                          //
-                          //           ],)),
-                          //     ),
-                          //   ),
-                          // ),
                         ],)
                   ),
                 )

@@ -30,6 +30,9 @@ class InvoiceMovementController extends GetxController{
   final Rxn<DateTime> dateTo = Rxn();
   var fromController = TextEditingController();
   var toController = TextEditingController();
+  int? invoiceTypeSelected;
+  final checkBoxValueNotComplete =false.obs;
+
 
 
 
@@ -50,7 +53,7 @@ class InvoiceMovementController extends GetxController{
     final request = InvoiceMovementRequest(
       dateFrom:dateFrom.value,
       dateTo: dateTo.value,
-      invoiceType: null,
+      invoiceType: invoiceTypeSelected,
       invoiceFrom: int.tryParse(fromController.text),
       invoiceTo: int.tryParse(toController.text),
       invInventoryDtoList: selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
