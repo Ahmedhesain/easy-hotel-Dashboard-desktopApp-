@@ -171,11 +171,17 @@ class HomeController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
-  Future<void> getDueDate() {
+  Future<void> getDueDate({bool withLoading = false}) {
+    if(withLoading) isLoading(true);
     return InvoiceRepository().findDueDateDTOAPI(
-      GetDueDateRequest(branchId: UserManager().branchId, id: UserManager().id),
+      GetDueDateRequest(branchId: UserManager().branchId, id: selectedGallery.value?.id),
       onSuccess: (data) => dueDate(data),
       onError: (error) => showPopupText(text: error.toString()),
+      onComplete: (){
+        if(withLoading) {
+            isLoading(false);
+          }
+        }
     );
   }
 
@@ -241,6 +247,7 @@ class HomeController extends GetxController {
     newCustomer.createdBy = UserManager().id;
     newCustomer.branchId = UserManager().branchId;
     newCustomer.accountIdAPI = UserManager().accountIdAPI;
+    newCustomer.gallaryIdAPI = selectedGallery.value?.id;
     CustomerRepository().createCustomer(
       newCustomer,
       onSuccess: (data) {
@@ -416,7 +423,7 @@ class HomeController extends GetxController {
     getItemData(
         itemId: item.id!,
         onSuccess: (data) {
-          if (data.availableQuantity != null && data.availableQuantity == 0) {
+          if (data.availableQuantity != null && data.availableQuantity! <= 0) {
             if (noQuantity != null) {
               noQuantity();
             } else {
@@ -427,9 +434,9 @@ class HomeController extends GetxController {
             return;
           }
           itemNameController.text = "${item.name} ${item.code}";
-          if (data.availableQuantity != null) {
-            item.tempNumber = (data.availableQuantity! / data.quantityOfUnit).fixed(2);
-          }
+          // if (data.availableQuantity != null) {
+          //   item.tempNumber = (data.availableQuantity! / data.quantityOfUnit).fixed(2);
+          // }
           itemNumberController.text = "1.0";
           itemQuantityController.text = data.quantityOfUnit.toString();
           // item.quantity = data.quantityOfUnit;
@@ -647,6 +654,7 @@ class HomeController extends GetxController {
     for (var element in glPayDtoList) {
       element.value = 0;
     }
+    getDueDate(withLoading: true);
   }
 
   calcInvoiceValues() {
@@ -811,6 +819,18 @@ class HomeController extends GetxController {
       },
       onError: (e) => showPopupText(text: e.toString()),
       onComplete: ()=> isLoading(false)
+    );
+  }
+
+  void updateCustomer() {
+    isLoading(true);
+    CustomerRepository().updateCustomer(
+      selectedCustomer.value!,
+      onSuccess: (data) {
+        showPopupText(text: "تم التعديل بنجاح", type: MsgType.success);
+      },
+      onError: (error) => showPopupText(text: error.toString()),
+      onComplete: () => isLoading(false),
     );
   }
 }

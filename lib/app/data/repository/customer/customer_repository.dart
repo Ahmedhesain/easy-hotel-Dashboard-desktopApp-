@@ -107,5 +107,19 @@ class CustomerRepository {
         convertor: AccountStatementResponse.fromList,
     );
 
+  updateCustomer(
+        FindCustomerResponse findCustomerResponse, {
+        Function()? onComplete,
+        Function(FindCustomerResponse data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+    ApiProvider().post<FindCustomerResponse,Map<String, dynamic>>('customer/updateCustomer',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: findCustomerResponse.toJson(),
+        onError: onError,
+        convertor: FindCustomerResponse.fromJson,
+    );
+
 
 }
