@@ -29,7 +29,7 @@ class HomeView extends GetView<HomeController> {
         saveFunc: () => controller.saveInvoice(),
         child: GestureDetector(
           onSecondaryTap: () {
-            controller.scaffoldKey.currentState!.openEndDrawer();
+            // controller.scaffoldKey.currentState!.openEndDrawer();
           },
           child: AppLoadingOverlay(
             isLoading: controller.isLoading.value,
@@ -65,14 +65,14 @@ class HomeView extends GetView<HomeController> {
                       )
                     ],
                   ),
-                  Positioned(
-                    top: 5,
-                    left: 10,
-                    child: IconButtonWidget(
-                      icon: Icons.menu,
-                      onPressed: () => controller.scaffoldKey.currentState!.openEndDrawer(),
-                    ),
-                  )
+                  // Positioned(
+                  //   top: 5,
+                  //   left: 10,
+                  //   child: IconButtonWidget(
+                  //     icon: Icons.menu,
+                  //     onPressed: () => controller.scaffoldKey.currentState!.openEndDrawer(),
+                  //   ),
+                  // )
                 ],
               ),
             ),

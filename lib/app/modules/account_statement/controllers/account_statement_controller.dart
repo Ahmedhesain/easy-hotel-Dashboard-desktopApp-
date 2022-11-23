@@ -23,7 +23,15 @@ class AccountStatementController extends GetxController {
     isLoading(true);
     final request = AccountStatementRequest(id: Get.find<HomeController>().selectedCustomer.value!.id!);
     CustomerRepository().getCustomerAccountStatement(request,
-        onSuccess: (data) => reports.assignAll(data),
+        onSuccess: (data) {
+          if (data.isNotEmpty) {
+            data.first.balance = data.first.sub;
+          }
+          for (var i = 1; i < data.length; i++) {
+            data[i].balance = data[i].sub + data[i-1].balance;
+          }
+          reports.assignAll(data);
+        },
         onError: (e) => showPopupText(text: e.toString()),
         onComplete: () => isLoading(false)
     );

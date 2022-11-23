@@ -41,7 +41,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           itemId: item.id!,
                           inventoryId: detail.value.inventoryId,
                           onSuccess: (itemData) {
-                            if (itemData.availableQuantity != null && itemData.availableQuantity == 0) {
+                            if (itemData.availableQuantity != null && itemData.availableQuantity! <= 0) {
                               showPopupText(text: "لايوجد كمية متاحة");
                               detail(detail.value.copyWith(name: detail.value.name, code: detail.value.code));
                               return;
@@ -215,6 +215,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                       controller: TextEditingController(text: detail.value.discount.toString()),
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.ltr,
+                      enabled: false,
                       onChanged: (value) => detail.value.discount = value.tryToParseToNum ?? 0,
                       focusNode: detail.value.discountFocus
                         ..addListener(() {
@@ -240,6 +241,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                       controller: TextEditingController(text: detail.value.discountValue.toString()),
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.ltr,
+                      enabled: false,
                       inputFormatters: [doubleInputFilter],
                       onChanged: (value) => detail.value.discountValue = value.tryToParseToNum ?? 0,
                       focusNode: detail.value.discountValueFocus
@@ -342,7 +344,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                           onSuccess: (itemData) {
                             bool haveToChangeNumber = false;
                             if (itemData.availableQuantity != null) {
-                              if (itemData.availableQuantity == 0) {
+                              if (itemData.availableQuantity! <= 0) {
                                 showPopupText(text: "لايوجد كمية متاحة");
                                 detail(detail.value.copyWith(
                                     inventoryId: detail.value.inventoryId, inventoryCode: detail.value.inventoryCode, inventoryName: detail.value.inventoryName));

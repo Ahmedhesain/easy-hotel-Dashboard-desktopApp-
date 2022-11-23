@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
+import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/keys_widget.dart';
 import 'package:toby_bills/app/components/table.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
@@ -45,6 +46,7 @@ class NotificationsView extends GetView<NotificationsController> {
                         "المبلغ",
                         "ملحوظات",
                         "المعرض",
+                        "",
                       ]
                           .map((e) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 7),
@@ -61,7 +63,14 @@ class NotificationsView extends GetView<NotificationsController> {
                         "${e.value}",
                         "${e.remark}",
                         "${controller.galleries.singleWhere((element) => element.id == e.gallaryId).name}",
+                        "X",
                       ].map((d) {
+                        if(d == 'X'){
+                          return IconButtonWidget(
+                            icon: Icons.clear_rounded,
+                            onPressed: ()=> controller.notifications.remove(e),
+                          );
+                        }
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 7),
                           child: Text(

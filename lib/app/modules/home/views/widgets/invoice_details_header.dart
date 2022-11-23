@@ -248,7 +248,8 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                               textAlign: TextAlign.center,
                               textDirection: TextDirection.ltr,
                               inputFormatters: [doubleInputFilter],
-                              enabled: controller.selectedItem.value != null,
+                              // enabled: controller.selectedItem.value != null,
+                              enabled: false,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 contentPadding: EdgeInsets.zero,
@@ -295,7 +296,8 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                               textAlign: TextAlign.center,
                               textDirection: TextDirection.ltr,
                               inputFormatters: [doubleInputFilter],
-                              enabled: controller.selectedItem.value != null,
+                              enabled: false,
+                              // enabled: controller.selectedItem.value != null,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 contentPadding: EdgeInsets.zero,

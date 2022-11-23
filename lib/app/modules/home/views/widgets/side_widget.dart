@@ -84,6 +84,7 @@ class SideWidget extends GetView<HomeController> {
                       child: TextFormField(
                         controller: controller.invoiceDiscountController,
                         focusNode: controller.invoiceDiscountFieldFocusNode,
+                        enabled: false,
                         decoration: InputDecoration(
                             contentPadding: const EdgeInsets.only(bottom: 5),
                             isDense: true,
@@ -109,6 +110,7 @@ class SideWidget extends GetView<HomeController> {
           _TitleWidget(title: 'بعد الخصم الكلي', value: controller.totalAfterDiscount),
           _TitleWidget(title: 'قيمه الضريبه', value: controller.tax),
           _TitleWidget(title: 'الصافي ضريبيا', value: controller.finalNet, fixedWith: 2),
+          _TitleWidget(title: 'المبلغ المدفوع', value: controller.payed, fixedWith: 2),
           _TitleWidget(title: 'المبلغ المتبقي', value: controller.remain, fixedWith: 2),
           const SizedBox(
             height: 10,

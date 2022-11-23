@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
+import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
 import '../../../components/table.dart';
 import '../controllers/account_statement_controller.dart';
@@ -20,7 +21,8 @@ class AccountStatementView extends GetView<AccountStatementController> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
-            leadingWidth: 0,
+            automaticallyImplyLeading: false,
+            foregroundColor: Colors.black,
             title: Row(
               children: [
                 UnconstrainedBox(
@@ -49,6 +51,11 @@ class AccountStatementView extends GetView<AccountStatementController> {
                     },
                   ),
                 ),
+                const Spacer(),
+                Text("العميل: ${Get.find<HomeController>().selectedCustomer.value!.name} ${Get.find<HomeController>().selectedCustomer.value!.code}",
+                  style: TextStyle(fontSize: 14),
+                )
+
               ],
             ),
           ),
@@ -56,7 +63,7 @@ class AccountStatementView extends GetView<AccountStatementController> {
             header: [
               "رقم الفاتورة",
               "التاريخ",
-              "عميل",
+              // "عميل",
               "نوع الحركة",
               "رقم فاتورة المبيعات",
               "الخزينة",
@@ -66,7 +73,7 @@ class AccountStatementView extends GetView<AccountStatementController> {
             ]
                 .map((e) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 7),
-                      child: Text(e),
+                      child: Text(e, textAlign: TextAlign.center, textDirection: TextDirection.ltr,),
                     ))
                 .toList(),
             headerHeight: 40,
@@ -74,19 +81,19 @@ class AccountStatementView extends GetView<AccountStatementController> {
                 .map((e) => [
                       "${e.serial}",
                       (e.date == null ? "" : DateFormat("yyy-MM-dd").format(e.date!)),
-                      (e.organizationName),
-                      (e.screenName),
+                      // "${e.organizationName}",
+                      "${e.screenName}",
                       "${e.invoiceSerial}",
                       "${e.openningBalance}",
-                      "${e.adding}",
                       "${e.exitt}",
-                      "${e.remarks}"
+                      "${e.adding}",
+                      "${e.balance}"
                     ].map((d) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 7),
                         child: Text(
                           d,
-                          maxLines: 2,
+                          maxLines: 2,textAlign: TextAlign.center, textDirection: TextDirection.ltr,
                         ),
                       );
                     }).toList())

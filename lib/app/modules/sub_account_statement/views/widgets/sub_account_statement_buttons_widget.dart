@@ -29,12 +29,13 @@ class SubAccountStatementButtonsWidget extends GetView<SubAccountStatementContro
                     if(controller.statements.isNotEmpty)
                       const SizedBox(width: 5),
                     if(controller.statements.isNotEmpty)
-                      ButtonWidget(text: "طباعة", onPressed: () =>
-                          PrintingHelper().printSubAccountStatements(context, statements: controller.statements,
+                      ButtonWidget(text: "طباعة", onPressed: () {
+                        PrintingHelper().printSubAccountStatements(context, statements: controller.statements,
                               fromDate: controller.dateFrom.value,
                               toDate: controller.dateFrom.value,
                               fromCenter: controller.selectedCenterFrom.value?.name ?? '--',
-                              toCenter: controller.selectedCenterTo.value?.name ?? '--')),
+                              toCenter: controller.selectedCenterTo.value?.name ?? '--');
+                      }),
                     if(controller.statements.isNotEmpty)
                       const SizedBox(width: 5),
                     ButtonWidget(text: "بحث", onPressed: () => controller.getStatements()),

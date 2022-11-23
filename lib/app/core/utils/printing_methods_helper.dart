@@ -53,12 +53,16 @@ class PrintingHelper {
     final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
     final widths = {
       0:const FlexColumnWidth(1),
-      1:const FlexColumnWidth(2),
-      2:const FlexColumnWidth(2),
-      3:const FlexColumnWidth(1),
+      1:const FlexColumnWidth(1),
+      2:const FlexColumnWidth(1),
+      3:const FlexColumnWidth(2),
+      4:const FlexColumnWidth(1),
+      5:const FlexColumnWidth(1),
+      6:const FlexColumnWidth(1),
     };
     doc.addPage(MultiPage(
         pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, margin: EdgeInsets.all(10)),
+        maxPages: 50,
         build: (Context context) {
           return [
             SizedBox(height: 50),
@@ -181,43 +185,36 @@ class PrintingHelper {
               TableRow(children: [
                 Container(
                     color: grey,
-                    width: 55,
                     child: Center(
                         child: Text("الرصيد",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
-                    width: 55,
                     child: Center(
                         child: Text("دائن",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
-                    width: 55,
                     child: Center(
                         child: Text("مدين",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
-                    width: 55,
                     child: Center(
                         child: Text("بيان القيد",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
-                    width: 60,
                     child: Center(
                         child: Text("رقم السند",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
-                    width: 40,
                     child: Center(
                         child: Text("رقم القيد",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
-                    width: 40,
                     child: Center(
                         child:
                         Text("التاريخ", style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
@@ -225,69 +222,55 @@ class PrintingHelper {
               //table content
               for (int i = 0; i < statements.length; i++)
                 TableRow(children: [
-                  Container(
-                      width: 55,
-                      child: Center(
-                          child: Text(
-                            statements[i].balance?.toStringAsFixed(2) ?? "",
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 60,
-                      child: Center(
-                          child: Text(
-                            statements[i].creditAmount?.toStringAsFixed(2) ?? "",
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 40,
-                      child: Center(
-                          child: Text(
-                            statements[i].debitAmount?.toStringAsFixed(2)??"",
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 40,
-                      child: Center(
-                          child: Text(
-                            statements[i].discribtion??"",
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 40,
-                      child: Center(
-                          child: Text(
-                            statements[i].generalDecument?.toString()??"",
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 40,
-                      child: Center(
-                          child: Text(
-                            statements[i].serial?.toString()??"",
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                  Container(
-                      width: 40,
-                      child: Center(
-                          child: Text(
-                            statements[i].date == null?"--":DateFormat("dd/MM/yyyy").format(statements[i].date!),
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
+                  Center(
+                      child: Text(
+                        statements[i].balance?.toStringAsFixed(2) ?? "",
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        statements[i].creditAmount?.toStringAsFixed(2) ?? "",
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        statements[i].debitAmount?.toStringAsFixed(2)??"",
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        statements[i].discribtion??"",
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        statements[i].generalDecument?.toString()??"",
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        statements[i].serial?.toString()??"",
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+                  Center(
+                      child: Text(
+                        statements[i].date == null?"--":DateFormat("dd/MM/yyyy").format(statements[i].date!),
+                        style: boldStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
                 ]),
               TableRow(children: [
                 SizedBox(),
@@ -2525,6 +2508,13 @@ class PrintingHelper {
         build: (Context context) {
           return [
             SizedBox(height: 50.5),
+            Center(
+              child:Text("كشف حساب العميل\n${data.first.organizationName} ${data.first.organizationCode}",
+                  textAlign: TextAlign.center,
+                  style: boldStyle
+              )
+            ),
+            SizedBox(height: 10),
             Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max, children: [
               TableRow(children: [
                 Container(
@@ -2563,12 +2553,12 @@ class PrintingHelper {
                     child: Center(
                         child: Text("نوع الحركة",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-                Container(
-                    color: grey,
-                    width: 55,
-                    child: Center(
-                        child: Text("عميل",
-                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                // Container(
+                //     color: grey,
+                //     width: 55,
+                //     child: Center(
+                //         child: Text("عميل",
+                //             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
                     width: 45,
@@ -2589,7 +2579,7 @@ class PrintingHelper {
                       width: 40,
                       child: Center(
                           child: Text(
-                            data[i].balance.toStringAsFixed(2),
+                            data[i].balance?.toStringAsFixed(2)??"",
                             style: boldStyle,
                             textAlign: TextAlign.center,
                             textDirection: TextDirection.rtl,
@@ -2616,7 +2606,7 @@ class PrintingHelper {
                       width: 40,
                       child: Center(
                           child: Text(
-                            data[i].openningBalance.toStringAsFixed(2),
+                            data[i].openningBalance?.toStringAsFixed(2)??"",
                             style: boldStyle,
                             textAlign: TextAlign.center,
                             textDirection: TextDirection.rtl,
@@ -2634,20 +2624,20 @@ class PrintingHelper {
                       width: 60,
                       child: Center(
                           child: Text(
-                            data[i].screenName,
+                            data[i].screenName??"",
                             style: boldStyle,
                             textAlign: TextAlign.center,
                             textDirection: TextDirection.rtl,
                           ))),
-                  Container(
-                      width: 55,
-                      child: Center(
-                          child: Text(
-                            data[i].organizationName,
-                            style: boldStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ))),
+                  // Container(
+                  //     width: 55,
+                  //     child: Center(
+                  //         child: Text(
+                  //           data[i].organizationName??"",
+                  //           style: boldStyle,
+                  //           textAlign: TextAlign.center,
+                  //           textDirection: TextDirection.rtl,
+                  //         ))),
                   Container(
                       width: 45,
                       child: Center(

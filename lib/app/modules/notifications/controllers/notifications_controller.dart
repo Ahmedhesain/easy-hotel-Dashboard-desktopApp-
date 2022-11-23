@@ -10,6 +10,7 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_req
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/general_journal/dto/request/find_general_journal_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/create_notifications_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
@@ -93,7 +94,7 @@ class NotificationsController extends GetxController {
     selectedCustomer.value = null;
     invoice.value = null;
     notification.value = null;
-    if(galleries.isNotEmpty) selectedGallery(galleries.first);
+    if(galleries.isNotEmpty && clearList) selectedGallery(galleries.first);
     searchedInvoiceController.clear();
     findSideCustomerController.clear();
     priceController.clear();
@@ -122,7 +123,7 @@ class NotificationsController extends GetxController {
 
   searchByNotification() {
     isLoading(true);
-    final request =FindNotificationRequest(branchId: user.branchId, typeNotice: notificationType.value, serial: notificationNumberController.text.tryToParseToNum?.toInt()??0);
+    final request = FindNotificationRequest(branchId: user.branchId, typeNotice: notificationType.value, serial: notificationNumberController.text.tryToParseToNum?.toInt()??0);
     NotificationsRepository().findInvoiceNotice(request,
       onSuccess: (data){
         notification(data);
@@ -142,9 +143,9 @@ class NotificationsController extends GetxController {
 
   saveNotification(){
     isLoading(true);
-    NotificationsRepository().saveInvoiceNotice(notifications,
+    NotificationsRepository().saveInvoiceNoticeList(CreateNotificationRequest(notifications),
       onSuccess: (data) {
-        notification(data);
+      newInvoice();
         showPopupText(text: "تم الحفظ بنجاح",type: MsgType.success);
       },
       onError: (e) => showPopupText(text: e.toString()),

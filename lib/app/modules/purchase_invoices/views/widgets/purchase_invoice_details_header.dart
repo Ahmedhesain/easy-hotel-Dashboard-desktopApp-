@@ -128,7 +128,7 @@ class PurchaseInvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesControl
                     children: [
                       const Center(
                         child: Text(
-                          "العدد",
+                          "الكمية",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
