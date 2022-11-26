@@ -136,18 +136,22 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                     borderRadius: const BorderRadius.all(
                                                         Radius.circular(5)),
                                                     color: Colors.white,
+
                                                     border: Border.all(color: Colors.grey)),
                                                 child:
                                                 DropdownButton<int>(
                                                   hint:  const Text("Select an option"),
                                                   value: controller.selectedStatus.value,
+                                                  underline: Container(),
                                                   onChanged: (int? newVal) {
                                                     controller.selectedStatus.value = newVal!;
                                                   },
                                                   items: controller.discBasis.entries.map((e) {
                                                     return DropdownMenuItem<int>(
                                                       value: e.key,
-                                                      child: Text(e.value),
+                                                      child: Container(
+                                                          width: size.width*.17,
+                                                          child: Text(e.value)),
                                                     );
                                                   }).toList(),                                              ),
                                               ),
@@ -214,7 +218,7 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                               child: Container(
-                                                width: size.width * .2,
+                                                width: size.width * .25,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
                                                     borderRadius: const BorderRadius.all(
@@ -237,16 +241,20 @@ class ProfitSoldView extends GetView<ProfitSoldController> {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: size.width*.2,),
-                                            const SizedBox(width: 15),
+                                            SizedBox(width: size.width*.1,),
                                             const Center(
                                                 child: Text(
                                                   'نوع الفاتوره:',
                                                 )),
                                             const SizedBox(width: 5),
                                             Center(
-                                              child: SizedBox(
-                                                width: 190,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius: const BorderRadius.all(
+                                                        Radius.circular(5)),
+                                                    color: Colors.white,
+                                                    border: Border.all(color: Colors.grey)),
+                                                width: size.width * .25,
                                                 child: DropdownSearch<String>(
                                                   items: AppConstants.invoiceTypeList,
                                                   selectedItem: AppConstants.invoiceTypeList[controller.invoiceTypeSelected == null? 0 : controller.invoiceTypeSelected!+1],

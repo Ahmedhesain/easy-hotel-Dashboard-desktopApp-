@@ -4,6 +4,7 @@ import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/balance_gallary_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/sales_of_items_by_company_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/balance_galary_response.dart';
@@ -36,12 +37,11 @@ class BalanceGallaryController extends GetxController{
 
   getSalesItemsByCompany() async {
     isLoading(true);
-    final request = SalesOfItemsByCompanyRequest(
+    final request = BalanceGallaryRequest(
       dateTo: dateTo.value,
       dateFrom:dateFrom.value,
-
     branchId: UserManager().branchId,
-    invInventoryDtoList: deliveryPlaces.map((e) => DtoList(id: e.id)).toList(),
+    invInventoryDtoList: selectedDeliveryPlace.map((e) => DtoListName(id: e.id,name: e.name)).toList(),
     );
     ReportsRepository().BalanceGalary(request,
         onSuccess: (data) {

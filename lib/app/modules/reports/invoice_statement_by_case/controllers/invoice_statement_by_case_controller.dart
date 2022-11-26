@@ -43,7 +43,7 @@ class InvoiceStatementByCaseController extends GetxController {
     isLoading(true);
 
     final request = InvoiceStatementByCaseRequest(
-      gallarySelected: selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
+        gallaryListSelected: selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
       dateTo: dateTo.value,
       dateFrom: dateFrom.value,
       branchId: UserManager().branchId,

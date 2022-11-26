@@ -38,7 +38,8 @@ class CategoriesTotalsController extends GetxController {
     isLoading(true);
     final request = CategoriesTotalsRequest(
       invoiceType: invoiceTypeSelected,
-      gallaryList:selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
+      // gallaryList: selectedDeliveryPlace.where((e) => e.id != -1).map((e) => DtoList(e.id!)).toList(),
+        gallaryList:selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
       branchId: manager.branchId,
       dateFrom: dateFrom.value,
       dateTo: dateTo.value,

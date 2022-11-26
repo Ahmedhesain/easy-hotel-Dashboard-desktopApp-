@@ -3,7 +3,7 @@ import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_so
 
 class InvoiceStatementByCaseRequest {
   InvoiceStatementByCaseRequest({
-     this.gallarySelected,
+    this.gallaryListSelected,
     required this.branchId,
     required this.dateFrom,
     required this.dateTo,
@@ -11,7 +11,7 @@ class InvoiceStatementByCaseRequest {
     required this.invoiceStatus,
 
   });
-   List<dynamic>? gallarySelected;
+   List<dynamic>? gallaryListSelected;
   final int branchId;
   final DateTime dateFrom;
   final DateTime dateTo;
@@ -21,7 +21,7 @@ class InvoiceStatementByCaseRequest {
 
   Map<String, dynamic> toJson(){
     return {
-      "gallarySelected": gallarySelected == null ? null : List<dynamic>.from(gallarySelected!.map((x) => x.toJson())),
+      "gallaryListSelected": gallaryListSelected == null ? null : List<dynamic>.from(gallaryListSelected!.map((x) => x.toJson())),
       "branchId": branchId,
       "dateFrom": dateFrom.toIso8601String(),
       "dateTo": dateTo.toIso8601String(),

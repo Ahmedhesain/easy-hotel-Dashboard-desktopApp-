@@ -33,7 +33,7 @@ class CategoriesTotalsRequest {
 class SymbolDtoapiList {
 
   SymbolDtoapiList(this.id);
-  final int id;
+   int id;
 
   Map<String, dynamic> toJson() => {
     "id": id,

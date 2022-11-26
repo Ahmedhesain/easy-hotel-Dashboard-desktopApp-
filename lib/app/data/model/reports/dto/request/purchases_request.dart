@@ -24,7 +24,7 @@ class PurchasesRequest {
   Map<String, dynamic> toJson(){
     return {
       "gallaryList": gallaryList == null ? null : List<dynamic>.from(gallaryList!.map((x) => x.toJson())),
-      "serial": branchId,
+      "branchId": branchId,
       "dateFrom": dateFrom.toIso8601String(),
       "dateTo": dateTo.toIso8601String(),
       "invoiceType": invoiceType,

@@ -63,7 +63,7 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
 
                                     Center(
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                                        padding:  EdgeInsets.fromLTRB(0, 10, size.width*.11, 0),
                                         child: Row(
                                           children: [
 
@@ -71,7 +71,7 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                               child: Container(
-                                                width: size.width * .2,
+                                                width: size.width * .3,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
                                                     borderRadius: const BorderRadius.all(
@@ -128,16 +128,21 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
 
 
                                             ),
-                                            SizedBox(width: size.width*.2,),
-                                            const SizedBox(width: 15),
+                                             SizedBox(width: size.width*.1),
                                             const Center(
                                                 child: Text(
                                                   'نوع الفاتوره:',
                                                 )),
                                             const SizedBox(width: 5),
                                             Center(
-                                              child: SizedBox(
-                                                width: 190,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius: const BorderRadius.all(
+
+                                                        Radius.circular(5)),
+                                                    color: Colors.white,
+                                                    border: Border.all(color: Colors.white)),
+                                                width: size.width* .3,
                                                 child: DropdownSearch<String>(
                                                   items: AppConstants.invoiceTypeList,
                                                   selectedItem: AppConstants.invoiceTypeList[controller.invoiceTypeSelected == null? 0 : controller.invoiceTypeSelected!+1],
@@ -172,7 +177,7 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
 
                                             SizedBox(width: size.width*.1,)
                                             , Text('من تاريخ',style: smallTextStyleNormal(size)),
-                                            const SizedBox(width: 10),
+                                            const SizedBox(width: 20),
                                             SizedBox(
                                               width: size.width * .3,
                                               child: DateFieldWidget(
@@ -222,7 +227,7 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                                               padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                                               child: Text('الي تاريخ',style: smallTextStyleNormal(size)),
                                             ),
-                                            const SizedBox(width: 10),
+                                            const SizedBox(width: 20),
                                             SizedBox(
                                               width: size.width * .3,
                                               child: DateFieldWidget(
@@ -280,7 +285,7 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                               child: Container(
-                                                width: size.width * .2,
+                                                width: size.width * .3,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
                                                     borderRadius: const BorderRadius.all(
@@ -305,15 +310,14 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                                               ),
                                             ),
 
-                                            SizedBox(width: size.width*.1,)
-                                            ,Padding(
+                                            Padding(
                                               padding:  EdgeInsets.fromLTRB(0, 0, size.width*.1, 0),
                                               child: Text('الي فاتوره',style: smallTextStyleNormal(size)),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                               child: Container(
-                                                width: size.width * .2,
+                                                width: size.width * .3,
                                                 height: size.height * .045,
                                                 decoration: BoxDecoration(
                                                     borderRadius: const BorderRadius.all(
@@ -343,7 +347,7 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                                     ),
                                     Center(
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                                        padding:  EdgeInsets.fromLTRB(0, 10, size.width*.1, 0),
                                         child: Row(
                                           children: [
                                             Padding(

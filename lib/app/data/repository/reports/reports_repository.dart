@@ -2,6 +2,7 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/balance_gallary_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/categories_items_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/categories_totals_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/clients_no_movement_request.dart';
@@ -327,15 +328,15 @@ class ReportsRepository {
         convertor: FindSalesValueAddedResponse.fromList,
       );
   BalanceGalary(
-      SalesOfItemsByCompanyRequest salesOfItemsByCompanyRequest, {
+      BalanceGallaryRequest balanceGallaryRequest, {
         Function()? onComplete,
         Function(List<BalanceGalaryResponse> data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-      ApiProvider().post<List<BalanceGalaryResponse>,List<dynamic>>('reports/unPaidAmountAfterSearch',
+      ApiProvider().post<List<BalanceGalaryResponse>,List<dynamic>>('reports/commision',
         onComplete: onComplete,
         onSuccess: onSuccess,
-        data: salesOfItemsByCompanyRequest.toJson(),
+        data: balanceGallaryRequest.toJson(),
         onError: onError,
         convertor: BalanceGalaryResponse.fromList,
       );

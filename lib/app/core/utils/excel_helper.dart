@@ -478,6 +478,7 @@ class ExcelHelper {
 
   static Future<Excel> BalanceGallaryExcel(List<BalanceGalaryResponse> reports, BuildContext context) async {
     var excel = Excel.createExcel();
+    excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "اسم المعرض");
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), "النوع");
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0), "اسم البنك");
     excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0), "القيمه");
@@ -487,6 +488,7 @@ class ExcelHelper {
 
     for (var i = 1; i <= reports.length; i++) {
       final report = reports[i - 1];
+      excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i), report.gallaryName);
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i), report.transactionType);
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i), report.bankName);
       excel.updateCell(excel.sheets.values.first.sheetName, CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i), report.value);

@@ -63,6 +63,28 @@ class DtoList {
     "id": id == null ? null : id,
   };
 }
+class DtoListName {
+  DtoListName({
+    this.id,
+    this.name
+  });
+
+  int? id;
+  String?name;
+
+  factory DtoListName.fromJson(Map<String, dynamic> json) => DtoListName(
+    id: json["id"] == null ? null : json["id"],
+    name: json["name"] == null ? null : json["name"],
+
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
+    "name": name == null ? null : name,
+
+  };
+}
+
 class AllGroupsRequest {
   AllGroupsRequest({
     required this.id,

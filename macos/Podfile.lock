@@ -6,12 +6,18 @@ PODS:
     - FlutterMacOS
   - printing (1.0.0):
     - FlutterMacOS
+  - screen_retriever (0.0.1):
+    - FlutterMacOS
+  - window_manager (0.2.0):
+    - FlutterMacOS
 
 DEPENDENCIES:
   - desktop_multi_window (from `Flutter/ephemeral/.symlinks/plugins/desktop_multi_window/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - path_provider_macos (from `Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos`)
   - printing (from `Flutter/ephemeral/.symlinks/plugins/printing/macos`)
+  - screen_retriever (from `Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos`)
+  - window_manager (from `Flutter/ephemeral/.symlinks/plugins/window_manager/macos`)
 
 EXTERNAL SOURCES:
   desktop_multi_window:
@@ -22,12 +28,18 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos
   printing:
     :path: Flutter/ephemeral/.symlinks/plugins/printing/macos
+  screen_retriever:
+    :path: Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos
+  window_manager:
+    :path: Flutter/ephemeral/.symlinks/plugins/window_manager/macos
 
 SPEC CHECKSUMS:
   desktop_multi_window: 566489c048b501134f9d7fb6a2354c60a9126486
   FlutterMacOS: 85f90bfb3f1703249cf1539e4dfbff31e8584698
   path_provider_macos: 3c0c3b4b0d4a76d2bf989a913c2de869c5641a19
   printing: e4b7e232ff3d5d50a70b20d959aa71035a5c31f9
+  screen_retriever: 59634572a57080243dd1bf715e55b6c54f241a38
+  window_manager: 3a1844359a6295ab1e47659b1a777e36773cd6e8
 
 PODFILE CHECKSUM: a884f6dd3f7494f3892ee6c81feea3a3abbf9153
 
