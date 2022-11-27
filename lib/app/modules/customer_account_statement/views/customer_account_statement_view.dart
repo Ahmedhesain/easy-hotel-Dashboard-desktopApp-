@@ -167,27 +167,53 @@ class CustomerAccountStatementView extends GetView<CustomerAccountStatementContr
                     )
             ).toList(),
             headerHeight: 40,
-            rows: controller.reports
-                .map((e) => [
-                      "${e.serial}",
-                      (e.date == null ? "" : DateFormat("yyy-MM-dd").format(e.date!)),
-                      // "${e.organizationName}",
-                      "${e.screenName}",
-                      "${e.invoiceSerial}",
-                      "${e.openningBalance}",
-                      "${e.exitt}",
-                      "${e.adding}",
-                      "${e.balance}"
-                    ].map((d) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 7),
-                        child: Text(
-                          d,
-                          maxLines: 2, textAlign: TextAlign.center, textDirection: TextDirection.ltr,
-                        ),
-                      );
-                    }).toList())
-                .toList(),
+            rows: [
+              ...controller.reports
+                  .map((e) => [
+                "${e.serial}",
+                (e.date == null ? "" : DateFormat("yyy-MM-dd").format(e.date!)),
+                // "${e.organizationName}",
+                "${e.screenName}",
+                "${e.invoiceSerial}",
+                "${e.openningBalance}",
+                "${e.exitt}",
+                "${e.adding}",
+                e.balance.toStringAsFixed(2)
+              ].map((d) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: Text(
+                    d,
+                    maxLines: 2, textAlign: TextAlign.center, textDirection: TextDirection.ltr,
+                  ),
+                );
+              }).toList())
+                  .toList(),
+              [
+                const SizedBox(),
+                const SizedBox(),
+                const SizedBox(),
+                const SizedBox(),
+                const SizedBox(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: Text(
+                    controller.reports.fold<num>(0, (p, e) => p + (e.exitt??0)).toStringAsFixed(2),
+                    maxLines: 2,textAlign: TextAlign.center, textDirection: TextDirection.ltr,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: Text(
+                    controller.reports.fold<num>(0, (p, e) => p + (e.adding??0)).toStringAsFixed(2),
+                    maxLines: 2,textAlign: TextAlign.center, textDirection: TextDirection.ltr,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(),
+              ]
+            ],
             minimumCellWidth: 150,
             rowHeight: 50,
           ),

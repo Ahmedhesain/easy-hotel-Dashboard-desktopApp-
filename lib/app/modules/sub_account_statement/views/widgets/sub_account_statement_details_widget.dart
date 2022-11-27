@@ -81,7 +81,7 @@ class SubAccountStatementDetailsWidget extends GetView<SubAccountStatementContro
                               SizedBox(height: 40, child: Center(child: Text(row.glAccountName ?? "--"))),
                               SizedBox(height: 40, child: Center(child: Text(row.debitAmount?.toString() ?? "--"))),
                               SizedBox(height: 40, child: Center(child: Text(row.creditAmount?.toString() ?? "--"))),
-                              SizedBox(height: 40, child: Center(child: Text(row.balance?.toString() ?? "--"))),
+                              SizedBox(height: 40, child: Center(child: Text(row.balance.toStringAsFixed(2) ?? "--"))),
                             ],
                             decoration: const BoxDecoration(color: appGreyLight, border: Border(bottom: BorderSide())),
                           )
@@ -90,29 +90,33 @@ class SubAccountStatementDetailsWidget extends GetView<SubAccountStatementContro
                   }),
                 ),
               ),
-              Table(
-                children: [
-                  TableRow(
-                    children: [
-                      const SizedBox(),
-                      const SizedBox(),
-                      const SizedBox(),
-                      const SizedBox(),
-                      const SizedBox(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(controller.statements.fold<num>(0, (p, e) => p + (e.debitAmount??0)).toStringAsFixed(2), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(controller.statements.fold<num>(0, (p, e) => p + (e.creditAmount??0)).toStringAsFixed(2), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                      ),
-                      const SizedBox(),
-                    ],
-                    decoration: const BoxDecoration(color: appGreyDark, border: Border(bottom: BorderSide())),
-                  ),
-                ],
-              ),
+              Obx(() {
+                return Table(
+                  children: [
+                    TableRow(
+                      children: [
+                        const SizedBox(),
+                        const SizedBox(),
+                        const SizedBox(),
+                        const SizedBox(),
+                        const SizedBox(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(controller.statements.fold<num>(0, (p, e) => p + (e.debitAmount ?? 0)).toStringAsFixed(2), style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(controller.statements.fold<num>(0, (p, e) => p + (e.creditAmount ?? 0)).toStringAsFixed(2), style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                        ),
+                        const SizedBox(),
+                      ],
+                      decoration: const BoxDecoration(color: appGreyDark, border: Border(bottom: BorderSide())),
+                    ),
+                  ],
+                );
+              }),
             ],
           )),
     );

@@ -42,7 +42,7 @@ import 'package:toby_bills/app/data/repository/inventory/inventory_repository.da
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
-// import 'package:window_manager/window_manager.dart';
+import 'package:window_manager/window_manager.dart';
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
 import '../../../data/model/invoice/dto/response/get_delivery_place_response.dart';
@@ -133,7 +133,7 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    // windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+    windowManager.setTitle("Toby Bills -> شاشة المبيعات");
     isLoading(true);
     _addItemFieldsListener();
     items.addAll(_getItemsFromStorage());
@@ -443,9 +443,10 @@ class HomeController extends GetxController {
           itemDiscountController.text = data.discountRow.toString();
           itemDiscountValueController.text = "0";
           itemAvailableQuantity(data.availableQuantity);
-          itemNumberFocusNode.requestFocus();
           selectedItem(item..itemData = data);
           calcItemData();
+          Future.delayed(const Duration(milliseconds: 50)).whenComplete(() => itemNumberFocusNode.requestFocus());
+
         });
   }
 
@@ -748,22 +749,26 @@ class HomeController extends GetxController {
       final price = itemPriceController.text.tryToParseToNum;
       if (price == null) return;
       final item = selectedItem.value!;
-      if (selectedPriceType.value == 1 && price < item.minPriceMen!) {
-        showPopupText(text: "السعر غير ممكن");
-        itemPriceController.text = item.minPriceMen.toString();
+      if(UserManager().galleryType == 0){
+        if (selectedPriceType.value == 1 && price < item.minPriceMen!) {
+          showPopupText(text: "السعر غير ممكن");
+          itemPriceController.text = item.minPriceMen.toString();
+        }
+        else if (selectedPriceType.value == 0 && price < item.minPriceYoung!) {
+          showPopupText(text: "السعر غير ممكن");
+          itemPriceController.text = item.minPriceYoung.toString();
+        }
+      } else if(UserManager().galleryType == 1){
+        if (selectedPriceType.value == 1 && price < (item.minPriceMen! * 0.85)) {
+          showPopupText(text: "السعر غير ممكن");
+          itemPriceController.text = item.minPriceMen.toString();
+        }
+        else if (selectedPriceType.value == 0 && price < (item.minPriceYoung! * 0.85)) {
+          showPopupText(text: "السعر غير ممكن");
+          itemPriceController.text = item.minPriceYoung.toString();
+        }
+
       }
-      // else if (selectedPriceType.value == 1 && price > item.maxPriceMen!) {
-      //   showPopupText(text: "السعر غير ممكن");
-      //   itemPriceController.text = item.maxPriceMen.toString();
-      // }
-      else if (selectedPriceType.value == 0 && price < item.minPriceYoung!) {
-        showPopupText(text: "السعر غير ممكن");
-        itemPriceController.text = item.minPriceYoung.toString();
-      }
-      // else if (selectedPriceType.value == 0 && price > item.maxPriceYoung!) {
-      //   showPopupText(text: "السعر غير ممكن");
-      //   itemPriceController.text = item.maxPriceYoung.toString();
-      // }
     }
   }
 

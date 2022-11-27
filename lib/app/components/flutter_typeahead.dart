@@ -36,7 +36,8 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
   OverlayEntry? entry;
   int _selectedItem = -1;
   String text = "";
-
+  bool isHovering = false;
+  static List<OverlayEntry> entries = [];
 
   List<T> get items => widget.suggestionsCallback(text).toList();
 
@@ -55,7 +56,9 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
       if (focusNode.hasFocus) {
         showOverlay();
       } else {
-        hideOverlay();
+        if(!isHovering) {
+          hideOverlay();
+        }
       }
     });
   }
@@ -73,13 +76,19 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
     final overlay = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
-
+    for (var element in entries) {
+      if(element.mounted) {
+        element.remove();
+      }
+    }
+    entries.clear();
     entry = OverlayEntry(
       builder: (BuildContext context) => Positioned(
           width: size.width, child: CompositedTransformFollower(link: layerLink, showWhenUnlinked: true, offset: Offset(0, size.height + 10), child: buildOverlay())),
     );
 
     overlay.insert(entry!);
+    entries.add(entry!);
   }
 
   void hideOverlay() {
@@ -92,34 +101,36 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
         child: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: widget.overlayHeight,minHeight: 50),
           child: items.isNotEmpty
-              ? Scrollbar(
-                controller: scrollController,
-                thumbVisibility: true,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: scrollController,
-                    itemBuilder: (context, index) {
-                      return Listener(
-                        onPointerDown: (d){
-                          focusNode.unfocus();
-                          hideOverlay();
-                          widget.onSuggestionSelected(items[index]);
-                        },
-                        child: ListTile(
-                          title: Text(items[index].toString()),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          hoverColor: Colors.grey.shade100,
-                          tileColor: index == _selectedItem ? (Colors.grey.shade200) : Colors.transparent,
-                          onTap: () {
-                            focusNode.unfocus();
-                            hideOverlay();
-                            widget.onSuggestionSelected(items[index]);
-                          },
-                        ),
-                      );
-                    },
-                    itemCount: items.length,
-                  ),
+              ? MouseRegion(
+                onEnter: (_) => isHovering = true,
+                onExit: (_) => isHovering = false,
+                child: Scrollbar(
+                  controller: scrollController,
+                  thumbVisibility: true,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      controller: scrollController,
+                      itemBuilder: (context, index) {
+                        return Listener(
+                          // onPointerUp: (d){
+                          //   focusNode.unfocus();
+                          //   widget.onSuggestionSelected(items[index]);
+                          // },
+                          child: ListTile(
+                            title: Text(items[index].toString()),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            hoverColor: Colors.grey.shade100,
+                            tileColor: index == _selectedItem ? (Colors.grey.shade200) : Colors.transparent,
+                            onTap: () {
+                              focusNode.unfocus();
+                              widget.onSuggestionSelected(items[index]);
+                            },
+                          ),
+                        );
+                      },
+                      itemCount: items.length,
+                    ),
+                ),
               )
               : Center(child: Text(widget.noItemFoundText ?? "No Item Found")),
         ));
@@ -143,7 +154,6 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
           if(_selectedItem != -1) {
             widget.onSuggestionSelected(widget.suggestionsCallback(text).toList()[_selectedItem]);
             focusNode.unfocus();
-            hideOverlay();
           }
         } else if (key.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
           _selectedItem = _selectedItem < items.length - 1 ? _selectedItem + 1 : _selectedItem;
@@ -157,6 +167,8 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
           if (widget.textFieldConfiguration.controller != null) {
             widget.textFieldConfiguration.controller!.clear();
           }
+          focusNode.unfocus();
+        } else if (key.isKeyPressed(LogicalKeyboardKey.tab)) {
           focusNode.unfocus();
         }
         entry!.markNeedsBuild();

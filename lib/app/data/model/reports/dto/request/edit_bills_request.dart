@@ -69,6 +69,7 @@ class GlBankTransactionApi {
     this.branchId,
     this.generalJournalId,
     this.companyId,
+    this.gallaryId,
     this.createdBy
   });
 
@@ -76,6 +77,7 @@ class GlBankTransactionApi {
   String ?remark;
   num ?customerBalance;
   int ?customerId;
+  int ?gallaryId;
   int ?generalJournalId;
   String? customerName;
   List<GlPayDTO>? glPayDTOAPIList;
@@ -89,6 +91,7 @@ class GlBankTransactionApi {
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
     remark: json["remark"],
     customerBalance: json["customerBalance"],
+    gallaryId: json["gallaryId"],
     customerId: json["customerId"],
     generalJournalId: json["generalJournalId"],
     customerName: json["customerName"],
@@ -108,6 +111,7 @@ class GlBankTransactionApi {
     "customerBalance": customerBalance,
     "customerId": customerId,
     "customerName": customerName,
+    "gallaryId": gallaryId,
     // "glPayDTOAPIList": glPayDTOAPIList == null ? null : List<GlPayDTO>.from(glPayDTOAPIList!.map((x) => x)),
     "glPayDTOAPIList": List<dynamic>.from((glPayDTOAPIList??[]).map((x) => x.toJson())),
     "branchId": branchId,

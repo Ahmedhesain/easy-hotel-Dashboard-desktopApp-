@@ -121,7 +121,7 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
           if (sections.length > 1) month = sections[1].padLeft(2, "0");
           if (sections.length > 2) day = sections[2].padLeft(2, "0");
           final date = [year, month, day].join("-");
-          if (DateTime.tryParse(date) != null) {
+          if (DateTime.tryParse(date) != null && DateTime.tryParse(date)!.year.toString().length>3) {
             widget.onComplete(DateTime.parse(date));
           }
         }
