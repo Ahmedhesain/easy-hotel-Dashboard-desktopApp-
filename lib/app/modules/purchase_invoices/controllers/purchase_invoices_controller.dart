@@ -66,6 +66,7 @@ class PurchaseInvoicesController extends GetxController {
   Rxn<ItemResponse> selectedItem = Rxn();
   Rx<DateTime> dueDate = Rx(DateTime.now());
   Rx<DateTime> supplierDate = Rx(DateTime.now());
+  Rx<DateTime> date = Rx(DateTime.now());
   FindCustomerBalanceResponse? findCustomerBalanceResponse;
 
   final findSideCustomerController = TextEditingController();
@@ -238,9 +239,11 @@ class PurchaseInvoicesController extends GetxController {
   searchForInvoiceById(String id) async {
     newInvoice();
     isLoading(true);
-    await InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 0),
+    InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 0),
         onSuccess: (data) {
-          invoice(data);
+          date(data.date?.add(Duration(days: 1)));
+          supplierDate(data.supplierDate?.add(Duration(days: 1)));
+          dueDate(data.dueDate?.add(Duration(days: 1)));
           if(galleries.any((element) => element.id == data.gallaryId)) {
             selectedGallery(galleries.singleWhere((element) => element.id == data.gallaryId));
             UserManager().changeGallery(selectedGallery.value);
@@ -253,6 +256,7 @@ class PurchaseInvoicesController extends GetxController {
             selectedDelegator(null);
           }
           isProof(data.proof == 1);
+          invoice(data);
           invoiceDiscountController.text = data.discount.toString();
           selectedDiscountType(data.discountType);
           invoiceSupplierNumberController.text = data.supplierInvoiceNumber?.toString()??"";
@@ -388,9 +392,9 @@ class PurchaseInvoicesController extends GetxController {
         account: selectedGlAccount.value?.id,
         // remark: itemNotesController.text,
         name: item.name!,
-        quantity: itemQuantityController.text.parseToNum,
+        quantityOfOneUnit: itemQuantityController.text.parseToNum,
         number: 1,
-        quantityOfOneUnit: 1,
+        quantity: itemYardNumberController.text.parseToNum,
         code: item.code,
         minPriceMen: item.minPriceMen,
         minPriceYoung: item.minPriceYoung,
@@ -449,7 +453,7 @@ class PurchaseInvoicesController extends GetxController {
       gallaryName: UserManager().galleryName,
       branchId: UserManager().branchId,
       gallaryId: UserManager().galleryId,
-      date: DateTime.now(),
+      date: date.value,
       checkSendSms: checkSendSms.value ? 1 : 0,
       companyId: UserManager().companyId,
       createdBy: UserManager().id,

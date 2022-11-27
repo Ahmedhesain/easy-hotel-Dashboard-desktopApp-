@@ -61,6 +61,8 @@ class FasehDetailsController extends GetxController {
     InvoiceRepository().findFasehBySerial(FindFasehRequest(serial: fasehSearchController.text),
         onSuccess: (data) {
           invoiceModel = data;
+          invoiceDetailsList.assignAll(data.invoiceDetailApiList??[]);
+          remarksController.text = data.remarks??"";
         },
         onComplete: () => isLoading(false),
         onError: (e) => showPopupText(text: e.toString()));

@@ -7,7 +7,6 @@ import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delegator_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import '../../../../core/values/app_colors.dart';
 import '../../controllers/purchase_invoices_controller.dart';
@@ -41,9 +40,15 @@ class PurchaseInvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                       children: [
                         const Text('التاريخ:'),
                         const SizedBox(width: 5),
-                        Text(
-                          DateFormat("dd-MM-yyyy").format(DateTime.now()),
-                          textAlign: TextAlign.center,
+                        Expanded(
+                          child: Obx(() {
+                            return DateFieldWidget(
+                              onComplete: (date) {
+                                controller.date(date);
+                              },
+                              date: controller.date.value,
+                            );
+                          }),
                         ),
                       ],
                     ),
@@ -59,9 +64,9 @@ class PurchaseInvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                         const SizedBox(width: 5),
                         Expanded(
                           child: DateFieldWidget(
-                              onComplete: (date){
-                                controller.supplierDate(date);
-                              },
+                            onComplete: (date) {
+                              controller.supplierDate(date);
+                            },
                             date: controller.supplierDate.value,
                           ),
                         ),
@@ -99,7 +104,7 @@ class PurchaseInvoiceInfoWidget extends GetView<PurchaseInvoicesController> {
                           const SizedBox(width: 5),
                           Expanded(
                             child: DateFieldWidget(
-                              onComplete: (date){
+                              onComplete: (date) {
                                 controller.dueDate(date);
                               },
                               date: controller.dueDate.value,

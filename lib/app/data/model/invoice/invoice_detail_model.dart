@@ -121,7 +121,7 @@ class InvoiceDetailsModel {
   }
 
 
-  num get totalQuantity => ((number??0) * (quantityOfOneUnit??0)).fixed(2);
+  num get totalQuantity => ((number??1) * (quantityOfOneUnit??1)).fixed(2);
 
   void calcData() {
     netWithoutDiscount = (price! * (typeInv == 0?(quantity??0):(number??0))).fixed(2);
@@ -207,7 +207,8 @@ class InvoiceDetailsModel {
     return instance;
   }
 
-  factory InvoiceDetailsModel.fromJson(Map<String, dynamic> json) => InvoiceDetailsModel(
+  factory InvoiceDetailsModel.fromJson(Map<String, dynamic> json) {
+    final instance =  InvoiceDetailsModel(
         id: json["id"],
         serial: json["serial"],
         typeInv: json["typeInv"],
@@ -244,6 +245,9 @@ class InvoiceDetailsModel {
         minPriceYoung: json["minPriceYoung"] ?? 0,
 
       );
+    instance.calcData();
+    return instance;
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,

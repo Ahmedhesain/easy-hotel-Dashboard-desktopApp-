@@ -443,9 +443,10 @@ class HomeController extends GetxController {
           itemDiscountController.text = data.discountRow.toString();
           itemDiscountValueController.text = "0";
           itemAvailableQuantity(data.availableQuantity);
-          itemNumberFocusNode.requestFocus();
           selectedItem(item..itemData = data);
           calcItemData();
+          Future.delayed(const Duration(milliseconds: 50)).whenComplete(() => itemNumberFocusNode.requestFocus());
+
         });
   }
 
@@ -748,22 +749,26 @@ class HomeController extends GetxController {
       final price = itemPriceController.text.tryToParseToNum;
       if (price == null) return;
       final item = selectedItem.value!;
-      if (selectedPriceType.value == 1 && price < item.minPriceMen!) {
-        showPopupText(text: "السعر غير ممكن");
-        itemPriceController.text = item.minPriceMen.toString();
+      if(UserManager().galleryType == 0){
+        if (selectedPriceType.value == 1 && price < item.minPriceMen!) {
+          showPopupText(text: "السعر غير ممكن");
+          itemPriceController.text = item.minPriceMen.toString();
+        }
+        else if (selectedPriceType.value == 0 && price < item.minPriceYoung!) {
+          showPopupText(text: "السعر غير ممكن");
+          itemPriceController.text = item.minPriceYoung.toString();
+        }
+      } else if(UserManager().galleryType == 1){
+        if (selectedPriceType.value == 1 && price < (item.minPriceMen! * 0.85)) {
+          showPopupText(text: "السعر غير ممكن");
+          itemPriceController.text = item.minPriceMen.toString();
+        }
+        else if (selectedPriceType.value == 0 && price < (item.minPriceYoung! * 0.85)) {
+          showPopupText(text: "السعر غير ممكن");
+          itemPriceController.text = item.minPriceYoung.toString();
+        }
+
       }
-      // else if (selectedPriceType.value == 1 && price > item.maxPriceMen!) {
-      //   showPopupText(text: "السعر غير ممكن");
-      //   itemPriceController.text = item.maxPriceMen.toString();
-      // }
-      else if (selectedPriceType.value == 0 && price < item.minPriceYoung!) {
-        showPopupText(text: "السعر غير ممكن");
-        itemPriceController.text = item.minPriceYoung.toString();
-      }
-      // else if (selectedPriceType.value == 0 && price > item.maxPriceYoung!) {
-      //   showPopupText(text: "السعر غير ممكن");
-      //   itemPriceController.text = item.maxPriceYoung.toString();
-      // }
     }
   }
 

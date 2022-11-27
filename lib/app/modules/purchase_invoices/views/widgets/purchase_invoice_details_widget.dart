@@ -62,15 +62,15 @@ class PurchaseInvoiceDetailsWidget extends GetView<PurchaseInvoicesController> {
                   child: SizedBox(
                     height: 30,
                     child: Builder(builder: (context) {
-                      num? oldValue = (detail.value.quantity??0) / 0.9;
+                      num? oldValue = detail.value.quantity;
                       return TextFormField(
-                        controller: TextEditingController(text: ((detail.value.quantity??0) / 0.9).toStringAsFixed(2)),
+                        controller: TextEditingController(text: oldValue?.toStringAsFixed(2)),
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
                         onChanged: (value) => oldValue = value.tryToParseToNum ?? 0,
                         focusNode: detail.value.quantityFocus..addListener(() {
                           if(!detail.value.quantityFocus.hasFocus){
-                            detail(detail.value.copyWith(quantity: (oldValue??0) * 0.9));
+                            detail(detail.value.copyWith(quantityOfOneUnit: (oldValue??0) * 0.9, quantity: oldValue));
                             controller.calcInvoiceValues();
                           }
                         }),
@@ -85,9 +85,9 @@ class PurchaseInvoiceDetailsWidget extends GetView<PurchaseInvoicesController> {
                   child: SizedBox(
                     height: 30,
                     child: Builder(builder: (context) {
-                      num? oldValue = detail.value.quantity;
+                      num? oldValue = detail.value.quantityOfOneUnit;
                       return TextFormField(
-                        controller: TextEditingController(text: detail.value.quantity?.toString()),
+                        controller: TextEditingController(text: oldValue?.toString()),
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
                         onChanged: (value) {
@@ -95,7 +95,7 @@ class PurchaseInvoiceDetailsWidget extends GetView<PurchaseInvoicesController> {
                         },
                         focusNode: detail.value.numberFocus..addListener(() {
                           if(!detail.value.numberFocus.hasFocus){
-                            detail(detail.value.copyWith(quantity: oldValue));
+                            detail(detail.value.copyWith(quantityOfOneUnit: oldValue, quantity: (oldValue ?? 0) / 0.9));
                             controller.calcInvoiceValues();
                           }
                         }),
