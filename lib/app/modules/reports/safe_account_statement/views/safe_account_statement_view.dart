@@ -28,31 +28,31 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
           textDirection: TextDirection.rtl,
           children: (isScrollable) {
             return [
-              // const Text(
-              //   "اختر معرض: ",
-              //   textDirection: TextDirection.rtl,
-              // ),
-              // Obx( () {
-              //       return SizedBox(
-              //         width: 300,
-              //         height: 35,
-              //         child: DropDownMultiSelect(
-              //           options: controller.galleries.map((e) => e.name??"").toList(),
-              //           selectedValues: controller.selectedGalleries.map((e) => e.name??"").toList(),
-              //           onChanged: controller.selectNewGalleries,
-              //           isDense: true,
-              //           childBuilder: (List<String> values) {
-              //             return Padding(
-              //               padding: const EdgeInsets.all(8.0),
-              //               child: Text(
-              //                 values.isEmpty ? "يرجى تحديد معرض على الاقل" : values.join(', '),
-              //                 maxLines: 1,
-              //               ),
-              //             );
-              //           },
-              //         ),
-              //       );
-              //     }),
+              const Text(
+                "اختر معرض: ",
+                textDirection: TextDirection.rtl,
+              ),
+              Obx( () {
+                    return SizedBox(
+                      width: 300,
+                      height: 35,
+                      child: DropDownMultiSelect(
+                        options: controller.deliveryPlaces.map((e) => e.name??"").toList(),
+                        selectedValues: controller.selectedDeliveryPlace.map((e) => e.name??"").toList(),
+                        onChanged: controller.selectNewDeliveryplace,
+                        isDense: true,
+                        childBuilder: (List<String> values) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              values.isEmpty ? "يرجى تحديد معرض على الاقل" : values.join(', '),
+                              maxLines: 1,
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }),
               // const SizedBox(width: 15),
               const Text(
                 "اختر خزائن: ",
@@ -63,8 +63,8 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
                       width: 300,
                       height: 35,
                       child: DropDownMultiSelect(
-                        options: controller.banks.map((e) => e.bankName??"").toList(),
-                        selectedValues: controller.selectedBanks.map((e) => e.bankName??"").toList(),
+                        options: controller.banks.map((e) => e.name??"").toList(),
+                        selectedValues: controller.selectedBanks.map((e) => e.name??"").toList(),
                         onChanged: controller.selectNewBank,
                         isDense: true,
                         childBuilder: (List<String> values) {

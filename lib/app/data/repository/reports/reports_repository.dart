@@ -181,6 +181,19 @@ class ReportsRepository {
         onError: onError,
         convertor: GlPayDTO.fromList,
       );
+  getAllGlPayGallaries(
+      AllInvoicesGAllariesRequest allInvoicesRequest, {
+        Function()? onComplete,
+        Function(List<GlPayDTO> data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<List<GlPayDTO>,List<dynamic>>('bank/bankList',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: allInvoicesRequest.toJson(),
+        onError: onError,
+        convertor: GlPayDTO.fromList,
+      );
 
   saveInvoicesStatement(
       GlBankTransactionApi glBankTransactionApi, {

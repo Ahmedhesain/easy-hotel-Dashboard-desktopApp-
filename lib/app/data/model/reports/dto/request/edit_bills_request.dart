@@ -1,6 +1,8 @@
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 
+import 'profit_of_Items_sold_request.dart';
+
 class EditBillsRequest {
   EditBillsRequest({
     required this.serial,
@@ -35,15 +37,22 @@ class AllInvoicesRequest {
   AllInvoicesRequest({
     required this.id,
     required this.branchId,
+    this.invInventoryDtoList,
+
   });
 
   final int id;
   final int branchId;
+   List<DtoList>? invInventoryDtoList;
+
 
   Map<String, dynamic> toJson(){
     return {
       "id": id,
       "branchId": branchId,
+      "invInventoryDTOList": invInventoryDtoList == null ? null : List<dynamic>.from(invInventoryDtoList!.map((x) => x.toJson())),
+
+
     };
   }
 
@@ -108,3 +117,30 @@ class GlBankTransactionApi {
   };
 
 }
+
+class AllInvoicesGAllariesRequest {
+
+  AllInvoicesGAllariesRequest({
+    required this.id,
+    required this.branchId,
+    required this.invInventoryDtoList,
+
+  });
+
+  final int id;
+  final int branchId;
+  final List<dynamic>? invInventoryDtoList;
+
+
+  Map<String, dynamic> toJson(){
+    return {
+      "id": id,
+      "branchId": branchId,
+      "invInventoryDTOList": invInventoryDtoList == null ? null : List<dynamic>.from(invInventoryDtoList!.map((x) => x.toJson())),
+
+
+    };
+  }
+
+}
+
