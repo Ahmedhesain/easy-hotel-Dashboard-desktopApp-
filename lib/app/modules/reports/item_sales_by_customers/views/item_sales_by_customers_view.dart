@@ -111,10 +111,10 @@ class ItemSalesByCustomersView extends GetView<ItemsSalesByCustomersController> 
                       child: const Text("بحث"),
                     ),
                     const SizedBox(width: 15),
-                    // ElevatedButton(
-                    //   onPressed: () => PrintingHelper().itemSales(context, provider.purchasesGroups, provider.dateFrom, provider.dateTo),
-                    //   child: const Text("طباعة"),
-                    // ),
+                    ElevatedButton(
+                      onPressed: () => PrintingHelper().itemSales(context, controller.purchasesGroups, controller.dateFrom.value, controller.dateTo.value),
+                      child: const Text("طباعة"),
+                    ),
                     const SizedBox(width: 15),
                     ElevatedButton(
                       onPressed: () => Navigator.pop(context),

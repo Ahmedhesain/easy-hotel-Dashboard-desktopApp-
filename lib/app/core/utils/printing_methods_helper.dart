@@ -33,6 +33,7 @@ import 'package:toby_bills/app/data/model/reports/dto/response/item_balances_res
 import 'package:toby_bills/app/data/model/reports/dto/response/journal_document_dialy_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/production_stages_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
+import 'package:toby_bills/app/data/model/reports/dto/response/purchases_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/safe_account_statement_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/sales_of_items_by_company_response.dart';
 import 'package:toby_bills/app/modules/reports/invoices_without_swing_statement/controllers/invoices_without_swing_controller.dart';
@@ -3676,6 +3677,7 @@ class PrintingHelper {
       11:const FlexColumnWidth(1),
     };
     doc.addPage(MultiPage(
+      maxPages:1000,
         pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
         build: (Context context) {
           return [
@@ -4053,443 +4055,443 @@ class PrintingHelper {
           );
         });
   }
-  //
-  // void itemSales(m.BuildContext context, List<PurchaseBySupplierGroup> data, DateTime fromDate, DateTime toDate) async {
-  //   final doc = Document();
-  //   const PdfColor grey = PdfColors.grey300;
-  //   const PdfColor grey4 = PdfColors.grey400;
-  //   final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
-  //   final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
-  //   final ttfBold = Font.ttf(font);
-  //   final ttfLight = Font.ttf(fontLight);
-  //   final style = TextStyle(font: ttfLight, fontBold: ttfBold);
-  //   final normalStyle = TextStyle(font: ttfLight, fontSize: 11);
-  //   final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
-  //   final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
-  //   Text text(String text, {double? size, FontWeight? weight}) => Text(text, style: style.copyWith(fontSize: size, fontWeight: weight));
-  //   final widths = <int, TableColumnWidth>{
-  //     0: const FlexColumnWidth(1),
-  //     1: const FlexColumnWidth(1),
-  //     2: const FlexColumnWidth(1),
-  //     3: const FlexColumnWidth(1),
-  //     4: const FlexColumnWidth(1),
-  //     5: const FlexColumnWidth(2),
-  //     6: const FlexColumnWidth(1),
-  //     7: const FlexColumnWidth(1),
-  //     8: const FlexColumnWidth(1),
-  //     9: const FlexColumnWidth(1),
-  //     10: const  FlexColumnWidth(2),
-  //   };
-  //   doc.addPage(MultiPage(
-  //       pageTheme: const PageTheme(
-  //         pageFormat: PdfPageFormat.a4,
-  //         textDirection: TextDirection.rtl,
-  //         margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
-  //         orientation: PageOrientation.landscape,
-  //       ),
-  //       build: (Context context) {
-  //         return [
-  //           Center(
-  //               child: Container(
-  //                   decoration: const BoxDecoration(color: PdfColors.grey400),
-  //                   padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-  //                   child: Text(
-  //                     "مبيعات الاصناف حسب العملاء",
-  //                     style: boldStyle.copyWith(fontSize: 10),
-  //                     textDirection: TextDirection.rtl,
-  //                     textAlign: TextAlign.center,
-  //                   ))),
-  //           SizedBox(height: 15),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //             children: [
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.end,
-  //                 mainAxisSize: MainAxisSize.min,
-  //                 children: [
-  //                   text(DateFormat("MM-dd-yyyy").format(toDate), weight: FontWeight.bold),
-  //                   SizedBox(width: 15),
-  //                   text("الى الفترة:", weight: FontWeight.bold),
-  //                   SizedBox(width: 15),
-  //                 ],
-  //               ),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.end,
-  //                 mainAxisSize: MainAxisSize.min,
-  //                 children: [
-  //                   text(DateFormat("MM-dd-yyyy").format(fromDate), weight: FontWeight.bold),
-  //                   SizedBox(width: 15),
-  //                   text("من الفترة:", weight: FontWeight.bold),
-  //                   SizedBox(width: 15),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //           SizedBox(height: 15),
-  //           Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max,columnWidths: widths, children: [
-  //             TableRow(children: [
-  //               Center(
-  //                 child: Text(
-  //                   "قيمة",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               Center(
-  //                 child: Text(
-  //                   "الخصم",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               Center(
-  //                 child: Text(
-  //                   "تكلفة الشراء",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               Center(
-  //                 child: Text(
-  //                   "الكمية",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               Center(
-  //                 child: Text(
-  //                   "الوحدة",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               Center(
-  //                 child: Text(
-  //                   "البيان",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               Center(
-  //                 child: Text(
-  //                   "رقم الصنف",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               Center(
-  //                 child: Text(
-  //                   "تاريخ الفاتورة",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               Center(
-  //                 child: Text(
-  //                   "رقم الشغل",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               Center(
-  //                 child: Text(
-  //                   "رقم الفاتورة",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               Center(
-  //                 child: Text(
-  //                   "اسم العميل",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //             ],decoration: const BoxDecoration(color: grey)),
-  //           ]),
-  //           for (final supplier in data)
-  //             Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max,columnWidths: widths, children: [
-  //               TableRow(children: [
-  //                 Container(
-  //                   color: grey4,
-  //                   child: Center(
-  //                     child: Text(
-  //                       supplier.purchases.fold<num>(0, (p, e) => p+(e.cost??0)).toStringAsFixed(2),
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   color: grey4,
-  //                   child: Center(
-  //                     child: Text(
-  //                       "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   color: grey4,
-  //                   child: Center(
-  //                     child: Text(
-  //                       "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   color: grey4,
-  //                   child: Center(
-  //                     child: Text(
-  //                       "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   color: grey4,
-  //                   child: Center(
-  //                     child: Text(
-  //                       "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   color: grey4,
-  //                   child: Center(
-  //                     child: Text(
-  //                       "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   color: grey4,
-  //                   child: Center(
-  //                     child: Text(
-  //                       "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   color: grey4,
-  //                   child: Center(
-  //                     child: Text(
-  //                       "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   color: grey4,
-  //                   child: Center(
-  //                     child: Text(
-  //                       "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   color: grey4,
-  //                   child: Center(
-  //                     child: Text(
-  //                       "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   color: grey4,
-  //                   width: 100,
-  //                   child: Center(
-  //                     child: Text(
-  //                       supplier.name,
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ],decoration: const BoxDecoration(color: grey4)),
-  //               for (final purchase in supplier.purchases)
-  //                 TableRow(children: [
-  //                   Center(
-  //                     child: Text(
-  //                       purchase.cost?.toStringAsFixed(2)??"",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   Center(
-  //                     child: Text(
-  //                       purchase.discount?.toStringAsFixed(2) ?? "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   Center(
-  //                     child: Text(
-  //                       purchase.costAvarage?.toStringAsFixed(2) ?? "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   Center(
-  //                     child: Text(
-  //                       purchase.quantityOfOne?.toStringAsFixed(2) ?? "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   Center(
-  //                     child: Text(
-  //                       purchase.itemUnitName ?? "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   Center(
-  //                     child: Text(
-  //                       purchase.itemName ?? '',
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   Center(
-  //                     child: Text(
-  //                       purchase.itemCode ??'',
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   Center(
-  //                     child: Text(
-  //                       purchase.date == null?"null":DateFormat("MM/dd/yyyy").format(purchase.date!),
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   Center(
-  //                     child: Text(
-  //                       purchase.number.toString(),
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   Center(
-  //                     child: Text(
-  //                       purchase.serial.toString(),
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   Center(
-  //                     child: Text(
-  //                       "",
-  //                       style: boldStyle.copyWith(fontSize: 10),
-  //                       textDirection: TextDirection.rtl,
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                 ]),
-  //             ]),
-  //
-  //           Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max,columnWidths: widths, children: [
-  //             TableRow(children: [
-  //               Center(
-  //                 child: Text(
-  //                   data.fold<num>(0, (p, e) => p + (e.purchases.fold<num>(0, (p, e) => p + (e.cost ?? 0)))).toStringAsFixed(2),
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //               SizedBox(),
-  //               SizedBox(),
-  //               SizedBox(),
-  //               SizedBox(),
-  //               SizedBox(),
-  //               SizedBox(),
-  //               SizedBox(),
-  //               SizedBox(),
-  //               SizedBox(),
-  //               Center(
-  //                 child: Text(
-  //                   "الاجمالي",
-  //                   style: boldStyle.copyWith(fontSize: 10),
-  //                   textDirection: TextDirection.rtl,
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //               ),
-  //             ],decoration: const BoxDecoration(color: grey)),
-  //           ]),
-  //         ];
-  //       }));
-  //
-  //   m.showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return m.RotatedBox(
-  //           quarterTurns: 3,
-  //           child: PdfPreview(
-  //             actions: [
-  //               m.IconButton(
-  //                 onPressed: () => m.Navigator.pop(context),
-  //                 icon: const m.Icon(
-  //                   m.Icons.close,
-  //                   color: m.Colors.red,
-  //                 ),
-  //               )
-  //             ],
-  //             build: (format) => doc.save(),
-  //           ),
-  //         );
-  //       });
-  // }
-  //
+
+  void itemSales(m.BuildContext context, List<PurchaseBySupplierGroup> data, DateTime fromDate, DateTime toDate) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey300;
+    const PdfColor grey4 = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final style = TextStyle(font: ttfLight, fontBold: ttfBold);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 11);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
+    final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
+    Text text(String text, {double? size, FontWeight? weight}) => Text(text, style: style.copyWith(fontSize: size, fontWeight: weight));
+    final widths = <int, TableColumnWidth>{
+      0: const FlexColumnWidth(1),
+      1: const FlexColumnWidth(1),
+      2: const FlexColumnWidth(1),
+      3: const FlexColumnWidth(1),
+      4: const FlexColumnWidth(1),
+      5: const FlexColumnWidth(2),
+      6: const FlexColumnWidth(1),
+      7: const FlexColumnWidth(1),
+      8: const FlexColumnWidth(1),
+      9: const FlexColumnWidth(1),
+      10: const  FlexColumnWidth(2),
+    };
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(
+          pageFormat: PdfPageFormat.a4,
+          textDirection: TextDirection.rtl,
+          margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
+          orientation: PageOrientation.landscape,
+        ),
+        build: (Context context) {
+          return [
+            Center(
+                child: Container(
+                    decoration: const BoxDecoration(color: PdfColors.grey400),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                    child: Text(
+                      "مبيعات الاصناف حسب العملاء",
+                      style: boldStyle.copyWith(fontSize: 10),
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.center,
+                    ))),
+            SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    text(DateFormat("dd-MM-yyyy").format(toDate), weight: FontWeight.bold),
+                    SizedBox(width: 15),
+                    text("الى الفترة:", weight: FontWeight.bold),
+                    SizedBox(width: 15),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    text(DateFormat("dd-MM-yyyy").format(fromDate), weight: FontWeight.bold),
+                    SizedBox(width: 15),
+                    text("من الفترة:", weight: FontWeight.bold),
+                    SizedBox(width: 15),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 15),
+            Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max,columnWidths: widths, children: [
+              TableRow(children: [
+                Center(
+                  child: Text(
+                    "قيمة",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "الخصم",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "تكلفة الشراء",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "الكمية",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "الوحدة",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "البيان",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "رقم الصنف",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "تاريخ الفاتورة",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "رقم الشغل",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "رقم الفاتورة",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "اسم العميل",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],decoration: const BoxDecoration(color: grey)),
+            ]),
+            for (final supplier in data)
+              Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max,columnWidths: widths, children: [
+                TableRow(children: [
+                  Container(
+                    color: grey4,
+                    child: Center(
+                      child: Text(
+                        supplier.purchases.fold<num>(0, (p, e) => p+(e.cost??0)).toStringAsFixed(2),
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: grey4,
+                    child: Center(
+                      child: Text(
+                        "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: grey4,
+                    child: Center(
+                      child: Text(
+                        "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: grey4,
+                    child: Center(
+                      child: Text(
+                        "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: grey4,
+                    child: Center(
+                      child: Text(
+                        "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: grey4,
+                    child: Center(
+                      child: Text(
+                        "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: grey4,
+                    child: Center(
+                      child: Text(
+                        "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: grey4,
+                    child: Center(
+                      child: Text(
+                        "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: grey4,
+                    child: Center(
+                      child: Text(
+                        "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: grey4,
+                    child: Center(
+                      child: Text(
+                        "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: grey4,
+                    width: 100,
+                    child: Center(
+                      child: Text(
+                        supplier.name,
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],decoration: const BoxDecoration(color: grey4)),
+                for (final purchase in supplier.purchases)
+                  TableRow(children: [
+                    Center(
+                      child: Text(
+                        purchase.cost?.toStringAsFixed(2)??"",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        purchase.discount?.toStringAsFixed(2) ?? "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        purchase.costAvarage?.toStringAsFixed(2) ?? "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        purchase.quantityOfOne?.toStringAsFixed(2) ?? "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        purchase.itemUnitName ?? "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        purchase.itemName ?? '',
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        purchase.itemCode ??'',
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        purchase.date == null?"null":DateFormat("MM/dd/yyyy").format(purchase.date!),
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        purchase.number.toString(),
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        purchase.serial.toString(),
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        "",
+                        style: boldStyle.copyWith(fontSize: 10),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ]),
+              ]),
+
+            Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max,columnWidths: widths, children: [
+              TableRow(children: [
+                Center(
+                  child: Text(
+                    data.fold<num>(0, (p, e) => p + (e.purchases.fold<num>(0, (p, e) => p + (e.cost ?? 0)))).toStringAsFixed(2),
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+                SizedBox(),
+                Center(
+                  child: Text(
+                    "الاجمالي",
+                    style: boldStyle.copyWith(fontSize: 10),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],decoration: const BoxDecoration(color: grey)),
+            ]),
+          ];
+        }));
+
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
   void printItemBarcode(m.BuildContext context, ItemResponse item) async {
     final doc = Document();
     final name = UserManager().galleryType == 0 ? "برنس" : "لي رويال";
@@ -4557,7 +4559,7 @@ class PrintingHelper {
         });
   }
 
-  void printSalesItemsByCompany(m.BuildContext context, List<SalesOfItemsByCompanyResponse> data) async {
+  void printSalesItemsByCompany(m.BuildContext context, List<SalesOfItemsByCompanyResponse> data,DateTime datefrom,DateTime dateto,List<DeliveryPlaceResposne> deliverysel) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
     final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
@@ -4567,33 +4569,75 @@ class PrintingHelper {
     final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
     final boldStyle = TextStyle(font: ttfBold, fontSize: 10, fontBold: ttfBold);
     final widths = {
-      0:const FlexColumnWidth(1),
-      1:const FlexColumnWidth(1),
-      2:const FlexColumnWidth(1),
+      0:const FlexColumnWidth(2),
+      1:const FlexColumnWidth(2),
+      2:const FlexColumnWidth(2),
+      3:const FlexColumnWidth(2),
+
 
     };
     doc.addPage(MultiPage(
         pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
         build: (Context context) {
           return [
+            Column(
+              children: [
+                Center(
+                    child: Container(
+                        decoration: const BoxDecoration(color: PdfColors.grey400),
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                        child: Text(
+                          "المبيعات حسب الشركات لفتره",
+                          style: boldStyle.copyWith(fontSize: 10),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.center,
+                        ))),
+                SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(deliverysel[0].name??"",  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("المعرض", style:boldStyle),
+                    SizedBox(width: 100),
+                    Text(DateFormat("dd-MM-yyyy").format(dateto),  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("الي تاريخ:", style:boldStyle),
+                    SizedBox(width: 15),
+                    Text(DateFormat("dd-MM-yyyy").format(datefrom),  style:boldStyle),
+                    SizedBox(width: 15),
+                    Text("من تاريخ:", style:boldStyle),
+
+                  ],
+                ),
+              ],
+            ),
+
             SizedBox(height: 50.5),
             Table(border: TableBorder.all(width: 1),columnWidths: widths, tableWidth: TableWidth.max, children: [
               TableRow(decoration: BoxDecoration(color: grey),children: [
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("اخر مرحلة",
+                        child: Text("اجمالي المبيعات",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("عدد الثواب",
+                        child: Text("اسم الشركه",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("عدد الايام المتبقية",
+                        child: Text("كود الشركه",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("المعرض",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+
 
               ],),
               //table content
@@ -4601,25 +4645,34 @@ class PrintingHelper {
                 TableRow(children: [
                   Center(
                       child: Text(
-          data[i].gallaryId==null?"":  data[i].gallaryId!.toString() ,
+                        data[i].totalSales==null?"":  data[i].totalSales.toString() ,
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
                   Center(
                       child: Text(
-                        data[i].gallaryName! ?? "",
+                        data[i].companyName==null?"الاجمالي":  data[i].companyName! ,
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
                   Center(
                       child: Text(
-          data[i].totalSales==null?"":  data[i].totalSales.toString() ,
+                        data[i].companyCode==null?"":  data[i].companyCode!.toString() ,
                         style: normalStyle,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
+
+                  Center(
+                      child: Text(
+                        data[i].gallaryName ?? "",
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
+
 
 
                 ]),
@@ -5315,7 +5368,7 @@ class PrintingHelper {
                         decoration: const BoxDecoration(color: PdfColors.grey400),
                         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                         child: Text(
-                          "عملاء ليس لديهم حركه من تاريخ",
+                          "ارصده العملاء",
                           style: boldStyle.copyWith(fontSize: 10),
                           textDirection: TextDirection.rtl,
                           textAlign: TextAlign.center,
@@ -5607,7 +5660,7 @@ class PrintingHelper {
       4:const FlexColumnWidth(1),
       5:const FlexColumnWidth(1),
       6:const FlexColumnWidth(1),
-      6:const FlexColumnWidth(1),
+      7:const FlexColumnWidth(1),
 
 
     };
@@ -5693,13 +5746,13 @@ class PrintingHelper {
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("رقم الفاتوره",
+                        child: Text("نوع الفاتوره",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
 
                 Container(
                     color: grey,
                     child: Center(
-                        child: Text("الفاتوره",
+                        child: Text("رقم الفاتوره",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
 
 
@@ -5960,6 +6013,8 @@ class PrintingHelper {
       0:const FlexColumnWidth(1),
       1:const FlexColumnWidth(1),
       2:const FlexColumnWidth(1),
+      3:const FlexColumnWidth(1),
+
 
 
     };
@@ -6026,6 +6081,11 @@ class PrintingHelper {
                         child: Text("النوع",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
 
+                Container(
+                    color: grey,
+                    child: Center(
+                        child: Text("اسم المعرض",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
 
 
 
@@ -6057,7 +6117,14 @@ class PrintingHelper {
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
+                  Center(
+                      child: Text(
+                        data[i].gallaryName ?? "",
 
+                        style: normalStyle,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
 
                 ]),
             ]),

@@ -25,7 +25,7 @@ class QuantityItemsController extends GetxController{
   getStages() async {
     isLoading(true);
     final request = QuantityItemsRequest(
-      inventoryId: Get.find<HomeController>().invoice.value!.serial!,
+      inventoryId: Get.find<HomeController>().invoice.value!.invInventoryId!,
       branchId: UserManager().branchId,
     );
     ReportsRepository().getQuantityItems(request,

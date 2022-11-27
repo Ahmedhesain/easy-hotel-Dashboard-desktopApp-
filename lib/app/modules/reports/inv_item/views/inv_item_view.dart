@@ -224,10 +224,16 @@ class InvItemView extends GetView<InvItemController> {
           onChanged: (int? newVal) {
             controller.selectedStatus.value = newVal!;
           },
+          underline: Container(),
           items: controller.discBasis.entries.map((e) {
             return DropdownMenuItem<int>(
               value: e.key,
-              child: Text(e.value),
+              child: SizedBox(
+                  width: size.width*.22,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(e.value),
+                  )),
             );
           }).toList(),                                              ),
       ),
