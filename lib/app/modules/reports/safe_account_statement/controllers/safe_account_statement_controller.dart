@@ -4,8 +4,11 @@ import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
+import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/safe_account_statement_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/safe_account_statement_response.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
@@ -24,17 +27,23 @@ class SafeAccountStatementController extends GetxController{
   final dateTo = DateTime.now().obs;
   final treasuries = List<TreasuryModel>.empty(growable: true);
   final user = UserManager();
+  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
+  RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
 
   @override
   onInit(){
     super.onInit();
-    getBanks();
+    getDeliveryPlaces();
   }
 
   getBanks() async {
     isLoading(true);
     error =null;
-    ReportsRepository().getAllGlPay(AllInvoicesRequest(id: user.id, branchId: user.branchId),
+    ReportsRepository().getAllGlPayGallaries(AllInvoicesGAllariesRequest(
+        id: user.id,
+        branchId: user.branchId,
+        invInventoryDtoList: selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
+    ),
       onSuccess: (data){
         banks.assignAll([GlPayDTO(bankName: "تحديد الكل")]);
         banks.addAll(data);
@@ -46,19 +55,6 @@ class SafeAccountStatementController extends GetxController{
     );
   }
 
-  getGalleries() async {
-    isLoading(true);
-    error =null;
-    InvoiceRepository().getGalleries(GalleryRequest(branchId: UserManager().branchId,id: UserManager().id),
-      onSuccess: (data){
-        galleries.assignAll(data);
-        selectedGalleries.assignAll(data);
-      },
-      onError: (e)=> error=e,
-      onComplete:()=> isLoading(false),
-
-    );
-  }
 
   getSales() async {
     isLoading(true);
@@ -99,6 +95,39 @@ class SafeAccountStatementController extends GetxController{
         values.remove("تحديد الكل");
       }
       selectedBanks.assignAll(banks.where((element) => values.contains(element.bankName)));
+    }
+  }
+  Future<void> getDeliveryPlaces() {
+    return InvoiceRepository().findInventoryByBranch(
+      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
+      onSuccess: (data) {
+        data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
+        deliveryPlaces.assignAll(data);
+        if (deliveryPlaces.isNotEmpty) {
+          getBanks();
+        }
+      },
+      onError: (error) => showPopupText(text: error.toString()),
+    );
+  }
+
+  selectNewDeliveryplace(List<String> values) {
+    if (!values.contains("تحديد الكل") && selectedDeliveryPlace.any((element) => element.name == "تحديد الكل")) {
+      selectedDeliveryPlace.clear();
+      getBanks();
+    } else if (!selectedDeliveryPlace.any((element) => element.name == "تحديد الكل") && values.contains("تحديد الكل")) {
+      selectedDeliveryPlace.assignAll(deliveryPlaces);
+      getBanks();
+
+    } else {
+      if (values.length < selectedDeliveryPlace.length && values.contains("تحديد الكل")) {
+        values.remove("تحديد الكل");
+        getBanks();
+
+      }
+      selectedDeliveryPlace.assignAll(deliveryPlaces.where((element) => values.contains(element.name)));
+      getBanks();
+
     }
   }
 
