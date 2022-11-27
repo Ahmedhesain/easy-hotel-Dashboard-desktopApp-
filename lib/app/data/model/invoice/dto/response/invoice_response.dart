@@ -51,6 +51,7 @@ class InvoiceModel {
       this.noticeDebit,
       this.proof,
       this.remain,
+      this.loadedSerial,
       this.returnPurchaseValue,
       this.serialTax,
       this.invoiceType,
@@ -139,7 +140,9 @@ class InvoiceModel {
   factory InvoiceModel.fromJson(Map<String, dynamic> json) => InvoiceModel(
         type: json["type"],
         branchId: json["branchId"],
+    serial: json["serial"],
         companyId: json["companyId"],
+    loadedSerial: json["loadedSerial"],
         generalJournalId: json["generalJournalId"],
        supplierInvoiceNumber: json["supplierInvoiceNumber"],
         createdBy: json["createdBy"],
@@ -194,13 +197,13 @@ class InvoiceModel {
         customerEmail: json["customerEmail"],
         customerCode: json["customerCode"],
         customerBalance: json["customerBalance"],
-        serial: json["serial"],
         index: json["index"],
         createdByName: json["createdByName"],
       );
 
   Map<String, dynamic> toJson() => {
         "type": type,
+        "loadedSerial": loadedSerial,
         "supplierInvoiceNumber": supplierInvoiceNumber,
         "branchId": branchId,
         "companyId": companyId,
@@ -230,6 +233,7 @@ class InvoiceModel {
         "supplierDate:": supplierDate?.toIso8601String(),
         "invoicetype": invoiceType,
         "proof": proof,
+        "serial": serial,
         "totalNetAfterDiscount": totalNetAfterDiscount,
         "invoiceDetailApiList": invoiceDetailApiList?.map((e) => e.toJson()).toList(),
         "invoiceDetailApiListDeleted": invoiceDetailApiListDeleted?.map((e) => e.toJson()).toList(),

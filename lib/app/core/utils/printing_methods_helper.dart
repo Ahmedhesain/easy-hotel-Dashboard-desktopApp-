@@ -3872,18 +3872,10 @@ class PrintingHelper {
             SizedBox(height: 50),
             SizedBox(
                 child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Padding(
-                padding: EdgeInsets.all(2),
+                  Padding(
+                padding: const EdgeInsets.all(2),
                 child: Text(
-                  invoiceModel.serial.toString(),
-                  style: boldStyle,
-                  textDirection: TextDirection.rtl,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(2),
-                child: Text(
-                  "تفاصيل الفسح لفاتورة برقم",
+                  "تفاصيل الفسح",
                   style: boldStyle,
                   textDirection: TextDirection.rtl,
                 ),
@@ -3898,7 +3890,7 @@ class PrintingHelper {
                   child: Column(children: [
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(
-                        invoiceModel.supplierDate == null?"":DateFormat("dd/MM/yyyy hh:mm aa").format(invoiceModel.supplierDate!),
+                        invoiceModel.supplierDate == null?"":DateFormat("dd/MM/yyyy").format(invoiceModel.supplierDate!),
                         style: boldStyle.copyWith(fontSize: 10),
                         textDirection: TextDirection.rtl,
                       ),
@@ -3924,19 +3916,6 @@ class PrintingHelper {
                     ]),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(
-                        invoiceModel.customerMobile ?? "",
-                        style: boldStyle,
-                        textDirection: TextDirection.rtl,
-                      ),
-                      Spacer(),
-                      Text(
-                        "رقم العميل",
-                        style: boldStyle,
-                        textDirection: TextDirection.rtl,
-                      ),
-                    ]),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                      Text(
                         invoiceModel.customerCode ?? "",
                         style: boldStyle,
                         textDirection: TextDirection.rtl,
@@ -3955,7 +3934,7 @@ class PrintingHelper {
                   child: Column(children: [
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(
-                        invoiceModel.invDelegatorId?.toString() ?? "",
+                        invoiceModel.serial?.toString() ?? "",
                         style: boldStyle,
                         textDirection: TextDirection.rtl,
                       ),
@@ -3975,6 +3954,19 @@ class PrintingHelper {
                       Spacer(),
                       Text(
                         "التاريخ",
+                        style: boldStyle,
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ]),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                      Text(
+                        invoiceModel.loadedSerial.toString()??"",
+                        style: boldStyle,
+                        textDirection: TextDirection.rtl,
+                      ),
+                      Spacer(),
+                      Text(
+                        "رقم فاتورة المبيعات",
                         style: boldStyle,
                         textDirection: TextDirection.rtl,
                       ),

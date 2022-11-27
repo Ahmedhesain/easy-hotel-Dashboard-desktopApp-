@@ -1,9 +1,5 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/button_widget.dart';
@@ -13,8 +9,8 @@ import 'package:toby_bills/app/components/keys_widget.dart';
 import 'package:toby_bills/app/core/utils/double_filter.dart';
 import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
+import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import '../controllers/faseh_details_controller.dart';
@@ -24,6 +20,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
 
   @override
   Widget build(BuildContext context) {
+    final permissions = UserManager().user.userScreens["proworkorder"];
     return Scaffold(
       body: Obx(() {
         return KeysWidget(
@@ -71,8 +68,10 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                 // mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
+                                  if ((permissions?.edit ?? false) && controller.invoiceModel.value?.id != null)
+                                    ButtonWidget(text: 'حذف', onPressed: () => controller.delete(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                   ButtonWidget(text: 'رجوع', onPressed: () => Navigator.pop(context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                                  if (!controller.isSaved.value)
+                                  if ((permissions?.edit ?? false))
                                     ButtonWidget(text: 'حفظ', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                   ButtonWidget(text: 'بحث', onPressed: () => controller.searchOnFaseh(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                   if (controller.invoiceModel.value != null)
@@ -81,8 +80,9 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                       onPressed: () => controller.print(context),
                                       margin: const EdgeInsets.symmetric(horizontal: 2.5),
                                     ),
+                                  if((permissions?.add ?? false))
                                   ButtonWidget(text: 'جديد', onPressed: () => controller.newInvoice(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                                  if (controller.isSaved.value)
+                                  if (controller.invoiceModel.value != null)
                                     ButtonWidget(text: 'تصدير الى اكسل', onPressed: () => ExcelHelper.fashExcel(controller.invoiceDetailsList, context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                 ],
                               );
@@ -135,9 +135,9 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                             const SizedBox(height: 10),
                             _row(
                                 "تاريخ فاتورة العميل:",
-                                controller.invoiceDate.value == null
+                                controller.supplierDate.value == null
                                     ? const SizedBox.shrink()
-                                    : Text(DateFormat("yyyy-MM-dd hh:mm aa").format(controller.invoiceDate.value!))),
+                                    : Text(DateFormat("yyyy-MM-dd hh:mm aa").format(controller.supplierDate.value!))),
                             const SizedBox(height: 10),
                             _row(
                                 "العميل:",
@@ -162,7 +162,10 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                           children: [
                             _row("رقم الفسح:", controller.invoiceModel.value == null ? const SizedBox.shrink() : Text(controller.invoiceModel.value!.serial.toString())),
                             const SizedBox(height: 10),
-                            _row("التاريخ:", Text(DateFormat("yyyy-MM-dd hh:mm aa").format(DateTime.now()))),
+                            _row("التاريخ:",
+                                controller.invoiceDate.value == null
+                                    ? const SizedBox.shrink()
+                                    : Text(DateFormat("yyyy-MM-dd hh:mm aa").format(controller.invoiceDate.value!))),
                           ],
                         ),
                         const Spacer(

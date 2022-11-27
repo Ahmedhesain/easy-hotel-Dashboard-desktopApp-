@@ -4,6 +4,7 @@ import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/delete_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/find_faseh_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/find_faseh_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/faseh_invoice_response.dart';
@@ -35,6 +36,7 @@ class FasehDetailsController extends GetxController {
   Rxn<InvoiceModel> invoiceModel = Rxn();
   final galleryName = "".obs;
   Rxn<DateTime> invoiceDate = Rxn();
+  Rxn<DateTime> supplierDate = Rxn();
   final customer = "".obs;
 
   @override
@@ -56,30 +58,34 @@ class FasehDetailsController extends GetxController {
         onSuccess: (data) {
           findInvoiceModel = data;
           galleryName(data.gallaryName);
-          customer("${data.iosName} ${data.iosCode} ${data.iosMobile}");
+          customer("${data.iosName} ${data.iosCode}");
           invoiceDate(data.invDate);
+          supplierDate.value = null;
         },
         onComplete: () => isLoading(false),
         onError: (e) => showPopupText(text: e.toString()));
   }
 
   searchOnFaseh() async {
+    newInvoice();
     isLoading(true);
     InvoiceRepository().findFasehBySerial(FindFasehRequest(serial: fasehSearchController.text),
         onSuccess: (data) {
           invoiceModel(data);
+          searchController.text = data.loadedSerial?.toString()??"";
           invoiceDetailsList.assignAll(data.invoiceDetailApiList??[]);
           remarksController.text = data.remarks??"";
           galleryName(data.gallaryName);
-          customer("${data.customerName} ${data.customerCode} ${data.customerMobile}");
+          customer("${data.customerName} ${data.customerCode}");
           invoiceDate(data.date);
+          supplierDate(data.supplierDate);
         },
         onComplete: () => isLoading(false),
         onError: (e) => showPopupText(text: e.toString()));
   }
 
   save() async {
-    if (findInvoiceModel == null) {
+    if (searchController.text.isEmpty && invoiceModel.value?.id == null) {
       showPopupText(text: "يرجى اختيار فاتورة اولاً");
       return;
     }
@@ -89,21 +95,22 @@ class FasehDetailsController extends GetxController {
     }
     isLoading(true);
     final request = InvoiceModel(
+      id: invoiceModel.value?.id,
+      serial: invoiceModel.value?.serial,
       invoiceDetailApiList: invoiceDetailsList,
       remarks: remarksController.text,
       createdDate: DateTime.now(),
       date: DateTime.now(),
       branchId: UserManager().branchId,
-      gallaryId: findInvoiceModel!.gallaryId,
+      gallaryId: findInvoiceModel?.gallaryId ?? invoiceModel.value?.gallaryId,
       companyId: UserManager().companyId,
       createdBy: UserManager().id,
-      customerCode: findInvoiceModel!.iosCode,
-      invDelegatorId: findInvoiceModel!.delegatorId,
-      customerId: findInvoiceModel!.iosId,
-      customerName: findInvoiceModel!.iosName,
-      customerMobile: findInvoiceModel!.iosMobile,
-      supplierDate: findInvoiceModel!.invDate,
-      invPurchaseInvoice: findInvoiceModel!.invId,
+      customerCode: findInvoiceModel?.iosCode ?? invoiceModel.value?.customerCode,
+      invDelegatorId: findInvoiceModel?.delegatorId ?? invoiceModel.value?.invDelegatorId,
+      customerId: findInvoiceModel?.iosId ?? invoiceModel.value?.customerId,
+      customerName: findInvoiceModel?.iosName  ?? invoiceModel.value?.customerName,
+      supplierDate: findInvoiceModel?.invDate ?? invoiceModel.value?.date,
+      invPurchaseInvoice: findInvoiceModel?.invId ?? invoiceModel.value?.invPurchaseInvoice,
     );
     InvoiceRepository().saveFasehInvoice(request,
         onSuccess: (data) {
@@ -151,6 +158,10 @@ class FasehDetailsController extends GetxController {
   newInvoice() {
     _selectedItem = null;
     invoiceModel.value = null;
+    galleryName.value = "";
+    customer.value = "";
+    invoiceDate.value = null;
+    supplierDate.value = null;
     findInvoiceModel = null;
     remarksController.clear();
     itemQuantityController.clear();
@@ -168,5 +179,17 @@ class FasehDetailsController extends GetxController {
         },
         onComplete: () => isLoading(false),
         onError: (e) => showPopupText(text: e.toString()));
+  }
+
+  delete() {
+    isLoading(true);
+    InvoiceRepository().deleteFasehById(DeleteInvoiceRequest(invoiceModel.value!.id),
+        onSuccess: (data) {
+          showPopupText(text: "تم الحذف بنجاح");
+          newInvoice();
+        },
+        onComplete: () => isLoading(false),
+        onError: (e) => showPopupText(text: e.toString()));
+
   }
 }
