@@ -394,6 +394,7 @@ class PurchaseInvoicesController extends GetxController {
         name: item.name!,
         quantityOfOneUnit: itemQuantityController.text.parseToNum,
         number: 1,
+        isPurchaseInvoice: true,
         quantity: itemYardNumberController.text.parseToNum,
         code: item.code,
         minPriceMen: item.minPriceMen,

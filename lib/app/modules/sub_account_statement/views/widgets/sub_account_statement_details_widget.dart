@@ -81,7 +81,7 @@ class SubAccountStatementDetailsWidget extends GetView<SubAccountStatementContro
                               SizedBox(height: 40, child: Center(child: Text(row.glAccountName ?? "--"))),
                               SizedBox(height: 40, child: Center(child: Text(row.debitAmount?.toString() ?? "--"))),
                               SizedBox(height: 40, child: Center(child: Text(row.creditAmount?.toString() ?? "--"))),
-                              SizedBox(height: 40, child: Center(child: Text(row.balance?.toString() ?? "--"))),
+                              SizedBox(height: 40, child: Center(child: Text(row.balance.toStringAsFixed(2) ?? "--"))),
                             ],
                             decoration: const BoxDecoration(color: appGreyLight, border: Border(bottom: BorderSide())),
                           )

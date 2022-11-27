@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
+import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/find_faseh_invoice_request.dart';
@@ -31,7 +32,10 @@ class FasehDetailsController extends GetxController {
   final invoiceDetailsList = RxList<InvoiceDetailsModel>();
   FasehInvoiceResponse? findInvoiceModel;
   ItemResponse? _selectedItem;
-  InvoiceModel? invoiceModel;
+  Rxn<InvoiceModel> invoiceModel = Rxn();
+  final galleryName = "".obs;
+  Rxn<DateTime> invoiceDate = Rxn();
+  final customer = "".obs;
 
   @override
   onInit() {
@@ -51,6 +55,9 @@ class FasehDetailsController extends GetxController {
     InvoiceRepository().findFasehInvoice(FindFasehInvoiceRequest(invSerial: searchController.text),
         onSuccess: (data) {
           findInvoiceModel = data;
+          galleryName(data.gallaryName);
+          customer("${data.iosName} ${data.iosCode} ${data.iosMobile}");
+          invoiceDate(data.invDate);
         },
         onComplete: () => isLoading(false),
         onError: (e) => showPopupText(text: e.toString()));
@@ -60,9 +67,12 @@ class FasehDetailsController extends GetxController {
     isLoading(true);
     InvoiceRepository().findFasehBySerial(FindFasehRequest(serial: fasehSearchController.text),
         onSuccess: (data) {
-          invoiceModel = data;
+          invoiceModel(data);
           invoiceDetailsList.assignAll(data.invoiceDetailApiList??[]);
           remarksController.text = data.remarks??"";
+          galleryName(data.gallaryName);
+          customer("${data.customerName} ${data.customerCode} ${data.customerMobile}");
+          invoiceDate(data.date);
         },
         onComplete: () => isLoading(false),
         onError: (e) => showPopupText(text: e.toString()));
@@ -78,7 +88,7 @@ class FasehDetailsController extends GetxController {
       return;
     }
     isLoading(true);
-    invoiceModel = InvoiceModel(
+    final request = InvoiceModel(
       invoiceDetailApiList: invoiceDetailsList,
       remarks: remarksController.text,
       createdDate: DateTime.now(),
@@ -95,15 +105,16 @@ class FasehDetailsController extends GetxController {
       supplierDate: findInvoiceModel!.invDate,
       invPurchaseInvoice: findInvoiceModel!.invId,
     );
-    InvoiceRepository().saveFasehInvoice(invoiceModel!,
+    InvoiceRepository().saveFasehInvoice(request,
         onSuccess: (data) {
-          invoiceModel!.serial = data;
+          request.serial = data;
+          invoiceModel(request);
           isSaved(true);
           showPopupText(text: "تم الحفظ بنجاح", type: MsgType.success);
         },
         onError: (error) {
           showPopupText(text: error);
-          invoiceModel = null;
+          invoiceModel.value = null;
         },
         onComplete: () => isLoading(false));
   }
@@ -139,7 +150,7 @@ class FasehDetailsController extends GetxController {
 
   newInvoice() {
     _selectedItem = null;
-    invoiceModel = null;
+    invoiceModel.value = null;
     findInvoiceModel = null;
     remarksController.clear();
     itemQuantityController.clear();
@@ -147,5 +158,15 @@ class FasehDetailsController extends GetxController {
     itemQuantityController.clear();
     invoiceDetailsList.clear();
     isSaved(false);
+  }
+
+  print(BuildContext context) {
+    isLoading(true);
+    InvoiceRepository().findFasehBySerial(FindFasehRequest(serial: fasehSearchController.text),
+        onSuccess: (data) {
+          PrintingHelper().fash(context, data.invoiceDetailApiList!, data);
+        },
+        onComplete: () => isLoading(false),
+        onError: (e) => showPopupText(text: e.toString()));
   }
 }

@@ -42,6 +42,7 @@ class InvoiceDetailsModel {
     this.typeInv,
     this.netWithoutDiscount,
     this.account,
+    this.isPurchaseInvoice = false,
   }) : numberFocus = FocusNode(), quantityFocus = FocusNode(), priceFocus = FocusNode(), discountFocus = FocusNode(), discountValueFocus = FocusNode();
 
   FocusNode numberFocus;
@@ -49,6 +50,7 @@ class InvoiceDetailsModel {
   FocusNode priceFocus;
   FocusNode discountFocus;
   FocusNode discountValueFocus;
+  bool isPurchaseInvoice;
 
   int? typeInv;
   int? unitId;
@@ -124,7 +126,11 @@ class InvoiceDetailsModel {
   num get totalQuantity => ((number??1) * (quantityOfOneUnit??1)).fixed(2);
 
   void calcData() {
-    netWithoutDiscount = (price! * (typeInv == 0?(quantity??0):(number??0))).fixed(2);
+    if(!isPurchaseInvoice) {
+      netWithoutDiscount = (price! * (typeInv == 0 ? (quantity ?? 0) : (number ?? 0))).fixed(2);
+    } else {
+      netWithoutDiscount = (price! * (typeInv == 0 ? (quantityOfOneUnit ?? 0) : (number ?? 0))).fixed(2);
+    }
     net = (netWithoutDiscount! - (netWithoutDiscount! * (discount! / 100)) - (discountValue??0)).fixed(2);
   }
 
@@ -165,10 +171,12 @@ class InvoiceDetailsModel {
     num? quantityOfOneUnit,
     num? netWithoutDiscount,
     int? typeInv,
+    bool? isPurchaseInvoice,
   }) {
     final instance =  InvoiceDetailsModel(
         name: name ?? this.name,
         typeInv: typeInv ?? this.typeInv,
+        isPurchaseInvoice: isPurchaseInvoice ?? this.isPurchaseInvoice,
         code: code ?? this.code,
         account: account ?? this.account,
         serial: serial ?? this.serial,

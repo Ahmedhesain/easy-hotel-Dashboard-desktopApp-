@@ -112,6 +112,7 @@ class CatchReceiptController extends GetxController {
     final request = GlBankTransactionApi(
       customerId: selectedCustomer.value?.id,
       remark: remarksController.text,
+      gallaryId: selectedGallery.value?.id,
       date: DateTime.now(),
       createdBy: user.id,
       companyId: user.companyId,

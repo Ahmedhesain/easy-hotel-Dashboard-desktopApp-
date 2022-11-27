@@ -918,7 +918,7 @@ class PrintingHelper {
                       width: 40,
                       child: Center(
                           child: Text(
-                            payment.glBankTransactionDetailFromApiList![i].invOrganizationSiteName??"",
+                            payment.glBankTransactionDetailFromApiList![i].glAccountDebitName ?? "",
                             style: boldStyle,
                             textAlign: TextAlign.center,
                             textDirection: TextDirection.rtl,
@@ -3898,7 +3898,7 @@ class PrintingHelper {
                   child: Column(children: [
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(
-                        DateFormat("dd/MM/yyyy hh:mm aa").format(invoiceModel.supplierDate!),
+                        invoiceModel.supplierDate == null?"":DateFormat("dd/MM/yyyy hh:mm aa").format(invoiceModel.supplierDate!),
                         style: boldStyle.copyWith(fontSize: 10),
                         textDirection: TextDirection.rtl,
                       ),
@@ -4018,7 +4018,7 @@ class PrintingHelper {
                       width: 45,
                       child: Center(
                           child: Text(
-                            data[i].quantity?.toStringAsFixed(2) ?? "",
+                            data[i].quantityOfOneUnit?.toStringAsFixed(2) ?? "",
                             style: boldStyle,
                             textAlign: TextAlign.center,
                             textDirection: TextDirection.rtl,

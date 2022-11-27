@@ -178,7 +178,7 @@ class CustomerAccountStatementView extends GetView<CustomerAccountStatementContr
                 "${e.openningBalance}",
                 "${e.exitt}",
                 "${e.adding}",
-                "${e.balance}"
+                e.balance.toStringAsFixed(2)
               ].map((d) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 7),
