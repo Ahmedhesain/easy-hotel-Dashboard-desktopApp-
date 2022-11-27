@@ -240,6 +240,21 @@ class InvoiceRepository {
       );
 
 
+  deleteFasehById(
+      DeleteInvoiceRequest deleteInvoiceRequest, {
+        Function()? onComplete,
+        Function(void data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<void,Map<String,dynamic>>('permisionOrder/deleteInvAddingOrderByIdAPI',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: deleteInvoiceRequest.toJson(),
+        onError: onError,
+        convertor: (_){},
+      );
+
+
   saveFasehInvoice(
       InvoiceModel invoiceModel, {
         Function()? onComplete,
