@@ -19,3 +19,21 @@ class GetInvoiceRequest {
     "typeInv": typeInv,
   };
 }
+class GetAllInvoiceRequest {
+  GetAllInvoiceRequest({
+    this.branchId,
+    this.organizationSiteId,
+
+  });
+
+  int? branchId;
+  int? organizationSiteId;
+
+
+
+  Map<String, dynamic> toJson() => {
+    "branchId": branchId,
+    "organizationSiteId": organizationSiteId,
+
+  };
+}

@@ -123,6 +123,19 @@ class InvoiceRepository {
         onError: onError,
         convertor: InvoiceModel.fromJson,
     );
+  findAllInvPurchaseInvoiceBySerialNew(
+      GetAllInvoiceRequest getAllInvoiceRequest, {
+        Function()? onComplete,
+        Function(InvoiceModel data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<InvoiceModel,Map<String, dynamic>>('sales/findInvPurchaseInvoiceByserialNew',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: getAllInvoiceRequest.toJson(),
+        onError: onError,
+        convertor: InvoiceModel.fromJson,
+      );
 
 
   saveInvoice(

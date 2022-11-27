@@ -2,6 +2,7 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_notifications_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/notifications/dto/request/delete_notification_request.dart';
 import 'package:toby_bills/app/data/model/notifications/dto/request/find_notification_request.dart';
@@ -60,6 +61,20 @@ class NotificationsRepository {
         onError: onError,
         convertor: FindNotificationResponse.fromJson,
     );
+
+  findAllInvoiceNotice(
+      GetAllInvoiceRequest getAllInvoiceRequest, {
+        Function()? onComplete,
+        Function(FindNotificationResponse data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<FindNotificationResponse,Map<String,dynamic>>('invNotice/invNoticeByCustomerId',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: getAllInvoiceRequest.toJson(),
+        onError: onError,
+        convertor: FindNotificationResponse.fromJson,
+      );
 
 
   saveInvoiceNoticeList(

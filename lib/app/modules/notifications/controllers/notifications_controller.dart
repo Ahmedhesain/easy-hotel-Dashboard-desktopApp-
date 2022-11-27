@@ -25,14 +25,20 @@ import 'package:toby_bills/app/data/repository/customer/customer_repository.dart
 import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/notifications/notifications_repository.dart';
+import 'package:toby_bills/app/data/repository/notifications/notifications_repository.dart';
 
 class NotificationsController extends GetxController {
 
   final isLoading = false.obs;
   final notificationType = 0.obs;
   final Rxn<FindCustomerResponse> selectedCustomer = Rxn();
+  final Rxn<FindCustomerResponse> selectedAllCustomer = Rxn();
+
   final Rx<DateTime> date = Rx(DateTime.now());
   final customers = <FindCustomerResponse>[];
+  final allcustomers = <FindCustomerResponse>[];
+  final allnotifications = <FindNotificationResponse>[].obs;
+
   final galleries = <GalleryResponse>[];
   Rxn<GalleryResponse> selectedGallery = Rxn();
   Rxn<InvoiceModel> invoice = Rxn();
@@ -43,6 +49,8 @@ class NotificationsController extends GetxController {
   final searchedInvoiceController = TextEditingController();
   final notificationNumberController = TextEditingController();
   final findSideCustomerController = TextEditingController();
+  final findSideAllCustomerController = TextEditingController();
+
   final priceController = TextEditingController();
   final remarksController = TextEditingController();
   final findSideCustomerFieldFocusNode = FocusNode();
@@ -66,6 +74,19 @@ class NotificationsController extends GetxController {
       onError: (error) => showPopupText(text: error.toString()),
       onComplete: () => isLoading(false),
     );
+  }
+  void getAllInvoiceListForCustomer(FindCustomerResponse value) {
+    // findSideAllCustomerController.text = "${value.name} ${value.code}";
+    selectedAllCustomer(value);
+    isLoading(true);
+    NotificationsRepository().findAllInvoiceNotice(GetAllInvoiceRequest( branchId: user.branchId,organizationSiteId:339114),
+        onSuccess: (data) {
+          // allnotifications(data);
+          // searchedInvoiceController.text = data.serial?.toString() ?? "";
+          // priceController.text = data.remain?.toString()??"";
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
   }
 
   getCustomersByCode() {
@@ -127,6 +148,7 @@ class NotificationsController extends GetxController {
   }
 
   searchByNotification() {
+    // getAllInvoiceListForCustomer(customers.first);
     isLoading(true);
     final request = FindNotificationRequest(branchId: user.branchId, typeNotice: notificationType.value, serial: notificationNumberController.text.tryToParseToNum?.toInt()??0);
     NotificationsRepository().findInvoiceNotice(request,
@@ -214,6 +236,19 @@ class NotificationsController extends GetxController {
       },
       onError: (error) => showPopupText(text: error.toString()),
     );
+  }
+
+  getallCustomersByCode() {
+    isLoading(true);
+    // findSideCustomerFieldFocusNode.unfocus();
+    final request = FindCustomerRequest(code: findSideAllCustomerController.text, branchId: user.branchId, gallaryIdAPI: selectedGallery.value?.id);
+    CustomerRepository().findallCustomerByCode(request,
+        onSuccess: (data) {
+          allcustomers.assignAll(data);
+          // findSideCustomerFieldFocusNode.requestFocus();
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
   }
 
 }

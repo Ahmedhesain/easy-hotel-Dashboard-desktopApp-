@@ -8,7 +8,7 @@ import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:toby_bills/app/routes/app_pages.dart';
-import 'package:window_manager/window_manager.dart';
+// import 'package:window_manager/window_manager.dart';
 
 class HomeHeaderWidget extends GetView<HomeController> {
   const HomeHeaderWidget({Key? key}) : super(key: key);
@@ -138,9 +138,9 @@ class HomeHeaderWidget extends GetView<HomeController> {
                     }),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "سند القبض", onPressed: () async {
-                      windowManager.setTitle("Toby Bills -> سند القبض");
+                      // windowManager.setTitle("Toby Bills -> سند القبض");
                       await Get.toNamed(Routes.CATCH_RECEIPT);
-                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                      // windowManager.setTitle("Toby Bills -> شاشة المبيعات");
                     }),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "كشف حساب عميل", onPressed: () async {
@@ -148,9 +148,9 @@ class HomeHeaderWidget extends GetView<HomeController> {
                         showPopupText(text: "يجب اختيار عميل اولاً");
                         return;
                       }
-                      windowManager.setTitle("Toby Bills -> كشف حساب عميل");
+                      // windowManager.setTitle("Toby Bills -> كشف حساب عميل");
                       await Get.toNamed(Routes.ACCOUNT_STATEMENT);
-                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                      // windowManager.setTitle("Toby Bills -> شاشة المبيعات");
                     }),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "حالة الفاتورة", onPressed: () async {
@@ -158,9 +158,9 @@ class HomeHeaderWidget extends GetView<HomeController> {
                         showPopupText(text: "يجب اختيار فاتورة اولاً");
                         return;
                       }
-                      windowManager.setTitle("Toby Bills -> حالة الفاتورة");
+                      // windowManager.setTitle("Toby Bills -> حالة الفاتورة");
                       await Get.toNamed(Routes.INVOICE_STATUS);
-                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                      // windowManager.setTitle("Toby Bills -> شاشة المبيعات");
                     }),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "مراحل الانتاج", onPressed: () async {
@@ -168,9 +168,9 @@ class HomeHeaderWidget extends GetView<HomeController> {
                         showPopupText(text: "يجب اختيار فاتورة اولاً");
                         return;
                       }
-                      windowManager.setTitle("Toby Bills -> مراحل الانتاج");
+                      // windowManager.setTitle("Toby Bills -> مراحل الانتاج");
                       await Get.toNamed(Routes.PRODUCTION_STAGES);
-                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                      // windowManager.setTitle("Toby Bills -> شاشة المبيعات");
                     }),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "تنزيل عرض", onPressed: () => controller.offerOne()),

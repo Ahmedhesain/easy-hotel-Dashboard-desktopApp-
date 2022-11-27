@@ -52,6 +52,25 @@ class NotificationsButtonsWidget extends GetView<NotificationsController> {
                 );
               }),                                              ),
           ),
+          // SizedBox(
+          //   child: TypeAheadFormField<FindCustomerResponse>(
+          //     key: UniqueKey(),
+          //     itemBuilder: (context, client) {
+          //       return Center(
+          //         child: Text(client.name.toString(), textAlign: TextAlign.center),
+          //       );
+          //     },
+          //     onSuggestionSelected: (FindCustomerResponse client) => controller.getInvoiceListForCustomer(client),
+          //     suggestionsCallback: (filter) =>
+          //         controller.customers.where((element) => element.name.toString().contains(filter) || element.code.toString().contains(filter)),
+          //     textFieldConfiguration: TextFieldConfiguration(
+          //         focusNode: controller.findSideCustomerFieldFocusNode,
+          //         controller: controller.findSideCustomerController,
+          //         onSubmitted: (value) => controller.getCustomersByCode(),
+          //         decoration: InputDecoration(border: OutlineInputBorder(), hintText: "ابحث عن عميل", isDense: true)),
+          //     noItemFoundText: "لايوجد بيانات",
+          //   ),
+          // ),
           // TypeAheadFormField<FindCustomerResponse>(
           //   key: UniqueKey(),
           //   itemBuilder: (context, client) {
@@ -69,26 +88,63 @@ class NotificationsButtonsWidget extends GetView<NotificationsController> {
           //       decoration: InputDecoration(border: OutlineInputBorder(), hintText: "ابحث عن عميل", isDense: true)),
           //   noItemFoundText: "لايوجد بيانات",
           // ),
-
-          SizedBox(
-            width: 250,
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              onChanged: (value) {},
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                  hintText: "ابحث عن سند اشعار",
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white70,
-                  suffixIcon: IconButtonWidget(
-                    icon: Icons.search,
-                    onPressed: () => controller.searchByNotification(),
-                  )
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: const Expanded(child: Text("ابحث عن عميل")),
+          ),
+          Expanded(
+            child: TypeAheadFormField<FindCustomerResponse>(
+                itemBuilder: (context, client) {
+                  return SizedBox(
+                    height: 50,
+                    child: Center(
+                      child: Text("${client.name} ${client.code}"),
+                    ),
+                  );
+                },
+                suggestionsCallback: (filter) => controller.allcustomers,
+                onSuggestionSelected: controller.getAllInvoiceListForCustomer,
+                textFieldConfiguration: TextFieldConfiguration(
+                  // textInputAction: TextInputAction.next,
+                  controller: controller.findSideAllCustomerController,
+                  // focusNode: controller.findSideCustomerFieldFocusNode,
+                  onSubmitted: (_) => controller.getallCustomersByCode(),
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      isDense: true,
+                      hintMaxLines: 2,
+                      contentPadding: const EdgeInsets.all(5),
+                      suffixIconConstraints: const BoxConstraints(maxWidth: 50),
+                      suffixIcon: IconButtonWidget(
+                        icon: Icons.search,
+                        onPressed: () {
+                          controller.getallCustomersByCode();
+                        },
+                      )),
+                )),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: 250,
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                onChanged: (value) {},
+                decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                    hintText: "ابحث عن سند اشعار",
+                    isDense: true,
+                    filled: true,
+                    fillColor: Colors.white70,
+                    suffixIcon: IconButtonWidget(
+                      icon: Icons.search,
+                      onPressed: () => controller.searchByNotification(),
+                    )
+                ),
+                onFieldSubmitted: (_) => controller.searchByNotification(),
+                controller: controller.notificationNumberController,
               ),
-              onFieldSubmitted: (_) => controller.searchByNotification(),
-              controller: controller.notificationNumberController,
             ),
           ),
           const Spacer(),
