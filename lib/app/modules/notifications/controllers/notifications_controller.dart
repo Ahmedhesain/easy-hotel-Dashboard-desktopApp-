@@ -88,7 +88,6 @@ class NotificationsController extends GetxController {
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
   }
-
   getCustomersByCode() {
     isLoading(true);
     findSideCustomerFieldFocusNode.unfocus();

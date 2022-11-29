@@ -90,7 +90,7 @@ class JournalDocumentDailyController extends GetxController{
       adminUnitTo:null,
       periodFrpm:dateFrom.value,
       periodTo:dateTo.value,
-      value: null,
+      value: enteredprice.text,
       branchId:UserManager().branchId,
     );
     ReportsRepository().JournalDocumentDaily(request,

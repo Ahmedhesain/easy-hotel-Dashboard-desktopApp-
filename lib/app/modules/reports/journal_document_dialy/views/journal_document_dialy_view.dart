@@ -56,7 +56,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                         child: Row(
                                           children: [
 
-                                            SizedBox(width: size.width*.1,)
+                                            SizedBox(width: size.width*.07,)
                                             , Text('من تاريخ',style: smallTextStyleNormal(size)),
                                             const SizedBox(width: 10),
                                             SizedBox(
@@ -174,6 +174,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                                           border: Border.all(color: Colors.grey)),
                                                       child:
                                                       Obx(() {
+
                                                         return DropdownSearch<GlAccountResponse>(
                                                           // showSearchBox: true,
                                                           items: controller.accounts,
@@ -214,6 +215,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                                       Obx(() {
                                                         return DropdownSearch<GlAccountResponse>(
                                                           // showSearchBox: true,
+                                                          // asyncItems: (String filter) => getData(filter),
                                                           items: controller.accounts,
                                                           itemAsString: (GlAccountResponse e) => e.name!,
                                                           onChanged: controller.selectedToAccount,
@@ -319,58 +321,53 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                           children: [
 
                                             SizedBox(width: size.width*.1,)
-                                            , Text('من نوع سند القيد',style: smallTextStyleNormal(size)),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: const BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                TextFormField(
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  controller: controller.fromkindController,
-                                                  onChanged: (value)  {
-                                                    controller.fromkindController.text=value;
-                                                  },
-                                                ),
+                                            , SizedBox(
+                                                width: size.width*.08,
+                                                child: Text('من نوع سند القيد',style: smallTextStyleNormal(size))),
+                                            Container(
+                                              width: size.width * .2,
+                                              height: size.height * .045,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.all(
+                                                      Radius.circular(5)),
+                                                  color: Colors.white,
+                                                  border: Border.all(color: Colors.grey)),
+                                              child:
+                                              TextFormField(
+                                                textAlign: TextAlign.center,
+                                                decoration: const InputDecoration(
+                                                    border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                                                controller: controller.fromkindController,
+                                                onChanged: (value)  {
+                                                  controller.fromkindController.text=value;
+                                                },
                                               ),
                                             ),
 
                                             SizedBox(width: size.width*.1,)
-                                            ,Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                              child: Text('الي نوع سند القيد',style: smallTextStyleNormal(size)),
-                                            ),
+                                            ,SizedBox(
+                                                width: size.width*.08,
+                                                child: Text('الي نوع سند القيد',style: smallTextStyleNormal(size))),
 
 
 
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: const BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                TextFormField(
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  controller: controller.tokindController,
-                                                  onChanged: (value)  {
-                                                    controller.tokindController.text=value;
-                                                  },
-                                                ),
+                                            Container(
+                                              width: size.width * .2,
+                                              height: size.height * .045,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.all(
+                                                      Radius.circular(5)),
+                                                  color: Colors.white,
+                                                  border: Border.all(color: Colors.grey)),
+                                              child:
+                                              TextFormField(
+                                                textAlign: TextAlign.center,
+                                                decoration: const InputDecoration(
+                                                    border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                                                controller: controller.tokindController,
+                                                onChanged: (value)  {
+                                                  controller.tokindController.text=value;
+                                                },
                                               ),
                                             ),
 
@@ -385,98 +382,187 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                           children: [
 
                                             SizedBox(width: size.width*.1,)
-                                            , Text('من رقم القيد',style: smallTextStyleNormal(size)),
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: const BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                TextFormField(
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  controller: controller.fromnumController,
-                                                  onChanged: (value)  {
-                                                    controller.fromnumController.text=value;
-                                                  },
-                                                ),
+                                            , SizedBox(
+                                                width: size.width*.08,
+                                                child: Text('من رقم القيد',style: smallTextStyleNormal(size))),
+                                            Container(
+                                              width: size.width * .2,
+                                              height: size.height * .045,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.all(
+                                                      Radius.circular(5)),
+                                                  color: Colors.white,
+                                                  border: Border.all(color: Colors.grey)),
+                                              child:
+                                              TextFormField(
+                                                textAlign: TextAlign.center,
+                                                decoration: const InputDecoration(
+                                                    border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                                                controller: controller.fromnumController,
+                                                onChanged: (value)  {
+                                                  controller.fromnumController.text=value;
+                                                },
                                               ),
                                             ),
 
                                             SizedBox(width: size.width*.1,)
-                                            ,Padding(
-                                              padding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
-                                              child: Text('الي رقم القيد',style: smallTextStyleNormal(size)),
-                                            ),
+                                            ,SizedBox(
+                                                width: size.width*.08,
+
+                                                child: Text('الي رقم القيد',style: smallTextStyleNormal(size))),
 
 
 
-                                            Padding(
-                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                              child: Container(
-                                                width: size.width * .2,
-                                                height: size.height * .045,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: const BorderRadius.all(
-                                                        Radius.circular(5)),
-                                                    color: Colors.white,
-                                                    border: Border.all(color: Colors.grey)),
-                                                child:
-                                                TextFormField(
-                                                  textAlign: TextAlign.center,
-                                                  decoration: const InputDecoration(
-                                                      border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                                  controller: controller.tonumController,
-                                                  onChanged: (value)  {
-                                                    controller.tonumController.text=value;
-                                                  },
-                                                ),
+                                            Container(
+                                              width: size.width * .2,
+                                              height: size.height * .045,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.all(
+                                                      Radius.circular(5)),
+                                                  color: Colors.white,
+                                                  border: Border.all(color: Colors.grey)),
+                                              child:
+                                              TextFormField(
+                                                textAlign: TextAlign.center,
+                                                decoration: const InputDecoration(
+                                                    border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                                                controller: controller.tonumController,
+                                                onChanged: (value)  {
+                                                  controller.tonumController.text=value;
+                                                },
                                               ),
                                             ),
-                                            // Padding(
-                                            //   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                            //   child: Row(
-                                            //     children: [
-                                            //
-                                            //       Padding(
-                                            //         padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                            //         child: Text('المبلغ',style: smallTextStyleNormal(size)),
-                                            //       ),
-                                            //       Padding(
-                                            //         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                            //         child: Container(
-                                            //           width: size.width * .1,
-                                            //           height: size.height * .045,
-                                            //           decoration: BoxDecoration(
-                                            //               borderRadius: BorderRadius.all(
-                                            //                   Radius.circular(5)),
-                                            //               color: Colors.white,
-                                            //               border: Border.all(color: Colors.grey)),
-                                            //           child:
-                                            //           TextFormField(
-                                            //             textAlign: TextAlign.center,
-                                            //             decoration: const InputDecoration(
-                                            //                 border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
-                                            //             controller: controller.enteredprice,
-                                            //             onChanged: (value)  {
-                                            //             },
-                                            //           ),
-                                            //         ),
-                                            //       ),
-                                            //     ],
-                                            //   ),
-                                            // ),
 
                                           ],
                                         ),
                                       ),
                                     ),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                        child: Row(
+                                          children: [
+
+                                            SizedBox(width: size.width*.1,)
+                                            , SizedBox(
+                                                width: size.width*.08,
+
+                                                child: Text('من وحده اداريه',style: smallTextStyleNormal(size))),
+                                            Container(
+                                              width: size.width * .2,
+                                              height: size.height * .045,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.all(
+                                                      Radius.circular(5)),
+                                                  color: Colors.white,
+                                                  border: Border.all(color: Colors.grey)),
+                                              child:
+                                              TextFormField(
+                                                textAlign: TextAlign.center,
+                                                decoration: const InputDecoration(
+                                                    border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                                                // controller: controller.fromnumController,
+                                                onChanged: (value)  {
+                                                  // controller.fromnumController.text=value;
+                                                },
+                                              ),
+                                            ),
+
+                                            SizedBox(width: size.width*.1,)
+                                            ,SizedBox(
+                                                width: size.width*.08,
+
+                                                child: Text('الي وحده اداريه',style: smallTextStyleNormal(size))),
+
+
+
+                                            Container(
+                                              width: size.width * .2,
+                                              height: size.height * .045,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.all(
+                                                      Radius.circular(5)),
+                                                  color: Colors.white,
+                                                  border: Border.all(color: Colors.grey)),
+                                              child:
+                                              TextFormField(
+                                                textAlign: TextAlign.center,
+                                                decoration: const InputDecoration(
+                                                    border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                                                // controller: controller.tonumController,
+                                                onChanged: (value)  {
+                                                  // controller.tonumController.text=value;
+                                                },
+                                              ),
+                                            ),
+
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                        child: Row(
+                                          children: [
+
+                                            SizedBox(width: size.width*.1,)
+                                            , SizedBox(
+                                                width: size.width*.08,
+                                                child: Text('السنه الماليه',style: smallTextStyleNormal(size))),
+                                            Container(
+                                              width: size.width * .2,
+                                              height: size.height * .045,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.all(
+                                                      Radius.circular(5)),
+                                                  color: Colors.white,
+                                                  border: Border.all(color: Colors.grey)),
+                                              child:
+                                              TextFormField(
+                                                textAlign: TextAlign.center,
+                                                decoration: const InputDecoration(
+                                                    border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                                                // controller: controller.fromnumController,
+                                                onChanged: (value)  {
+                                                  // controller.fromnumController.text=value;
+                                                },
+                                              ),
+                                            ),
+
+                                            SizedBox(width: size.width*.1,)
+                                            ,SizedBox(
+                                                width: size.width*.08,
+
+                                                child: Text('المبلغ',style: smallTextStyleNormal(size))),
+
+
+
+                                            Container(
+                                              width: size.width * .2,
+                                              height: size.height * .045,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.all(
+                                                      Radius.circular(5)),
+                                                  color: Colors.white,
+                                                  border: Border.all(color: Colors.grey)),
+                                              child:
+                                              TextFormField(
+                                                textAlign: TextAlign.center,
+                                                decoration: const InputDecoration(
+                                                    border: OutlineInputBorder(), contentPadding: EdgeInsets.zero),
+                                                controller: controller.enteredprice,
+                                                onChanged: (value)  {
+                                                  controller.enteredprice.text=value;
+                                                },
+                                              ),
+                                            ),
+
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
                                     Padding(
                                       padding: EdgeInsets.fromLTRB(0, size.height * .01, 0, 0),
                                       child: Row(
@@ -536,7 +622,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printJournalDocument(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printJournalDocument(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!,int.parse(controller.fromnumController.text),int.parse(controller.tonumController.text),int.parse(controller.fromkindController.text),int.parse(controller.tokindController.text),controller.selectedFromAccount.value!,controller.selectedToAccount.value!,controller.selectedFromCenter.value!,controller.selectedToCenter.value!),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),
@@ -586,7 +672,7 @@ class JournalDocumentDailyView extends GetView<JournalDocumentDailyController> {
                           ),
                           Container(
                               width:size.width,
-                              height:size.height*.55,
+                              height:size.height*.4,
                               child:SingleChildScrollView(physics:  const AlwaysScrollableScrollPhysics(),
                                 child: Column(children: [
                                   Container(
