@@ -96,7 +96,7 @@ class GlBankTransactionApi {
     generalJournalId: json["generalJournalId"],
     customerName: json["customerName"],
     // glPayDTOAPIList: json["glPayDTOAPIList"] == null ? null : List<GlPayDTO>.from(json["glPayDTOAPIList"].map((x) => x)),
-    glPayDTOAPIList: List<GlPayDTO>.from((json["glPayDTOAPIList"]??[]).map((x) => GlPayDTO.fromJson(x))),
+    glPayDTOAPIList: List<GlPayDTO>.from((json["glPayDtoApiListNew"]??[]).map((x) => GlPayDTO.fromJson(x))),
     branchId: json["branchId"],
     companyId: json["companyId"],
     createdBy: json["createdBy"],
@@ -112,8 +112,7 @@ class GlBankTransactionApi {
     "customerId": customerId,
     "customerName": customerName,
     "gallaryId": gallaryId,
-    // "glPayDTOAPIList": glPayDTOAPIList == null ? null : List<GlPayDTO>.from(glPayDTOAPIList!.map((x) => x)),
-    "glPayDTOAPIList": List<dynamic>.from((glPayDTOAPIList??[]).map((x) => x.toJson())),
+    "glPayDtoApiListNew": [...(glPayDTOAPIList??[]).map((x) => x.toJson()).toList(),...(glPayDTOAPIList??[]).map((x) => x.toJson()).toList()],
     "branchId": branchId,
     "companyId": companyId,
     "createdBy":createdBy

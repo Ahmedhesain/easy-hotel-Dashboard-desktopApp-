@@ -32,6 +32,7 @@ class InvoiceDetailsModel {
     this.createdDate,
     this.typeShow,
     this.lastCost,
+    this.invNoticeValue,
     this.maxPriceMen,
     this.maxPriceYoung,
     this.minPriceMen,
@@ -39,11 +40,17 @@ class InvoiceDetailsModel {
     this.unitId,
     // this.glAccount,
     this.quantityOfOneUnit,
+    this.numOfYarda,
     this.typeInv,
     this.netWithoutDiscount,
     this.account,
+    this.accountName,
     this.isPurchaseInvoice = false,
-  }) : numberFocus = FocusNode(), quantityFocus = FocusNode(), priceFocus = FocusNode(), discountFocus = FocusNode(), discountValueFocus = FocusNode();
+  })  : numberFocus = FocusNode(),
+        quantityFocus = FocusNode(),
+        priceFocus = FocusNode(),
+        discountFocus = FocusNode(),
+        discountValueFocus = FocusNode();
 
   FocusNode numberFocus;
   FocusNode quantityFocus;
@@ -51,10 +58,11 @@ class InvoiceDetailsModel {
   FocusNode discountFocus;
   FocusNode discountValueFocus;
   bool isPurchaseInvoice;
-
+  num? numOfYarda = 0;
   int? typeInv;
   int? unitId;
   int? account;
+  String? accountName;
   String name;
   String? code;
   String? unitName;
@@ -85,20 +93,20 @@ class InvoiceDetailsModel {
   int? progroupId;
   int? typeShow;
   num? lastCost;
+  num? invNoticeValue;
   int? createdBy;
   DateTime? createdDate;
 
   bool isValidPrice(int priceType) {
-    if(priceType == 1 && price! < minPriceMen!){
+    if (priceType == 1 && price! < minPriceMen!) {
       price = minPriceMen;
       return false;
-    } else if(priceType == 0 && price! < minPriceYoung!){
+    } else if (priceType == 0 && price! < minPriceYoung!) {
       price = minPriceYoung;
       return false;
     }
     return true;
   }
-
 
   InvoiceDetailsModel assignItem(ItemResponse item) {
     final instance = copyWith(
@@ -122,16 +130,15 @@ class InvoiceDetailsModel {
     return instance;
   }
 
-
-  num get totalQuantity => ((number??1) * (quantityOfOneUnit??1)).fixed(2);
+  num get totalQuantity => ((number ?? 1) * (quantityOfOneUnit ?? 1)).fixed(2);
 
   void calcData() {
-    if(!isPurchaseInvoice) {
+    if (!isPurchaseInvoice) {
       netWithoutDiscount = (price! * (typeInv == 0 ? (quantity ?? 0) : (number ?? 0))).fixed(2);
     } else {
       netWithoutDiscount = (price! * (typeInv == 0 ? (quantityOfOneUnit ?? 0) : (number ?? 0))).fixed(2);
     }
-    net = (netWithoutDiscount! - (netWithoutDiscount! * (discount! / 100)) - (discountValue??0)).fixed(2);
+    net = (netWithoutDiscount! - (netWithoutDiscount! * (discount! / 100)) - (discountValue ?? 0)).fixed(2);
   }
 
   InvoiceDetailsModel copyWith({
@@ -145,6 +152,7 @@ class InvoiceDetailsModel {
     GlAccountResponse? glAccount,
     String? inventoryCode,
     num? quantity,
+    num? numOfYarda,
     String? remark,
     String? image,
     num? net,
@@ -170,97 +178,105 @@ class InvoiceDetailsModel {
     int? unitId,
     num? quantityOfOneUnit,
     num? netWithoutDiscount,
+    num? invNoticeValue,
     int? typeInv,
     bool? isPurchaseInvoice,
+    String? accountName,
   }) {
-    final instance =  InvoiceDetailsModel(
-        name: name ?? this.name,
-        typeInv: typeInv ?? this.typeInv,
-        isPurchaseInvoice: isPurchaseInvoice ?? this.isPurchaseInvoice,
-        code: code ?? this.code,
-        account: account ?? this.account,
-        serial: serial ?? this.serial,
-        id: id ?? this.id,
-        inventoryId: inventoryId ?? this.inventoryId,
-        inventoryName: inventoryName ?? this.inventoryName,
-        inventoryCode: inventoryCode ?? this.inventoryCode,
-        quantity: quantity ?? this.quantity,
-        image: image ?? this.image,
-        net: net ?? this.net,
-        createdBy: createdBy ?? this.createdBy,
-        createdDate: createdDate ?? this.createdDate,
-        price: price ?? this.price,
-        itemId: itemId ?? this.itemId,
-        groupId: groupId ?? this.groupId,
-        availableQuantityRow: availableQuantityRow ?? this.availableQuantityRow,
-        discount: discount ?? this.discount,
-        discountValue: discountValue ?? this.discountValue,
-        remnants: remnants ?? this.remnants,
-        lastCost: lastCost ?? this.lastCost,
-        maxPriceMen: maxPriceMen ?? this.maxPriceMen,
-        maxPriceYoung: maxPriceYoung ?? this.maxPriceYoung,
-        minPriceMen: minPriceMen ?? this.minPriceMen,
-        minPriceYoung: minPriceYoung ?? this.minPriceYoung,
-        number: number ?? this.number,
-        progroupId: progroupId ?? this.progroupId,
-        netWithoutDiscount: netWithoutDiscount ?? this.netWithoutDiscount,
-        proof: proof ?? this.proof,
-        quantityOfOneUnit: quantityOfOneUnit ?? this.quantityOfOneUnit,
-        remark: remark ?? this.remark,
-        typeShow: typeShow ?? this.typeShow,
-        unitId: unitId ?? this.unitId,
-        unitName: unitName ?? this.unitName,
-      );
+    final instance = InvoiceDetailsModel(
+      name: name ?? this.name,
+      typeInv: typeInv ?? this.typeInv,
+      isPurchaseInvoice: isPurchaseInvoice ?? this.isPurchaseInvoice,
+      invNoticeValue: invNoticeValue ?? this.invNoticeValue,
+      accountName: accountName ?? this.accountName,
+      code: code ?? this.code,
+      numOfYarda: numOfYarda ?? this.numOfYarda,
+      account: account ?? this.account,
+      serial: serial ?? this.serial,
+      id: id ?? this.id,
+      inventoryId: inventoryId ?? this.inventoryId,
+      inventoryName: inventoryName ?? this.inventoryName,
+      inventoryCode: inventoryCode ?? this.inventoryCode,
+      quantity: quantity ?? this.quantity,
+      image: image ?? this.image,
+      net: net ?? this.net,
+      createdBy: createdBy ?? this.createdBy,
+      createdDate: createdDate ?? this.createdDate,
+      price: price ?? this.price,
+      itemId: itemId ?? this.itemId,
+      groupId: groupId ?? this.groupId,
+      availableQuantityRow: availableQuantityRow ?? this.availableQuantityRow,
+      discount: discount ?? this.discount,
+      discountValue: discountValue ?? this.discountValue,
+      remnants: remnants ?? this.remnants,
+      lastCost: lastCost ?? this.lastCost,
+      maxPriceMen: maxPriceMen ?? this.maxPriceMen,
+      maxPriceYoung: maxPriceYoung ?? this.maxPriceYoung,
+      minPriceMen: minPriceMen ?? this.minPriceMen,
+      minPriceYoung: minPriceYoung ?? this.minPriceYoung,
+      number: number ?? this.number,
+      progroupId: progroupId ?? this.progroupId,
+      netWithoutDiscount: netWithoutDiscount ?? this.netWithoutDiscount,
+      proof: proof ?? this.proof,
+      quantityOfOneUnit: quantityOfOneUnit ?? this.quantityOfOneUnit,
+      remark: remark ?? this.remark,
+      typeShow: typeShow ?? this.typeShow,
+      unitId: unitId ?? this.unitId,
+      unitName: unitName ?? this.unitName,
+    );
     instance.calcData();
     return instance;
   }
 
   factory InvoiceDetailsModel.fromJson(Map<String, dynamic> json) {
-    final instance =  InvoiceDetailsModel(
-        id: json["id"],
-        serial: json["serial"],
-        typeInv: json["typeInv"],
-        availableQuantityRow: json["availableQuantityRow"],
-        code: json["code"],
-        discount: json["discount"] ?? 0,
-        discountValue: json["discountValue"] ?? 0,
-        groupId: json["groupId"],
-        remark: json["remark"],
-        image: json["image"],
-        inventoryId: json["inventoryId"],
-        inventoryName: json["inventoryName"],
-        inventoryCode: json["inventoryCode"],
-        price: json["price"] ?? 0,
-        createdDate: json["createdDate"] == null ? null : DateTime.parse(json["createdDate"]),
-        createdBy: json["createdBy"],
-        proof: json["proof"],
-        quantity: json["quantity"] ?? 0,
-        remnants: json["remnants"],
-        itemId: json["itemId"],
-        quantityOfOneUnit: json["quantityOfOneUnit"],
-        number: json["number"] ?? 0,
-        net: json["net"] ?? 0,
-        name: json["name"],
-        progroupId: json["progroupId"],
-        typeShow: json["typeShow"],
-        lastCost: json["lastCost"],
-        unitName: json["unitName"],
-        account: json["account"],
-        unitId: json["unitId"],
-        maxPriceMen: json["maxPriceMen"] ?? 0,
-        maxPriceYoung: json["maxPriceYoung"] ?? 0,
-        minPriceMen: json["minPriceMen"] ?? 0,
-        minPriceYoung: json["minPriceYoung"] ?? 0,
-
-      );
-    instance.calcData();
+    final instance = InvoiceDetailsModel(
+      id: json["id"],
+      serial: json["serial"],
+      typeInv: json["typeInv"],
+      invNoticeValue: json["invNoticeValue"],
+      availableQuantityRow: json["availableQuantityRow"],
+      code: json["code"],
+      discount: json["discount"] ?? 0,
+      discountValue: json["discountValue"] ?? 0,
+      groupId: json["groupId"],
+      accountName: json["accountName"],
+      remark: json["remark"],
+      image: json["image"],
+      inventoryId: json["inventoryId"],
+      inventoryName: json["inventoryName"],
+      inventoryCode: json["inventoryCode"],
+      price: json["price"] ?? 0,
+      createdDate: json["createdDate"] == null ? null : DateTime.parse(json["createdDate"]),
+      createdBy: json["createdBy"],
+      proof: json["proof"],
+      quantity: json["quantity"] ?? 0,
+      remnants: json["remnants"],
+      itemId: json["itemId"],
+      quantityOfOneUnit: json["quantityOfOneUnit"],
+      number: json["number"] ?? 0,
+      net: json["net"] ?? 0,
+      name: json["name"],
+      progroupId: json["progroupId"],
+      typeShow: json["typeShow"],
+      lastCost: json["lastCost"],
+      unitName: json["unitName"],
+      account: json["account"],
+      unitId: json["unitId"],
+      maxPriceMen: json["maxPriceMen"] ?? 0,
+      maxPriceYoung: json["maxPriceYoung"] ?? 0,
+      minPriceMen: json["minPriceMen"] ?? 0,
+      minPriceYoung: json["minPriceYoung"] ?? 0,
+    );
+    // instance.calcData();
     return instance;
   }
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "typeInv": typeInv,
+        "invNoticeValue": invNoticeValue,
         "serial": serial,
+        "accountName": accountName,
         "account": account,
         "quantityOfOneUnit": quantityOfOneUnit,
         "quantity": totalQuantity,

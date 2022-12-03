@@ -98,7 +98,7 @@ class CatchReceiptController extends GetxController {
   void addNewDetail() {
     banksToPay.add(GlPayDTO(
       bankName: itemBank!.bankName,
-      bankId: itemBank!.id,
+      bankId: itemBank!.bankId,
       remain: itemRemainController.text.tryToParseToNum,
       value: itemPayController.text.tryToParseToNum,
       invoiceId: itemInvoice!.id,

@@ -421,6 +421,38 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                     ),
                     separator,
                     Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Center(
+                            child: Text(
+                              "قيمة إشعار",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                            child: TextFormField(
+                              controller: controller.itemNoticeController,
+                              focusNode: controller.itemNoticeFocusNode,
+                              inputFormatters: [doubleInputFilter],
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                filled: true,
+                                fillColor: Colors.white70,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    separator,
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -492,7 +524,7 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                             return DropdownSearch<InventoryResponse>(
                               // showSearchBox: true,
                               items: controller.inventories,
-                              itemAsString: (InventoryResponse e) => e.code,
+                              itemAsString: (InventoryResponse e) => e.code.toString(),
                               onChanged: controller.selectInventory,
                               selectedItem: controller.selectedInventory.value,
                               dropdownDecoratorProps: const DropDownDecoratorProps(

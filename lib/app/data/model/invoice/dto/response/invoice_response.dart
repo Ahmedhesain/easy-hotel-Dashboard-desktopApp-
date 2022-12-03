@@ -61,6 +61,7 @@ class InvoiceModel {
       this.supplierInvoiceNumber,
       this.generalJournalId,
       this.typeInv,
+      this.invNoticeValueTotal,
       this.invPurchaseInvoice,
       this.totalNet, this.supplierDate});
 
@@ -76,6 +77,7 @@ class InvoiceModel {
   int? customerId;
   String? daribaValue;
   DateTime? date;
+  num? invNoticeValueTotal;
   num? discount;
   int? discountType;
   int? dueperiod;
@@ -143,6 +145,7 @@ class InvoiceModel {
     serial: json["serial"],
         companyId: json["companyId"],
     loadedSerial: json["loadedSerial"],
+    invNoticeValueTotal: json["invNoticeValueTotal"],
         generalJournalId: json["generalJournalId"],
        supplierInvoiceNumber: json["supplierInvoiceNumber"],
         createdBy: json["createdBy"],
@@ -204,6 +207,7 @@ class InvoiceModel {
   Map<String, dynamic> toJson() => {
         "type": type,
         "loadedSerial": loadedSerial,
+        "invNoticeValueTotal": invNoticeValueTotal,
         "supplierInvoiceNumber": supplierInvoiceNumber,
         "branchId": branchId,
         "companyId": companyId,

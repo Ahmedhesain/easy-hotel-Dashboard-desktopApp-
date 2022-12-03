@@ -124,12 +124,12 @@ class EditBillsController extends GetxController {
   }
 
   editInvoice(GlPayDTO dto) {
-    if(balances[dto.customerId!] != null && balances[dto.customerId!]!.invoicesList.every((element) => element.serial != dto.invoiceSerial)){
+    if(balances[dto.customerId] != null && (balances[dto.customerId]?.invoicesList.every((element) => element.serial != dto.invoiceSerial)??false)){
       showPopupText(text: "رقم الفاتورة غير صحيح");
       return;
     }
-    isLoading(true);
     final request = GlBankTransactionApi(glPayDTOAPIList:[dto], branchId: user.branchId, createdBy: user.id, companyId: user.companyId, customerId: dto.customerId,remark: dto.remark, date: dto.date );
+    isLoading(true);
     ReportsRepository().saveInvoicesStatement(request,
         onSuccess: (data) {
           showPopupText(text: "تم التعديل بنجاح", type: MsgType.success);

@@ -68,13 +68,13 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                 // mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  if ((permissions?.edit ?? false) && controller.invoiceModel.value?.id != null)
+                                  if ((permissions?.delete ?? false) && controller.invoiceModel.value?.id != null)
                                     ButtonWidget(text: 'حذف', onPressed: () => controller.delete(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                   ButtonWidget(text: 'رجوع', onPressed: () => Navigator.pop(context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                   if ((permissions?.edit ?? false))
                                     ButtonWidget(text: 'حفظ', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                   ButtonWidget(text: 'بحث', onPressed: () => controller.searchOnFaseh(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                                  if (controller.invoiceModel.value != null)
+                                  if (controller.invoiceModel.value != null && (permissions?.edit ?? false))
                                     ButtonWidget(
                                       text: 'طباعة',
                                       onPressed: () => controller.print(context),

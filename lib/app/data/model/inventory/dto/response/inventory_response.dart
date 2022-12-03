@@ -12,14 +12,20 @@ class InventoryResponse {
     required this.markEdit,
     required this.code,
     required this.name,
+    this.accountIdId,
+    this.accountName,
+    this.accountAccNumber,
   });
 
-  final String type;
-  final int id;
-  final int index;
-  final bool markEdit;
-  final String code;
-  final String name;
+  final int? accountIdId;
+  final String? accountName;
+  final int? accountAccNumber;
+  final String? type;
+  final int? id;
+  final int? index;
+  final bool? markEdit;
+  final String? code;
+  final String? name;
 
   static List<InventoryResponse> getList(List<dynamic> json) => List<InventoryResponse>.from(json.map((e) => InventoryResponse.fromJson(e)));
 
@@ -31,6 +37,9 @@ class InventoryResponse {
     markEdit: json["markEdit"],
     code: json["code"],
     name: json["name"],
+    accountIdId: json["accountIdId"],
+    accountName: json["accountName"],
+    accountAccNumber: json["accountAccNumber"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -40,5 +49,8 @@ class InventoryResponse {
     "markEdit": markEdit,
     "code": code,
     "name": name,
+    "accountIdId": accountIdId,
+    "accountName": accountName,
+    "accountAccNumber": accountAccNumber,
   };
 }

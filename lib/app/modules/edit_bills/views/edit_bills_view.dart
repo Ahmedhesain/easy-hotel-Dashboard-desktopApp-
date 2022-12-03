@@ -20,7 +20,7 @@ class EditBillsView extends GetView<EditBillsController> {
 
   @override
   Widget build(BuildContext context) {
-    final permissions = UserManager().user.userScreens["customeraddnotice"]!;
+    final permissions = UserManager().user.userScreens["customeraddnotice"];
     Size size = MediaQuery
         .of(context)
         .size;
@@ -89,7 +89,7 @@ class EditBillsView extends GetView<EditBillsController> {
                               for (GlPayDTO kha in reports)
                                 TableRow(
                                   children: [
-                                    SizedBox(height: 40, child: Center(child: Text(kha.serial!.toString(), style: const TextStyle(fontSize: 20.0)))),
+                                    SizedBox(height: 40, child: Center(child: Text(kha.serial.toString(), style: const TextStyle(fontSize: 20.0)))),
                                     // SizedBox(
                                     //   height: 40,
                                     //   child: Center(
@@ -150,7 +150,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                             kha.customerName = value.name;
                                             kha.focusNode2.unfocus();
 
-                                            controller.getInvoiceListForCustomer(value.id!, () => kha.focusNode2.requestFocus());
+                                            controller.getInvoiceListForCustomer(value.id??-1, () => kha.focusNode2.requestFocus());
                                           },
                                           textFieldConfiguration: TextFieldConfiguration(
                                             textInputAction: TextInputAction.next,
@@ -158,7 +158,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                             focusNode: kha.focusNode1,
                                             textDirection: TextDirection.rtl,
                                             onSubmitted: (value) =>
-                                                controller.getCustomersByCodeForInvoice(value, kha.focusNode1, kha.id!),
+                                                controller.getCustomersByCodeForInvoice(value, kha.focusNode1, kha.id??-1),
                                             decoration: const InputDecoration(
                                                 border: OutlineInputBorder(),
                                                 isDense: true,
@@ -194,10 +194,10 @@ class EditBillsView extends GetView<EditBillsController> {
                                             controller: kha.textFieldController2,
                                             focusNode: kha.focusNode2,
                                             textDirection: TextDirection.rtl,
-                                            onTap: () => controller.getInvoiceListForCustomer(kha.customerId!, () => kha.focusNode2.requestFocus()),
+                                            onTap: () => controller.getInvoiceListForCustomer(kha.customerId??-1, () => kha.focusNode2.requestFocus()),
                                             onChanged: (value) => kha.invoiceSerial = int.tryParse(value),
                                             onSubmitted: (value) =>
-                                                controller.getCustomersByCodeForInvoice(value, kha.focusNode1, kha.id!),
+                                                controller.getCustomersByCodeForInvoice(value, kha.focusNode1, kha.id??-1),
                                             decoration: const InputDecoration(
                                                 border: OutlineInputBorder(),
                                                 isDense: true,
@@ -280,7 +280,7 @@ class EditBillsView extends GetView<EditBillsController> {
                                       child: Center(
                                         child: Row(
                                           children: [
-                                            if(permissions.edit!)
+                                            if(permissions?.edit??false)
                                               Expanded(
                                                 child: GestureDetector(
                                                   onTap: () {
@@ -308,13 +308,13 @@ class EditBillsView extends GetView<EditBillsController> {
                                                   ),
                                                 ),
                                               ),
-                                            if(permissions.edit! || permissions.delete!)
+                                            if((permissions?.edit??false) || (permissions?.delete??false))
                                               const SizedBox(width: 5),
-                                            if(permissions.delete!)
+                                            if(permissions?.delete??false)
                                               Expanded(
                                                 child: GestureDetector(
                                                   onTap: () {
-                                                    controller.deleteRow(kha.id!);
+                                                    controller.deleteRow(kha.id??-1);
                                                   },
                                                   child: Container(
                                                     decoration: BoxDecoration(
@@ -338,11 +338,11 @@ class EditBillsView extends GetView<EditBillsController> {
                                                   ),
                                                 ),
                                               ),
-                                            if(permissions.edit! && permissions.delete!)
+                                            if((permissions?.edit??false) && (permissions?.delete??false))
                                               const SizedBox(width: 5),
                                             Expanded(
                                               child: GestureDetector(
-                                                onTap: () => controller.printRow(kha.id!, context),
+                                                onTap: () => controller.printRow(kha.id??-1, context),
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius: const BorderRadius.all(Radius.circular(6.00)),

@@ -71,7 +71,7 @@ class GlPayDTO with FormMixin{
   );
 
   Map<String, dynamic> toJson() => {
-    "bank": bank == null ? null : bank!.toJson(),
+    "bank": bank?.toJson(),
     "bankName": bankName,
     "name": name ,
     "remain": remain,
@@ -84,7 +84,7 @@ class GlPayDTO with FormMixin{
     "movementType": movementType,
     "customerName": customerName,
     "remark": remark,
-    "date": date == null ? null : date!.toIso8601String(),
+    "date": date?.toIso8601String(),
     "serial": serial,
     "generalJournalId": generalJournalId,
     "gallaryId": gallaryId,

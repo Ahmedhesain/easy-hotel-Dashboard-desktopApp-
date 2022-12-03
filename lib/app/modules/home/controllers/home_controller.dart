@@ -42,7 +42,7 @@ import 'package:toby_bills/app/data/repository/inventory/inventory_repository.da
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
-// import 'package:window_manager/window_manager.dart';
+import 'package:window_manager/window_manager.dart';
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
 import '../../../data/model/invoice/dto/response/get_delivery_place_response.dart';
@@ -54,13 +54,14 @@ class HomeController extends GetxController {
   final checkSendSms = false.obs;
   final isItemProof = false.obs;
   final isItemRemains = false.obs;
-  final totalNet = RxNum(0.0);
   final discountHalala = RxNum(0.0);
   final totalAfterDiscount = RxNum(0.0);
+  final totalNet = RxNum(0.0);
   final tax = RxNum(0.0);
   final finalNet = RxNum(0.0);
   final remain = RxNum(0.0);
   final payed = RxNum(0.0);
+  final invoiceNoticeValue = RxNum(0.0);
   final itemAvailableQuantity = RxnNum();
   final itemNet = RxnNum();
   final itemTotalQuantity = RxnNum();
@@ -86,6 +87,7 @@ class HomeController extends GetxController {
   final invoiceRemarkController = TextEditingController();
   final itemNameController = TextEditingController();
   final itemNotesController = TextEditingController();
+  final itemNoticeController = TextEditingController();
   final itemPriceController = TextEditingController();
   final itemQuantityController = TextEditingController();
   final itemNumberController = TextEditingController();
@@ -98,6 +100,7 @@ class HomeController extends GetxController {
   final invoiceDiscountFieldFocusNode = FocusNode();
   final itemNameFocusNode = FocusNode();
   final itemNotesFocusNode = FocusNode();
+  final itemNoticeFocusNode = FocusNode();
   final itemPriceFocusNode = FocusNode();
   final itemQuantityFocusNode = FocusNode();
   final itemNumberFocusNode = FocusNode();
@@ -133,7 +136,7 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    // windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+    windowManager.setTitle("Toby Bills -> شاشة المبيعات");
     isLoading(true);
     _addItemFieldsListener();
     items.addAll(_getItemsFromStorage());
@@ -397,6 +400,7 @@ class HomeController extends GetxController {
     itemQuantityController.clear();
     itemPriceController.clear();
     itemNotesController.clear();
+    itemNoticeController.clear();
     itemDiscountController.clear();
     itemDiscountValueController.clear();
     isItemProof(false);
@@ -505,6 +509,7 @@ class HomeController extends GetxController {
             name: item.name!,
             number: itemNumberController.text.parseToNum,
             quantityOfOneUnit: itemQuantityController.text.parseToNum,
+            invNoticeValue: itemNoticeController.text.tryToParseToNum,
             code: item.code,
             minPriceMen: item.minPriceMen,
             minPriceYoung: item.minPriceYoung,
@@ -569,6 +574,8 @@ class HomeController extends GetxController {
     final request = CreateInvoiceRequest(
       id: invoice.value?.id,
       payed: payed.value,
+      invNoticeValueTotal: invoiceNoticeValue.value,
+      generalJournalId: invoice.value?.generalJournalId,
       customerId: selectedCustomer.value!.id,
       customerCode: selectedCustomer.value!.code,
       customerMobile: selectedCustomer.value!.mobile,
@@ -661,9 +668,12 @@ class HomeController extends GetxController {
 
   calcInvoiceValues() {
     num net = 0;
+    num notice = 0;
     for (final invoiceDetailsModel in invoiceDetails) {
       net += invoiceDetailsModel.value.net!;
+      notice += invoiceDetailsModel.value.invNoticeValue??0;
     }
+    invoiceNoticeValue(notice);
     totalNet(net);
     num discount = 0;
     if (selectedDiscountType.value == 0) {

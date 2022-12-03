@@ -205,8 +205,6 @@ class PurchaseInvoicesController extends GetxController {
         onSuccess: (data) => findCustomerBalanceResponse = data, onError: (error) => showPopupText(text: error.toString()), onComplete: () => isLoading(false));
   }
 
-
-
   printInvoice(BuildContext context){
     isLoading(true);
     InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null, typeInv: 0),
@@ -246,7 +244,7 @@ class PurchaseInvoicesController extends GetxController {
           dueDate(data.dueDate?.add(Duration(days: 1)));
           if(galleries.any((element) => element.id == data.gallaryId)) {
             selectedGallery(galleries.singleWhere((element) => element.id == data.gallaryId));
-            UserManager().changeGallery(selectedGallery.value);
+            // UserManager().changeGallery(selectedGallery.value);
           } else {
             selectedGallery.value = null;
           }
@@ -262,11 +260,15 @@ class PurchaseInvoicesController extends GetxController {
           invoiceSupplierNumberController.text = data.supplierInvoiceNumber?.toString()??"";
           checkSendSms(data.checkSendSms == 1);
           invoiceRemarkController.text = data.remarks??"";
-          for (final detail in data.invoiceDetailApiList!) {
+          for (InvoiceDetailsModel detail in data.invoiceDetailApiList!) {
             if(!items.any((element) => element.id == detail.itemId)){
               showPopupText(text: "يرجى عمل تحديث ثم البحث عن الفاتورة مرة اخرى");
               return;
             }
+            if(glAccounts.every((element) => element.id != detail.account)){
+              glAccounts.add(GlAccountResponse(id: detail.account, name: detail.accountName));
+            }
+            detail.isPurchaseInvoice = true;
             final item = items.singleWhere((element) => element.id == detail.itemId);
             detail.maxPriceMen = item.maxPriceMen;
             detail.maxPriceYoung = item.maxPriceYoung;
@@ -370,6 +372,17 @@ class PurchaseInvoicesController extends GetxController {
   selectInventory(InventoryResponse? value) {
     final oldInv = selectedInventory.value;
     selectedInventory(value);
+    if(value!.code != "999") {
+      itemGlAccountController.text = "${value.accountName}";
+      final account = GlAccountResponse(id: value.accountIdId,name: value.accountName,accNumber: value.accountAccNumber);
+      if(glAccounts.every((element) => element.id != account.id)){
+        glAccounts.add(account);
+      }
+      selectedGlAccount(account);
+    } else {
+      itemGlAccountController.text = "${AppConstants.accounts.first.name}";
+      selectedGlAccount(AppConstants.accounts.first);
+    }
     if (selectedItem.value != null && selectedItem.value!.isInventoryItem == 1) {
       // _getItemPrice();
       selectItem(
@@ -395,7 +408,7 @@ class PurchaseInvoicesController extends GetxController {
         quantityOfOneUnit: itemQuantityController.text.parseToNum,
         number: 1,
         isPurchaseInvoice: true,
-        quantity: itemYardNumberController.text.parseToNum,
+        quantity: itemYardNumberController.text.tryToParseToNum,
         code: item.code,
         minPriceMen: item.minPriceMen,
         minPriceYoung: item.minPriceYoung,
@@ -445,6 +458,7 @@ class PurchaseInvoicesController extends GetxController {
       id: invoice.value?.id,
       supplierDate: supplierDate.value,
       dueDate: dueDate.value,
+      generalJournalId: invoice.value?.generalJournalId,
       supplierInvoiceNumber: invoiceSupplierNumberController.text.tryToParseToNum?.toInt(),
       customerId: selectedCustomer.value?.id,
       customerCode: selectedCustomer.value?.code,
@@ -477,6 +491,10 @@ class PurchaseInvoicesController extends GetxController {
     isLoading(true);
     InvoiceRepository().saveInvoice(request, onSuccess: (data) async {
       invoice(data);
+      invoiceDetails.assignAll((data.invoiceDetailApiList!).map((e) {
+        e.isPurchaseInvoice = true;
+        return e.obs;
+      }));
     }, onError: (e) {
       showPopupText(text: e.toString());
       isLoading(false);

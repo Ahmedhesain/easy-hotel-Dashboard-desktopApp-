@@ -38,15 +38,18 @@ class CreateInvoiceRequest {
   final num? taxvalue;
   final int? checkSendSms;
   final int? serial;
+  final int? generalJournalId;
   final int? typeInv;
   final int? supplierInvoiceNumber;
   final num? discount;
   final num? discountType;
   final num? payed;
+  final num? invNoticeValueTotal;
 
   CreateInvoiceRequest({
     this.payed,
     this.discount,
+    this.generalJournalId,
     this.supplierInvoiceNumber,
     this.typeInv,
     this.supplierDate,
@@ -84,9 +87,11 @@ class CreateInvoiceRequest {
     this.totalNet,
     this.taxvalue,
     this.checkSendSms,
+    this.invNoticeValueTotal,
   });
 
   Map<String, dynamic> toJson() => {
+    "invNoticeValueTotal": invNoticeValueTotal,
     "companyId": companyId,
     "createdBy": createdBy,
     "typeInv": typeInv,
@@ -95,6 +100,7 @@ class CreateInvoiceRequest {
     "customerCode": customerCode,
     "customerId": customerId,
     "checkSendSms": checkSendSms,
+    "generalJournalId": generalJournalId,
     "customerMobile": customerMobile,
     "customerName": customerName,
     "date": date?.toIso8601String(),

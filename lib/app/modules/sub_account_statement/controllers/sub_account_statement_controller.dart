@@ -56,12 +56,12 @@ class SubAccountStatementController extends GetxController {
     isLoading(true);
     GeneralJournalRepository().getAccountSummary(request,
       onSuccess: (data){
-        if (data.isNotEmpty) {
-          data.first.balance = data.first.sub;
-        }
-        for (var i = 1; i < data.length; i++) {
-          data[i].balance = data[i].sub + data[i-1].balance;
-        }
+        // if (data.isNotEmpty) {
+        //   data.first.balance = data.first.sub;
+        // }
+        // for (var i = 1; i < data.length; i++) {
+        //   data[i].balance = data[i].sub + data[i-1].balance;
+        // }
         statements.assignAll(data);
       },
       onError: (e) => showPopupText(text: e.toString()),

@@ -12,10 +12,8 @@ import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_re
 import 'package:toby_bills/app/data/model/general_journal/dto/request/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_notifications_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/notifications/dto/request/delete_notification_request.dart';
 import 'package:toby_bills/app/data/model/notifications/dto/request/find_notification_request.dart';
@@ -25,22 +23,20 @@ import 'package:toby_bills/app/data/repository/customer/customer_repository.dart
 import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/notifications/notifications_repository.dart';
-import 'package:toby_bills/app/data/repository/notifications/notifications_repository.dart';
 
 class NotificationsController extends GetxController {
 
   final isLoading = false.obs;
   final notificationType = 0.obs;
   final Rxn<FindCustomerResponse> selectedCustomer = Rxn();
-  final Rxn<FindCustomerResponse> selectedAllCustomer = Rxn();
-
+  final Rxn<FindCustomerResponse> searchSelectedCustomer = Rxn();
   final Rx<DateTime> date = Rx(DateTime.now());
   final customers = <FindCustomerResponse>[];
-  final allcustomers = <FindCustomerResponse>[];
-  final allnotifications = <FindNotificationResponse>[].obs;
-
+  final searchedCustomers = <FindCustomerResponse>[];
   final galleries = <GalleryResponse>[];
+  final customerInvoices = <FindNotificationResponse>[];
   Rxn<GalleryResponse> selectedGallery = Rxn();
+  Rxn<GalleryResponse> searchedSelectedGallery = Rxn();
   Rxn<InvoiceModel> invoice = Rxn();
   Rxn<FindNotificationResponse> notification = Rxn();
   final notifications = RxList<SaveNotificationRequest>();
@@ -49,18 +45,17 @@ class NotificationsController extends GetxController {
   final searchedInvoiceController = TextEditingController();
   final notificationNumberController = TextEditingController();
   final findSideCustomerController = TextEditingController();
-  final findSideAllCustomerController = TextEditingController();
-
+  final searchHeaderCustomerController = TextEditingController();
+  final customerInvoiceController = TextEditingController();
   final priceController = TextEditingController();
   final remarksController = TextEditingController();
   final findSideCustomerFieldFocusNode = FocusNode();
-  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
-  Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
+  final searchHeaderCustomerFieldFocusNode = FocusNode();
+  final customerInvoiceFieldFocusNode = FocusNode();
 
   @override
   void onInit() {
     super.onInit();
-    getDeliveryPlaces();
     getGalleries();
   }
 
@@ -75,19 +70,6 @@ class NotificationsController extends GetxController {
       onComplete: () => isLoading(false),
     );
   }
-  void getAllInvoiceListForCustomer(FindCustomerResponse value) {
-    // findSideAllCustomerController.text = "${value.name} ${value.code}";
-    selectedAllCustomer(value);
-    isLoading(true);
-    NotificationsRepository().findAllInvoiceNotice(GetAllInvoiceRequest( branchId: user.branchId,organizationSiteId:339114),
-        onSuccess: (data) {
-          // allnotifications(data);
-          // searchedInvoiceController.text = data.serial?.toString() ?? "";
-          // priceController.text = data.remain?.toString()??"";
-        },
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
-  }
 
   getCustomersByCode() {
     isLoading(true);
@@ -100,6 +82,30 @@ class NotificationsController extends GetxController {
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
+  }
+
+  getCustomersByCodeForSearch() {
+    isLoading(true);
+    searchHeaderCustomerFieldFocusNode.unfocus();
+    final request = FindCustomerRequest(code: searchHeaderCustomerController.text, branchId: user.branchId, gallaryIdAPI: searchedSelectedGallery.value?.id);
+    CustomerRepository().findCustomerByCode(request,
+        onSuccess: (data) {
+          searchedCustomers.assignAll(data);
+          searchHeaderCustomerFieldFocusNode.requestFocus();
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
+  }
+
+  getCustomerInvoices(){
+    isLoading(true);
+    final request = GetAllInvoiceRequest(branchId: user.branchId, organizationSiteId: searchSelectedCustomer.value?.id);
+    NotificationsRepository().findAllInvoiceNotice(request,
+      onSuccess: (data){
+        customerInvoices.assignAll(data);
+        customerInvoiceFieldFocusNode.requestFocus();
+      },
+      onComplete: () => isLoading(false));
   }
 
   searchForInvoiceById(String id) async {
@@ -148,9 +154,8 @@ class NotificationsController extends GetxController {
   }
 
   searchByNotification() {
-    // getAllInvoiceListForCustomer(customers.first);
     isLoading(true);
-    final request = FindNotificationRequest(branchId: user.branchId, typeNotice: notificationType.value, serial: notificationNumberController.text.tryToParseToNum?.toInt()??0);
+    final request = FindNotificationRequest(branchId: user.branchId, typeNotice: notificationType.value, serial: customerInvoiceController.text.tryToParseToNum?.toInt()??0);
     NotificationsRepository().findInvoiceNotice(request,
       onSuccess: (data){
         notification(data);
@@ -184,6 +189,7 @@ class NotificationsController extends GetxController {
     final item = SaveNotificationRequest(
         serial: notification.value?.serial,
         typeNotice: notificationType.value,
+        generalJournalId: notification.value?.generalJournalId,
         branchId: user.branchId,
         id: notification.value?.id,
         organizationSiteName: notification.value?.organizationSiteName ?? selectedCustomer.value?.name,
@@ -224,31 +230,4 @@ class NotificationsController extends GetxController {
         onComplete: () => isLoading(false)
     );
   }
-  Future<void> getDeliveryPlaces() {
-    return InvoiceRepository().findInventoryByBranch(
-      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
-      onSuccess: (data) {
-
-        deliveryPlaces.assignAll(data);
-        if (deliveryPlaces.isNotEmpty) {
-          selectedDeliveryPlace(deliveryPlaces.first);
-        }
-      },
-      onError: (error) => showPopupText(text: error.toString()),
-    );
-  }
-
-  getallCustomersByCode() {
-    isLoading(true);
-    // findSideCustomerFieldFocusNode.unfocus();
-    final request = FindCustomerRequest(code: findSideAllCustomerController.text, branchId: user.branchId, gallaryIdAPI: selectedGallery.value?.id);
-    CustomerRepository().findallCustomerByCode(request,
-        onSuccess: (data) {
-          allcustomers.assignAll(data);
-          // findSideCustomerFieldFocusNode.requestFocus();
-        },
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
-  }
-
 }

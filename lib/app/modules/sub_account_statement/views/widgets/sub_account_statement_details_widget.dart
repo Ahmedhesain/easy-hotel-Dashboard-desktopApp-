@@ -74,14 +74,14 @@ class SubAccountStatementDetailsWidget extends GetView<SubAccountStatementContro
                         for (AccountSummaryResponse row in controller.statements)
                           TableRow(
                             children: [
-                              SizedBox(height: 40, child: Center(child: Text(row.date == null ? "--" : DateFormat("dd-MM-yyyy").format(row.date!)))),
-                              SizedBox(height: 40, child: Center(child: Text(row.serial ?? "--"))),
-                              SizedBox(height: 40, child: Center(child: Text(row.generalDecument?.toString() ?? "--"))),
-                              SizedBox(height: 40, child: Center(child: Text(row.symbolName ?? "--"))),
-                              SizedBox(height: 40, child: Center(child: Text(row.glAccountName ?? "--"))),
-                              SizedBox(height: 40, child: Center(child: Text(row.debitAmount?.toString() ?? "--"))),
-                              SizedBox(height: 40, child: Center(child: Text(row.creditAmount?.toString() ?? "--"))),
-                              SizedBox(height: 40, child: Center(child: Text(row.balance.toStringAsFixed(2) ?? "--"))),
+                              SizedBox(height: 40, child: Center(child: Text(row.date == null ? "--" : DateFormat("dd-MM-yyyy").format(row.date!), textAlign: TextAlign.center))),
+                              SizedBox(height: 40, child: Center(child: Text(row.serial ?? "--", textAlign: TextAlign.center))),
+                              SizedBox(height: 40, child: Center(child: Text(row.generalDecument?.toString() ?? "--", textAlign: TextAlign.center))),
+                              SizedBox(height: 40, child: Center(child: Text(row.symbolName ?? "--", textAlign: TextAlign.center))),
+                              SizedBox(height: 40, child: Center(child: Text(row.glAccountName ?? "--", textAlign: TextAlign.center))),
+                              SizedBox(height: 40, child: Center(child: Text(row.debitAmount?.toString() ?? "--", textAlign: TextAlign.center))),
+                              SizedBox(height: 40, child: Center(child: Text(row.creditAmount?.toString() ?? "--", textAlign: TextAlign.center))),
+                              SizedBox(height: 40, child: Center(child: Text(row.balance?.toStringAsFixed(2) ?? "--", textAlign: TextAlign.center))),
                             ],
                             decoration: const BoxDecoration(color: appGreyLight, border: Border(bottom: BorderSide())),
                           )
