@@ -69,7 +69,8 @@ class NotificationsHeaderWidget extends GetView<NotificationsController> {
                   children: [
                     const Expanded(child: Text("ابحث عن فاتورة لعميل معين")),
                     Expanded(
-                      child: TypeAheadFormField<FindCustomerResponse>(
+                      child:
+                      TypeAheadFormField<FindCustomerResponse>(
                           itemBuilder: (context, client) {
                             return SizedBox(
                               height: 50,

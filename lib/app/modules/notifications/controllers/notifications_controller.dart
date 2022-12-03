@@ -12,8 +12,10 @@ import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_re
 import 'package:toby_bills/app/data/model/general_journal/dto/request/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/create_notifications_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/notifications/dto/request/delete_notification_request.dart';
 import 'package:toby_bills/app/data/model/notifications/dto/request/find_notification_request.dart';
@@ -22,6 +24,7 @@ import 'package:toby_bills/app/data/model/notifications/dto/response/find_notifi
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
 import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
+import 'package:toby_bills/app/data/repository/notifications/notifications_repository.dart';
 import 'package:toby_bills/app/data/repository/notifications/notifications_repository.dart';
 
 class NotificationsController extends GetxController {
@@ -70,7 +73,19 @@ class NotificationsController extends GetxController {
       onComplete: () => isLoading(false),
     );
   }
-
+  void getAllInvoiceListForCustomer(FindCustomerResponse value) {
+    // findSideAllCustomerController.text = "${value.name} ${value.code}";
+    selectedAllCustomer(value);
+    isLoading(true);
+    NotificationsRepository().findAllInvoiceNotice(GetAllInvoiceRequest( branchId: user.branchId,organizationSiteId:339114),
+        onSuccess: (data) {
+          // allnotifications(data);
+          // searchedInvoiceController.text = data.serial?.toString() ?? "";
+          // priceController.text = data.remain?.toString()??"";
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
+  }
   getCustomersByCode() {
     isLoading(true);
     findSideCustomerFieldFocusNode.unfocus();

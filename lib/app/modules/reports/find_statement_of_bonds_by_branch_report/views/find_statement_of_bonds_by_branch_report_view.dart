@@ -231,7 +231,7 @@ class FindStatementOfBondsByBranchReportView extends GetView<FindStatementOfBond
                                                 UnconstrainedBox(
                                                   child: Obx(() {
                                                     return ElevatedButton(
-                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printStatementOfBondsByBranch(context, controller.reports),
+                                                      onPressed: controller.reports.isEmpty ? null : () => PrintingHelper().printStatementOfBondsByBranch(context, controller.reports,controller.dateFrom.value!,controller.dateTo.value!),
                                                       child: const Text("طباعة"),
                                                     );
                                                   }),
@@ -286,12 +286,13 @@ class FindStatementOfBondsByBranchReportView extends GetView<FindStatementOfBond
                                       children: [
 
                                         TableRow(children: [
-                                          Column(children: [const Text("كود الفرع",
-                                              style: TextStyle(fontSize: 20.0))
-                                          ]),
                                           Column(children: [const Text(' الفرع',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
+                                          Column(children: [const Text("كود الفرع",
+                                              style: TextStyle(fontSize: 20.0))
+                                          ]),
+
                                           Column(children: [const Text('النوع ',
                                               style: TextStyle(fontSize: 20.0))
                                           ]),
@@ -319,25 +320,27 @@ class FindStatementOfBondsByBranchReportView extends GetView<FindStatementOfBond
                                             TableRow(children: [
                                               Column(children: [
                                                 Text(
+                                                    kha.galleryName ??"",
+                                                    style: const TextStyle(fontSize: 20.0))
+                                              ]),
+
+                                              Column(children: [
+                                                Text(
                                                     kha.galleryCode==null?"": kha.galleryCode!,
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
                                               Column(children: [
                                                 Text(
-                                                        kha.galleryName ??"",
+                                                    kha.type??"",
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
+
                                               Column(children: [
                                                 Text(
                                                     kha.paymentType??"",
                                                     style: const TextStyle(fontSize: 20.0))
                                               ]),
 
-                                              Column(children: [
-                                                Text(
-                                                    kha.type??"",
-                                                    style: const TextStyle(fontSize: 20.0))
-                                              ]),
                                               Column(children: [
                                                 Text(
                                               kha.totalAmount==null?"": kha.totalAmount!.toString(),
