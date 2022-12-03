@@ -461,6 +461,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  screen_retriever:
+    dependency: transitive
+    description:
+      name: screen_retriever
+      sha256: b2d23e3cf48ca735fe9edb2dabe9e7e7c3d7acb5d645e382b9b8f5248dd0d165
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -502,10 +510,10 @@ packages:
     dependency: transitive
     description:
       name: string_scanner
-      sha256: "862015c5db1f3f3c4ea3b94dc2490363a84262994b88902315ed74be1155612f"
+      sha256: "556692adab6cfa87322a115640c11f13cb77b3f076ddcc5d6ae3c20242bedcde"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   term_glyph:
     dependency: transitive
     description:
@@ -518,10 +526,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: c9aba3b3dbfe8878845dfab5fa096eb8de7b62231baeeb1cea8e3ee81ca8c6d8
+      sha256: ad540f65f92caa91bf21dfc8ffb8c589d6e4dc0c2267818b4cc2792857706206
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.15"
+    version: "0.4.16"
   typed_data:
     dependency: transitive
     description:
@@ -546,6 +554,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  window_manager:
+    dependency: "direct main"
+    description:
+      name: window_manager
+      sha256: "5a7bda81b8b8e5feb733d07f4bd174e64dfb412031aff5314a375118e42b498e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.8"
   xdg_directories:
     dependency: transitive
     description:

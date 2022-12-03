@@ -8,7 +8,7 @@ import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import 'package:toby_bills/app/routes/app_pages.dart';
-// import 'package:window_manager/window_manager.dart';
+import 'package:window_manager/window_manager.dart';
 
 class HomeDrawerWidget extends GetView<HomeController> {
   const HomeDrawerWidget({Key? key}) : super(key: key);
@@ -296,11 +296,11 @@ class HomeDrawerWidget extends GetView<HomeController> {
     //   ..setTitle(title)
     //   ..show();
     if(Platform.isWindows) {
-      // windowManager.setTitle("Toby Bills -> $title");
+      windowManager.setTitle("Toby Bills -> $title");
     }
     await Get.toNamed(to);
     if(Platform.isWindows) {
-      // windowManager.setTitle("Toby Bills -> شاشة المشتريات");
+      windowManager.setTitle("Toby Bills -> شاشة المشتريات");
     }
   }
 }
