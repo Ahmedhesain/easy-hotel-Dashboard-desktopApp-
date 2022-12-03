@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -11,6 +12,7 @@ import 'package:toby_bills/app/core/utils/excel_helper.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
+import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import '../controllers/faseh_details_controller.dart';
@@ -166,6 +168,27 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                 controller.invoiceDate.value == null
                                     ? const SizedBox.shrink()
                                     : Text(DateFormat("yyyy-MM-dd hh:mm aa").format(controller.invoiceDate.value!))),
+                            _row("المعرض:", SizedBox(
+                              width: 200,
+                              child: Obx(() {
+                                return DropdownSearch<InventoryResponse>(
+                                  // showSearchBox: true,
+                                  items: controller.inventories,
+                                  itemAsString: (InventoryResponse e) => e.code,
+                                  onChanged: controller.selectedInventory,
+                                  selectedItem: controller.selectedInventory.value,
+                                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                        // border: OutlineInputBorder(),
+                                        fillColor: Colors.white70,
+                                        isDense: true,
+                                        filled: true,
+                                        suffixIconConstraints: BoxConstraints(maxHeight: 30)),
+                                  ),
+                                );
+                              }),
+                            )),
                           ],
                         ),
                         const Spacer(
@@ -279,6 +302,38 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                               ),
                                             ]),
                                           ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Column(children: [
+                                              const Center(
+                                                child: Text(
+                                                  "المستودع",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                              Obx(() {
+                                                return DropdownSearch<InventoryResponse>(
+                                                  // showSearchBox: true,
+                                                  items: controller.inventories,
+                                                  itemAsString: (InventoryResponse e) => e.code,
+                                                  onChanged: controller.itemSelectedInventory,
+                                                  selectedItem: controller.itemSelectedInventory.value,
+                                                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                                                    dropdownSearchDecoration: InputDecoration(
+                                                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                                        border: OutlineInputBorder(),
+                                                        fillColor: Colors.white70,
+                                                        isDense: true,
+                                                        filled: true,
+                                                        suffixIconConstraints: BoxConstraints(maxHeight: 30)),
+                                                  ),
+                                                );
+                                              }),
+                                            ]),
+                                          ),
                                           const Spacer()
                                         ],
                                       ),
@@ -291,81 +346,100 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                       padding: const EdgeInsets.symmetric(horizontal: 10),
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                                          child: Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                                child: Text((index + 1).toString()),
-                                              ),
-                                              Expanded(
-                                                flex: 4,
-                                                child: TypeAheadFormField<ItemResponse>(
-                                                  key: UniqueKey(),
-                                                  suggestionsCallback: (String pattern) =>
-                                                      controller.items.where((e) => e.name.toString().contains(pattern) || e.code.toString().contains(pattern)),
-                                                  onSuggestionSelected: (item) {
-                                                    controller.invoiceDetailsList[index].code = item.code;
-                                                    controller.invoiceDetailsList[index].name = item.name??"";
-                                                    final backup = <InvoiceDetailsModel>[];
-                                                    backup.assignAll(controller.invoiceDetailsList);
-                                                    controller.invoiceDetailsList.clear();
-                                                    controller.invoiceDetailsList.assignAll(backup);
+                                        return Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                                              child: Text((index + 1).toString()),
+                                            ),
+                                            Expanded(
+                                              flex: 4,
+                                              child: TypeAheadFormField<ItemResponse>(
+                                                key: UniqueKey(),
+                                                suggestionsCallback: (String pattern) =>
+                                                    controller.items.where((e) => e.name.toString().contains(pattern) || e.code.toString().contains(pattern)),
+                                                onSuggestionSelected: (item) {
+                                                  controller.invoiceDetailsList[index].code = item.code;
+                                                  controller.invoiceDetailsList[index].name = item.name??"";
+                                                  final backup = <InvoiceDetailsModel>[];
+                                                  backup.assignAll(controller.invoiceDetailsList);
+                                                  controller.invoiceDetailsList.clear();
+                                                  controller.invoiceDetailsList.assignAll(backup);
 
-                                                  },
-                                                  itemBuilder: (context, item) {
-                                                    return Center(
-                                                      child: Text("${item.name!} ${item.code!}"),
-                                                    );
-                                                  },
-                                                  initialValue: "${controller.invoiceDetailsList[index].code!} ${controller.invoiceDetailsList[index].name}",
-                                                  textFieldConfiguration: TextFieldConfiguration(
-                                                      textInputAction: TextInputAction.next,
-                                                      textAlignVertical: TextAlignVertical.center,
-                                                      // focusNode: controller.itemNameFocus,
-                                                      // onSubmitted: (value) {
-                                                      //   List<ItemResponse> list = controller.items;
-                                                      //   if (list.isNotEmpty && controller.itemCodeController.text.isNotEmpty) {
-                                                      //     controller.selectNewItem(list.first);
-                                                      //   }
-                                                      // },
-                                                      // controller: controller.itemCodeController
+                                                },
+                                                itemBuilder: (context, item) {
+                                                  return Center(
+                                                    child: Text("${item.name!} ${item.code!}"),
+                                                  );
+                                                },
+                                                initialValue: "${controller.invoiceDetailsList[index].code!} ${controller.invoiceDetailsList[index].name}",
+                                                textFieldConfiguration: TextFieldConfiguration(
+                                                    textInputAction: TextInputAction.next,
+                                                    textAlignVertical: TextAlignVertical.center,
+                                                    // focusNode: controller.itemNameFocus,
+                                                    // onSubmitted: (value) {
+                                                    //   List<ItemResponse> list = controller.items;
+                                                    //   if (list.isNotEmpty && controller.itemCodeController.text.isNotEmpty) {
+                                                    //     controller.selectNewItem(list.first);
+                                                    //   }
+                                                    // },
+                                                    // controller: controller.itemCodeController
+                                                ),
+                                              ),
+                                            ),
+                                            // Expanded(
+                                            //   flex: 4,
+                                            //   child: Text(
+                                            //     "${controller.invoiceDetailsList[index].code!} ${controller.invoiceDetailsList[index].name}",
+                                            //     textAlign: TextAlign.center,
+                                            //     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                                            //   ),
+                                            // ),
+                                            const SizedBox(width: 10),
+                                            Expanded(
+                                              child: TextFormField(
+                                                initialValue: (controller.invoiceDetailsList[index].quantityOfOneUnit ?? '').toString(),
+                                                onChanged: (value) {
+                                                  if (value.isEmpty) return;
+                                                  controller.invoiceDetailsList[index].quantityOfOneUnit = num.parse(value);
+                                                },
+                                                inputFormatters: [doubleInputFilter],
+                                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                                                decoration: const InputDecoration(
+                                                    contentPadding: EdgeInsets.symmetric(vertical: 7), border: OutlineInputBorder(), isDense: true),
+                                                textAlign: TextAlign.center,
+                                                textDirection: TextDirection.ltr,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Expanded(
+                                              child: DropdownSearch<InventoryResponse>(
+                                                // showSearchBox: true,
+                                                items: controller.inventories,
+                                                itemAsString: (InventoryResponse e) => e.code,
+                                                onChanged: (inventory){
+                                                  controller.invoiceDetailsList[index].inventoryId = inventory?.id;
+                                                },
+                                                selectedItem: controller.inventories.singleWhere((element) => element.id == controller.invoiceDetailsList[index].inventoryId),
+                                                dropdownDecoratorProps: const DropDownDecoratorProps(
+                                                  dropdownSearchDecoration: InputDecoration(
+                                                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                                      border: OutlineInputBorder(),
+                                                      fillColor: Colors.white70,
+                                                      isDense: true,
+                                                      filled: true,
+                                                      suffixIconConstraints: BoxConstraints(maxHeight: 30)
                                                   ),
                                                 ),
                                               ),
-                                              // Expanded(
-                                              //   flex: 4,
-                                              //   child: Text(
-                                              //     "${controller.invoiceDetailsList[index].code!} ${controller.invoiceDetailsList[index].name}",
-                                              //     textAlign: TextAlign.center,
-                                              //     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                                              //   ),
-                                              // ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: TextFormField(
-                                                  initialValue: (controller.invoiceDetailsList[index].quantityOfOneUnit ?? '').toString(),
-                                                  onChanged: (value) {
-                                                    if (value.isEmpty) return;
-                                                    controller.invoiceDetailsList[index].quantityOfOneUnit = num.parse(value);
-                                                  },
-                                                  inputFormatters: [doubleInputFilter],
-                                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                                                  decoration: const InputDecoration(
-                                                      contentPadding: EdgeInsets.symmetric(vertical: 5), border: OutlineInputBorder(), isDense: true),
-                                                  textAlign: TextAlign.center,
-                                                  textDirection: TextDirection.ltr,
-                                                ),
+                                            ),
+                                            Expanded(
+                                              child: IconButton(
+                                                onPressed: () => controller.removeDetail(index),
+                                                icon: const Icon(Icons.clear),
                                               ),
-                                              Expanded(
-                                                child: IconButton(
-                                                  onPressed: () => controller.removeDetail(index),
-                                                  icon: const Icon(Icons.clear),
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                            )
+                                          ],
                                         );
                                       });
                                 }),

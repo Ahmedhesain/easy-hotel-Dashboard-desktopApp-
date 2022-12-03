@@ -58,7 +58,7 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
       if(i == 0 && sections[i].length > 4){
         return false;
       }
-      if(i == 2 && (sections[i].length > 2 || int.parse(sections[i]) > 30)){
+      if(i == 2 && (sections[i].length > 2 || int.parse(sections[i]) > 31)){
         return false;
       }
       if(i == 1 && (sections[i].length > 2 || int.parse(sections[i]) > 12)){

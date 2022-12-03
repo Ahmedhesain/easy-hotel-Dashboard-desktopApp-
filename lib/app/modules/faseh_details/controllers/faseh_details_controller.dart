@@ -4,6 +4,8 @@ import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
+import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/delete_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/find_faseh_invoice_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/find_faseh_request.dart';
@@ -12,6 +14,7 @@ import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
+import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
 
@@ -29,8 +32,11 @@ class FasehDetailsController extends GetxController {
   final isSaved = false.obs;
 
   final galleries = <GalleryResponse>[];
+  final inventories = <InventoryResponse>[];
   final items = RxList<ItemResponse>();
   final invoiceDetailsList = RxList<InvoiceDetailsModel>();
+  Rxn<InventoryResponse> selectedInventory = Rxn();
+  Rxn<InventoryResponse> itemSelectedInventory = Rxn();
   FasehInvoiceResponse? findInvoiceModel;
   ItemResponse? _selectedItem;
   Rxn<InvoiceModel> invoiceModel = Rxn();
@@ -42,14 +48,27 @@ class FasehDetailsController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    getItems();
+    isLoading(true);
+    Future.wait([getItems(), getInventories()]).whenComplete(() => isLoading(false));
   }
 
+  Future<void> getInventories() {
+    return InventoryRepository().getAllInventories(GetInventoriesRequest(branchId: UserManager().branchId, id: UserManager().id),
+        onSuccess: (data) {
+          inventories.assignAll(data);
+          if (inventories.isNotEmpty) {
+            selectedInventory(inventories.first);
+            itemSelectedInventory(inventories.first);
+          }
+        },
+        onError: (error) => showPopupText(text: error.toString()));
+  }
 
-  getItems() {
-    isLoading(true);
-    ItemRepository()
-        .getAllItemsLocal(onSuccess: items.assignAll, onError: (e) => showPopupText(text: e.toString()), onComplete: () => isLoading(false));
+  Future<void> getItems() async {
+    ItemRepository().getAllItemsLocal(
+      onSuccess: items.assignAll,
+      onError: (e) => showPopupText(text: e.toString()),
+    );
   }
 
   search() async {
@@ -72,9 +91,9 @@ class FasehDetailsController extends GetxController {
     InvoiceRepository().findFasehBySerial(FindFasehRequest(serial: fasehSearchController.text),
         onSuccess: (data) {
           invoiceModel(data);
-          searchController.text = data.loadedSerial?.toString()??"";
-          invoiceDetailsList.assignAll(data.invoiceDetailApiList??[]);
-          remarksController.text = data.remarks??"";
+          searchController.text = data.loadedSerial?.toString() ?? "";
+          invoiceDetailsList.assignAll(data.invoiceDetailApiList ?? []);
+          remarksController.text = data.remarks ?? "";
           galleryName(data.gallaryName);
           customer("${data.customerName} ${data.customerCode}");
           invoiceDate(data.date);
@@ -108,7 +127,7 @@ class FasehDetailsController extends GetxController {
       customerCode: findInvoiceModel?.iosCode ?? invoiceModel.value?.customerCode,
       invDelegatorId: findInvoiceModel?.delegatorId ?? invoiceModel.value?.invDelegatorId,
       customerId: findInvoiceModel?.iosId ?? invoiceModel.value?.customerId,
-      customerName: findInvoiceModel?.iosName  ?? invoiceModel.value?.customerName,
+      customerName: findInvoiceModel?.iosName ?? invoiceModel.value?.customerName,
       supplierDate: findInvoiceModel?.invDate ?? invoiceModel.value?.date,
       invPurchaseInvoice: findInvoiceModel?.invId ?? invoiceModel.value?.invPurchaseInvoice,
     );
@@ -141,6 +160,7 @@ class FasehDetailsController extends GetxController {
         itemId: _selectedItem!.id,
         unitId: _selectedItem!.unitId,
         name: _selectedItem!.name.toString(),
+        inventoryId: itemSelectedInventory.value?.id,
         quantityOfOneUnit: num.parse(itemQuantityController.text),
       );
       invoiceDetailsList.add(model);
@@ -190,6 +210,5 @@ class FasehDetailsController extends GetxController {
         },
         onComplete: () => isLoading(false),
         onError: (e) => showPopupText(text: e.toString()));
-
   }
 }
