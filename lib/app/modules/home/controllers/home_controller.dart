@@ -13,6 +13,7 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/fcm/dto/request/send_fcm_request.dart';
 import 'package:toby_bills/app/data/model/general_journal/dto/request/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
@@ -37,6 +38,7 @@ import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.d
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
+import 'package:toby_bills/app/data/repository/fcm/fcm_repository.dart';
 import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
@@ -561,6 +563,9 @@ class HomeController extends GetxController {
   }
 
   saveInvoice() {
+    // isLoading(true);
+    // FCMRepository().send(SendFcmRequest(title: "تجربة من الديسكتوب", body: "تجربة من الديسكتوب", invoiceId: 152405),onComplete: () => isLoading(false));
+    // return;
     if (invoiceDetails.isEmpty) {
       showPopupText(text: "يجب إضافة اصناف");
       return;
