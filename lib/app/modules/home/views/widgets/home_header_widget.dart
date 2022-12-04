@@ -173,6 +173,12 @@ class HomeHeaderWidget extends GetView<HomeController> {
                       windowManager.setTitle("Toby Bills -> شاشة المبيعات");
                     }),
                     const SizedBox(width: 5),
+                    ButtonWidget(text: "استعلام", onPressed: () async {
+                      windowManager.setTitle("Toby Bills -> استعلام");
+                      await Get.toNamed(Routes.INVOICES_QUERY);
+                      windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+                    }),
+                    const SizedBox(width: 5),
                     ButtonWidget(text: "تنزيل عرض", onPressed: () => controller.offerOne()),
                     const SizedBox(width: 5),
                     ButtonWidget(text: "تحديث", onPressed: () => controller.getItems()),

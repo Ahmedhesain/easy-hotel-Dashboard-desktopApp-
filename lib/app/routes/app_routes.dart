@@ -46,6 +46,9 @@ abstract class Routes {
   static const SUB_ACCOUNT_STATEMENT = _Paths.SUB_ACCOUNT_STATEMENT;
   static const CUSTOMER_ACCOUNT_STATEMENT = _Paths.CUSTOMER_ACCOUNT_STATEMENT;
   static const FASEH_DETAILS = _Paths.FASEH_DETAILS;
+  static const INVOICE_RECEIVE = _Paths.INVOICE_RECEIVE;
+  static const INVOICE_DELIVERY = _Paths.INVOICE_DELIVERY;
+  static const INVOICES_QUERY = _Paths.INVOICES_QUERY;
 }
 
 abstract class _Paths {
@@ -90,4 +93,7 @@ abstract class _Paths {
   static const JOURNAL_DOCUMENT_DIALY = '/journal-document-dialy';
   static const SUB_ACCOUNT_STATEMENT = '/sub-account-statement';
   static const FASEH_DETAILS = '/faseh-details';
+  static const INVOICE_RECEIVE = '/invoice-receive';
+  static const INVOICE_DELIVERY = '/invoice-delivery';
+  static const INVOICES_QUERY = '/invoices-query';
 }

@@ -7,6 +7,7 @@ class InvoiceModel {
       this.branchId,
       this.companyId,
       this.createdBy,
+      this.customerNotice,
       this.createdDate,
       this.id,
       this.customerId,
@@ -56,6 +57,7 @@ class InvoiceModel {
       this.serialTax,
       this.invoiceType,
       this.shoulder,
+      this.invoiceLastStatus,
       this.status,
       this.step,
       this.supplierInvoiceNumber,
@@ -63,9 +65,11 @@ class InvoiceModel {
       this.typeInv,
       this.invNoticeValueTotal,
       this.invPurchaseInvoice,
-      this.totalNet, this.supplierDate});
+      this.totalNet,
+      this.supplierDate});
 
   String? type;
+  String? customerNotice;
   int? typeInv;
   int? branchId;
   int? companyId;
@@ -96,6 +100,7 @@ class InvoiceModel {
   List<InvoiceDetailsModel>? invoiceDetailApiListDeleted = [];
 
   String? createdByName;
+  String? invoiceLastStatus;
   int? index;
   int? serial;
   num? customerBalance;
@@ -139,15 +144,19 @@ class InvoiceModel {
   String? offerCopoun;
   int? proFactoryDeliveryId;
 
+  static List<InvoiceModel> fromList(List<dynamic> json) => List<InvoiceModel>.from(json.map((e) => InvoiceModel.fromJson(e)));
+
   factory InvoiceModel.fromJson(Map<String, dynamic> json) => InvoiceModel(
         type: json["type"],
+        invoiceLastStatus: json["invoiceLastStatus"],
+        customerNotice: json["customerNotice"],
         branchId: json["branchId"],
-    serial: json["serial"],
+        serial: json["serial"],
         companyId: json["companyId"],
-    loadedSerial: json["loadedSerial"],
-    invNoticeValueTotal: json["invNoticeValueTotal"],
+        loadedSerial: json["loadedSerial"],
+        invNoticeValueTotal: json["invNoticeValueTotal"],
         generalJournalId: json["generalJournalId"],
-       supplierInvoiceNumber: json["supplierInvoiceNumber"],
+        supplierInvoiceNumber: json["supplierInvoiceNumber"],
         createdBy: json["createdBy"],
         invoiceType: json["invoicetype"],
         createdDate: json["createdDate"] == null ? null : DateTime.parse(json["createdDate"]),
@@ -186,12 +195,12 @@ class InvoiceModel {
         noticeCredit: json["noticeCredit"],
         length: json["length"],
         invoiceNumber: json["invoiceNumber"],
-        invoiceDate: json["invoiceDate"] == null ? null: DateTime.parse(json["invoiceDate"]),
-    supplierDate: json["supplierDate"] == null ? null: DateTime.parse(json["supplierDate"]),
+        invoiceDate: json["invoiceDate"] == null ? null : DateTime.parse(json["invoiceDate"]),
+        supplierDate: json["supplierDate"] == null ? null : DateTime.parse(json["supplierDate"]),
         invInventoryName: json["invInventoryName"],
         invDelegatorName: json["invDelegatorName"],
         gallaryName: json["gallaryName"],
-        dueDate: json["dueDate"] == null?null:DateTime.parse(json["dueDate"]),
+        dueDate: json["dueDate"] == null ? null : DateTime.parse(json["dueDate"]),
         discHalala: json["discHalala"],
         deliveryPlaceName: json["deliveryPlaceName"],
         customerOfferCompanyId: json["customerOfferCompanyId"],
@@ -206,6 +215,7 @@ class InvoiceModel {
 
   Map<String, dynamic> toJson() => {
         "type": type,
+        "invoiceLastStatus": invoiceLastStatus,
         "loadedSerial": loadedSerial,
         "invNoticeValueTotal": invNoticeValueTotal,
         "supplierInvoiceNumber": supplierInvoiceNumber,
@@ -214,6 +224,7 @@ class InvoiceModel {
         "generalJournalId": generalJournalId,
         "typeInv": typeInv,
         "createdBy": createdBy,
+        "customerNotice": customerNotice,
         "createdDate": createdDate?.toIso8601String(),
         "id": id,
         "customerId": customerId,

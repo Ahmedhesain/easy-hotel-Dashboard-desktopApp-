@@ -3601,305 +3601,278 @@ class PrintingHelper {
         });
   }
   //
-  // void galleryInvoices(m.BuildContext context, List<InvoiceModel> data) async {
-  //   final doc = Document();
-  //   const PdfColor grey = PdfColors.grey400;
-  //   final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
-  //   final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
-  //   final ttfBold = Font.ttf(font);
-  //   final ttfLight = Font.ttf(fontLight);
-  //   final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
-  //   final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
-  //   final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
-  //   // final dm = Barcode.dataMatrix();
-  //   //
-  //   // final svg = dm.toSvg('114625', width: 80, height: 25);
-  //   // final List<int> bytes = svg.codeUnits;
-  //   // final im.Image? image = im.decodePng(bytes);
-  //   doc.addPage(MultiPage(
-  //       // header: (_) => Container(
-  //       //     height: 25,
-  //       //     decoration: const BoxDecoration(),
-  //       //     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //       //       Text(
-  //       //         DateTime.now().toIso8601String().split("T")[0],
-  //       //         style: boldStyle,
-  //       //         textDirection: TextDirection.rtl,
-  //       //       ),
-  //       //       Text(
-  //       //         context.read<AuthProvider>().userModel!.data!.name!,
-  //       //         style: boldStyle,
-  //       //         textDirection: TextDirection.rtl,
-  //       //       ),
-  //       //     ])),
-  //       pageTheme: const PageTheme(
-  //           pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
-  //       build: (Context context) {
-  //         return [
-  //           Directionality(
-  //             textDirection: TextDirection.ltr,
-  //             child: Column(children: [
-  //               SizedBox(height: 50.5),
-  //               Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max, children: [
-  //                 TableRow(children: [
-  //                   Container(
-  //                       color: grey,
-  //                       width: 45,
-  //                       child: Center(
-  //                           child: Text("رقم الفاتورة",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 45,
-  //                       child: Center(
-  //                           child: Text("رقم امر الشغل",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 55,
-  //                       child: Center(
-  //                           child: Text("التاريخ",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 60,
-  //                       child: Center(
-  //                           child:
-  //                               Text("كود", style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("العميل",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("الهاتف",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("الحالة",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("المرحلة",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("الاستلام",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("المتبقي",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("شركات",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("عدد الثوب",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("مدخل الفاتورة",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("ملاحظات",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                   Container(
-  //                       color: grey,
-  //                       width: 40,
-  //                       child: Center(
-  //                           child: Text("check",
-  //                               style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
-  //                 ]),
-  //                 //table content
-  //                 for (int i = 0; i < data.length; i++)
-  //                   TableRow(children: [
-  //                     Container(
-  //                         width: 55,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].serialTax?.toStringAsFixed(2) ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 45,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].serial?.toStringAsFixed(2) ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 55,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].date == null ? "" : DateFormat("MM-dd-yyyy").format(data[i].date!),
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 60,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].customerCode ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].customerName ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].customerMobile ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].status ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].invoiceLastStatus ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].dueDate == null ? "" : DateFormat("MM-dd-yyyy").format(data[i].dueDate!),
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].remain?.toStringAsFixed(2) ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].customerNotice ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].numberOfToob?.toStringAsFixed(2) ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].createdByName ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           data[i].remarks ?? "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                     Container(
-  //                         width: 40,
-  //                         child: Center(
-  //                             child: Text(
-  //                           "",
-  //                           style: boldStyle,
-  //                           textAlign: TextAlign.center,
-  //                           textDirection: TextDirection.rtl,
-  //                         ))),
-  //                   ]),
-  //               ]),
-  //               SizedBox(height: 5),
-  //             ]),
-  //           )
-  //         ];
-  //       }));
-  //
-  //   m.showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return m.RotatedBox(
-  //           quarterTurns: 3,
-  //           child: PdfPreview(
-  //             actions: [
-  //               m.IconButton(
-  //                 onPressed: () => m.Navigator.pop(context),
-  //                 icon: const m.Icon(
-  //                   m.Icons.close,
-  //                   color: m.Colors.red,
-  //                 ),
-  //               )
-  //             ],
-  //             build: (format) => doc.save(),
-  //           ),
-  //         );
-  //       });
-  // }
-  //
+  void galleryInvoices(m.BuildContext context, List<InvoiceModel> data) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
+    doc.addPage(MultiPage(
+        pageTheme: const PageTheme(
+            pageFormat: PdfPageFormat.a4, orientation: PageOrientation.landscape, margin: EdgeInsets.all(10)),
+        build: (Context context) {
+          return [
+            SizedBox(height: 50.5),
+            Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max, children: [
+              TableRow(children: [
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("check",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("ملاحظات",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("مدخل الفاتورة",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("عدد الثوب",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("شركات",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("المتبقي",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("الاستلام",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("المرحلة",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("الحالة",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("الهاتف",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 40,
+                    child: Center(
+                        child: Text("العميل",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 60,
+                    child: Center(
+                        child:
+                        Text("كود", style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 55,
+                    child: Center(
+                        child: Text("التاريخ",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 45,
+                    child: Center(
+                        child: Text("رقم امر الشغل",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                Container(
+                    color: grey,
+                    width: 45,
+                    child: Center(
+                        child: Text("رقم الفاتورة",
+                            style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+              ]),
+              //table content
+              for (int i = 0; i < data.length; i++)
+                TableRow(children: [
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].remarks ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].createdByName ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].numberOfToob?.toStringAsFixed(2) ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].customerNotice ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].remain?.toStringAsFixed(2) ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].dueDate == null ? "" : DateFormat("MM-dd-yyyy").format(data[i].dueDate!),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].invoiceLastStatus ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].status ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].customerMobile ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 40,
+                      child: Center(
+                          child: Text(
+                            data[i].customerName ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 60,
+                      child: Center(
+                          child: Text(
+                            data[i].customerCode ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 55,
+                      child: Center(
+                          child: Text(
+                            data[i].date == null ? "" : DateFormat("MM-dd-yyyy").format(data[i].date!),
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 45,
+                      child: Center(
+                          child: Text(
+                            data[i].serial?.toString() ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                  Container(
+                      width: 55,
+                      child: Center(
+                          child: Text(
+                            data[i].serialTax?.toString() ?? "",
+                            style: boldStyle,
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ))),
+                ]),
+            ]),
+            SizedBox(height: 5),
+          ];
+        }));
+
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return m.RotatedBox(
+            quarterTurns: 3,
+            child: PdfPreview(
+              actions: [
+                m.IconButton(
+                  onPressed: () => m.Navigator.pop(context),
+                  icon: const m.Icon(
+                    m.Icons.close,
+                    color: m.Colors.red,
+                  ),
+                )
+              ],
+              build: (format) => doc.save(),
+            ),
+          );
+        });
+  }
+
 
   void invoicesByStatus(m.BuildContext context, List<InvoiceStatementByCaseResponse> data) async {
     final doc = Document();

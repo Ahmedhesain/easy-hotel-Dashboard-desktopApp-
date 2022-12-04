@@ -35,6 +35,14 @@ class HomeDrawerWidget extends GetView<HomeController> {
           title: "الإشعارات",
           onTap: () => goTo(Routes.NOTIFICATIONS, "الإشعارات"),
         ),
+        HomeDrawerTileWidget(
+          title: "استلام الفاتورة",
+          onTap: () => goTo(Routes.INVOICE_RECEIVE, "استلام الفاتورة"),
+        ),
+        HomeDrawerTileWidget(
+          title: "تسليم الفاتورة",
+          onTap: () => goTo(Routes.INVOICE_DELIVERY, "تسليم الفاتورة"),
+        ),
     ];
     final list2 = [
       if(sections["summitionItemReport"]?.view ??false)

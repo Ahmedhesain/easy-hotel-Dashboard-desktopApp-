@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:toby_bills/app/modules/reports/invoice_statement_by_case/bindings/invoice_statement_by_case_binding.dart';
-import 'package:toby_bills/app/modules/reports/invoice_statement_by_case/views/invoice_statement_by_case_view.dart';
 
 import '../modules/account_statement/bindings/account_statement_binding.dart';
 import '../modules/account_statement/views/account_statement_view.dart';
@@ -16,7 +14,12 @@ import '../modules/faseh_details/bindings/faseh_details_binding.dart';
 import '../modules/faseh_details/views/faseh_details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-
+import '../modules/invoice_delivery/bindings/invoice_delivery_binding.dart';
+import '../modules/invoice_delivery/views/invoice_delivery_view.dart';
+import '../modules/invoice_receive/bindings/invoice_receive_binding.dart';
+import '../modules/invoice_receive/views/invoice_receive_view.dart';
+import '../modules/invoices_query/bindings/invoices_query_binding.dart';
+import '../modules/invoices_query/views/invoices_query_view.dart';
 import '../modules/items/bindings/items_binding.dart';
 import '../modules/items/views/items_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -53,6 +56,8 @@ import '../modules/reports/inv_item/bindings/inv_item_binding.dart';
 import '../modules/reports/inv_item/views/inv_item_view.dart';
 import '../modules/reports/invoice_movement/bindings/invoice_movement_binding.dart';
 import '../modules/reports/invoice_movement/views/invoice_movement_view.dart';
+import '../modules/reports/invoice_statement_by_case/bindings/invoice_statement_by_case_binding.dart';
+import '../modules/reports/invoice_statement_by_case/views/invoice_statement_by_case_view.dart';
 import '../modules/reports/invoice_status/bindings/invoice_status_binding.dart';
 import '../modules/reports/invoice_status/views/invoice_status_view.dart';
 import '../modules/reports/invoices_without_swing_statement/bindings/invoices_without_swing_binding.dart';
@@ -268,6 +273,21 @@ class AppPages {
       name: _Paths.FASEH_DETAILS,
       page: () => const FasehDetailsView(),
       binding: FasehDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICE_RECEIVE,
+      page: () => const InvoiceReceiveView(),
+      binding: InvoiceReceiveBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICE_DELIVERY,
+      page: () => const InvoiceDeliveryView(),
+      binding: InvoiceDeliveryBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICES_QUERY,
+      page: () => const InvoicesQueryView(),
+      binding: InvoicesQueryBinding(),
     ),
   ];
 }
