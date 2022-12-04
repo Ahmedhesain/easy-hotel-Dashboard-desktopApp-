@@ -174,7 +174,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                 return DropdownSearch<InventoryResponse>(
                                   // showSearchBox: true,
                                   items: controller.inventories,
-                                  itemAsString: (InventoryResponse e) => e.code,
+                                  itemAsString: (InventoryResponse e) => e.code.toString(),
                                   onChanged: controller.selectedInventory,
                                   selectedItem: controller.selectedInventory.value,
                                   dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -318,7 +318,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                                 return DropdownSearch<InventoryResponse>(
                                                   // showSearchBox: true,
                                                   items: controller.inventories,
-                                                  itemAsString: (InventoryResponse e) => e.code,
+                                                  itemAsString: (InventoryResponse e) => e.code.toString(),
                                                   onChanged: controller.itemSelectedInventory,
                                                   selectedItem: controller.itemSelectedInventory.value,
                                                   dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -328,7 +328,8 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                                         fillColor: Colors.white70,
                                                         isDense: true,
                                                         filled: true,
-                                                        suffixIconConstraints: BoxConstraints(maxHeight: 30)),
+                                                        suffixIconConstraints: BoxConstraints(maxHeight: 30)
+                                                    ),
                                                   ),
                                                 );
                                               }),
@@ -416,7 +417,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                               child: DropdownSearch<InventoryResponse>(
                                                 // showSearchBox: true,
                                                 items: controller.inventories,
-                                                itemAsString: (InventoryResponse e) => e.code,
+                                                itemAsString: (InventoryResponse e) => e.code.toString(),
                                                 onChanged: (inventory){
                                                   controller.invoiceDetailsList[index].inventoryId = inventory?.id;
                                                 },

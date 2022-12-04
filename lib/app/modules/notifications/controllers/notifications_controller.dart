@@ -73,19 +73,8 @@ class NotificationsController extends GetxController {
       onComplete: () => isLoading(false),
     );
   }
-  void getAllInvoiceListForCustomer(FindCustomerResponse value) {
-    // findSideAllCustomerController.text = "${value.name} ${value.code}";
-    selectedAllCustomer(value);
-    isLoading(true);
-    NotificationsRepository().findAllInvoiceNotice(GetAllInvoiceRequest( branchId: user.branchId,organizationSiteId:339114),
-        onSuccess: (data) {
-          // allnotifications(data);
-          // searchedInvoiceController.text = data.serial?.toString() ?? "";
-          // priceController.text = data.remain?.toString()??"";
-        },
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
-  }
+
+
   getCustomersByCode() {
     isLoading(true);
     findSideCustomerFieldFocusNode.unfocus();
