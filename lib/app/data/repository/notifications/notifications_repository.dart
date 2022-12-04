@@ -65,15 +65,15 @@ class NotificationsRepository {
   findAllInvoiceNotice(
       GetAllInvoiceRequest getAllInvoiceRequest, {
         Function()? onComplete,
-        Function(FindNotificationResponse data)? onSuccess,
+        Function(List<FindNotificationResponse> data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-      ApiProvider().post<FindNotificationResponse,Map<String,dynamic>>('invNotice/invNoticeByCustomerId',
+      ApiProvider().post<List<FindNotificationResponse>,List<dynamic>>('invNotice/invNoticeByCustomerId',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: getAllInvoiceRequest.toJson(),
         onError: onError,
-        convertor: FindNotificationResponse.fromJson,
+        convertor: FindNotificationResponse.fromList,
       );
 
 

@@ -121,7 +121,14 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                       controller: controller.customerController,
                                       focusNode: controller.customerFocusNode,
                                       onSubmitted: (search) => controller.getCustomers(search),
-                                      decoration: null,
+                                      decoration: InputDecoration(
+                                        suffixIcon: IconButtonWidget(
+                                          icon: Icons.search,
+                                          onPressed: (){
+                                            controller.getCustomers(controller.customerController.text);
+                                          },
+                                        )
+                                      ),
                                     ),
                                       suggestionsCallback: (filter) => controller.customers
                                           .where((element) => (element.name ?? "").contains(filter) || (element.code ?? "").contains(filter)),

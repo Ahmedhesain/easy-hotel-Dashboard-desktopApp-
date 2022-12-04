@@ -41,37 +41,30 @@ class PaymentsButtonsWidget extends GetView<PaymentsController> {
             const Spacer(),
             Container(
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors.appGreyDark),
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2.5),
               child: Obx(() {
                 return Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if((permissions.edit ?? false) || controller.payment.value?.id == null)
-                      const SizedBox(width: 5),
-                    if((permissions.edit ?? false) || controller.payment.value?.id == null)
-                      ButtonWidget(text: "حفظ", onPressed: () => controller.savePayment()),
+                      ButtonWidget(text: "حفظ", onPressed: () => controller.savePayment(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                     if(controller.payment.value != null)
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const SizedBox(width: 5),
-                          ButtonWidget(text: "طباعة", onPressed: () => controller.printPayment(context)),
                           if (controller.payment.value != null && (permissions.edit ?? false))
-                            const SizedBox(width: 5),
+                           ButtonWidget(text: "طباعة", onPressed: () => controller.printPayment(context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+
                           if (controller.payment.value != null && (permissions.edit ?? false))
-                            ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printGeneralJournal(context)),
+                            ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printGeneralJournal(context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+
                           if((permissions.delete ?? false) && controller.payment.value?.id != null)
-                            const SizedBox(width: 5),
-                          if((permissions.delete ?? false) && controller.payment.value?.id != null)
-                            ButtonWidget(text: "حذف", onPressed: () => controller.deletePayment()),
+                            ButtonWidget(text: "حذف", onPressed: () => controller.deletePayment(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                         ],
                       ),
                     if((permissions.add ?? false))
-                      const SizedBox(width: 5),
-                    if((permissions.add ?? false))
-                      ButtonWidget(text: "جديد", onPressed: () => controller.newPayment()),
-                    const SizedBox(width: 5),
-                    ButtonWidget(text: "رجوع", onPressed: () => Get.back()),
+                      ButtonWidget(text: "جديد", onPressed: () => controller.newPayment(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                    ButtonWidget(text: "رجوع", onPressed: () => Get.back(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                   ],
                 );
               }),

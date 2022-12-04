@@ -351,7 +351,7 @@ class PurchaseInvoiceDetailsHeaderWidget extends GetView<PurchaseInvoicesControl
                         return DropdownSearch<InventoryResponse>(
                           // showSearchBox: true,
                           items: controller.inventories,
-                          itemAsString: (InventoryResponse e) => e.code,
+                          itemAsString: (InventoryResponse e) => e.code.toString(),
                           onChanged: controller.selectInventory,
                           selectedItem: controller.selectedInventory.value,
                           dropdownDecoratorProps: const DropDownDecoratorProps(

@@ -10,6 +10,7 @@ class SaveNotificationRequest{
     this.remark,
     this.typeNotice,
     this.gallaryId,
+    this.generalJournalId,
     this.value,
     this.branchId,
     this.companyId,
@@ -18,6 +19,7 @@ class SaveNotificationRequest{
   });
 
   int? gallaryId;
+  int? generalJournalId;
   int? createdBy;
   DateTime? createdDate;
   int? id;
@@ -36,6 +38,7 @@ class SaveNotificationRequest{
   Map<String, dynamic> toJson() => {
     "createdBy": createdBy,
     "createdDate": createdDate?.toIso8601String(),
+    "generalJournalId": generalJournalId,
     "id": id,
     "gallaryId": gallaryId,
     "invInvoice": invInvoice,

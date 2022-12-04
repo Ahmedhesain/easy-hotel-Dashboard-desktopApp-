@@ -293,7 +293,25 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                     height: 30,
                     child: TextFormField(
                       controller: TextEditingController(text: detail.value.remark),
+                      onChanged: (value) => detail.value.remark = value,
                       onEditingComplete: () {},
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(), contentPadding: EdgeInsets.symmetric(horizontal: 10), filled: true, fillColor: Colors.white70),
+                    ),
+                  ),
+                ),
+                separator,
+                Expanded(
+                  flex: 2,
+                  child: SizedBox(
+                    height: 30,
+                    child: TextFormField(
+                      controller: TextEditingController(text: detail.value.invNoticeValue?.toString()),
+                      onChanged: (value) {
+                        detail.value.invNoticeValue = value.tryToParseToNum;
+                        controller.calcInvoiceValues();
+                      },
+                      inputFormatters: [doubleInputFilter],
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(), contentPadding: EdgeInsets.symmetric(horizontal: 10), filled: true, fillColor: Colors.white70),
                     ),
@@ -331,7 +349,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                   child: DropdownSearch<InventoryResponse>(
                     key: UniqueKey(),
                     items: controller.inventories,
-                    itemAsString: (InventoryResponse inventory) => inventory.code,
+                    itemAsString: (InventoryResponse inventory) => inventory.code.toString(),
                     onChanged: (InventoryResponse? inventory) {
                       final item = controller.items.singleWhere((element) => element.id == detail.value.itemId);
                       if (item.isInventoryItem == 0) {

@@ -82,4 +82,9 @@ class FindNotificationResponse {
     "typeNotice": typeNotice,
     "value": value,
   };
+
+  @override
+  String toString() {
+    return serial.toString();
+  }
 }

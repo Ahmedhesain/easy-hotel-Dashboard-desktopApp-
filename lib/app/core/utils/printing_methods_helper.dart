@@ -11,6 +11,7 @@ import 'package:toby_bills/app/data/model/customer/dto/response/account_statemen
 import 'package:toby_bills/app/data/model/general_journal/dto/response/account_summary_response.dart';
 import 'package:toby_bills/app/data/model/general_journal/generaljournaldetail_model.dart';
 import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
@@ -44,6 +45,239 @@ import '../../data/model/reports/dto/response/categories_totals_response.dart';
 
 class PrintingHelper {
 
+
+  void printCatchReceipt(GlBankTransactionApi glBankTransactionApi, m.BuildContext context) async {
+    final doc = Document();
+    const PdfColor grey = PdfColors.grey400;
+    final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
+    final fontLight = await rootBundle.load("assets/fonts/Cairo-Light.ttf");
+    final ttfBold = Font.ttf(font);
+    final ttfLight = Font.ttf(fontLight);
+    final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
+    DateTime date = DateTime.now();
+    final boldStyle =
+    TextStyle(font: ttfBold, fontSize: 7.5, fontBold: ttfBold);
+    doc.addPage(MultiPage(
+        footer: (context) => Container(
+            height: 25,
+            decoration: const BoxDecoration(),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    DateTime.now().toIso8601String().split("T")[0],
+                    style: normalStyle,
+                    textDirection: TextDirection.rtl,
+                  ),
+                  Text(
+                    "user!.data!.name!",
+                    style: normalStyle,
+                    textDirection: TextDirection.rtl,
+                  ),
+                ])),
+        pageTheme: const PageTheme(
+            pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl),
+        build: (Context context) {
+          return [
+            Directionality(
+              textDirection: TextDirection.rtl,
+              child: Column(children: [
+                SizedBox(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+
+                          Padding(
+                            padding: EdgeInsets.all(2),
+                            child: Text(
+                              "سند قبض نقدي",
+                              style: boldStyle,
+                              textDirection: TextDirection.rtl,
+                            ),
+                          )
+                        ])),
+                SizedBox(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //customer data and date
+                          SizedBox(
+                              width: 120,
+                              child: Column(children: [
+
+                                Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        // "${date.year.toString()}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')}.padLeft(2,'0')}",
+                                        DateFormat('yyyy-MM-dd').format(date),
+                                        style: normalStyle,
+                                        textDirection: TextDirection.rtl,
+                                      ),
+                                      Text(
+                                        "التاريخ:",
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                      ),
+                                    ]),
+
+                              ])),
+                          //barcode widget
+
+                          // seller data
+                          SizedBox(
+                              width: 120,
+                              child: Column(children: [
+                                Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+
+                                      Text(
+                                        glBankTransactionApi.customerName ?? "",
+                                        style: normalStyle,
+                                        textDirection: TextDirection.rtl,
+                                      ),
+                                      Text(
+                                        "اسم العميل:",
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                      ),
+                                    ]),
+                                Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+
+                                      Text(
+                                        glBankTransactionApi.remark??"",
+                                        style: normalStyle,
+                                        textDirection: TextDirection.rtl,
+                                      ),
+                                      Text(
+                                        "الملاحظات:",
+                                        style: boldStyle,
+                                        textDirection: TextDirection.rtl,
+                                      ),
+                                    ]),
+
+
+                              ])),
+                        ])),
+                Table(border: TableBorder.all(width: 1), children: [
+
+                  TableRow(children: [
+                    Container(
+                        color: grey,
+                        width: 50,
+                        child: Center(
+                            child: Text(
+                              'اسم الخزنه',
+                              style: normalStyle,
+                              textDirection: TextDirection.rtl,
+                            ))),
+
+
+                    Container(
+                        color: grey,
+                        width: 30,
+                        child: Center(
+                            child: Text(
+                              " المدفوع",
+                              style: boldStyle,
+                              textDirection: TextDirection.rtl,
+                            ))),
+
+
+                    Container(
+                        color: grey,
+                        width: 30,
+                        child: Center(
+                            child: Text(
+                              "رقم السند",
+                              style: boldStyle,
+                              textDirection: TextDirection.rtl,
+                            ))),
+
+                    Container(
+                        color: grey,
+                        width: 30,
+                        child: Center(
+                            child: Text(
+                              "رقم الفاتورة",
+                              style: boldStyle,
+                              textDirection: TextDirection.rtl,
+                            ))),
+                  ]),
+                  //table content
+                  for (GlPayDTO detail
+                  in glBankTransactionApi.glPayDTOAPIList!)
+                    TableRow(children: [
+                      Container(
+                          width: 30,
+                          child: Center(
+                              child: Text(
+                                detail.bankName.toString(),
+                                style: normalStyle,
+                                textDirection: TextDirection.rtl,
+                              ))),
+                      Container(
+                          width: 80,
+                          child: Center(
+                              child: Text(
+                                detail.value.toString(),
+                                style: normalStyle,
+                                textDirection: TextDirection.rtl,
+                              ))),
+                      Container(
+                          width: 30,
+                          child: Center(
+                              child: Text(
+                                detail.serial.toString(),
+                                style: normalStyle,
+                                textDirection: TextDirection.rtl,
+                              ))),
+
+                      Container(
+                          width: 30,
+                          child: Center(
+                              child: Text(
+                                detail.invoiceSerial.toString(),
+                                style: normalStyle,
+                                textDirection: TextDirection.rtl,
+                              ))),
+                    ]),
+                ]),
+                //table headers
+
+
+
+
+
+              ]),
+            )
+          ];
+        }));
+
+    m.showDialog(
+        context: context,
+        builder: (context) {
+          return PdfPreview(
+            actions: [
+              m.IconButton(
+                onPressed: () => m.Navigator.pop(context),
+                icon: const m.Icon(
+                  m.Icons.close,
+                  color: m.Colors.red,
+                ),
+              )
+            ],
+            build: (format) => doc.save(),
+          );
+        });
+  }
+  
   void printSubAccountStatements(m.BuildContext context, {required List<AccountSummaryResponse> statements, DateTime? fromDate, DateTime? toDate,required  String fromCenter, required String toCenter}) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
@@ -62,6 +296,7 @@ class PrintingHelper {
       4:const FlexColumnWidth(1),
       5:const FlexColumnWidth(1),
       6:const FlexColumnWidth(1),
+      // 7:const FlexColumnWidth(1),
     };
     doc.addPage(MultiPage(
         pageTheme: const PageTheme(pageFormat: PdfPageFormat.a4, textDirection: TextDirection.rtl, margin: EdgeInsets.all(10)),
@@ -206,6 +441,11 @@ class PrintingHelper {
                     child: Center(
                         child: Text("بيان القيد",
                             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
+                // Container(
+                //     color: grey,
+                //     child: Center(
+                //         child: Text("نوع اليومية",
+                //             style: boldStyle.copyWith(fontSize: 10), textDirection: TextDirection.rtl, textAlign: TextAlign.center))),
                 Container(
                     color: grey,
                     child: Center(
@@ -253,6 +493,13 @@ class PrintingHelper {
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
+                  // Center(
+                  //     child: Text(
+                  //       statements[i].rem?.toString()??"",
+                  //       style: boldStyle,
+                  //       textAlign: TextAlign.center,
+                  //       textDirection: TextDirection.rtl,
+                  //     )),
                   Center(
                       child: Text(
                         statements[i].generalDecument?.toString()??"",
@@ -1593,7 +1840,6 @@ class PrintingHelper {
           });
         });
   }
-
 
   void printInvoice(m.BuildContext context, InvoiceModel invoiceModel, {num? value, num? dariba, num? total, num? discount, num? net, num? payed, num? remain}) async {
     // LoginData? user = context.read<AuthProvider>().user ;
@@ -2950,7 +3196,7 @@ class PrintingHelper {
           );
         });
   }
-  //
+
   void treasuryStatement(m.BuildContext context, List<TreasuryModel> data, DateTime fromDate, DateTime toDate) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
@@ -3860,7 +4106,7 @@ class PrintingHelper {
           );
         });
   }
-  //
+
   void fash(m.BuildContext context, List<InvoiceDetailsModel> data, InvoiceModel invoiceModel) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
@@ -5672,7 +5918,6 @@ class PrintingHelper {
         });
   }
 
-
   void printSalesValueAddedDetails(m.BuildContext context, List<FindSalesValueAddedDetailsResponse> data,DateTime datefrom,DateTime dateto,List<DeliveryPlaceResposne> deliverysel) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
@@ -6302,7 +6547,6 @@ class PrintingHelper {
         });
   }
 
-
   void printBalanceGallarypaid(m.BuildContext context, List<BalanceGalaryUnpaidResponse> data,DateTime datefrom,DateTime dateto) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
@@ -6423,7 +6667,6 @@ class PrintingHelper {
           );
         });
   }
-
 
   void printInvItem(m.BuildContext context, List<InvItemDtoResponse> data) async {
     final doc = Document();
@@ -7653,11 +7896,6 @@ class PrintingHelper {
           );
         });
   }
-
-
-
-
-
 
 
 }

@@ -4,6 +4,7 @@ import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
+import 'package:toby_bills/app/core/values/app_constants.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
@@ -62,7 +63,7 @@ class PurchaseInvoiceDetailsWidget extends GetView<PurchaseInvoicesController> {
                   child: SizedBox(
                     height: 30,
                     child: Builder(builder: (context) {
-                      num? oldValue = detail.value.quantity;
+                      num? oldValue = detail.value.numOfYarda;
                       return TextFormField(
                         controller: TextEditingController(text: oldValue?.toStringAsFixed(2)),
                         textDirection: TextDirection.ltr,
@@ -70,7 +71,7 @@ class PurchaseInvoiceDetailsWidget extends GetView<PurchaseInvoicesController> {
                         onChanged: (value) => oldValue = value.tryToParseToNum ?? 0,
                         focusNode: detail.value.quantityFocus..addListener(() {
                           if(!detail.value.quantityFocus.hasFocus){
-                            detail(detail.value.copyWith(quantityOfOneUnit: (oldValue??0) * 0.9, quantity: oldValue));
+                            detail(detail.value.copyWith(quantityOfOneUnit: (oldValue??0) * 0.9, numOfYarda: oldValue));
                             controller.calcInvoiceValues();
                           }
                         }),
@@ -95,7 +96,7 @@ class PurchaseInvoiceDetailsWidget extends GetView<PurchaseInvoicesController> {
                         },
                         focusNode: detail.value.numberFocus..addListener(() {
                           if(!detail.value.numberFocus.hasFocus){
-                            detail(detail.value.copyWith(quantityOfOneUnit: oldValue, quantity: (oldValue ?? 0) / 0.9));
+                            detail(detail.value.copyWith(quantityOfOneUnit: oldValue, numOfYarda: (oldValue ?? 0) / 0.9));
                             controller.calcInvoiceValues();
                           }
                         }),
@@ -196,10 +197,18 @@ class PurchaseInvoiceDetailsWidget extends GetView<PurchaseInvoicesController> {
                   child: DropdownSearch<InventoryResponse>(
                     key: UniqueKey(),
                     items: controller.inventories,
-                    itemAsString: (InventoryResponse inventory) => inventory.code,
+                    itemAsString: (InventoryResponse inventory) => inventory.code.toString(),
                     onChanged: (InventoryResponse? inventory) {
                       detail(detail.value.copyWith(
                           inventoryId: inventory?.id, inventoryCode: inventory?.code, inventoryName: inventory?.name));
+                      if(inventory!.code != "999") {
+                        if(controller.glAccounts.every((element) => element.id != inventory.accountIdId)){
+                          controller.glAccounts.add(GlAccountResponse(id: inventory.accountIdId, accNumber: inventory.accountAccNumber, name: inventory.accountName));
+                        }
+                        detail(detail.value.copyWith(account: inventory.accountIdId));
+                      } else {
+                        detail(detail.value.copyWith(account: AppConstants.accounts.first.id));
+                      }
                       controller.calcInvoiceValues();
                     },
                     selectedItem: controller.inventories.every((element) => element.id != detail.value.inventoryId)?null:controller.inventories.singleWhere((element) => element.id == detail.value.inventoryId),

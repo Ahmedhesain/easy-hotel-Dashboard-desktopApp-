@@ -6,7 +6,7 @@ import 'dart:convert';
 
 class AccountSummaryResponse {
   AccountSummaryResponse({
-    // this.balance,
+    this.balance,
     this.costCenterId,
     this.creditAmount,
     this.date,
@@ -23,7 +23,7 @@ class AccountSummaryResponse {
     this.symbolName,
   });
 
-  num balance = 0;
+  num? balance = 0;
 
   num get sub =>  (debitAmount??0) - (creditAmount??0);
 
@@ -45,10 +45,10 @@ class AccountSummaryResponse {
   static List<AccountSummaryResponse> fromList(List<dynamic> json) => List<AccountSummaryResponse>.from(json.map((e) => AccountSummaryResponse.fromJson(e)));
 
   factory AccountSummaryResponse.fromJson(Map<String, dynamic> json) => AccountSummaryResponse(
-    // balance: json["balance"],
+    balance: json["balance"],
     costCenterId: json["costCenterId"],
     creditAmount: json["creditAmount"],
-    date: DateTime.parse(json["date"]),
+    date: json["date"] == null ? null : DateTime.parse(json["date"]),
     discribtion: json["discribtion"],
     generalDecument: json["generalDecument"],
     debitAmount: json["debitAmount"],

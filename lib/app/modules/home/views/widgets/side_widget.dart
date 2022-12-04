@@ -26,6 +26,7 @@ class SideWidget extends GetView<HomeController> {
         children: [
           _TitleWidget(title: 'الاجمالي', value: controller.totalNet),
           _TitleWidget(title: 'خصم الهالالات', value: controller.discountHalala),
+          _TitleWidget(title: 'قيمة الإشعارات', value: controller.invoiceNoticeValue),
           Padding(
             padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
             child: Row(

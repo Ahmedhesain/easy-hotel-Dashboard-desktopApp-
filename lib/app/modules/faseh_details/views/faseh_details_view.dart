@@ -70,13 +70,13 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                 // mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  if ((permissions?.edit ?? false) && controller.invoiceModel.value?.id != null)
+                                  if ((permissions?.delete ?? false) && controller.invoiceModel.value?.id != null)
                                     ButtonWidget(text: 'حذف', onPressed: () => controller.delete(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                   ButtonWidget(text: 'رجوع', onPressed: () => Navigator.pop(context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                   if ((permissions?.edit ?? false))
                                     ButtonWidget(text: 'حفظ', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                   ButtonWidget(text: 'بحث', onPressed: () => controller.searchOnFaseh(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                                  if (controller.invoiceModel.value != null)
+                                  if (controller.invoiceModel.value != null && (permissions?.edit ?? false))
                                     ButtonWidget(
                                       text: 'طباعة',
                                       onPressed: () => controller.print(context),
@@ -174,7 +174,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                 return DropdownSearch<InventoryResponse>(
                                   // showSearchBox: true,
                                   items: controller.inventories,
-                                  itemAsString: (InventoryResponse e) => e.code,
+                                  itemAsString: (InventoryResponse e) => e.code.toString(),
                                   onChanged: controller.selectedInventory,
                                   selectedItem: controller.selectedInventory.value,
                                   dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -318,7 +318,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                                 return DropdownSearch<InventoryResponse>(
                                                   // showSearchBox: true,
                                                   items: controller.inventories,
-                                                  itemAsString: (InventoryResponse e) => e.code,
+                                                  itemAsString: (InventoryResponse e) => e.code.toString(),
                                                   onChanged: controller.itemSelectedInventory,
                                                   selectedItem: controller.itemSelectedInventory.value,
                                                   dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -328,7 +328,8 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                                         fillColor: Colors.white70,
                                                         isDense: true,
                                                         filled: true,
-                                                        suffixIconConstraints: BoxConstraints(maxHeight: 30)),
+                                                        suffixIconConstraints: BoxConstraints(maxHeight: 30)
+                                                    ),
                                                   ),
                                                 );
                                               }),
@@ -416,7 +417,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                               child: DropdownSearch<InventoryResponse>(
                                                 // showSearchBox: true,
                                                 items: controller.inventories,
-                                                itemAsString: (InventoryResponse e) => e.code,
+                                                itemAsString: (InventoryResponse e) => e.code.toString(),
                                                 onChanged: (inventory){
                                                   controller.invoiceDetailsList[index].inventoryId = inventory?.id;
                                                 },
