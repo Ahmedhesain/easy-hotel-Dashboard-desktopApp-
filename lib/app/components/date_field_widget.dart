@@ -35,7 +35,7 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
   }
 
   bool isDaysInMonthValid(int days, int month, int year){
-    return ([1,3,5,7,8,10,12].contains(month) && days <= 31
+    return ([0,1,3,5,7,8,10,12].contains(month) && days <= 31
     || [4,6,8,11].contains(month) && days <=30
     || month == 2 && (days <= 28 || (year%4==0 && days == 29)));
   }
