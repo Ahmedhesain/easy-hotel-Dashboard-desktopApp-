@@ -39,7 +39,7 @@ class CreateInvoiceRequest {
   final int? checkSendSms;
   final int? serial;
   final int? typeInv;
-  final int? supplierInvoiceNumber;
+  final String? supplierInvoiceNumber;
   final num? discount;
   final num? discountType;
   final num? payed;

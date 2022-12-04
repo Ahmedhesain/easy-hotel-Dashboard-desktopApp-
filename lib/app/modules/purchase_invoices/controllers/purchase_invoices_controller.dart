@@ -445,7 +445,7 @@ class PurchaseInvoicesController extends GetxController {
       id: invoice.value?.id,
       supplierDate: supplierDate.value,
       dueDate: dueDate.value,
-      supplierInvoiceNumber: invoiceSupplierNumberController.text.tryToParseToNum?.toInt(),
+      supplierInvoiceNumber: invoiceSupplierNumberController.text,
       customerId: selectedCustomer.value?.id,
       customerCode: selectedCustomer.value?.code,
       customerMobile: selectedCustomer.value?.mobile,
