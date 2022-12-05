@@ -1585,7 +1585,7 @@ class PrintingHelper {
                       child: Column(children: [
                         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                           Text(
-                            "مستودع رئيسي",
+                            invoiceModel.invInventoryName ?? "",
                             style: boldStyle,
                             textDirection: TextDirection.rtl,
                           ),
@@ -1617,7 +1617,7 @@ class PrintingHelper {
                           ),
                           Spacer(),
                           Text(
-                            "تاريخ التسليم",
+                            "تاريخ الفاتورة",
                             style: boldStyle,
                             textDirection: TextDirection.rtl,
                           ),

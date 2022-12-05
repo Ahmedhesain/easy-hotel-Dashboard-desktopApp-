@@ -59,6 +59,7 @@ class InvoiceModel {
       this.shoulder,
       this.invoiceLastStatus,
       this.status,
+      this.invNoticeOrderId,
       this.step,
       this.supplierInvoiceNumber,
       this.generalJournalId,
@@ -84,6 +85,7 @@ class InvoiceModel {
   num? invNoticeValueTotal;
   num? discount;
   int? discountType;
+  int? invNoticeOrderId;
   int? dueperiod;
   num? finalNet;
   int? gallaryId;
@@ -164,6 +166,7 @@ class InvoiceModel {
         typeInv: json["typeInv"],
         customerId: json["customerId"],
         daribaValue: json["daribaValue"],
+    invNoticeOrderId: json["invNoticeOrderId"],
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
         invPurchaseInvoice: json["invPurchaseInvoice"],
         discount: json["discount"],
@@ -222,6 +225,7 @@ class InvoiceModel {
         "branchId": branchId,
         "companyId": companyId,
         "generalJournalId": generalJournalId,
+        "invNoticeOrderId": invNoticeOrderId,
         "typeInv": typeInv,
         "createdBy": createdBy,
         "customerNotice": customerNotice,

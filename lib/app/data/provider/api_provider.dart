@@ -32,15 +32,15 @@ class ApiProvider {
 
   static String get apiUrl {
     if (kDebugMode) {
-      // return  "http://localhost:9090/toby/rest/";
+      return  "http://192.168.1.13:9090/toby/rest/";
       // return "http://134.122.57.181:8080/debug/rest/";
-      return "http://134.122.57.181:8080/test13/rest/";
+      // return "http://134.122.57.181:8080/test13/rest/";
       // return  "http://192.168.1.13:9090/toby/rest/";
     } else {
       // return "http://localhost:9090/toby/rest/";
       // return "http://192.168.1.22:9090/toby/rest/";
       // return "http://134.122.57.181:8080/debug/rest/";
-      return "http://134.122.57.181:8080/test13/rest/";
+      return "http://134.122.57.181:8080/test16/rest/";
     }
   }
 

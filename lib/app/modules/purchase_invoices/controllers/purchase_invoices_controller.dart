@@ -209,6 +209,8 @@ class PurchaseInvoicesController extends GetxController {
     isLoading(true);
     InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null, typeInv: 0),
         onSuccess: (data) {
+      data.supplierDate = data.supplierDate?.add(Duration(days: 1));
+      data.dueDate = data.dueDate?.add(Duration(days: 1));
           PrintingHelper().printPurchaseInvoice(
             context,
             data,
@@ -239,7 +241,7 @@ class PurchaseInvoicesController extends GetxController {
     isLoading(true);
     InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 0),
         onSuccess: (data) {
-          date(data.date?.add(Duration(days: 1)));
+          date(data.date);
           supplierDate(data.supplierDate?.add(Duration(days: 1)));
           dueDate(data.dueDate?.add(Duration(days: 1)));
           if(galleries.any((element) => element.id == data.gallaryId)) {

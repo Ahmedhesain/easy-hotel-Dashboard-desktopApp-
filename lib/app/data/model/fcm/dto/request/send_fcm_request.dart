@@ -5,7 +5,7 @@ class SendFcmRequest {
     this.body,
   });
 
-  int? invoiceId;
+  num? invoiceId;
   String? title;
   String? body;
 
