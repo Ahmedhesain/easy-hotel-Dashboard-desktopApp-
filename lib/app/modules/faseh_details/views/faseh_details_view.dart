@@ -168,7 +168,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                 controller.invoiceDate.value == null
                                     ? const SizedBox.shrink()
                                     : Text(DateFormat("yyyy-MM-dd hh:mm aa").format(controller.invoiceDate.value!))),
-                            _row("المعرض:", SizedBox(
+                            _row("المستودع:", SizedBox(
                               width: 200,
                               child: Obx(() {
                                 return DropdownSearch<InventoryResponse>(

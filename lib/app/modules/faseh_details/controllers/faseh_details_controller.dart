@@ -80,6 +80,10 @@ class FasehDetailsController extends GetxController {
           customer("${data.iosName} ${data.iosCode}");
           invoiceDate(data.invDate);
           supplierDate.value = null;
+          if(inventories.any((element) => element.id == data.invId)) {
+            selectedInventory(inventories.singleWhere((element) => element.id == data.invId));
+            itemSelectedInventory(inventories.singleWhere((element) => element.id == data.invId));
+          }
         },
         onComplete: () => isLoading(false),
         onError: (e) => showPopupText(text: e.toString()));
@@ -121,6 +125,7 @@ class FasehDetailsController extends GetxController {
       createdDate: DateTime.now(),
       date: DateTime.now(),
       branchId: UserManager().branchId,
+      invInventoryId: selectedInventory.value?.id,
       gallaryId: findInvoiceModel?.gallaryId ?? invoiceModel.value?.gallaryId,
       companyId: UserManager().companyId,
       createdBy: UserManager().id,
