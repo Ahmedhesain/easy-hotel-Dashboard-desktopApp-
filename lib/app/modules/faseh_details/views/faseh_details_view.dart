@@ -22,7 +22,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    final permissions = UserManager().user.userScreens["proworkorder"];
+    final permissions = UserManager().user.userScreens["invpermissionorder_1"];
     return Scaffold(
       body: Obx(() {
         return KeysWidget(
