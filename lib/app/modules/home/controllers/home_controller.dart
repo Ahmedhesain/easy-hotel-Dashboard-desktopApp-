@@ -429,7 +429,8 @@ class HomeController extends GetxController {
     getItemData(
         itemId: item.id!,
         onSuccess: (data) {
-          if (data.availableQuantity != null && data.availableQuantity! <= 0) {
+          if (
+          data.availableQuantity != null && (data.availableQuantity! <= 0 || data.availableQuantity! < data.quantityOfUnit)) {
             if (noQuantity != null) {
               noQuantity();
             } else {

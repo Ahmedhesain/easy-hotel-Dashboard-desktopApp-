@@ -30,7 +30,7 @@ import 'package:toby_bills/app/data/repository/notifications/notifications_repos
 class NotificationsController extends GetxController {
 
   final isLoading = false.obs;
-  final notificationType = 0.obs;
+  final notificationType = 99.obs;
   final Rxn<FindCustomerResponse> selectedCustomer = Rxn();
   final Rxn<FindCustomerResponse> searchSelectedCustomer = Rxn();
   final Rx<DateTime> date = Rx(DateTime.now());
@@ -190,6 +190,10 @@ class NotificationsController extends GetxController {
   }
 
   addNotification(){
+    if(notificationType.value == 99){
+      showPopupText(text:"يجب اختيار نوع الاشعار");
+      return ;
+    }
     final item = SaveNotificationRequest(
         serial: notification.value?.serial,
         typeNotice: notificationType.value,
@@ -208,7 +212,9 @@ class NotificationsController extends GetxController {
         organizationSiteId: notification.value?.organizationSiteId ?? selectedCustomer.value?.id,
         remark: remarksController.text
     );
+
     notifications.add(item);
+    notificationType(99);
     newInvoice(clearList: false);
   }
 

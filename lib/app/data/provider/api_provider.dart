@@ -21,7 +21,8 @@ class ApiProvider {
       ),
     );
     _dio.interceptors.add(
-      LogInterceptor(responseBody: true,
+      LogInterceptor(
+          responseBody: true,
           requestBody: true,
           responseHeader: true,
           requestHeader: true,
@@ -40,7 +41,7 @@ class ApiProvider {
       // return "http://localhost:9090/toby/rest/";
       // return "http://192.168.1.22:9090/toby/rest/";
       // return "http://134.122.57.181:8080/debug/rest/";
-      return "http://134.122.57.181:8080/test16/rest/";
+      return "http://134.122.57.181:8080/test17/rest/";
     }
   }
 
