@@ -21,33 +21,58 @@ class InvoiceStatusView extends GetView<InvoiceStatusController> {
             backgroundColor: Colors.white,
             leadingWidth: 0,
             title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                UnconstrainedBox(
-                  child: ElevatedButton(
-                    child: const Text("رجوع"),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 200,
+                      margin: const EdgeInsets.all(5.0),
+                      child: TextFormField(
+                          controller: controller.searchedInvoiceController,
+                          onFieldSubmitted: (_) => controller.getStatements(),
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: "ابحث عن رقم الفاتورة",
+                              contentPadding: EdgeInsets.symmetric(horizontal: 5))),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => controller.getStatements(),
+                      child: const Text("بحث"),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                UnconstrainedBox(
-                  child: ElevatedButton(
-                    child: const Text("طباعة"),
-                    onPressed: () {
-                      PrintingHelper().movementSalesReports(context, controller.reports);
-                    },
-                  ),
+                Row(
+                  children: [
+                    UnconstrainedBox(
+                      child: ElevatedButton(
+                        child: const Text("رجوع"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    UnconstrainedBox(
+                      child: ElevatedButton(
+                        child: const Text("طباعة"),
+                        onPressed: () {
+                          PrintingHelper().movementSalesReports(context, controller.reports);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    UnconstrainedBox(
+                      child: ElevatedButton(
+                        child: const Text("تصدير الى اكسل"),
+                        onPressed: () {
+                          ExcelHelper.movementSalesReportsExcel(controller.reports, context);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                UnconstrainedBox(
-                  child: ElevatedButton(
-                    child: const Text("تصدير الى اكسل"),
-                    onPressed: () {
-                      ExcelHelper.movementSalesReportsExcel(controller.reports, context);
-                    },
-                  ),
-                ),
+
               ],
             )
             ,

@@ -9,6 +9,8 @@ import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_ba
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 import '../../../../components/text_widget.dart';
+import '../../../../routes/app_pages.dart';
+import '../../../crm/views/add_crm_event_view.dart';
 
 class SideWidget extends GetView<HomeController> {
   const SideWidget({Key? key}) : super(key: key);
@@ -23,7 +25,12 @@ class SideWidget extends GetView<HomeController> {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+         children: [
+           Padding(
+             padding: const EdgeInsets.all(5.0),
+             child: ButtonWidget(text: "اضافة شكوي" , buttonColor: Colors.blue, onPressed: (){Get.toNamed(Routes.CRM_EVENT);}),
+           ),
+           const Divider(height: 2, color: Colors.white, ),
           _TitleWidget(title: 'الاجمالي', value: controller.totalNet),
           _TitleWidget(title: 'خصم الهالالات', value: controller.discountHalala),
           _TitleWidget(title: 'قيمة الإشعارات', value: controller.invoiceNoticeValue),

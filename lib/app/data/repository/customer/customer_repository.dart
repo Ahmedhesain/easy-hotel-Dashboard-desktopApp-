@@ -42,7 +42,7 @@ class CustomerRepository {
         Function(List<FindCustomerResponse> data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-    ApiProvider().post<List<FindCustomerResponse>,List<dynamic>>('customer/findByAnotherGallery',
+    ApiProvider().post<List<FindCustomerResponse>,List<dynamic>>('customer/findByAnotherGallary',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: findCustomerRequest.toJson(),
@@ -126,7 +126,7 @@ class CustomerRepository {
         Function(FindCustomerResponse data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-    ApiProvider().post<FindCustomerResponse,Map<String, dynamic>>('customer/updateCustomer',
+    ApiProvider().post<FindCustomerResponse,Map<String, dynamic>>('customer/updateCustomerNew',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: findCustomerResponse.toJson(),

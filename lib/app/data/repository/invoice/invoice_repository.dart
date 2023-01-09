@@ -23,6 +23,7 @@ import 'package:toby_bills/app/data/model/invoice/invoice_detail_model.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
 import '../../model/customer/dto/request/find_customer_request.dart';
 import '../../model/customer/dto/response/find_customer_response.dart';
+import '../../model/invoice/dto/request/gallary_show_request.dart';
 import '../../model/invoice/dto/request/get_delegator_request.dart';
 import '../../model/invoice/dto/response/get_delivery_place_response.dart';
 
@@ -344,18 +345,18 @@ class InvoiceRepository {
       );
 
 
-  saveFasehInvoice(
+    saveFasehInvoice(
       InvoiceModel invoiceModel, {
         Function()? onComplete,
-        Function(int data)? onSuccess,
+        Function(InvoiceModel data)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-      ApiProvider().post<int,Map<String,dynamic>>('permisionOrder/saveDeskTop',
+      ApiProvider().post<InvoiceModel,Map<String,dynamic>>('permisionOrder/saveDeskTop',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: invoiceModel.toJson(),
         onError: onError,
-        convertor: (data) => data["serial"],
+        convertor: (data) => InvoiceModel.fromJson(data),
       );
 
 
@@ -371,6 +372,20 @@ class InvoiceRepository {
         data: offerOneRequest.toJson(),
         onError: onError,
         convertor: (data) => List<InvoiceDetailsModel>.from(data.map((e) => InvoiceDetailsModel.fromJson(e))),
+      );
+
+  invoiceGallaryDeliveryShow(
+      GallaryDeliveryShowRequest gallaryDeliveryShowRequest, {
+        Function()? onComplete,
+        Function(void)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<void,GallaryDeliveryShowRequest>('proSales/updateGallaryDelivery',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: gallaryDeliveryShowRequest.toJson(),
+        onError: onError,
+        convertor: (data){}
       );
 
 }

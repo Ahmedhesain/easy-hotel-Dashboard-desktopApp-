@@ -116,6 +116,10 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                       controller.customerController.text = value.name ?? "";
                                       controller.selectedCustomer(value);
                                       controller.getInvoiceListForCustomer(value, () {});
+                                      controller.itemInvoiceController.text = '' ;
+                                      controller.itemRemainController.text = '' ;
+                                      controller.itemPayController.text = '' ;
+
                                     },
                                     textFieldConfiguration: TextFieldConfiguration(
                                       controller: controller.customerController,
@@ -227,18 +231,20 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                               ),
                                             );
                                           },
-                                          suggestionsCallback: (filter) => controller.customerBalance.value?.invoicesList.where((inv) => inv.serial != null && controller.banksToPay.every((element) => element.invoiceId != inv.id) && inv.serial.toString().contains(filter)) ?? [],
-                                          onSuggestionSelected: (value) {
-                                            controller.itemInvoiceController.text = value.serial.toString();
-                                            controller.itemRemainController.text = "0";
-                                            controller.itemPayController.text = value.salesStatementForThePeriod.remain.toString();
-                                            controller.itemPayFocus.requestFocus();
-                                            controller.itemInvoice = value;
-                                          },
+                                          suggestionsCallback: (filter) => controller.customerBalance.value?.invoicesList.where((inv) => inv.serial != null && inv.serial.toString().contains(filter)) ?? [],
+                                          onSuggestionSelected: controller.onSelectInvoice ,
+                                        // (value) {
+                                          //   controller.itemInvoiceController.text = value.serial.toString();
+                                          //   controller.itemRemainController.text = "0";
+                                          //   controller.itemPayController.text = value.salesStatementForThePeriod.remain.toString();
+                                          //   controller.itemPayFocus.requestFocus();
+                                          //   controller.itemInvoice = value;
+                                          // },
                                       textFieldConfiguration: TextFieldConfiguration(
                                           controller: controller.itemInvoiceController,
                                           focusNode: controller.itemInvoiceFocus
-                                      ),),
+                                      ),
+                                      ),
                                     ),
                                   ])),
                               const SizedBox(width: 15),
@@ -300,6 +306,7 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                         textDirection: TextDirection.rtl,
                                         textAlign: TextAlign.center,
                                         controller: controller.itemPayController,
+                                        enabled: controller.isPayedEnabled.value,
                                         focusNode: controller.itemPayFocus,
                                         inputFormatters: [doubleInputFilter],
                                         onFieldSubmitted: (_) => controller.itemBankFocus.requestFocus(),
@@ -447,7 +454,9 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
                                                             GestureDetector(
-                                                              onTap: () {},
+                                                              onTap: () {
+                                                                controller.banksToPay.remove(kha);
+                                                              },
                                                               child: Container(
                                                                 alignment: Alignment.centerRight,
                                                                 height: size.height * .05,

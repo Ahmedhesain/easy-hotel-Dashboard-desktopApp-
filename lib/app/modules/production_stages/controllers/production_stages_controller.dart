@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
@@ -10,7 +11,7 @@ class ProductionStagesController extends GetxController{
 
   final List<ProductionStagesResponse> reports = [];
   final isLoading = true.obs;
-
+TextEditingController searchedInvoiceController = TextEditingController();
 
   @override
   void onInit() {
@@ -20,8 +21,9 @@ class ProductionStagesController extends GetxController{
 
   getStages() async {
     isLoading(true);
+    int? reportSerial = int.tryParse(searchedInvoiceController.text);
     final request = ProductionStagesRequest(
-        serial: Get.find<HomeController>().invoice.value!.serial!,
+        serial: reportSerial ?? Get.find<HomeController>().invoice.value!.serial!,
         branchId: UserManager().branchId,
         gallaryId: UserManager().galleryId,
     );

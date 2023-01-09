@@ -43,7 +43,7 @@ class CustomerInfoWidget extends GetView<HomeController> {
                   ),
                   const SizedBox(width: 10),
                   const Text(
-                    "الخطوه",
+                    "الطول",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
@@ -52,31 +52,32 @@ class CustomerInfoWidget extends GetView<HomeController> {
                   const SizedBox(width: 5),
                   Expanded(
                     child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: TextFormField(
-                          controller: TextEditingController(
-                              text: controller.selectedCustomer.value?.step.toString()),
-                          decoration: const InputDecoration(border: InputBorder.none, isDense: true),
-                          textAlign: TextAlign.center,
-                          textDirection: TextDirection.ltr,
-                          inputFormatters: [doubleInputFilter],
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              controller.selectedCustomer.value?.step = 0;
-                              return;
-                            }
-                            controller.selectedCustomer.value?.step = double.parse(value);
-                          },
-                        )
+                      decoration: BoxDecoration(
+                        color: Colors.white70,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: TextFormField(
+                        controller: TextEditingController(
+                            text: controller.selectedCustomer.value?.length.toString()),
+                        decoration: const InputDecoration(border: InputBorder.none, isDense: true),
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.ltr,
+                        inputFormatters: [doubleInputFilter],
+                        onChanged: (value) {
+                          if (value.isEmpty) {
+                            controller.selectedCustomer.value?.length = 0;
+                            return;
+                          }
+                          controller.selectedCustomer.value?.length = double.parse(value);
+                        },
+                      ),
                       // child: Center(
                       //     child: Text(provider.clintSelected != null
-                      //         ? provider.clintSelected!.step!.toString()
+                      //         ? provider.clintSelected!.length!.toString()
                       //         : "")),
                     ),
                   ),
+
                   const SizedBox(width: 10),
                   const Text(
                     "الكتف",
@@ -115,7 +116,7 @@ class CustomerInfoWidget extends GetView<HomeController> {
                   ),
                   const SizedBox(width: 10),
                   const Text(
-                    "الطول",
+                    "الخطوه",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
@@ -124,28 +125,28 @@ class CustomerInfoWidget extends GetView<HomeController> {
                   const SizedBox(width: 5),
                   Expanded(
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white70,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: TextFormField(
-                        controller: TextEditingController(
-                            text: controller.selectedCustomer.value?.length.toString()),
-                        decoration: const InputDecoration(border: InputBorder.none, isDense: true),
-                        textAlign: TextAlign.center,
-                        textDirection: TextDirection.ltr,
-                        inputFormatters: [doubleInputFilter],
-                        onChanged: (value) {
-                          if (value.isEmpty) {
-                            controller.selectedCustomer.value?.length = 0;
-                            return;
-                          }
-                          controller.selectedCustomer.value?.length = double.parse(value);
-                        },
-                      ),
+                        decoration: BoxDecoration(
+                          color: Colors.white70,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextFormField(
+                          controller: TextEditingController(
+                              text: controller.selectedCustomer.value?.step.toString()),
+                          decoration: const InputDecoration(border: InputBorder.none, isDense: true),
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.ltr,
+                          inputFormatters: [doubleInputFilter],
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              controller.selectedCustomer.value?.step = 0;
+                              return;
+                            }
+                            controller.selectedCustomer.value?.step = double.parse(value);
+                          },
+                        )
                       // child: Center(
                       //     child: Text(provider.clintSelected != null
-                      //         ? provider.clintSelected!.length!.toString()
+                      //         ? provider.clintSelected!.step!.toString()
                       //         : "")),
                     ),
                   ),
@@ -166,10 +167,18 @@ class CustomerInfoWidget extends GetView<HomeController> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: TextFormField(
+
                           controller: TextEditingController(
+
                               text: controller.selectedCustomer.value?.mobile.toString()),
-                          decoration: const InputDecoration(border: InputBorder.none, isDense: true),
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              isDense: true,
+                            counterText: ""
+                          ),
                           textAlign: TextAlign.center,
+                          maxLength: 12,
+
                           textDirection: TextDirection.ltr,
                           onChanged: (value) {
                             controller.selectedCustomer.value?.mobile = value;

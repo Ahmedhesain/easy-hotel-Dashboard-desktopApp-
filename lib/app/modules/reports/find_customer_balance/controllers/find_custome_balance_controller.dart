@@ -4,7 +4,9 @@ import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_balance_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/clients_no_movement_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/find_custome_balance_request.dart';
@@ -27,8 +29,8 @@ class FindCustomerBalanceController extends GetxController{
   final reports = <FindCustomersBalanceResponse>[].obs;
   final isLoading = false.obs;
   String query = '';
-  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
-  Rxn<DeliveryPlaceResposne> selectedDeliveryPlace = Rxn();
+  final deliveryPlaces = <GalleryResponse>[].obs;
+  Rxn<GalleryResponse> selectedDeliveryPlace = Rxn();
   final Rxn<DateTime> dateFrom = Rxn();
   final Rxn<DateTime> dateTo = Rxn();
 
@@ -61,8 +63,8 @@ class FindCustomerBalanceController extends GetxController{
     );
   }
   Future<void> getDeliveryPlaces() {
-    return InvoiceRepository().findInventoryByBranch(
-      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
+    return InvoiceRepository().getGalleries(
+      GalleryRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
 
         deliveryPlaces.assignAll(data);

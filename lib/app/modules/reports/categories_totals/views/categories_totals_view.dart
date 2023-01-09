@@ -261,61 +261,61 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               headerHeight: 40,
               rows: [
                 //
-                for (int i = 1 ;i<=reports.length;i++)
-                  if(reports[i].rowType!=null)
-                [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 7),
-                    child: Text(
-                      "",
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 7),
-                    child: Text(
-                      UserManager().galleryName,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 7),
-                    child: Text(
-                      reports.fold<num>(0, (p, e) => p + (e.number??0)).toStringAsFixed(2),
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 7),
-                    child: Text(
-                      reports.fold<num>(0, (p, e) => p + (e.allCost??0)).toStringAsFixed(2),
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 7),
-                    child: Text(
-                      reports.fold<num>(0, (p, e) => p + (e.allAvarageCost??0)).toStringAsFixed(2),
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
+                // for (int i = 1 ;i < reports.length;i++)
+                //   if(reports[i].rowType!=null)
+                // [
+                //   const Padding(
+                //     padding: EdgeInsets.symmetric(horizontal: 7),
+                //     child: Text(
+                //       "",
+                //       maxLines: 2,
+                //       textAlign: TextAlign.center,
+                //       style: TextStyle(color: Colors.white),
+                //     ),
+                //   ),
+                //   Padding(
+                //     padding: const EdgeInsets.symmetric(horizontal: 7),
+                //     child: Text(
+                //       UserManager().galleryName,
+                //       maxLines: 2,
+                //       textAlign: TextAlign.center,
+                //       style: const TextStyle(color: Colors.white),
+                //     ),
+                //   ),
+                //   Padding(
+                //     padding: const EdgeInsets.symmetric(horizontal: 7),
+                //     child: Text(
+                //       reports.fold<num>(0, (p, e) => p + (e.number??0)).toStringAsFixed(2),
+                //       maxLines: 2,
+                //       textAlign: TextAlign.center,
+                //       style: const TextStyle(color: Colors.white),
+                //     ),
+                //   ),
+                //   Padding(
+                //     padding: const EdgeInsets.symmetric(horizontal: 7),
+                //     child: Text(
+                //       reports.fold<num>(0, (p, e) => p + (e.allCost??0)).toStringAsFixed(2),
+                //       maxLines: 2,
+                //       textAlign: TextAlign.center,
+                //       style: const TextStyle(color: Colors.white),
+                //     ),
+                //   ),
+                //   Padding(
+                //     padding: const EdgeInsets.symmetric(horizontal: 7),
+                //     child: Text(
+                //       reports.fold<num>(0, (p, e) => p + (e.allAvarageCost??0)).toStringAsFixed(2),
+                //       maxLines: 2,
+                //       textAlign: TextAlign.center,
+                //       style: const TextStyle(color: Colors.white),
+                //     ),
+                //   ),
+                // ],
                 for (final report in reports)
                   [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 7),
                       child: Text(
-                        report.code.toString(),
+                        report.code?.toString()??'',
                         maxLines: 2,
                         textAlign: TextAlign.center,
                         style: const TextStyle(color: Colors.black),
@@ -324,7 +324,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 7),
                       child: Text(
-                        report.name.toString(),
+                        report.name?.toString() ?? '',
                         maxLines: 2,
                         textAlign: TextAlign.center,
                         style: const TextStyle(color: Colors.black),

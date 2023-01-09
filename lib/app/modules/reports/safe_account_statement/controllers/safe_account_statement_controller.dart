@@ -27,8 +27,8 @@ class SafeAccountStatementController extends GetxController{
   final dateTo = DateTime.now().obs;
   final treasuries = List<TreasuryModel>.empty(growable: true);
   final user = UserManager();
-  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
-  RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
+  final deliveryPlaces = <GalleryResponse>[].obs;
+  RxList <GalleryResponse> selectedDeliveryPlace = RxList();
 
   @override
   onInit(){
@@ -59,8 +59,8 @@ class SafeAccountStatementController extends GetxController{
   getSales() async {
     isLoading(true);
     error =null;
-    final request = SafeAccountStatementRequest(
-      glBankDTOListSelected: selectedBanks,
+    final request =     SafeAccountStatementRequest(
+      glBankDTOListSelected: selectedBanks.value,
       glYearSelected:{"id": 73},
       branchId: UserManager().branchId,
       dateFrom: dateFrom.value,
@@ -98,10 +98,10 @@ class SafeAccountStatementController extends GetxController{
     }
   }
   Future<void> getDeliveryPlaces() {
-    return InvoiceRepository().findInventoryByBranch(
-      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
+    return InvoiceRepository().getGalleries(
+      GalleryRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
-        data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
+        data.insert(0, GalleryResponse(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
           getBanks();

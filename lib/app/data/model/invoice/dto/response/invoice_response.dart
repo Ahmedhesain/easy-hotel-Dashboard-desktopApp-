@@ -67,7 +67,10 @@ class InvoiceModel {
       this.invNoticeValueTotal,
       this.invPurchaseInvoice,
       this.totalNet,
-      this.supplierDate});
+      this.supplierDate,
+      this.msg,
+      this.gallaryDeliveryShow,
+      this.invoiceStatus});
 
   String? type;
   String? customerNotice;
@@ -123,7 +126,7 @@ class InvoiceModel {
   num? noticeCredit;
   num? noticeDebit;
   int? proof;
-  int? checkSendSms;
+  bool? checkSendSms;
   num? remain;
   num? returnPurchaseValue;
   num? serialTax;
@@ -145,6 +148,9 @@ class InvoiceModel {
   List<GlPayDTO>? glPayDTOList;
   String? offerCopoun;
   int? proFactoryDeliveryId;
+  String? msg;
+
+  int? gallaryDeliveryShow;
 
   static List<InvoiceModel> fromList(List<dynamic> json) => List<InvoiceModel>.from(json.map((e) => InvoiceModel.fromJson(e)));
 
@@ -166,7 +172,7 @@ class InvoiceModel {
         typeInv: json["typeInv"],
         customerId: json["customerId"],
         daribaValue: json["daribaValue"],
-    invNoticeOrderId: json["invNoticeOrderId"],
+        invNoticeOrderId: json["invNoticeOrderId"],
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
         invPurchaseInvoice: json["invPurchaseInvoice"],
         discount: json["discount"],
@@ -183,7 +189,8 @@ class InvoiceModel {
         segilValue: json["segilValue"],
         taxvalue: json["taxvalue"],
         invoiceDetailApiList: List<InvoiceDetailsModel>.from((json["invoiceDetailApiList"] ?? []).map((e) => InvoiceDetailsModel.fromJson(e))),
-        invoiceDetailApiListDeleted: List<InvoiceDetailsModel>.from((json["invoiceDetailApiListDeleted"] ?? []).map((e) => InvoiceDetailsModel.fromJson(e))),
+        invoiceDetailApiListDeleted:
+            List<InvoiceDetailsModel>.from((json["invoiceDetailApiListDeleted"] ?? []).map((e) => InvoiceDetailsModel.fromJson(e))),
         totalNetAfterDiscount: json["totalNetAfterDiscount"],
         step: json["step"],
         status: json["status"],
@@ -214,6 +221,9 @@ class InvoiceModel {
         customerBalance: json["customerBalance"],
         index: json["index"],
         createdByName: json["createdByName"],
+        msg: json["msg"],
+        gallaryDeliveryShow: json["gallaryDeliveryShow"],
+    invoiceStatus: json["invoiceStatus"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -253,6 +263,8 @@ class InvoiceModel {
         "invoicetype": invoiceType,
         "proof": proof,
         "serial": serial,
+        "msg": msg,
+        "gallaryDeliveryShow": gallaryDeliveryShow,
         "totalNetAfterDiscount": totalNetAfterDiscount,
         "invoiceDetailApiList": invoiceDetailApiList?.map((e) => e.toJson()).toList(),
         "invoiceDetailApiListDeleted": invoiceDetailApiListDeleted?.map((e) => e.toJson()).toList(),

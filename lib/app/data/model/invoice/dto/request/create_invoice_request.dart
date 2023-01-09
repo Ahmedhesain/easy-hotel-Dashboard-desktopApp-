@@ -36,7 +36,7 @@ class CreateInvoiceRequest {
   final num? finalNet;
   final num? totalNet;
   final num? taxvalue;
-  final int? checkSendSms;
+  final bool? checkSendSms;
   final int? serial;
   final int? generalJournalId;
   final int? typeInv;

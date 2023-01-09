@@ -21,8 +21,8 @@ class ItemsSalesByCustomersController extends GetxController{
   final isLoading = false.obs;
   final dateFrom = DateTime.now().obs;
   final dateTo = DateTime.now().obs;
-  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
-  RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
+  final deliveryPlaces = <GalleryResponse>[].obs;
+  RxList <GalleryResponse> selectedDeliveryPlace = RxList();
 
 
   @override
@@ -108,10 +108,10 @@ class ItemsSalesByCustomersController extends GetxController{
   //
   // }
   Future<void> getDeliveryPlaces() {
-    return InvoiceRepository().findInventoryByBranch(
-      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
+    return InvoiceRepository().getGalleries(
+      GalleryRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
-        data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
+        data.insert(0, GalleryResponse(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
           // selectedDeliveryPlace(deliveryPlaces.first);

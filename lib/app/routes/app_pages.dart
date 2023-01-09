@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:toby_bills/app/modules/crm/views/add_crm_event_view.dart';
 
 import '../modules/account_statement/bindings/account_statement_binding.dart';
 import '../modules/account_statement/views/account_statement_view.dart';
@@ -6,6 +7,7 @@ import '../modules/catch_receipt/bindings/catch_receipt_binding.dart';
 import '../modules/catch_receipt/views/catch_receipt_view.dart';
 import '../modules/catch_receipt_another_gallery/bindings/catch_receipt_another_gallery_binding.dart';
 import '../modules/catch_receipt_another_gallery/views/catch_receipt_another_gallery_view.dart';
+import '../modules/crm/bindings/crm_event_binding.dart';
 import '../modules/customer_account_statement/bindings/customer_account_statement_binding.dart';
 import '../modules/customer_account_statement/views/customer_account_statement_view.dart';
 import '../modules/edit_bills/bindings/edit_bills_binding.dart';
@@ -288,6 +290,10 @@ class AppPages {
       name: _Paths.INVOICES_QUERY,
       page: () => const InvoicesQueryView(),
       binding: InvoicesQueryBinding(),
+    ),  GetPage(
+      name: _Paths.CRM_EVENT,
+      page: () => const CrmEventView(),
+      binding: CrmEventBinding(),
     ),
   ];
 }

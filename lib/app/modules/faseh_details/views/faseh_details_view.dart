@@ -76,7 +76,7 @@ class FasehDetailsView extends GetView<FasehDetailsController> {
                                   if ((permissions?.edit ?? false) || controller.invoiceModel.value?.id == null)
                                     ButtonWidget(text: 'حفظ', onPressed: () => controller.save(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                                   ButtonWidget(text: 'بحث', onPressed: () => controller.searchOnFaseh(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
-                                  if (controller.invoiceModel.value != null && (permissions?.edit ?? false))
+                                  if (controller.invoiceModel.value != null)
                                     ButtonWidget(
                                       text: 'طباعة',
                                       onPressed: () => controller.print(context),

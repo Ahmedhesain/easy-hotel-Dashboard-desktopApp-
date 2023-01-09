@@ -40,7 +40,7 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: Center(
                   child: Container(width: size.width*.97,
-                      height: size.height*.96,
+                      height: size.height,
                       decoration: BoxDecoration(
                           borderRadius: const BorderRadius.all(
                               Radius.circular(10)),
@@ -56,11 +56,10 @@ class InvoiceMovementView extends GetView<InvoiceMovementController> {
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
-                                height: size.height*.28,
+                                height: size.height*.3 ,
                                 width: size.width*.95,
                                 child: Column(
                                   children: [
-
                                     Center(
                                       child: Padding(
                                         padding:  EdgeInsets.fromLTRB(0, 10, size.width*.11, 0),

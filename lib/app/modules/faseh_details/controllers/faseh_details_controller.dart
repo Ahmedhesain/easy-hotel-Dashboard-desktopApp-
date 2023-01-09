@@ -80,7 +80,7 @@ class FasehDetailsController extends GetxController {
           customer("${data.iosName} ${data.iosCode}");
           invoiceDate(data.invDate);
           supplierDate.value = null;
-          if(inventories.any((element) => element.id == data.invId)) {
+          if (inventories.any((element) => element.id == data.invId)) {
             selectedInventory(inventories.singleWhere((element) => element.id == data.invId));
             itemSelectedInventory(inventories.singleWhere((element) => element.id == data.invId));
           }
@@ -138,10 +138,15 @@ class FasehDetailsController extends GetxController {
     );
     InvoiceRepository().saveFasehInvoice(request,
         onSuccess: (data) {
-          request.serial = data;
-          invoiceModel(request);
-          isSaved(true);
-          showPopupText(text: "تم الحفظ بنجاح", type: MsgType.success);
+          if (data.serial != null) {
+            request.serial = data.serial;
+            request.id = data.id;
+            invoiceModel(request);
+            isSaved(true);
+            showPopupText(text: "تم الحفظ بنجاح", type: MsgType.success);
+          } else {
+            showPopupText(text: "لم يتم الحفظ", type: MsgType.success);
+          }
         },
         onError: (error) {
           showPopupText(text: error);
@@ -198,12 +203,16 @@ class FasehDetailsController extends GetxController {
 
   print(BuildContext context) {
     isLoading(true);
-    InvoiceRepository().findFasehBySerial(FindFasehRequest(serial: fasehSearchController.text),
-        onSuccess: (data) {
-          PrintingHelper().fash(context, data.invoiceDetailApiList!, data);
-        },
-        onComplete: () => isLoading(false),
-        onError: (e) => showPopupText(text: e.toString()));
+    if (invoiceModel.value != null && invoiceModel.value!.serial != null) {
+      InvoiceRepository().findFasehBySerial(FindFasehRequest(serial: invoiceModel.value!.serial.toString()),
+          onSuccess: (data) {
+            PrintingHelper().fash(context, data.invoiceDetailApiList!, data);
+          },
+          onComplete: () => isLoading(false),
+          onError: (e) => showPopupText(text: e.toString()));
+    } else {
+      showPopupText(text: "يجب اختيار الفاتوره");
+    }
   }
 
   delete() {

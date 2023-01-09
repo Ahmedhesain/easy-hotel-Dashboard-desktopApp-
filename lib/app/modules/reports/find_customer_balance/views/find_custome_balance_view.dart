@@ -23,6 +23,8 @@ import 'package:toby_bills/app/modules/reports/find_customer_balance/controllers
 import 'package:toby_bills/app/modules/reports/profit_sold/controllers/profit_sold_controller.dart';
 import 'package:toby_bills/app/modules/reports/sales_items_by_company/controllers/sales_items_by_company_controller.dart';
 
+import '../../../../data/model/invoice/dto/response/gallery_response.dart';
+
 
 class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
   const FindCustomerBalanceView({super.key});
@@ -80,10 +82,10 @@ class FindCustomerBalanceView extends GetView<FindCustomerBalanceController> {
                                                     border: Border.all(color: Colors.grey)),
                                                 child:
                                                 Obx(() {
-                                                  return DropdownSearch<DeliveryPlaceResposne>(
+                                                  return DropdownSearch<GalleryResponse>(
                                                     // showSearchBox: true,
                                                     items: controller.deliveryPlaces,
-                                                    itemAsString: (DeliveryPlaceResposne e) => e.name??"",
+                                                    itemAsString: (GalleryResponse e) => e.name??"",
                                                     onChanged: controller.selectedDeliveryPlace,
                                                     selectedItem: controller.selectedDeliveryPlace.value,
                                                     dropdownDecoratorProps: const DropDownDecoratorProps(

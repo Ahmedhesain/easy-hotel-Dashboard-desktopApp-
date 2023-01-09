@@ -23,6 +23,8 @@ class InvoiceInfoWidget extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size ;
+    const space = SizedBox(height: 15);
     return Column(
       children: [
         const SizedBox(height: 10),
@@ -40,7 +42,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                 if (controller.invoice.value?.id != null) const SizedBox(width: 10),
                 const Text('الحالة:'),
                 const SizedBox(width: 5),
-                Expanded(flex: 2, child: Text(controller.invoice.value?.status?.toString() ?? "")),
+                Expanded(flex: 2, child: Text(controller.invoice.value?.invoiceStatus?.toString() ?? "")),
                 const SizedBox(width: 10),
                 const Text('تحديد السعر:'),
                 const SizedBox(width: 5),
@@ -280,10 +282,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                   child: TypeAheadFormField<FindCustomerResponse>(
                       itemBuilder: (context, client) {
                         return SizedBox(
-                          height: 50,
-                          child: Center(
-                            child: Text("${client.name} ${client.code}"),
-                          ),
+                          child: Text("${client.name}_${client.code}"),
                         );
                       },
                       suggestionsCallback: (filter) => controller.customers,
@@ -335,23 +334,133 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                   final newCustomer = CreateCustomerRequest();
                   Get.dialog(AlertDialog(
                     title: const Center(child: Text("إضافة عميل")),
-                    content: Form(
-                      key: formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextFieldWidget(label: "اسم العميل", onChanged: (value) => newCustomer.name = value, validator: AppValidator.forceValue),
-                          const SizedBox(height: 15),
-                          TextFieldWidget(label: "هاتف العميل", onChanged: (value) => newCustomer.mobile = value, validator: AppValidator.forceValue,textAlign: TextAlign.left,textDirection: TextDirection.ltr,),
-                          const SizedBox(height: 15),
-                          TextFieldWidget(label: "إيميل العميل", onChanged: (value) => newCustomer.email = value),
-                          const SizedBox(height: 15),
-                          TextFieldWidget(label: "الطول", onChanged: (value) => newCustomer.length = double.tryParse(value), justNumbers: true),
-                          const SizedBox(height: 15),
-                          TextFieldWidget(label: "الكتف", onChanged: (value) => newCustomer.shoulder = double.tryParse(value), justNumbers: true),
-                          const SizedBox(height: 15),
-                          TextFieldWidget(label: "الخطوة", onChanged: (value) => newCustomer.step = double.tryParse(value), justNumbers: true),
-                        ],
+                    content: SizedBox(
+                      child: Form(
+                        key: formKey,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: size.width * 0.7,
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                        width: size.width * 0.2 ,
+                                        child: TextFieldWidget(label: "اسم العميل", onChanged: (value) => newCustomer.name = value, validator: AppValidator.forceValue)),
+                                    const SizedBox(width: 15),
+                                    SizedBox(
+                                        width: size.width * 0.2 ,
+                                        child: TextFieldWidget(label: "هاتف العميل", onChanged: (value) => newCustomer.mobile = value, validator: AppValidator.forceValue,textAlign: TextAlign.left,textDirection: TextDirection.ltr,maxLength: 12,)),
+                                    const SizedBox(width: 15),
+                                    SizedBox(
+                                        width: size.width * 0.2 ,
+                                        child: TextFieldWidget(label: "إيميل العميل", onChanged: (value) => newCustomer.email = value)),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                width: size.width * 0.7,
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                        width: size.width * 0.2 ,
+                                        child: TextFieldWidget(label: "الطول", onChanged: (value) => newCustomer.length = double.tryParse(value))),
+                                    const SizedBox(width: 15),
+                                    SizedBox(
+                                        width: size.width * 0.2 ,
+                                        child: TextFieldWidget(label: "الكتف", onChanged: (value) => newCustomer.shoulder = double.tryParse(value))),
+                                    const SizedBox(width: 15),
+                                    SizedBox(
+                                        width: size.width * 0.2 ,
+                                        child: TextFieldWidget(label: "الخطوة", onChanged: (value) => newCustomer.step = double.tryParse(value))),
+                                  ],
+                                ),
+                              ),
+                              space,
+                              SizedBox(
+                                width: size.width *0.7,
+                                child: ExpansionTile(
+                                  title: const Text("معلومات اضافية") , collapsedBackgroundColor: Colors.grey[200],
+                                  childrenPadding: const EdgeInsets.all(4),
+                                  children: [
+                                    SizedBox(
+                                      width: size.width * 0.7,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "مصدر العميل", onChanged: (value) {})),
+                                          const SizedBox(width: 15),
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "الرقم القومي", onChanged: (value) {newCustomer.nationId = value;},textAlign: TextAlign.left,textDirection: TextDirection.ltr,)),
+                                          const SizedBox(width: 15),
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "باسبور", onChanged: (value) => {newCustomer.passport = value})),
+                                        ],
+                                      ),
+                                    ),
+                                    space,
+                                    SizedBox(
+                                      width: size.width * 0.7,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "اسم الشارع", onChanged: (value) => {newCustomer.streeName = value})),
+                                          const SizedBox(width: 15),
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "اسم الشارع اضافي", onChanged: (value) => {newCustomer.additionalStreetName = value},textAlign: TextAlign.left,textDirection: TextDirection.ltr,)),
+                                          const SizedBox(width: 15),
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "رقم البنايه", onChanged: (value) {newCustomer.buildingNumber = value;})),
+                                        ],
+                                      ),
+                                    ),
+                                    space,
+                                    SizedBox(
+                                      width: size.width * 0.7,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "plot_identification", onChanged: (value) => {newCustomer.plotIdentification = value})),
+                                          const SizedBox(width: 15),
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "city_subdivision_name", onChanged: (value) => {newCustomer.citySubdivisionName = value},textAlign: TextAlign.left,textDirection: TextDirection.ltr,)),
+                                          const SizedBox(width: 15),
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "postal_zone", onChanged: (value) {newCustomer.postalZone = value;})),
+                                        ],
+                                      ),
+                                    ),
+                                    space,
+                                    SizedBox(
+                                      width: size.width * 0.7,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "country_subentity", onChanged: (value) => {newCustomer.countrySubentity = value})),
+                                          const SizedBox(width: 15),
+
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     actions: [

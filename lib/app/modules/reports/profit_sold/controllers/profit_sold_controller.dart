@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/request/gallery_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/request/get_delivery_place_request.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/profit_of_Items_sold_request.dart';
 import 'package:toby_bills/app/data/model/reports/dto/response/profit_of_items_sold_response.dart';
@@ -19,8 +21,8 @@ class ProfitSoldController extends GetxController{
   final reports = <ProfitOfItemsSoldResponse>[].obs;
   final isLoading = false.obs;
   String query = '';
-  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
-  RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
+  final deliveryPlaces = <GalleryResponse>[].obs;
+  RxList <GalleryResponse> selectedDeliveryPlace = RxList();
   final groups = <AllGroupResponse>[].obs;
   RxList <AllGroupResponse> selectedGroup = RxList();
   final Rxn<DateTime> dateFrom = Rxn();
@@ -71,10 +73,10 @@ class ProfitSoldController extends GetxController{
     );
   }
   Future<void> getDeliveryPlaces() {
-    return InvoiceRepository().findInventoryByBranch(
-      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
+    return InvoiceRepository().getGalleries(
+      GalleryRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
-        data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
+        data.insert(0, GalleryResponse(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         // if (deliveryPlaces.isNotEmpty) {
         //   // deliveryPlaces.insert(0, );

@@ -47,12 +47,13 @@ import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 import 'package:window_manager/window_manager.dart';
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
+import '../../../data/model/invoice/dto/request/gallary_show_request.dart';
 import '../../../data/model/invoice/dto/response/get_delivery_place_response.dart';
 
 class HomeController extends GetxController {
   final isLoading = false.obs;
   final isProof = false.obs;
-  final checkSendSms = false.obs;
+  final checkSendSms = true.obs;
   final isItemProof = false.obs;
   final isItemRemains = false.obs;
   final discountHalala = RxNum(0.0);
@@ -134,6 +135,7 @@ class HomeController extends GetxController {
 
   bool get canEdit => UserManager().user.userScreens["proworkorder"]?.edit ?? false;
 
+
   @override
   void onInit() async {
     super.onInit();
@@ -170,7 +172,7 @@ class HomeController extends GetxController {
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
-          invoiceCustomerFieldFocusNode.requestFocus();
+            invoiceCustomerFieldFocusNode.requestFocus();
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
@@ -179,7 +181,10 @@ class HomeController extends GetxController {
   Future<void> getDueDate({bool withLoading = false}) {
     if (withLoading) isLoading(true);
     return InvoiceRepository().findDueDateDTOAPI(GetDueDateRequest(branchId: UserManager().branchId, id: selectedGallery.value?.id),
-        onSuccess: (data) => dueDate(data),
+        onSuccess: (data){
+          dueDate(data);
+          date(DateTime.now());
+        } ,
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () {
           if (withLoading) {
@@ -311,6 +316,7 @@ class HomeController extends GetxController {
         .findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
             onSuccess: (data) {
               invoice(data);
+
               selectedPriceType(data.pricetype);
               if (galleries.any((element) => element.id == data.gallaryId)) {
                 selectedGallery(galleries.singleWhere((element) => element.id == data.gallaryId));
@@ -360,6 +366,8 @@ class HomeController extends GetxController {
               invoiceCustomerController.text = "${data.customerName} ${data.customerCode}";
               discountHalala(data.discHalala);
               calcInvoiceValues();
+              remain(data.remain);
+              payed(data.payed);
             },
             onError: (error) => showPopupText(text: error.toString()),
             onComplete: () => isLoading(false));
@@ -370,6 +378,7 @@ class HomeController extends GetxController {
     CustomerRepository().getCustomerBalance(FindCustomerBalanceRequest(id: id),
         onSuccess: (data) {
           selectedCustomer.value!.balanceLimit = data;
+          selectedCustomer.refresh();
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
@@ -406,6 +415,8 @@ class HomeController extends GetxController {
     itemNoticeController.clear();
     itemDiscountController.clear();
     itemDiscountValueController.clear();
+    findSideCustomerController.clear();
+    searchedInvoiceController.clear();
     isItemProof(false);
     isItemRemains(false);
     itemAvailableQuantity.value = null;
@@ -435,6 +446,7 @@ class HomeController extends GetxController {
               noQuantity();
             } else {
               showPopupText(text: "لا يوجد كمية متاحة");
+              itemAvailableQuantity(data.availableQuantity);
               itemNameController.clear();
               itemNameFocusNode.requestFocus();
             }
@@ -594,7 +606,7 @@ class HomeController extends GetxController {
       branchId: UserManager().branchId,
       gallaryId: UserManager().galleryId,
       date: date.value,
-      checkSendSms: checkSendSms.value ? 1 : 0,
+      checkSendSms: checkSendSms.value,
       companyId: UserManager().companyId,
       createdBy: UserManager().id,
       createdDate: DateTime.now(),
@@ -661,7 +673,7 @@ class HomeController extends GetxController {
     invoiceDiscountController.clear();
     selectedInvoiceType(AppConstants.invoiceTypeList.first);
     isProof(false);
-    checkSendSms(false);
+    checkSendSms(true);
     invoiceRemarkController.clear();
     selectedCustomer.value = null;
     invoiceDetails.clear();
@@ -787,6 +799,7 @@ class HomeController extends GetxController {
           itemPriceController.text = item.minPriceYoung.toString();
         }
       }
+      calcItemData();
     }
   }
 
@@ -856,6 +869,21 @@ class HomeController extends GetxController {
       },
       onError: (error) => showPopupText(text: error.toString()),
       onComplete: () => isLoading(false),
+    );
+  }
+
+  void updateGallaryDeliveryShow(){
+    if(invoice.value?.gallaryDeliveryShow == 2){
+      showPopupText(text: "تم الحفظ من قبل");
+      return ;
+    }
+    isLoading(true);
+    final request = GallaryDeliveryShowRequest(invoice.value!.id!);
+    InvoiceRepository().invoiceGallaryDeliveryShow(
+        request,
+      onSuccess: (_) => showPopupText(text: "تم الحفظ بنجاح"),
+      onError: (_) => showPopupText(text: "حدثت مشكله اثناء الحفظ"),
+      onComplete: ()=> isLoading(false)
     );
   }
 }

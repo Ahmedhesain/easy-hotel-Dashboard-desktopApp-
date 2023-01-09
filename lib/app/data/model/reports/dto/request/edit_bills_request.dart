@@ -112,7 +112,7 @@ class GlBankTransactionApi {
     "customerId": customerId,
     "customerName": customerName,
     "gallaryId": gallaryId,
-    "glPayDtoApiListNew": [...(glPayDTOAPIList??[]).map((x) => x.toJson()).toList(),...(glPayDTOAPIList??[]).map((x) => x.toJson()).toList()],
+    "glPayDtoApiListNew": [...(glPayDTOAPIList??[]).map((x) => x.toJson()).toList()],
     "branchId": branchId,
     "companyId": companyId,
     "createdBy":createdBy

@@ -30,8 +30,8 @@ class InvoiceStatementByCaseController extends GetxController {
     "تسليم للعميل",
     "بالمعرض",
   ];
-  final deliveryPlaces = <DeliveryPlaceResposne>[].obs;
-  RxList <DeliveryPlaceResposne> selectedDeliveryPlace = RxList();
+  final deliveryPlaces = <GalleryResponse>[].obs;
+  RxList <GalleryResponse> selectedDeliveryPlace = RxList();
   @override
   onInit(){
     super.onInit();
@@ -84,10 +84,10 @@ class InvoiceStatementByCaseController extends GetxController {
   }
 
   Future<void> getDeliveryPlaces() {
-    return InvoiceRepository().findInventoryByBranch(
-      DeliveryPlaceRequest(branchId: UserManager().branchId, id: UserManager().id),
+    return InvoiceRepository().getGalleries(
+      GalleryRequest(branchId: UserManager().branchId, id: UserManager().id),
       onSuccess: (data) {
-        data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
+        data.insert(0, GalleryResponse(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
           // selectedDeliveryPlace(deliveryPlaces.first);

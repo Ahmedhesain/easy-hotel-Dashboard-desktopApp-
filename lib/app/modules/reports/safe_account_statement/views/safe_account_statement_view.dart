@@ -6,7 +6,9 @@ import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/scrollable_row.dart';
 import 'package:toby_bills/app/core/utils/printing_methods_helper.dart';
+import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 
+import '../../../../core/utils/excel_helper.dart';
 import '../controllers/safe_account_statement_controller.dart';
 
 class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
@@ -149,12 +151,15 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
                 child: const Text("طباعة"),
               ),
               const SizedBox(width: 15),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     ExcelHelper.treasuryStatementExcel(provider.statements, context);
-              //   },
-              //   child: const Text("تصدير الى اكسل"),
-              // ),
+              ElevatedButton(
+                onPressed: () {
+                  if(controller.statements.isNotEmpty){
+                  ExcelHelper.treasuryStatementExcel(controller.statements, context);}else{
+                    showPopupText(text: "لا يمكن تصدير مستند فارغ");
+                  }
+                },
+                child: const Text("تصدير الى اكسل"),
+              ),
             ];
           },
         ),
@@ -165,7 +170,7 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
             child: Builder(
               builder: (context){
                 const boldStyle = TextStyle(fontWeight: FontWeight.bold,fontFamily: "CairoBold");
-                const normalStyle = TextStyle(fontFamily: "Cairo");
+                //const normalStyle = TextStyle(fontFamily: "Cairo");
                 final grey = Colors.grey.shade400;
                 return CustomScrollView(
                   slivers: [
@@ -186,7 +191,7 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
                                         flex: 9,
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 15),
-                                          child: Text(bank.bankName ?? "",textAlign: TextAlign.right,style: normalStyle,),
+                                          child: Text(bank.bankName ?? "",textAlign: TextAlign.right,style: boldStyle,),
                                         ),
                                       ),
                                       const VerticalDivider(),
@@ -367,113 +372,128 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
                                   children: [
                                     const Divider(),
                                     IntrinsicHeight(
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const VerticalDivider(),
-                                          Expanded(
+                                      child: Container(
+                                        color: index.isEven ? Colors.grey[300] : Colors.white,
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const VerticalDivider(),
+                                            Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    statement.balance?.toStringAsFixed(2) ?? " ",
+                                                    style: boldStyle,
+                                                    textAlign: TextAlign.center,
+                                                    textDirection: TextDirection.rtl,
+                                                  ),
+                                                )),
+                                            const VerticalDivider(),
+                                            Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    statement.debitAmount?.toStringAsFixed(2) ?? " ",
+                                                    style: boldStyle,
+                                                    textAlign: TextAlign.center,
+                                                    textDirection: TextDirection.rtl,
+                                                  ),
+                                                )),
+                                            const VerticalDivider(),
+                                            Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    statement.remark ?? " ",
+                                                    style: boldStyle,
+                                                    textAlign: TextAlign.center,
+                                                    textDirection: TextDirection.rtl,
+                                                  ),
+                                                )),
+                                            const VerticalDivider(),
+                                            Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    statement.remark2 ?? " ",
+                                                    style: boldStyle,
+                                                    textAlign: TextAlign.center,
+                                                    textDirection: TextDirection.rtl,
+                                                  ),
+                                                )),
+                                            const VerticalDivider(),
+                                            Expanded(
+                                              flex: 2,
                                               child: Center(
                                                 child: Text(
-                                                  statement.balance?.toStringAsFixed(2) ?? " ",
-                                                  style: normalStyle,
+                                                  statement.customerName ?? " ",
+                                                  style: boldStyle,
                                                   textAlign: TextAlign.center,
                                                   textDirection: TextDirection.rtl,
                                                 ),
-                                              )),
-                                          const VerticalDivider(),
-                                          Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  statement.debitAmount?.toStringAsFixed(2) ?? " ",
-                                                  style: normalStyle,
-                                                  textAlign: TextAlign.center,
-                                                  textDirection: TextDirection.rtl,
-                                                ),
-                                              )),
-                                          const VerticalDivider(),
-                                          Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  statement.remark ?? " ",
-                                                  style: normalStyle,
-                                                  textAlign: TextAlign.center,
-                                                  textDirection: TextDirection.rtl,
-                                                ),
-                                              )),
-                                          const VerticalDivider(),
-                                          Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  statement.remark2 ?? " ",
-                                                  style: normalStyle,
-                                                  textAlign: TextAlign.center,
-                                                  textDirection: TextDirection.rtl,
-                                                ),
-                                              )),
-                                          const VerticalDivider(),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Center(
-                                              child: Text(
-                                                statement.customerName ?? " ",
-                                                style: normalStyle,
-                                                textAlign: TextAlign.center,
-                                                textDirection: TextDirection.rtl,
                                               ),
                                             ),
-                                          ),
-                                          const VerticalDivider(),
-                                          Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  statement.customerCode ?? " ",
-                                                  style: normalStyle,
-                                                  textAlign: TextAlign.center,
-                                                  textDirection: TextDirection.rtl,
-                                                ),
-                                              )),
-                                          const VerticalDivider(),
-                                          Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  statement.invoiceNumber?.toString() ?? "",
-                                                  style: normalStyle,
-                                                  textAlign: TextAlign.center,
-                                                  textDirection: TextDirection.rtl,
-                                                ),
-                                              )),
-                                          const VerticalDivider(),
-                                          Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  statement.transactionType ?? " ",
-                                                  style: normalStyle,
-                                                  textAlign: TextAlign.center,
-                                                  textDirection: TextDirection.rtl,
-                                                ),
-                                              )),
-                                          const VerticalDivider(),
-                                          Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  statement.serial?.toString() ?? " ",
-                                                  style: normalStyle,
-                                                  textAlign: TextAlign.center,
-                                                  textDirection: TextDirection.rtl,
-                                                ),
-                                              )),
-                                          const VerticalDivider(),
-                                          Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  statement.date == null ? "" : DateFormat("MM-dd-yyyy").format(statement.date!),
-                                                  style: normalStyle,
-                                                  textAlign: TextAlign.center,
-                                                  textDirection: TextDirection.rtl,
-                                                ),
-                                              )),
-                                          const VerticalDivider(),
-                                        ],
+                                            const VerticalDivider(),
+                                            Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    statement.customerCode ?? " ",
+                                                    style: boldStyle,
+                                                    textAlign: TextAlign.center,
+                                                    textDirection: TextDirection.rtl,
+                                                  ),
+                                                )),
+                                            const VerticalDivider(),
+                                            Expanded(
+                                                child: Center(
+                                                  child: TextFormField(
+                                                    readOnly: true,
+                                                    initialValue:statement.invoiceNumber?.toString() ?? "" ,
+                                                    style: boldStyle,
+                                                    textAlign: TextAlign.center,
+                                                    textDirection: TextDirection.rtl,
+                                                    decoration: const InputDecoration(
+                                                      enabledBorder: InputBorder.none,
+                                                      border: InputBorder.none,
+                                                      disabledBorder: InputBorder.none
+                                                    ),
+                                                  ),
+                                                )),
+                                            const VerticalDivider(),
+                                            Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    statement.transactionType ?? " ",
+                                                    style: boldStyle,
+                                                    textAlign: TextAlign.center,
+                                                    textDirection: TextDirection.rtl,
+                                                  ),
+                                                )),
+                                            const VerticalDivider(),
+                                            Expanded(
+                                                child: Center(
+                                                  child: TextFormField(
+                                                    readOnly: true,
+                                                    initialValue:statement.serial?.toString() ?? " " ,
+                                                    style: boldStyle,
+                                                    textAlign: TextAlign.center,
+                                                    textDirection: TextDirection.rtl,
+                                                    decoration: const InputDecoration(
+                                                        enabledBorder: InputBorder.none,
+                                                        border: InputBorder.none,
+                                                        disabledBorder: InputBorder.none
+                                                    ),
+                                                  ),
+                                                )),
+                                            const VerticalDivider(),
+                                            Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    statement.date == null ? "" : DateFormat("MM-dd-yyyy").format(statement.date!),
+                                                    style: boldStyle,
+                                                    textAlign: TextAlign.center,
+                                                    textDirection: TextDirection.rtl,
+                                                  ),
+                                                )),
+                                            const VerticalDivider(),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     // const Divider(height: 2,thickness: 2,color: Colors.black)
@@ -498,7 +518,7 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
                                       Expanded(
                                         child: Text(
                                           bank.statements.first.totalDebit?.toStringAsFixed(2) ?? "",
-                                          style: normalStyle,
+                                          style: boldStyle,
                                           textAlign: TextAlign.center,
                                         ),
                                       ),

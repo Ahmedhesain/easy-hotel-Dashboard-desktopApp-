@@ -12,6 +12,7 @@ import 'package:toby_bills/app/data/model/general_journal/dto/response/account_s
 import 'package:toby_bills/app/data/model/general_journal/generaljournaldetail_model.dart';
 import 'package:toby_bills/app/data/model/general_journal/genraljournal.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
+import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/get_delivery_place_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/invoice_response.dart';
@@ -4772,7 +4773,7 @@ class PrintingHelper {
         });
   }
 
-  void printSalesItemsByCompany(m.BuildContext context, List<SalesOfItemsByCompanyResponse> data,DateTime datefrom,DateTime dateto,List<DeliveryPlaceResposne> deliverysel) async {
+  void printSalesItemsByCompany(m.BuildContext context, List<SalesOfItemsByCompanyResponse> data,DateTime datefrom,DateTime dateto,List<GalleryResponse> deliverysel) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
     final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
@@ -4914,7 +4915,7 @@ class PrintingHelper {
         });
   }
 
-  void printProfitSold(m.BuildContext context, List<ProfitOfItemsSoldResponse> data,DateTime datefrom,DateTime dateto,List<DeliveryPlaceResposne> deliverysel,String stat) async {
+  void printProfitSold(m.BuildContext context, List<ProfitOfItemsSoldResponse> data,DateTime datefrom,DateTime dateto,List<GalleryResponse> deliverysel,String stat) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
     final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
@@ -5550,7 +5551,7 @@ class PrintingHelper {
         });
   }
 
-  void printCustomersBalance(m.BuildContext context, List<FindCustomersBalanceResponse> data,DeliveryPlaceResposne? deliverysel) async {
+  void printCustomersBalance(m.BuildContext context, List<FindCustomersBalanceResponse> data,GalleryResponse? deliverysel) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
     final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
@@ -6891,7 +6892,7 @@ class PrintingHelper {
         });
   }
 
-  void printInvoiceMovement(m.BuildContext context, List<InvoiceMovementResponse> data,DateTime datefrom,DateTime dateto,int frominvoice,int toinvoice,List<DeliveryPlaceResposne> deliverysel) async {
+  void printInvoiceMovement(m.BuildContext context, List<InvoiceMovementResponse> data,DateTime datefrom,DateTime dateto,int frominvoice,int toinvoice,List<GalleryResponse> deliverysel) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
     final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");

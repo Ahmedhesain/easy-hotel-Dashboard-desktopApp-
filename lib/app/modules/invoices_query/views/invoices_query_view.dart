@@ -97,7 +97,7 @@ class InvoicesQueryView extends GetView<InvoicesQueryController> {
                       "${e.customerCode}",
                       (e.customerName??""),
                       (e.customerMobile??""),
-                      (e.status??""),
+                      (e.invoiceStatus??""),
                       (e.invoiceLastStatus??""),
                       e.dueDate == null ? "" : DateFormat("yyyy-MM-dd").format(e.dueDate!),
                       (e.remain?.toString()??""),
@@ -107,13 +107,16 @@ class InvoicesQueryView extends GetView<InvoicesQueryController> {
                       (e.remarks??""),
                       "",
                     ].map((d) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: Text(
-                          d,
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
+                      return TextFormField(
+                        initialValue: d,
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                            enabledBorder: InputBorder.none,
+                            border: InputBorder.none,
+                            disabledBorder: InputBorder.none
                         ),
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
                       );
                     }).toList())
                         .toList(),

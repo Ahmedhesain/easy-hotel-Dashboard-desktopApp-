@@ -471,7 +471,7 @@ class PurchaseInvoicesController extends GetxController {
       branchId: UserManager().branchId,
       gallaryId: UserManager().galleryId,
       date: date.value,
-      checkSendSms: checkSendSms.value ? 1 : 0,
+      checkSendSms: checkSendSms.value,
       companyId: UserManager().companyId,
       createdBy: UserManager().id,
       createdDate: DateTime.now(),

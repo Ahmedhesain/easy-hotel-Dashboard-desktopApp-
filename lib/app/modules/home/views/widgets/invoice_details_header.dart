@@ -47,8 +47,11 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                               suggestionsCallback: (filter) => controller.filterItems(filter),
                               onSuggestionSelected: controller.selectItem,
                               itemBuilder: (context, item) {
-                                return Center(
-                                  child: Text("${item.name} ${item.code}"),
+                                return Container(
+                                  color: Colors.grey,
+                                  child: Center(
+                                    child: Text("${item.name} ${item.code}"),
+                                  ),
                                 );
                               },
                               textFieldConfiguration: TextFieldConfiguration(

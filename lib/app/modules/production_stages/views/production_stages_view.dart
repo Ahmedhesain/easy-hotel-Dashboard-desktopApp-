@@ -21,31 +21,56 @@ class ProductionStagesView extends GetView<ProductionStagesController>{
             backgroundColor: Colors.white,
             leadingWidth: size.width * 0,
             title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                UnconstrainedBox(
-                  child: ElevatedButton(
-                    child: const Text("رجوع"),
-                    onPressed: () => Get.back(),
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 200,
+                      margin: const EdgeInsets.all(5.0),
+                      child: TextFormField(
+                          controller: controller.searchedInvoiceController,
+                          onFieldSubmitted: (_) => controller.getStages(),
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: "ابحث عن رقم الفاتورة",
+                              contentPadding: EdgeInsets.symmetric(horizontal: 5))),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => controller.getStages(),
+                      child: const Text("بحث"),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                UnconstrainedBox(
-                  child: ElevatedButton(
-                    child: const Text("طباعة"),
-                    onPressed: () {
-                      PrintingHelper().productionStages(context, controller.reports, Get.find<HomeController>().invoice.value!);
-                    },
-                  ),
+                Row(
+                  children: [
+                    UnconstrainedBox(
+                      child: ElevatedButton(
+                        child: const Text("رجوع"),
+                        onPressed: () => Get.back(),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    UnconstrainedBox(
+                      child: ElevatedButton(
+                        child: const Text("طباعة"),
+                        onPressed: () {
+                          PrintingHelper().productionStages(context, controller.reports, Get.find<HomeController>().invoice.value!);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    UnconstrainedBox(
+                      child: ElevatedButton(
+                        child: const Text("تصدير الى اكسل"),
+                        onPressed: () {
+                          ExcelHelper.productionStagesExcel(controller.reports, context);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                UnconstrainedBox(
-                  child: ElevatedButton(
-                    child: const Text("تصدير الى اكسل"),
-                    onPressed: () {
-                      ExcelHelper.productionStagesExcel(controller.reports, context);
-                    },
-                  ),
-                ),
+
               ],
             ),
           ),
