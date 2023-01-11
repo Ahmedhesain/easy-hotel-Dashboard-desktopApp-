@@ -72,11 +72,12 @@ class CategoriesItemsController extends GetxController{
         data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
 
         deliveryPlaces.assignAll(data);
-        // if (deliveryPlaces.isNotEmpty) {
-        //   // deliveryPlaces.insert(0, );
-        //
-        //   // selectedDeliveryPlace(deliveryPlaces.first);
-        // }
+        if (deliveryPlaces.isNotEmpty) {
+          // deliveryPlaces.insert(0, );
+          selectNewDeliveryplace([ "تحديد الكل"]);
+
+          // selectedDeliveryPlace(deliveryPlaces.first);
+        }
       },
       onError: (error) => showPopupText(text: error.toString()),
     );

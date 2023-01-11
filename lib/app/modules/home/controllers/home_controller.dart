@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -47,6 +50,7 @@ import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 import 'package:window_manager/window_manager.dart';
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
+import '../../../data/model/customer/dto/request/upload_customer_photo_request.dart';
 import '../../../data/model/invoice/dto/request/gallary_show_request.dart';
 import '../../../data/model/invoice/dto/response/get_delivery_place_response.dart';
 
@@ -135,7 +139,6 @@ class HomeController extends GetxController {
 
   bool get canEdit => UserManager().user.userScreens["proworkorder"]?.edit ?? false;
 
-
   @override
   void onInit() async {
     super.onInit();
@@ -172,7 +175,7 @@ class HomeController extends GetxController {
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
-            invoiceCustomerFieldFocusNode.requestFocus();
+          invoiceCustomerFieldFocusNode.requestFocus();
         },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () => isLoading(false));
@@ -181,10 +184,10 @@ class HomeController extends GetxController {
   Future<void> getDueDate({bool withLoading = false}) {
     if (withLoading) isLoading(true);
     return InvoiceRepository().findDueDateDTOAPI(GetDueDateRequest(branchId: UserManager().branchId, id: selectedGallery.value?.id),
-        onSuccess: (data){
+        onSuccess: (data) {
           dueDate(data);
           date(DateTime.now());
-        } ,
+        },
         onError: (error) => showPopupText(text: error.toString()),
         onComplete: () {
           if (withLoading) {
@@ -316,7 +319,6 @@ class HomeController extends GetxController {
         .findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
             onSuccess: (data) {
               invoice(data);
-
               selectedPriceType(data.pricetype);
               if (galleries.any((element) => element.id == data.gallaryId)) {
                 selectedGallery(galleries.singleWhere((element) => element.id == data.gallaryId));
@@ -440,8 +442,7 @@ class HomeController extends GetxController {
     getItemData(
         itemId: item.id!,
         onSuccess: (data) {
-          if (
-          data.availableQuantity != null && (data.availableQuantity! <= 0 || data.availableQuantity! < data.quantityOfUnit)) {
+          if (data.availableQuantity != null && (data.availableQuantity! <= 0 || data.availableQuantity! < data.quantityOfUnit)) {
             if (noQuantity != null) {
               noQuantity();
             } else {
@@ -633,11 +634,11 @@ class HomeController extends GetxController {
     InvoiceRepository().saveInvoice(request,
         onSuccess: (data) async {
           invoice(data);
-          if((data.invNoticeValueTotal??0) > 0 && data.invNoticeOrderId != null) {
+          if ((data.invNoticeValueTotal ?? 0) > 0 && data.invNoticeOrderId != null) {
             FCMRepository().send(
-            SendFcmRequest(title: "إشعار خاص", body: "${data.gallaryName} بقيمة:${data.invNoticeValueTotal}", invoiceId: data.invNoticeOrderId),
-            onSuccess: (_) => showPopupText(text: "تم إرسال اشعار"),
-          );
+              SendFcmRequest(title: "إشعار خاص", body: "${data.gallaryName} بقيمة:${data.invNoticeValueTotal}", invoiceId: data.invNoticeOrderId),
+              onSuccess: (_) => showPopupText(text: "تم إرسال اشعار"),
+            );
           }
           invoiceDetails.assignAll((data.invoiceDetailApiList ?? []).map((e) => e.obs).toList());
           for (var element in glPayDtoList) {
@@ -872,18 +873,42 @@ class HomeController extends GetxController {
     );
   }
 
-  void updateGallaryDeliveryShow(){
-    if(invoice.value?.gallaryDeliveryShow == 2){
+  void updateGallaryDeliveryShow() {
+    if (invoice.value?.gallaryDeliveryShow == 2) {
       showPopupText(text: "تم الحفظ من قبل");
-      return ;
+      return;
     }
     isLoading(true);
     final request = GallaryDeliveryShowRequest(invoice.value!.id!);
-    InvoiceRepository().invoiceGallaryDeliveryShow(
-        request,
-      onSuccess: (_) => showPopupText(text: "تم الحفظ بنجاح"),
-      onError: (_) => showPopupText(text: "حدثت مشكله اثناء الحفظ"),
-      onComplete: ()=> isLoading(false)
-    );
+    InvoiceRepository().invoiceGallaryDeliveryShow(request,
+        onSuccess: (_) => showPopupText(text: "تم الحفظ بنجاح", type: MsgType.success),
+        onError: (_) => showPopupText(text: "حدثت مشكله اثناء الحفظ"),
+        onComplete: () => isLoading(false));
+  }
+
+  uploadCustomerPhoto() async {
+    {
+      if (selectedCustomer.value == null) {
+        showPopupText(text: 'يجب اختيار عميل');
+        return;
+      }
+      isLoading(true);
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+      if (result != null) {
+        File file = File(result.files.single.path!);
+        final request = UploadCustomerPhotoRequest(
+            source: base64Encode(file.readAsBytesSync()),
+            name: '${result.files.single.name.split(".")[0]}_');
+        CustomerRepository().uploadCustomerPhoto(
+          request,
+          onSuccess: (data){
+            selectedCustomer.value!.imgMeasure = data.name ;
+            showPopupText(text: 'تم رفع الصوره بنجاح'  , type: MsgType.success);
+          },
+          onError: (e) => showPopupText(text: e),
+          onComplete: () => isLoading(false)
+        );
+      }
+    }
   }
 }

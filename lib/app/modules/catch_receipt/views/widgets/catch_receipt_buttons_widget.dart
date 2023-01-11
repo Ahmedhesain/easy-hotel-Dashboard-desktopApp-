@@ -33,7 +33,7 @@ class CatchReceiptButtonsWidget extends GetView<CatchReceiptController> {
                   if(controller.glBankTransactionApi.value != null && (permission?.edit ?? false))
                     ButtonWidget(text: "طباعة قيد", onPressed: () => controller.printGeneralJournal(context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                   if(controller.glBankTransactionApi.value != null && (permission?.edit ?? false))
-                    ButtonWidget(text: "طباعة", onPressed: () => PrintingHelper().printCatchReceipt(controller.glBankTransactionApi.value!, context), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
+                    ButtonWidget(text: "طباعة", onPressed: () => PrintingHelper().printCatchReceipt(controller.glBankTransactionApi.value!, context , controller.selectedCustomer.value?.name , controller.selectedGallery.value?.name), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                   ButtonWidget(text: "رجوع", onPressed: () => Get.back(), margin: const EdgeInsets.symmetric(horizontal: 2.5)),
                 ],
               );

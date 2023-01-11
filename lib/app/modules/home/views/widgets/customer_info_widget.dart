@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/core/utils/double_filter.dart';
+import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
+import 'package:toby_bills/app/modules/home/views/widgets/show_customer_image_dialog.dart';
 
 class CustomerInfoWidget extends GetView<HomeController> {
   const CustomerInfoWidget({Key? key}) : super(key: key);
@@ -178,6 +180,7 @@ class CustomerInfoWidget extends GetView<HomeController> {
                           ),
                           textAlign: TextAlign.center,
                           maxLength: 12,
+                          enabled: false,
 
                           textDirection: TextDirection.ltr,
                           onChanged: (value) {
@@ -270,7 +273,32 @@ class CustomerInfoWidget extends GetView<HomeController> {
                         },
                       ),
                     );
-                  })
+                  }),
+                  Material(
+                    color: Colors.transparent,
+                    child: IconButtonWidget(
+                      icon: Icons.camera_alt,
+                      onPressed: () => controller.uploadCustomerPhoto(),
+                    ),
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: IconButtonWidget(
+                      icon: Icons.slideshow,
+                      onPressed: () {
+                        if(controller.selectedCustomer.value == null){
+                          showPopupText(text: 'يجب اختيار عميل ') ;
+                          return ;
+                        }
+                        if(controller.selectedCustomer.value!.imgMeasure == null){
+                          showPopupText(text:  'لا يوجد صورة للعميل') ;
+                          return ;
+                        }
+                        Get.dialog(const ShowCustomerImageDialog());
+
+                      },
+                    ),
+                  ),
                 ],
               );
             })));

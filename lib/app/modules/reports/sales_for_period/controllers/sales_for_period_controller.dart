@@ -68,6 +68,8 @@ class SalesForPeriodController extends GetxController{
         data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
+          selectNewDeliveryplace([ "تحديد الكل"]);
+
           // deliveryPlaces.insert(0, );
 
           // selectedDeliveryPlace(deliveryPlaces.first);

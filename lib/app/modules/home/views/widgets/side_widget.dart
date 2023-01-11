@@ -139,8 +139,7 @@ class SideWidget extends GetView<HomeController> {
               );
             },
             onSuggestionSelected: (FindCustomerResponse client) => controller.getInvoiceListForCustomer(client),
-            suggestionsCallback: (filter) =>
-                controller.customers.where((element) => element.name.toString().contains(filter) || element.code.toString().contains(filter)),
+            suggestionsCallback: (filter) => controller.customers,
             textFieldConfiguration: TextFieldConfiguration(
                 focusNode: controller.findSideCustomerFieldFocusNode,
                 controller: controller.findSideCustomerController,

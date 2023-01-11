@@ -39,7 +39,7 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: Center(
                   child: Container(width: size.width*.97,
-                      height: size.height*.96,
+                      height: size.height,
                       decoration: BoxDecoration(
                           borderRadius: const BorderRadius.all(
                               Radius.circular(10)),
@@ -55,7 +55,7 @@ class SalesForPeriodView extends GetView<SalesForPeriodController> {
                                         Radius.circular(5)),
                                     color: appGreyDark,
                                     border: Border.all(color: Colors.grey)),
-                                height: size.height*.23,
+                                height: size.height*.25,
                                 width: size.width*.95,
                                 child: Column(
                                   children: [

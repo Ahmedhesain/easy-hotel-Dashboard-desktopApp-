@@ -59,6 +59,7 @@ class BalanceGallaryController extends GetxController{
         data.insert(0, DeliveryPlaceResposne(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
+          selectNewDeliveryplace([ "تحديد الكل"]);
         }
       },
       onError: (error) => showPopupText(text: error.toString()),

@@ -67,6 +67,7 @@ class SalesItemsByCompanyController extends GetxController{
         data.insert(0, GalleryResponse(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
+          selectNewDeliveryplace([ "تحديد الكل"]);
           // selectedDeliveryPlace(deliveryPlaces.first);
         }
       },

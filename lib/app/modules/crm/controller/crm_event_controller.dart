@@ -3,30 +3,50 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toby_bills/app/data/model/common/symbol_model_dto.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 
 import '../../../core/utils/show_popup_text.dart';
 import '../../../core/utils/user_manager.dart';
+import '../../../data/model/common/request/symbol_request.dart';
+import '../../../data/model/crm/request/follower_request.dart';
+import '../../../data/model/crm/response/follower_response.dart';
 import '../../../data/model/customer/dto/request/find_customer_request.dart';
 import '../../../data/model/customer/dto/response/find_customer_response.dart';
 import '../../../data/model/invoice/dto/request/gallery_request.dart';
+import '../../../data/repository/crm/crm_repository.dart';
 import '../../../data/repository/customer/customer_repository.dart';
 import '../../../data/repository/invoice/invoice_repository.dart';
 
 class CrmEventController extends GetxController {
 
   final galleries = <GalleryResponse>[].obs ;
-  Rxn<GalleryResponse> selectedCrmEventGallery = Rxn();
-  final crmCustomerFieldFocusNode = FocusNode();
+  final eventTypes = <SymbolDTO>[].obs ;
+  final eventPriorityList = <SymbolDTO>[].obs ;
+  final followersList = <FollowerResponse>[].obs ;
   final customers = <FindCustomerResponse>[].obs;
-  final crmCustomerController = TextEditingController();
+
+  final crmCustomerFieldFocusNode = FocusNode();
+
+  var crmCustomerController = TextEditingController();
+  var crmEventAddressController = TextEditingController();
+  var crmEventTextController = TextEditingController();
+
   Rxn<FindCustomerResponse> selectedCrmCustomer = Rxn();
+  Rxn<SymbolDTO> selectedEventType = Rxn();
+  Rxn<SymbolDTO> selectedEventPriority = Rxn();
+  Rxn<FollowerResponse> selectedFollower = Rxn();
+  Rxn<GalleryResponse> selectedCrmEventGallery = Rxn();
+
   final isLoading = false.obs ;
 
   @override
   onInit(){
     super.onInit();
     getGalleries();
+    getEventTypes();
+    getFollowersList();
+    getPriorityList();
   }
 
   getCustomersByCodeForInvoice() {
@@ -47,6 +67,54 @@ class CrmEventController extends GetxController {
         onComplete: () => isLoading(false));
   }
 
+  getEventTypes(){
+    isLoading(true);
+    final request = SymbolRequest(companyId: UserManager().companyId);
+    CrmRepository().getEventTypes(request ,
+      onComplete: () => isLoading(false),
+      onError: (e) => showPopupText(text: e),
+      onSuccess: (data){
+        eventTypes.assignAll(data);
+        if(data.isNotEmpty){
+          selectedEventType(data[0]);
+        }
+      }
+    );
+  }
+
+  getPriorityList(){
+    isLoading(true);
+    final request = SymbolRequest(companyId: UserManager().companyId);
+    CrmRepository().getPriorityList(request ,
+        onComplete: () => isLoading(false),
+        onError: (e) => showPopupText(text: e),
+        onSuccess: (data){
+          eventPriorityList.assignAll(data);
+          if(data.isNotEmpty){
+            selectedEventPriority(data[0]);
+          }
+        }
+    );
+  }
+
+  getFollowersList(){
+    isLoading(true);
+    final request = FollowerRequest(branchId: UserManager().branchId);
+    CrmRepository().getFollowers(request ,
+      onComplete: () => isLoading(false),
+      onError: (e) => showPopupText(text: e),
+      onSuccess: (data){
+        for (FollowerResponse element in data) {
+          if(followersList.indexWhere((follower) => follower.id == element.id) == -1){
+            followersList.add(element);
+          }
+        }
+        if(data.isNotEmpty){
+          selectedFollower(data[0]);
+        }
+      }
+    );
+  }
 
   Future<void> getGalleries() {
     isLoading(true);

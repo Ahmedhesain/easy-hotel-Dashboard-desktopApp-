@@ -131,6 +131,7 @@ class CategoriesTotalsController extends GetxController {
       onSuccess: (data) {
         data.insert(0, GalleryResponse(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
+        selectNewDeliveryplace(["تحديد الكل"]);
         // if (deliveryPlaces.isNotEmpty) {
         //   // deliveryPlaces.insert(0, );
         //

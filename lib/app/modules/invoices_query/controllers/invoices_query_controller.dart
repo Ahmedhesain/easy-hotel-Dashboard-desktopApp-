@@ -9,22 +9,33 @@ import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 
 class InvoicesQueryController extends GetxController {
 
-  final List<InvoiceModel> invoices = [];
+  final  invoices = <InvoiceModel>[].obs;
   final isLoading = false.obs;
-  DateTime dateFrom = DateTime.now();
-  DateTime dateTo = DateTime.now();
+  final dateFrom = DateTime.now().obs;
+  final dateTo = DateTime.now().obs;
   final searchCustomerFocusNode = FocusNode();
   final searchedInvoiceController = TextEditingController();
+  final searchType = 0.obs ;
 
   getInvoices() async {
     if(searchedInvoiceController.text.isEmpty){
       showPopupText(text: "يرجى كتابة رقم فاتورة اولاً", type: MsgType.error);
       return;
     }
-    final request = FindInvoicesQueryRequest(gallaryId: UserManager().galleryId, searchNumber: searchedInvoiceController.text);
+    invoices.clear() ;
+    final request = FindInvoicesQueryRequest(
+        gallaryId: UserManager().galleryId,
+        searchNumber: searchedInvoiceController.text,
+        dateFrom: dateFrom.value,
+        dateTo: dateTo.value,
+       searchType: searchType.value
+    );
     isLoading(true);
     InvoiceRepository().findInvoicesQuery(request,
-      onSuccess: invoices.assignAll,
+      onSuccess: (data){
+        invoices.assignAll(data);
+        invoices.refresh();
+      } ,
       onError: (e) => showPopupText(text: e.toString()),
       onComplete: () => isLoading(false)
     );

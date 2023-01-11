@@ -70,7 +70,10 @@ class InvoiceModel {
       this.supplierDate,
       this.msg,
       this.gallaryDeliveryShow,
-      this.invoiceStatus});
+      this.invoiceStatus,
+      this.numberOfToob
+
+      });
 
   String? type;
   String? customerNotice;
@@ -223,7 +226,8 @@ class InvoiceModel {
         createdByName: json["createdByName"],
         msg: json["msg"],
         gallaryDeliveryShow: json["gallaryDeliveryShow"],
-    invoiceStatus: json["invoiceStatus"],
+        invoiceStatus: json["invoiceStatus"],
+        numberOfToob: json["numberOfToob"],
       );
 
   Map<String, dynamic> toJson() => {

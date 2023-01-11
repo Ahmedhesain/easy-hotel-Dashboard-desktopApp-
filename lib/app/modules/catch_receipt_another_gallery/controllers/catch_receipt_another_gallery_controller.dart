@@ -43,6 +43,7 @@ class CatchReceiptAnotherGalleryController extends GetxController {
   Rxn<GlBankTransactionApi> glBankTransactionApi = Rxn();
   Rxn<FindCustomerBalanceResponse> customerBalance = Rxn();
   Rxn<GalleryResponse> selectedGallery = Rxn();
+  final isPayedEnabled = true.obs ;
 
   @override
   onInit(){
@@ -96,6 +97,10 @@ class CatchReceiptAnotherGalleryController extends GetxController {
   }
 
   void addNewDetail() {
+    if(itemPayController.text == "0"){
+      showPopupText(text: "لا يمكن اضافة هذا العنصر");
+      return ;
+    }
     banksToPay.add(GlPayDTO(
       bankName: itemBank!.bankName,
       bankId: itemBank!.id,
@@ -161,6 +166,21 @@ class CatchReceiptAnotherGalleryController extends GetxController {
     itemInvoiceController.clear();
     itemPayController.clear();
     itemRemainController.clear();
+  }
+
+  onSelectInvoice(InvoiceList invoice){
+    int lastIndex = banksToPay.lastIndexWhere((element) => element.invoiceId == invoice.id);
+    if(banksToPay.isNotEmpty && lastIndex != -1 ){
+      isPayedEnabled(banksToPay[lastIndex].remain! > 0);
+      itemPayController.text = banksToPay[lastIndex].remain.toString();
+    }else{
+      isPayedEnabled(true);
+      itemPayController.text = invoice.salesStatementForThePeriod.remain.toString();
+    }
+    itemRemainController.text = "0";
+    itemInvoiceController.text = invoice.serial.toString();
+    itemPayFocus.requestFocus();
+    itemInvoice = invoice;
   }
 
 }

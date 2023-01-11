@@ -47,7 +47,7 @@ import '../../data/model/reports/dto/response/categories_totals_response.dart';
 class PrintingHelper {
 
 
-  void printCatchReceipt(GlBankTransactionApi glBankTransactionApi, m.BuildContext context) async {
+  void printCatchReceipt(GlBankTransactionApi glBankTransactionApi, m.BuildContext context , String? customerName , String? galleryName) async {
     final doc = Document();
     const PdfColor grey = PdfColors.grey400;
     final font = await rootBundle.load("assets/fonts/Cairo-Bold.ttf");
@@ -105,7 +105,6 @@ class PrintingHelper {
                           SizedBox(
                               width: 120,
                               child: Column(children: [
-
                                 Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -122,35 +121,53 @@ class PrintingHelper {
                                         textDirection: TextDirection.rtl,
                                       ),
                                     ]),
-
-                              ])),
-                          //barcode widget
-
-                          // seller data
-                          SizedBox(
-                              width: 120,
-                              child: Column(children: [
                                 Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                     children: [
-
                                       Text(
-                                        glBankTransactionApi.customerName ?? "",
+                                        // "${date.year.toString()}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')}.padLeft(2,'0')}",
+                                        galleryName ?? '',
                                         style: normalStyle,
                                         textDirection: TextDirection.rtl,
                                       ),
                                       Text(
-                                        "اسم العميل:",
+                                        "المعرض:",
                                         style: boldStyle,
                                         textDirection: TextDirection.rtl,
                                       ),
                                     ]),
-                                Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
 
+                              ])),
+                          //barcode widget
+                          // seller data
+                          SizedBox(
+                              child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                      child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+
+                                            Text(
+                                              customerName ?? "",
+                                              style: normalStyle,
+                                              textDirection: TextDirection.rtl,
+                                            ),
+                                            Text(
+                                              "اسم العميل:",
+                                              style: boldStyle,
+                                              textDirection: TextDirection.rtl,
+                                            ),
+                                          ]),
+                                    ),
+                              SizedBox(
+                                child :Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.end,
+                                    children: [
                                       Text(
                                         glBankTransactionApi.remark??"",
                                         style: normalStyle,
@@ -162,12 +179,11 @@ class PrintingHelper {
                                         textDirection: TextDirection.rtl,
                                       ),
                                     ]),
-
-
+                              )
                               ])),
                         ])),
-                Table(border: TableBorder.all(width: 1), children: [
-
+                Table(
+                    border: TableBorder.all(width: 1), children: [
                   TableRow(children: [
                     Container(
                         color: grey,

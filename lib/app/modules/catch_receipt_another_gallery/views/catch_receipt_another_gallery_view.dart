@@ -112,8 +112,7 @@ class CatchReceiptAnotherGalleryView extends GetView<CatchReceiptAnotherGalleryC
                                           ),
                                         );
                                       },
-                                      suggestionsCallback: (filter) => controller.customers
-                                          .where((element) => (element.name ?? "").contains(filter) || (element.code ?? "").contains(filter)),
+                                      suggestionsCallback: (filter) => controller.customers,
                                       onSuggestionSelected: (value) {
                                         controller.customerController.text = value.name ?? "";
                                         controller.selectedCustomer(value);
@@ -219,14 +218,16 @@ class CatchReceiptAnotherGalleryView extends GetView<CatchReceiptAnotherGalleryC
                                             ),
                                           );
                                         },
-                                          suggestionsCallback:  (filter) => controller.customerBalance.value?.invoicesList.where((inv) => inv.serial != null && controller.banksToPay.every((element) => element.invoiceId != inv.id) && inv.serial.toString().contains(filter)) ?? [],
-                                          onSuggestionSelected: (value) {
-                                            controller.itemInvoiceController.text = value.serial.toString();
-                                            controller.itemRemainController.text = "0";
-                                            controller.itemPayController.text = value.salesStatementForThePeriod.remain.toString();
-                                            controller.itemPayFocus.requestFocus();
-                                            controller.itemInvoice = value;
-                                          },
+                                          suggestionsCallback:  (filter) => controller.customerBalance.value?.invoicesList ?? [],
+                                          onSuggestionSelected: controller.onSelectInvoice
+                                          //     (value) {
+                                          //   controller.itemInvoiceController.text = value.serial.toString();
+                                          //   controller.itemRemainController.text = "0";
+                                          //   controller.itemPayController.text = value.salesStatementForThePeriod.remain.toString();
+                                          //   controller.itemPayFocus.requestFocus();
+                                          //   controller.itemInvoice = value;
+                                          // }
+                                          ,
                                         textFieldConfiguration: TextFieldConfiguration(
                                           controller: controller.itemInvoiceController,
                                           focusNode: controller.itemInvoiceFocus,
@@ -294,6 +295,7 @@ class CatchReceiptAnotherGalleryView extends GetView<CatchReceiptAnotherGalleryC
                                         textAlign: TextAlign.center,
                                         controller: controller.itemPayController,
                                         focusNode: controller.itemPayFocus,
+                                        enabled: controller.isPayedEnabled.value,
                                         inputFormatters: [doubleInputFilter],
                                         onFieldSubmitted: (_) => controller.itemBankFocus.requestFocus(),
                                         onChanged: (value) {
@@ -440,7 +442,9 @@ class CatchReceiptAnotherGalleryView extends GetView<CatchReceiptAnotherGalleryC
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
                                                             GestureDetector(
-                                                              onTap: () {},
+                                                              onTap: () {
+                                                                controller.banksToPay.remove(kha);
+                                                              },
                                                               child: Container(
                                                                 alignment: Alignment.centerRight,
                                                                 height: size.height * .05,

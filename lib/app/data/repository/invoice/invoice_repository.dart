@@ -380,12 +380,12 @@ class InvoiceRepository {
         Function(void)? onSuccess,
         Function(dynamic error)? onError,
       }) =>
-      ApiProvider().post<void,GallaryDeliveryShowRequest>('proSales/updateGallaryDelivery',
+      ApiProvider().post<void , Map<String,dynamic>>('proSales/updateGallaryDelivery',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: gallaryDeliveryShowRequest.toJson(),
         onError: onError,
-        convertor: (data){}
+        convertor: (data)=> {}
       );
 
 }

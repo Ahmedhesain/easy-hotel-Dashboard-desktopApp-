@@ -134,8 +134,7 @@ class CatchReceiptView extends GetView<CatchReceiptController> {
                                         )
                                       ),
                                     ),
-                                      suggestionsCallback: (filter) => controller.customers
-                                          .where((element) => (element.name ?? "").contains(filter) || (element.code ?? "").contains(filter)),
+                                      suggestionsCallback: (filter) => controller.customers,
                                       ),
                                 ),
                               ),

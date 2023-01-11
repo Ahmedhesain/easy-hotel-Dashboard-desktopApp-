@@ -114,7 +114,7 @@ class ItemsSalesByCustomersController extends GetxController{
         data.insert(0, GalleryResponse(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
-          // selectedDeliveryPlace(deliveryPlaces.first);
+          selectNewDeliveryplace(["تحديد الكل"]);
         }
       },
       onError: (error) => showPopupText(text: error.toString()),

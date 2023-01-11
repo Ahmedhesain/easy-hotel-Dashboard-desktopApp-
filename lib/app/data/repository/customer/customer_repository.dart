@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:toby_bills/app/data/model/customer/dto/request/account_statement_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/create_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_balance_request.dart';
@@ -5,6 +7,7 @@ import 'package:toby_bills/app/data/model/customer/dto/response/account_statemen
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/provider/api_provider.dart';
 import '../../model/customer/dto/request/find_customer_request.dart';
+import '../../model/customer/dto/request/upload_customer_photo_request.dart';
 import '../../model/customer/dto/response/find_customer_response.dart';
 
 class CustomerRepository {
@@ -133,6 +136,20 @@ class CustomerRepository {
         onError: onError,
         convertor: FindCustomerResponse.fromJson,
     );
+
+  uploadCustomerPhoto(
+      UploadCustomerPhotoRequest request, {
+        Function()? onComplete,
+        Function(UploadCustomerPhotoRequest)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<UploadCustomerPhotoRequest,Map<String,dynamic>>('image/uploadCustomerPhoto',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: request.toJson(),
+        onError: onError,
+        convertor: UploadCustomerPhotoRequest.fromJson ,
+      );
 
 
 }

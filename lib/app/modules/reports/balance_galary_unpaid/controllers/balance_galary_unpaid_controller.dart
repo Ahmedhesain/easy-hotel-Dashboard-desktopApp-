@@ -69,6 +69,7 @@ class BalanceGallaryUnpaidController extends GetxController{
 
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
+          selectNewDeliveryplace([ "تحديد الكل"]);
         }
       },
       onError: (error) => showPopupText(text: error.toString()),

@@ -14,6 +14,7 @@ class FindCustomerResponse {
     this.shoulder,
     this.step,
     this.balanceLimit,
+    this.imgMeasure,
   });
 
   String? type;
@@ -30,7 +31,7 @@ class FindCustomerResponse {
   num? shoulder;
   num? step;
   num? balanceLimit;
-
+  String? imgMeasure;
   factory FindCustomerResponse.fromJson(Map<String, dynamic> json) => FindCustomerResponse(
     type: json["type"],
     email: json["email"],
@@ -46,6 +47,7 @@ class FindCustomerResponse {
     shoulder: json["shoulder"],
     step: json["step"],
     balanceLimit: json["balanceLimit"],
+    imgMeasure: json["imgMeasure"],
   );
 
   static List<FindCustomerResponse> getList(List<dynamic> json) => List<FindCustomerResponse>.from(json.map((e) => FindCustomerResponse.fromJson(e)));
@@ -65,6 +67,7 @@ class FindCustomerResponse {
     "shoulder": shoulder,
     "step": step,
     "balanceLimit": balanceLimit,
+    "imgMeasure": imgMeasure,
   };
 
 
