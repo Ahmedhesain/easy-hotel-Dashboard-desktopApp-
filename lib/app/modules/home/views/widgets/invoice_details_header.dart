@@ -12,7 +12,6 @@ import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
 class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
   const InvoiceDetailsHeaderWidget({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     const separator = SizedBox(width: 5);

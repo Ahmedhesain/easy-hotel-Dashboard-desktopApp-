@@ -4,8 +4,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/data/model/common/symbol_model_dto.dart';
+import 'package:toby_bills/app/data/model/crm/request/crm_event_request.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/response/gallery_response.dart';
 
+import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/utils/show_popup_text.dart';
 import '../../../core/utils/user_manager.dart';
 import '../../../data/model/common/request/symbol_request.dart';
@@ -28,9 +30,9 @@ class CrmEventController extends GetxController {
 
   final crmCustomerFieldFocusNode = FocusNode();
 
-  var crmCustomerController = TextEditingController();
-  var crmEventAddressController = TextEditingController();
-  var crmEventTextController = TextEditingController();
+  final crmCustomerController = TextEditingController();
+  final crmEventAddressController = TextEditingController();
+  final crmEventTextController = TextEditingController();
 
   Rxn<FindCustomerResponse> selectedCrmCustomer = Rxn();
   Rxn<SymbolDTO> selectedEventType = Rxn();
@@ -131,6 +133,43 @@ class CrmEventController extends GetxController {
       onError: (error) => showPopupText(text: error.toString()),
       onComplete: () => isLoading(false)
     );
+  }
+
+  Future<void>  addCRMEvent()async{
+    isLoading(true);
+    final request = CRMEventRequest(
+      companyId: UserManager().companyId,
+      branchId: UserManager().branchId,
+      assignedToId: selectedFollower.value?.id ,
+      crmTypeId: selectedEventType.value?.id,
+      statusId:selectedEventType.value?.id,
+      customer: selectedCrmCustomer.value?.id ,
+      discription: crmEventTextController.text ,
+      galleryId: selectedCrmEventGallery.value?.id ,
+      periorityId: selectedEventPriority.value?.id ,
+      subject: crmEventAddressController.text ,
+      createdBy: UserManager().id
+    );
+   await CrmRepository().addCrmEvent(
+        request ,
+      onComplete: () => isLoading(false),
+      onError: (e) => showPopupText(text: e),
+      onSuccess: (data){
+          if(data.msg == "success"){
+            showPopupText(text: 'تم الحفظ بنجاح' , type: MsgType.success);
+            clear();
+        }else{
+            showPopupText(text: data.msg! , type: MsgType.error);
+          }
+      }
+    );
+  }
+
+  clear(){
+    selectedCrmCustomer(null);
+    crmEventTextController.clear();
+    crmEventAddressController.clear();
+    crmCustomerController.clear() ;
   }
 
 }

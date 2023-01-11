@@ -180,7 +180,7 @@ class CustomerInfoWidget extends GetView<HomeController> {
                           ),
                           textAlign: TextAlign.center,
                           maxLength: 12,
-                          enabled: false,
+                          readOnly: true,
 
                           textDirection: TextDirection.ltr,
                           onChanged: (value) {
@@ -213,7 +213,7 @@ class CustomerInfoWidget extends GetView<HomeController> {
                           decoration: const InputDecoration(border: InputBorder.none, isDense: true),
                           textAlign: TextAlign.center,
                           textDirection: TextDirection.ltr,
-                          enabled: false,
+                          readOnly: true,
                         )),
                   ),
                   const SizedBox(width: 10),

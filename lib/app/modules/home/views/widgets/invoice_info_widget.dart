@@ -6,6 +6,7 @@ import 'package:toby_bills/app/components/date_field_widget.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/components/text_field_widget.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
+import 'package:toby_bills/app/core/utils/show_popup_text.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/core/utils/validator.dart';
 import 'package:toby_bills/app/core/values/app_constants.dart';
@@ -287,6 +288,10 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                       },
                       suggestionsCallback: (filter) => controller.customers,
                       onSuggestionSelected: (value) async {
+                        if(value.blackList == true){
+                          showPopupText(text: 'هذا العميل محظور');
+                          return;
+                        }
                         controller.invoiceCustomerController.text = "${value.name} ${value.code}";
                         controller.selectedCustomer(value);
                         controller.getCustomerBalance(value.id!);

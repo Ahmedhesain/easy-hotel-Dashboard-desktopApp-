@@ -3238,10 +3238,10 @@ class PrintingHelper {
           ),
           build: (Context context) {
             return [
-              if (data.indexOf(bank) == 0)
                 Column(
                   children: [
-                    Center(
+                    if (data.indexOf(bank) == 0)
+                      Center(
                         child: Container(
                             decoration: const BoxDecoration(color: PdfColors.grey400),
                             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
@@ -3426,143 +3426,148 @@ class PrintingHelper {
                 ],
               ),
               for (final statement in bank.statements)
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Column(
                   children: [
-                    Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              statement.balance?.toStringAsFixed(2) ?? " ",
-                              style: normalStyle,
-                              textAlign: TextAlign.center,
-                              textDirection: TextDirection.rtl,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  statement.balance?.toStringAsFixed(2) ?? " ",
+                                  style: normalStyle,
+                                  textAlign: TextAlign.center,
+                                  textDirection: TextDirection.rtl,
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  statement.debitAmount?.toStringAsFixed(2) ?? " ",
+                                  style: normalStyle,
+                                  textAlign: TextAlign.center,
+                                  textDirection: TextDirection.rtl,
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  statement.remark ?? " ",
+                                  style: normalStyle,
+                                  textAlign: TextAlign.center,
+                                  textDirection: TextDirection.rtl,
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  statement.remark2 ?? " ",
+                                  style: normalStyle,
+                                  textAlign: TextAlign.center,
+                                  textDirection: TextDirection.rtl,
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            decoration: BoxDecoration(border: Border.all()),
+                            height: 40,
+                            child: Center(
+                              child: Text(
+                                statement.customerName ?? " ",
+                                style: normalStyle,
+                                textAlign: TextAlign.center,
+                                textDirection: TextDirection.rtl,
+                              ),
                             ),
-                          ),
-                        )),
-                    Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              statement.debitAmount?.toStringAsFixed(2) ?? " ",
-                              style: normalStyle,
-                              textAlign: TextAlign.center,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ),
-                        )),
-                    Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              statement.remark ?? " ",
-                              style: normalStyle,
-                              textAlign: TextAlign.center,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ),
-                        )),
-                    Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              statement.remark2 ?? " ",
-                              style: normalStyle,
-                              textAlign: TextAlign.center,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ),
-                        )),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        decoration: BoxDecoration(border: Border.all()),
-                        height: 40,
-                        child: Center(
-                          child: Text(
-                            statement.customerName ?? " ",
-                            style: normalStyle,
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
                           ),
                         ),
-                      ),
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  statement.customerCode ?? " ",
+                                  style: normalStyle,
+                                  textAlign: TextAlign.center,
+                                  textDirection: TextDirection.rtl,
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  statement.invoiceNumber?.toString() ?? "",
+                                  style: normalStyle,
+                                  textAlign: TextAlign.center,
+                                  textDirection: TextDirection.rtl,
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  statement.transactionType ?? " ",
+                                  style: normalStyle,
+                                  textAlign: TextAlign.center,
+                                  textDirection: TextDirection.rtl,
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  statement.serial?.toString() ?? " ",
+                                  style: normalStyle,
+                                  textAlign: TextAlign.center,
+                                  textDirection: TextDirection.rtl,
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  statement.date == null ? "" : DateFormat("MM-dd-yyyy").format(statement.date!),
+                                  style: normalStyle,
+                                  textAlign: TextAlign.center,
+                                  textDirection: TextDirection.rtl,
+                                ),
+                              ),
+                            )),
+                      ],
                     ),
-                    Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              statement.customerCode ?? " ",
-                              style: normalStyle,
-                              textAlign: TextAlign.center,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ),
-                        )),
-                    Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              statement.invoiceNumber?.toString() ?? "",
-                              style: normalStyle,
-                              textAlign: TextAlign.center,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ),
-                        )),
-                    Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              statement.transactionType ?? " ",
-                              style: normalStyle,
-                              textAlign: TextAlign.center,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ),
-                        )),
-                    Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              statement.serial?.toString() ?? " ",
-                              style: normalStyle,
-                              textAlign: TextAlign.center,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ),
-                        )),
-                    Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              statement.date == null ? "" : DateFormat("MM-dd-yyyy").format(statement.date!),
-                              style: normalStyle,
-                              textAlign: TextAlign.center,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ),
-                        )),
-                  ],
+                  ]
                 ),
+
               Container(
                 foregroundDecoration: BoxDecoration(border: Border.all()),
                 child: Row(
@@ -4312,7 +4317,35 @@ class PrintingHelper {
       9: const FlexColumnWidth(1),
       10: const  FlexColumnWidth(2),
     };
-    doc.addPage(MultiPage(
+    doc.addPage(
+        MultiPage(
+        header: (context){
+          return context.pageNumber != 1 ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  text(DateFormat("dd-MM-yyyy").format(toDate), weight: FontWeight.bold),
+                  SizedBox(width: 15),
+                  text("الى الفترة:", weight: FontWeight.bold),
+                  SizedBox(width: 15),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  text(DateFormat("dd-MM-yyyy").format(fromDate), weight: FontWeight.bold),
+                  SizedBox(width: 15),
+                  text("من الفترة:", weight: FontWeight.bold),
+                  SizedBox(width: 15),
+                ],
+              ),
+            ],
+          ) : SizedBox();
+        },
         pageTheme: const PageTheme(
           pageFormat: PdfPageFormat.a4,
           textDirection: TextDirection.rtl,
@@ -4668,8 +4701,7 @@ class PrintingHelper {
                     ),
                   ]),
               ]),
-
-            Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max,columnWidths: widths, children: [
+              Table(border: TableBorder.all(width: 1), tableWidth: TableWidth.max,columnWidths: widths, children: [
               TableRow(children: [
                 Center(
                   child: Text(

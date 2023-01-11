@@ -118,6 +118,7 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
                             hideOverlay();
                             widget.onSuggestionSelected(items[index]);
                           },
+
                           child: ListTile(
                             title: Text(items[index].toString()),
                             contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

@@ -8,6 +8,7 @@ import 'package:toby_bills/app/core/values/app_colors.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
+import 'package:window_manager/window_manager.dart';
 import '../../../../components/text_widget.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../crm/views/add_crm_event_view.dart';
@@ -28,7 +29,10 @@ class SideWidget extends GetView<HomeController> {
          children: [
            Padding(
              padding: const EdgeInsets.all(5.0),
-             child: ButtonWidget(text: "اضافة شكوي" , buttonColor: Colors.blue, onPressed: (){Get.toNamed(Routes.CRM_EVENT);}),
+             child: ButtonWidget(text: "اضافة شكوي" , buttonColor: Colors.blue, onPressed: (){
+               Get.toNamed(Routes.CRM_EVENT);
+               windowManager.setTitle("Toby Bills -> CRM");
+             }),
            ),
            const Divider(height: 2, color: Colors.white, ),
           _TitleWidget(title: 'الاجمالي', value: controller.totalNet),
