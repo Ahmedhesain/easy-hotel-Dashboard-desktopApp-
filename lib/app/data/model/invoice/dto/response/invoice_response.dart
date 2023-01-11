@@ -73,6 +73,7 @@ class InvoiceModel {
       this.invoiceStatus,
       this.numberOfToob
 
+
       });
 
   String? type;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/components/flutter_typeahead.dart';
 import 'package:toby_bills/app/components/scrollable_row.dart';
@@ -158,7 +158,6 @@ class InvoicesQueryView extends GetView<InvoicesQueryController> {
                       "عدد الثوب",
                       "مدخل الفاتورة",
                       "ملاحظات",
-                      "check",
                     ]
                         .map((e) =>
                         Padding(
@@ -172,34 +171,41 @@ class InvoicesQueryView extends GetView<InvoicesQueryController> {
                         <String>[
                           "${e.serialTax}",
                           "${e.serial}",
-                          e.date == null ? "" : DateFormat("yyyy-MM-dd").format(e.date!),
+                          e.date == null ? "" : intl.DateFormat("yyyy-MM-dd").format(e.date!),
                           "${e.customerCode}",
                           (e.customerName ?? ""),
                           (e.customerMobile ?? ""),
                           (e.invoiceStatus ?? ""),
                           (e.invoiceLastStatus ?? ""),
-                          e.dueDate == null ? "" : DateFormat("yyyy-MM-dd").format(e.dueDate!),
+                          e.dueDate == null ? "" : intl.DateFormat("yyyy-MM-dd").format(e.dueDate!),
                           (e.remain?.toString() ?? ""),
                           (e.customerNotice ?? ""),
                           (e.numberOfToob?.toString() ?? ""),
                           (e.createdByName ?? ""),
                           (e.remarks ?? ""),
-                          "",
                         ].map((d) {
-                          return TextFormField(
-                            initialValue: d,
-                            readOnly: true,
-                            decoration: const InputDecoration(
-                                enabledBorder: InputBorder.none,
-                                border: InputBorder.none,
-                                disabledBorder: InputBorder.none
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: SizedBox(
+                              child: TextFormField(
+                                initialValue: d,
+                                 readOnly: true,
+                                style: TextStyle(fontSize: 15 , fontWeight: FontWeight.w600),
+                                decoration: const InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    border: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+
+
+                                ),
+                                maxLines: 1,
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
                           );
                         }).toList())
                         .toList(),
-                    minimumCellWidth: 100,
+                    minimumCellWidth:  100,
                     rowHeight: 50,
                   ),
                 );

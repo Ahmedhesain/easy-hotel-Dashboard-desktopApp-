@@ -18,7 +18,7 @@ class InvoicesQueryController extends GetxController {
   final searchType = 0.obs ;
 
   getInvoices() async {
-    if(searchedInvoiceController.text.isEmpty){
+    if(searchType.value == 0 && searchedInvoiceController.text.isEmpty){
       showPopupText(text: "يرجى كتابة رقم فاتورة اولاً", type: MsgType.error);
       return;
     }
