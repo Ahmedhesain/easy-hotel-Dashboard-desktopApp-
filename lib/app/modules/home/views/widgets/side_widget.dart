@@ -12,6 +12,7 @@ import 'package:window_manager/window_manager.dart';
 import '../../../../components/text_widget.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../crm/views/add_crm_event_view.dart';
+import 'notifications_widget.dart';
 
 class SideWidget extends GetView<HomeController> {
   const SideWidget({Key? key}) : super(key: key);
@@ -216,7 +217,9 @@ class SideWidget extends GetView<HomeController> {
             buttonColor: Colors.black54,
             fontColor: Colors.black54,
             onPressed: () => controller.searchForInvoiceById(controller.searchedInvoiceController.text),
-          )
+          ),
+           const SizedBox(height: 10),
+           const NotificationsWidget()
         ],
       ),
     );

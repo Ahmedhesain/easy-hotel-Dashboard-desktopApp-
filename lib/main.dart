@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
+import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:toby_bills/app.dart';
@@ -34,5 +35,6 @@ void main(List<String> args) async {
     await windowManager.setSize(WidgetsBinding.instance.window.physicalSize);
     await windowManager.maximize();
   }
+  Firestore.initialize('tobyerp');
   runApp(const MyApp());
 }

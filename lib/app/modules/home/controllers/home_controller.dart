@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -49,8 +50,10 @@ import 'package:toby_bills/app/data/repository/item/item_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 import 'package:window_manager/window_manager.dart';
 import '../../../core/enums/toast_msg_type.dart';
+import '../../../core/utils/firebase_storage_manager.dart';
 import '../../../core/values/app_constants.dart';
 import '../../../data/model/customer/dto/request/upload_customer_photo_request.dart';
+import '../../../data/model/fcm/dto/response/notification_response_dto.dart';
 import '../../../data/model/invoice/dto/request/gallary_show_request.dart';
 import '../../../data/model/invoice/dto/response/get_delivery_place_response.dart';
 
@@ -120,6 +123,7 @@ class HomeController extends GetxController {
   final items = <ItemResponse>[];
   final galleries = <GalleryResponse>[];
   final glPayDtoList = <GlPayDTO>[];
+  final notificationsList = <NotificationResponseDTO>[];
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
   Rxn<GetDueDateResponse> dueDate = Rxn();
   Rx<DateTime> date = Rx(DateTime.now());
@@ -150,6 +154,7 @@ class HomeController extends GetxController {
       getItems();
     }
     await getGalleries();
+    getNotifications();
     Future.wait([getDueDate(), getGlPayDtoList(), getDeliveryPlaces(), getDelegators(), getInventories()]).whenComplete(() => isLoading(false));
   }
 
@@ -910,5 +915,14 @@ class HomeController extends GetxController {
         );
       }
     }
+  }
+
+  getNotifications()async{
+   await Firestore.instance.collection('notifications').
+   document('54').collection('branchNotification').stream.listen((data){
+     data.forEach((element) {
+       notificationsList.add(NotificationResponseDTO.fromJson(element.map));
+     });
+   });
   }
 }
