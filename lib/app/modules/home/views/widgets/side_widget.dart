@@ -186,29 +186,29 @@ class SideWidget extends GetView<HomeController> {
           //           )),
           //     )),
           const SizedBox(height: 10),
-          TypeAheadFormField<InvoiceList>(
-            suggestionsCallback: (filter) => (controller.findCustomerBalanceResponse != null)
-                ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null).toList()
-                : [],
-            onSuggestionSelected: (value) {
-              controller.searchForInvoiceById(value.serial.toString());
-            },
-            itemBuilder: (context, inv) {
-              return SizedBox(
-                height: 50,
-                child: Text(inv.serial.toString(), textAlign: TextAlign.center),
-              );
-            },
-            textFieldConfiguration: TextFieldConfiguration(
-              controller: controller.searchedInvoiceController,
-              onSubmitted: controller.searchForInvoiceById,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "ابحث عن فاتورة",
-                isDense: true,
+            TypeAheadFormField<InvoiceList>(
+              suggestionsCallback: (filter) => (controller.findCustomerBalanceResponse != null)
+                  ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null).toList()
+                  : [],
+              onSuggestionSelected: (value) {
+                controller.searchForInvoiceById(value.serial.toString());
+              },
+              itemBuilder: (context, inv) {
+                return SizedBox(
+                  height: 50,
+                  child: Text(inv.serial.toString(), textAlign: TextAlign.center),
+                );
+              },
+              textFieldConfiguration: TextFieldConfiguration(
+                controller: controller.searchedInvoiceController,
+                onSubmitted: controller.searchForInvoiceById,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "ابحث عن فاتورة",
+                  isDense: true,
+                ),
               ),
             ),
-          ),
           const SizedBox(height: 10),
           // ButtonWidget(
           //   text: "بحث",

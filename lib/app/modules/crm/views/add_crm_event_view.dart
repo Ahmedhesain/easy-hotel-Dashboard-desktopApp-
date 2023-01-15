@@ -280,29 +280,29 @@ class CrmEventView extends GetView<CrmEventController> {
                       ),
                     ),
                   ),
-                  Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ButtonWidget(text: "رجوع", onPressed: (){
-                              windowManager.setTitle("Toby Bills -> شاشة المشتريات");
-                              Get.back();
-                            } ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ButtonWidget(text: "حفظ", onPressed: () => controller.addCRMEvent()),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ButtonWidget(text: "جديد", onPressed: ()=> controller.clear(),),
-                          )
-                        ],
-                      ),
-                  )
+                    Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ButtonWidget(text: "رجوع", onPressed: (){
+                                windowManager.setTitle("Toby Bills -> شاشة المشتريات");
+                                Get.back();
+                              } ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ButtonWidget(text: "حفظ", onPressed: () => controller.addCRMEvent()),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ButtonWidget(text: "جديد", onPressed: ()=> controller.clear(),),
+                            )
+                          ],
+                        ),
+                    )
                 ],
               ),
             ),

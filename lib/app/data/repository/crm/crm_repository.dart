@@ -11,47 +11,47 @@ import '../../provider/api_provider.dart';
 
 class CrmRepository{
 
-       getEventTypes(
-        SymbolRequest request, {
-        Function()? onComplete,
-        Function(List<SymbolDTO> data)? onSuccess,
-        Function(dynamic error)? onError,
-      }) =>
-      ApiProvider().post<List<SymbolDTO>,List<dynamic>>('symbol/eventType',
-        onComplete: onComplete,
-        onSuccess: onSuccess,
-        data: request.toJson(),
-        onError: onError,
-        convertor: SymbolDTO.fromList,
-      );
+         getEventTypes(
+          SymbolRequest request, {
+          Function()? onComplete,
+          Function(List<SymbolDTO> data)? onSuccess,
+          Function(dynamic error)? onError,
+        }) =>
+        ApiProvider().post<List<SymbolDTO>,List<dynamic>>('symbol/eventType',
+          onComplete: onComplete,
+          onSuccess: onSuccess,
+          data: request.toJson(),
+          onError: onError,
+          convertor: SymbolDTO.fromList,
+        );
 
-       getPriorityList(
-        SymbolRequest request, {
-        Function()? onComplete,
-        Function(List<SymbolDTO> data)? onSuccess,
-        Function(dynamic error)? onError,
-      }) =>
-      ApiProvider().post<List<SymbolDTO>,List<dynamic>>('symbol/crmPeriority',
-        onComplete: onComplete,
-        onSuccess: onSuccess,
-        data: request.toJson(),
-        onError: onError,
-        convertor: SymbolDTO.fromList,
-      );
+         getPriorityList(
+          SymbolRequest request, {
+          Function()? onComplete,
+          Function(List<SymbolDTO> data)? onSuccess,
+          Function(dynamic error)? onError,
+        }) =>
+        ApiProvider().post<List<SymbolDTO>,List<dynamic>>('symbol/crmPeriority',
+          onComplete: onComplete,
+          onSuccess: onSuccess,
+          data: request.toJson(),
+          onError: onError,
+          convertor: SymbolDTO.fromList,
+        );
 
-       getFollowers(
-        FollowerRequest request, {
-        Function()? onComplete,
-        Function(List<FollowerResponse> data)? onSuccess,
-        Function(dynamic error)? onError,
-      }) =>
-      ApiProvider().post<List<FollowerResponse>,List<dynamic>>('employee/findCRMEmployeeList',
-        onComplete: onComplete,
-        onSuccess: onSuccess,
-        data: request.toJson(),
-        onError: onError,
-        convertor: FollowerResponse.fromList,
-      );
+         getFollowers(
+          FollowerRequest request, {
+          Function()? onComplete,
+          Function(List<FollowerResponse> data)? onSuccess,
+          Function(dynamic error)? onError,
+        }) =>
+        ApiProvider().post<List<FollowerResponse>,List<dynamic>>('employee/findCRMEmployeeList',
+          onComplete: onComplete,
+          onSuccess: onSuccess,
+          data: request.toJson(),
+          onError: onError,
+          convertor: FollowerResponse.fromList,
+        );
 
        addCrmEvent(
         CRMEventRequest request, {
