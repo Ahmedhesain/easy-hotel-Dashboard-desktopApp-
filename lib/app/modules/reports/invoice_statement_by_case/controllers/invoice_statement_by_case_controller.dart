@@ -47,7 +47,7 @@ class InvoiceStatementByCaseController extends GetxController {
       dateTo: dateTo.value,
       dateFrom: dateFrom.value,
       branchId: UserManager().branchId,
-      dayNumbers: 4,
+      // dayNumbers: 4,
       invoiceStatus: selectedStatus.value
     );
     ReportsRepository().getInvoiceStatementByCase(request,

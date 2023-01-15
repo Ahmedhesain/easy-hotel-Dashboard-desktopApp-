@@ -10,56 +10,80 @@ class NotificationsWidget extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size ;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: SizedBox(
             width: size.width * 0.16,
-            child: const Center(
-              child: TextWidget('الاشعارات' , weight: FontWeight.bold,),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextWidget('الاشعارات', weight: FontWeight.bold,),
+                Obx(() =>
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle ,
+                          color: Colors.red
+                        ),
+                        width: 15,
+                        child: Center(child: Text(controller.notificationsList.length.toString() , style: TextStyle(color: Colors.white),)),
+                      ),
+                    )
+                ),
+              ],
             ),
           ),
         ),
         Container(
           width: size.width * 0.16,
           height: size.height * 0.25,
-          decoration:  BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10)
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10)
           ),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                 for(NotificationResponseDTO noti in controller.notificationsList)
-                   Padding(
-                     padding: const EdgeInsets.all(4.0),
-                     child: Container(
-                       width: size.width *0.15,
-                       decoration: BoxDecoration(
-                         color: Colors.grey ,
-                         borderRadius: BorderRadius.circular(10)
-                       ),
-                       child: Padding(
-                         padding: const EdgeInsets.all(4.0),
-                         child: Center(
-                           child: Column(
-                             mainAxisAlignment: MainAxisAlignment.start,
-                             children: [
-                               SizedBox(
-                                   height: 20,
-                                   width: size.width * 0.15,
-                                   child: IconButton(onPressed: (){}, icon: Icon(Icons.delete_forever_outlined , color: Colors.red, size: 15,))),
-                               TextWidget(noti.text ?? ''),
-                             ],
-                           ),
-                         ),
-                       ),
-                     ),
-                   )
-              ],
-            ),
+            child: Obx(() {
+              return Column(
+                children: [
+                  for(NotificationResponseDTO noti in controller.notificationsList)
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                        width: size.width * 0.15,
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextWidget(noti.text ?? ''),
+                            ),
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              child: SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: MaterialButton(
+                                  child: Center(child: Icon(Icons.delete_forever_outlined, color: Colors.red, size: 15,)),
+                                  onPressed: () => controller.deleteNotification(noti.id),
+                                ),
+                              ),),
+                          ],
+                        ),
+                      ),
+                    )
+                ],
+              );
+            }),
           ),
         ),
       ],

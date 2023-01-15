@@ -7,7 +7,7 @@ class InvoiceStatementByCaseRequest {
     required this.branchId,
     required this.dateFrom,
     required this.dateTo,
-    required this.dayNumbers,
+    // required this.dayNumbers,
     required this.invoiceStatus,
 
   });
@@ -15,7 +15,7 @@ class InvoiceStatementByCaseRequest {
   final int branchId;
   final DateTime dateFrom;
   final DateTime dateTo;
-  final int dayNumbers;
+  // final int dayNumbers;
   final int invoiceStatus;
 
 
@@ -25,7 +25,7 @@ class InvoiceStatementByCaseRequest {
       "branchId": branchId,
       "dateFrom": dateFrom.toIso8601String(),
       "dateTo": dateTo.toIso8601String(),
-      "dayNumbers": dayNumbers,
+      // "dayNumbers": dayNumbers,
       "invoiceStatus": invoiceStatus
     };
   }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firedart/firestore/firestore.dart';
+import 'package:firedart/firestore/models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -123,7 +124,7 @@ class HomeController extends GetxController {
   final items = <ItemResponse>[];
   final galleries = <GalleryResponse>[];
   final glPayDtoList = <GlPayDTO>[];
-  final notificationsList = <NotificationResponseDTO>[];
+  final notificationsList = <NotificationResponseDTO>[].obs;
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
   Rxn<GetDueDateResponse> dueDate = Rxn();
   Rx<DateTime> date = Rx(DateTime.now());
@@ -143,6 +144,7 @@ class HomeController extends GetxController {
 
   bool get canEdit => UserManager().user.userScreens["proworkorder"]?.edit ?? false;
 
+  StreamSubscription<List<Document>>? stream ;
   @override
   void onInit() async {
     super.onInit();
@@ -917,12 +919,29 @@ class HomeController extends GetxController {
     }
   }
 
-  getNotifications()async{
+
+  getNotifications(){
+     if(stream != null){
+       stream!.cancel();
+     }
+     List<NotificationResponseDTO> newList = [] ;
+     stream = Firestore.instance.collection('notifications').
+    document(UserManager().galleryId.toString()).collection('branchNotification').stream.listen((data){
+       newList = [] ;
+       data.forEach((element) {
+         NotificationResponseDTO notification = NotificationResponseDTO.fromJson(element.map) ;
+         notification.id = element.id ;
+         newList.add(notification);
+       });
+       notificationsList.assignAll(newList);
+       notificationsList.refresh();
+     }) ;
+     notificationsList.assignAll(newList);
+     notificationsList.refresh();
+  }
+
+ Future deleteNotification(id) async{
    await Firestore.instance.collection('notifications').
-   document('54').collection('branchNotification').stream.listen((data){
-     data.forEach((element) {
-       notificationsList.add(NotificationResponseDTO.fromJson(element.map));
-     });
-   });
+    document(UserManager().galleryId.toString()).collection('branchNotification').document(id).delete();
   }
 }

@@ -210,14 +210,14 @@ class SideWidget extends GetView<HomeController> {
             ),
           ),
           const SizedBox(height: 10),
-          ButtonWidget(
-            text: "بحث",
-            expanded: true,
-            isOutlined: true,
-            buttonColor: Colors.black54,
-            fontColor: Colors.black54,
-            onPressed: () => controller.searchForInvoiceById(controller.searchedInvoiceController.text),
-          ),
+          // ButtonWidget(
+          //   text: "بحث",
+          //   expanded: true,
+          //   isOutlined: true,
+          //   buttonColor: Colors.black54,
+          //   fontColor: Colors.black54,
+          //   onPressed: () => controller.searchForInvoiceById(controller.searchedInvoiceController.text),
+          // ),
            const SizedBox(height: 10),
            const NotificationsWidget()
         ],
