@@ -284,7 +284,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                   child: TypeAheadFormField<FindCustomerResponse>(
                       itemBuilder: (context, client) {
                         return SizedBox(
-                          child: Text("${client.name}_${client.code}"),
+                          child: Text("${client.name}"),
                         );
                       },
                       suggestionsCallback: (filter) => controller.customers,
@@ -293,7 +293,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                           showPopupText(text: 'هذا العميل محظور');
                           return;
                         }
-                        controller.invoiceCustomerController.text = "${value.name} ${value.code}";
+                        controller.invoiceCustomerController.text = "${value.name}";
                         controller.selectedCustomer(value);
                         controller.getCustomerBalance(value.id!);
                         // provider.loading = true;
@@ -313,7 +313,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                         textInputAction: TextInputAction.next,
                         controller: controller.invoiceCustomerController,
                         focusNode: controller.invoiceCustomerFieldFocusNode,
-                        onSubmitted: (_) => controller.getCustomersByCodeForInvoice(),
+                        onSubmitted :(_) => controller.getCustomersByCodeForInvoice(),
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             // disabledBorder: InputBorder.none,

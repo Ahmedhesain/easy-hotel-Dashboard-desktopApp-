@@ -126,6 +126,8 @@ class HomeController extends GetxController {
   final glPayDtoList = <GlPayDTO>[];
   final notificationsList = <NotificationResponseDTO>[].obs;
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
+
+
   Rxn<GetDueDateResponse> dueDate = Rxn();
   Rx<DateTime> date = Rx(DateTime.now());
   Rxn<InvoiceModel> invoice = Rxn();
@@ -145,6 +147,8 @@ class HomeController extends GetxController {
   bool get canEdit => UserManager().user.userScreens["proworkorder"]?.edit ?? false;
 
   StreamSubscription<List<Document>>? stream ;
+
+
   @override
   void onInit() async {
     super.onInit();
@@ -382,16 +386,16 @@ class HomeController extends GetxController {
             onComplete: () => isLoading(false));
   }
 
-  getCustomerBalance(int id) {
-    isLoading(true);
-    CustomerRepository().getCustomerBalance(FindCustomerBalanceRequest(id: id),
-        onSuccess: (data) {
-          selectedCustomer.value!.balanceLimit = data;
-          selectedCustomer.refresh();
-        },
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
-  }
+    getCustomerBalance(int id) {
+      isLoading(true);
+      CustomerRepository().getCustomerBalance(FindCustomerBalanceRequest(id: id),
+          onSuccess: (data) {
+            selectedCustomer.value!.balanceLimit = data;
+            selectedCustomer.refresh();
+          },
+          onError: (error) => showPopupText(text: error.toString()),
+          onComplete: () => isLoading(false));
+    }
 
   List<ItemResponse> _getItemsFromStorage() {
     List<dynamic> items = AppStorage.read("items") ?? [];
