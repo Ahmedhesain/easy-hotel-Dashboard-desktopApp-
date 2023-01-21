@@ -195,7 +195,6 @@ class SideWidget extends GetView<HomeController> {
               },
               itemBuilder: (context, inv) {
                 return SizedBox(
-                  height: 50,
                   child: Text(inv.serial.toString(), textAlign: TextAlign.center),
                 );
               },

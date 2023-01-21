@@ -286,7 +286,7 @@ class HomeController extends GetxController {
   }
 
   getInvoiceListForCustomer(FindCustomerResponse value) {
-    findSideCustomerController.text = "${value.name} ${value.code}";
+    findSideCustomerController.text = "${value.name}";
     isLoading(true);
     CustomerRepository().findCustomerInvoicesData(FindCustomerBalanceRequest(id: value.id),
         onSuccess: (data) => findCustomerBalanceResponse = data,

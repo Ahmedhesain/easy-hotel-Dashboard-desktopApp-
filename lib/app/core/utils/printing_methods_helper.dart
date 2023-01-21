@@ -4773,7 +4773,7 @@ class PrintingHelper {
     final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
     final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
     doc.addPage(Page(
-        pageTheme: const PageTheme(pageFormat: PdfPageFormat(96, 70, marginAll: 1.0), textDirection: TextDirection.rtl),
+        pageTheme: const PageTheme(pageFormat: PdfPageFormat(96, 70, marginAll: 1.0), textDirection: TextDirection.rtl , clip: true),
         build: (Context context) {
           return Column(
             children: [

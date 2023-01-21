@@ -140,6 +140,10 @@ class HomeHeaderWidget extends GetView<HomeController> {
                                 barrierDismissible: false);
                             controller.calcInvoiceValues();
                           }),
+                          if((permissions?.edit ?? false) || controller.invoice.value?.id == null)
+                            const SizedBox(width: 5),
+                          if((permissions?.edit ?? false) || controller.invoice.value?.id == null)
+                            ButtonWidget(text: "حفظ", onPressed: () => controller.saveInvoice()),
                           const SizedBox(width: 5),
                           ButtonWidget(text: "سند القبض", onPressed: () async {
                             windowManager.setTitle("Toby Bills -> سند القبض");
@@ -186,10 +190,6 @@ class HomeHeaderWidget extends GetView<HomeController> {
                           ButtonWidget(text: "تنزيل عرض", onPressed: () => controller.offerOne()),
                           const SizedBox(width: 5),
                           ButtonWidget(text: "تحديث", onPressed: () => controller.getItems()),
-                          if((permissions?.edit ?? false) || controller.invoice.value?.id == null)
-                            const SizedBox(width: 5),
-                          if((permissions?.edit ?? false) || controller.invoice.value?.id == null)
-                            ButtonWidget(text: "حفظ", onPressed: () => controller.saveInvoice()),
                           if((permissions?.add ?? false))
                             const SizedBox(width: 5),
                           if((permissions?.add ?? false))

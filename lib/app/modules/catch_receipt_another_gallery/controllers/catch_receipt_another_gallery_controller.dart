@@ -101,7 +101,8 @@ class CatchReceiptAnotherGalleryController extends GetxController {
       showPopupText(text: "لا يمكن اضافة هذا العنصر");
       return ;
     }
-    banksToPay.add(GlPayDTO(
+    banksToPay.add(
+        GlPayDTO(
       bankName: itemBank!.bankName,
       bankId: itemBank!.id,
       remain: itemRemainController.text.tryToParseToNum,
@@ -124,7 +125,7 @@ class CatchReceiptAnotherGalleryController extends GetxController {
       branchId: user.branchId,
       customerBalance: customerBalance.value?.balance,
       customerName: selectedCustomer.value?.name,
-      glPayDTOAPIList: banksToPay
+      glPayDTOAPIList: banksToPay.toList()
     );
     isLoading(true);
     ReportsRepository().saveInvoicesStatement(request,

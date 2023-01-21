@@ -28,7 +28,7 @@ class SalesStatementForThePeriod {
   final num noticeCredit;
   final num noticeDebit;
   final num paid;
-  final num remain;
+  num remain;
   final num returnPurchaseValue;
   final int serial;
   final num tax;

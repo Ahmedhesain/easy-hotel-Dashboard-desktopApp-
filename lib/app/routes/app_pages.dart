@@ -7,6 +7,8 @@ import '../modules/catch_receipt/bindings/catch_receipt_binding.dart';
 import '../modules/catch_receipt/views/catch_receipt_view.dart';
 import '../modules/catch_receipt_another_gallery/bindings/catch_receipt_another_gallery_binding.dart';
 import '../modules/catch_receipt_another_gallery/views/catch_receipt_another_gallery_view.dart';
+import '../modules/catch_receipt_another_gallery_new/bindings/catch_receipt_another_gallery_new_binding.dart';
+import '../modules/catch_receipt_another_gallery_new/views/catch_receipt_another_gallery_new_view.dart';
 import '../modules/crm/bindings/crm_event_binding.dart';
 import '../modules/customer_account_statement/bindings/customer_account_statement_binding.dart';
 import '../modules/customer_account_statement/views/customer_account_statement_view.dart';
@@ -238,8 +240,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CATCH_RECEIPT_ANOTHER_GALLERY,
-      page: () => const CatchReceiptAnotherGalleryView(),
-      binding: CatchReceiptAnotherGalleryBinding(),
+      page: () => const CatchReceiptAnotherGalleryNewView(),
+      binding: CatchReceiptAnotherGalleryNewBinding(),
     ),
     GetPage(
       name: _Paths.CATEGORIES_ITEMS,
