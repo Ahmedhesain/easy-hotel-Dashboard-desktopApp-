@@ -33,16 +33,17 @@ class ApiProvider {
 
   static String get apiUrl {
     if (kDebugMode) {
-      return  "http://192.168.1.3:9090/toby/rest/";
+      // return  "http://192.168.1.3:9090/toby/rest/";
       // return "http://134.122.57.181:8080/debug/rest/";
       // return "http://134.122.57.181:8080/test19/rest/";
       // return "http://134.122.57.181:8080/test20/rest/";
       // return  "http://192.168.1.13:9090/toby/rest/";
+      return "http://www.thobesa.com:8080/test20/rest/";
     } else {
       // return "http://192.168.0.111:9090/toby/rest/";
       // return "http://192.168.1.22:9090/toby/rest/";
       // return "http://134.122.57.181:8080/debug/rest/";
-     return "http://134.122.57.181:8080/test20/rest/";
+     return "http://www.thobesa.com:8080/test20/rest/";
     }
   }
 
