@@ -16,143 +16,144 @@ class InvoiceStatementByCaseView extends GetView<InvoiceStatementByCaseControlle
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size ;
     return Scaffold(
       body: Obx(() {
         return AppLoadingOverlay(
           isLoading: controller.isLoading.value,
           child: Column(
             children: [
-              ScrollableRow(
-                minimumWidth: 800,
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                textDirection: TextDirection.rtl,
-                children: (isScrollable) {
-                  return [
-                    const Text(
-                      "اختر معرض: ",
-                      textDirection: TextDirection.rtl,
-                    ),
-                    Obx(() {
-                          return SizedBox(
-                            width: 300,
-                            height: 35,
-                            child: DropDownMultiSelect(
-                              options: controller.deliveryPlaces.map((e) => e.name??"").toList(),
-                              selectedValues: controller.selectedDeliveryPlace.map((e) => e.name??"").toList(),
-                              onChanged: controller.selectNewDeliveryplace,
-                              isDense: true,
-                              childBuilder: (List<String> values) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      values.isEmpty ? "يرجى تحديد معرض على الاقل" : values.join(', '),
-                                      maxLines: 1,
+              SizedBox(
+                width: size.width,
+                child: Row(
+                  textDirection: TextDirection.rtl,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children:
+                     [
+                      const Text(
+                        "اختر معرض: ",
+                        textDirection: TextDirection.rtl,
+                      ),
+                      Obx(() {
+                            return SizedBox(
+                              width: size.width * 0.2,
+                              height: 35,
+                              child: DropDownMultiSelect(
+                                options: controller.deliveryPlaces.map((e) => e.name??"").toList(),
+                                selectedValues: controller.selectedDeliveryPlace.map((e) => e.name??"").toList(),
+                                onChanged: controller.selectNewDeliveryplace,
+                                isDense: true,
+                                childBuilder: (List<String> values) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        values.isEmpty ? "يرجى تحديد معرض على الاقل" : values.join(', '),
+                                        maxLines: 1,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        }),
-                    const SizedBox(width: 15),
-                    const Text(
-                      "اختر حالة: ",
-                      textDirection: TextDirection.rtl,
-                    ),
-                    Obx(() {
-                          return SizedBox(
-                            width: 200,
-                            height: 35,
-                            child: DropdownSearch<String>(
-                              selectedItem: controller.statusList[controller.selectedStatus.value],
-                              items: controller.statusList,
-                              dropdownDecoratorProps: const DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                                  border: OutlineInputBorder()
-                                ),
+                                  );
+                                },
                               ),
-                              onChanged: (value) => controller.selectedStatus(controller.statusList.indexOf(value!)),
-                            ),
-                          );
-                        }),
-                    const SizedBox(width: 15),
-                    const Text(
-                      "من تاريخ: ",
-                      textDirection: TextDirection.rtl,
-                    ),
-                    SizedBox(
-                      width: 110,
-                      child: DateFieldWidget(
-                        onComplete: (date){
-                          controller.dateFrom(date);
-                        },
-                        date: controller.dateFrom.value,
+                            );
+                          }),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "اختر حالة: ",
+                        textDirection: TextDirection.rtl,
                       ),
-                    ),
-                    // Obx(() {
-                    //       return MouseRegion(
-                    //         cursor: SystemMouseCursors.click,
-                    //         child: GestureDetector(
-                    //             onTap: () {
-                    //               controller.pickFromDate();
-                    //             },
-                    //             child: Text(
-                    //               DateFormat("yyyy-MM-dd").format(controller.dateFrom.value),
-                    //               style: const TextStyle(decoration: TextDecoration.underline),
-                    //             )),
-                    //       );
-                    //     }),
-                    const SizedBox(width: 15),
-                    const Text(
-                      "الى تاريخ: ",
-                      textDirection: TextDirection.rtl,
-                    ),
-                    SizedBox(
-                      width: 110,
-                      child: DateFieldWidget(
-                        onComplete: (date){
-                          controller.dateTo(date);
-                        },
-                        date: controller.dateTo.value,
+                      Obx(() {
+                            return SizedBox(
+                              width: size.width * 0.1,
+                              height: 35,
+                              child: DropdownSearch<String>(
+                                selectedItem: controller.statusList[controller.selectedStatus.value],
+                                items: controller.statusList,
+                                dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                    border: OutlineInputBorder()
+                                  ),
+                                ),
+                                onChanged: (value) => controller.selectedStatus(controller.statusList.indexOf(value!)),
+                              ),
+                            );
+                          }),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "من تاريخ: ",
+                        textDirection: TextDirection.rtl,
                       ),
-                    ),
-                    // Obx(() {
-                    //       return MouseRegion(
-                    //         cursor: SystemMouseCursors.click,
-                    //         child: GestureDetector(
-                    //             onTap: () => controller.pickToDate(),
-                    //             child: Text(
-                    //               DateFormat("yyyy-MM-dd").format(controller.dateTo.value),
-                    //               style: const TextStyle(decoration: TextDecoration.underline),
-                    //             )),
-                    //       );
-                    //     }),
-                    if (!isScrollable) const Spacer(),
-                    if (isScrollable) const SizedBox(width: 15),
-                    ElevatedButton(
-                      onPressed: () => controller.getInvoices(context),
-                      child: const Text("بحث"),
-                    ),
-                    const SizedBox(width: 15),
-                    ElevatedButton(
-                      onPressed: () => ExcelHelper.galleryInvoicesExcel(controller.invoices, context),
-                      child: const Text("التصدير الى اكسل"),
-                    ),
-                    const SizedBox(width: 15),
-                    ElevatedButton(
-                      onPressed: () => PrintingHelper().invoicesByStatus(context, controller.invoices),
-                      child: const Text("طباعة"),
-                    ),
-                    const SizedBox(width: 15),
-                    ElevatedButton(
-                      onPressed: () => Get.back(),
-                      child: const Text("رجوع"),
-                    ),
-                  ];
-                },
+                      SizedBox(
+                        width: size.width * 0.07,
+                        child: DateFieldWidget(
+                          onComplete: (date){
+                            controller.dateFrom(date);
+                          },
+                          date: controller.dateFrom.value,
+                        ),
+                      ),
+                      // Obx(() {
+                      //       return MouseRegion(
+                      //         cursor: SystemMouseCursors.click,
+                      //         child: GestureDetector(
+                      //             onTap: () {
+                      //               controller.pickFromDate();
+                      //             },
+                      //             child: Text(
+                      //               DateFormat("yyyy-MM-dd").format(controller.dateFrom.value),
+                      //               style: const TextStyle(decoration: TextDecoration.underline),
+                      //             )),
+                      //       );
+                      //     }),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "الى تاريخ: ",
+                        textDirection: TextDirection.rtl,
+                      ),
+                      SizedBox(
+                        width: size.width * 0.07,
+                        child: DateFieldWidget(
+                          onComplete: (date){
+                            controller.dateTo(date);
+                          },
+                          date: controller.dateTo.value,
+                        ),
+                      ),
+                      // Obx(() {
+                      //       return MouseRegion(
+                      //         cursor: SystemMouseCursors.click,
+                      //         child: GestureDetector(
+                      //             onTap: () => controller.pickToDate(),
+                      //             child: Text(
+                      //               DateFormat("yyyy-MM-dd").format(controller.dateTo.value),
+                      //               style: const TextStyle(decoration: TextDecoration.underline),
+                      //             )),
+                      //       );
+                      //     }),
+                      SizedBox(width: 20,) ,
+                      ElevatedButton(
+                        onPressed: () => controller.getInvoices(context),
+                        child: const Text("بحث"),
+                      ),
+                      const SizedBox(width: 15),
+                      ElevatedButton(
+                        onPressed: () => ExcelHelper.galleryInvoicesExcel(controller.invoices, context),
+                        child: const Text("التصدير الى اكسل"),
+                      ),
+                      const SizedBox(width: 15),
+                      ElevatedButton(
+                        onPressed: () => PrintingHelper().invoicesByStatus(context, controller.invoices),
+                        child: const Text("طباعة"),
+                      ),
+                      const SizedBox(width: 15),
+                      ElevatedButton(
+                        onPressed: () => Get.back(),
+                        child: const Text("رجوع"),
+                      ),
+                    ]
+                ),
               ),
               const Divider(),
               Expanded(

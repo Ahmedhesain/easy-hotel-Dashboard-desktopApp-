@@ -125,8 +125,9 @@ class HomeController extends GetxController {
   final galleries = <GalleryResponse>[];
   final glPayDtoList = <GlPayDTO>[];
   final notificationsList = <NotificationResponseDTO>[].obs;
+  final eventsList = <NotificationResponseDTO>[].obs;
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
-
+  final notificationsSelectedIndex = 0.obs ;
 
   Rxn<GetDueDateResponse> dueDate = Rxn();
   Rx<DateTime> date = Rx(DateTime.now());
@@ -147,6 +148,7 @@ class HomeController extends GetxController {
   bool get canEdit => UserManager().user.userScreens["proworkorder"]?.edit ?? false;
 
   StreamSubscription<List<Document>>? stream ;
+  StreamSubscription<List<Document>>? eventsStream ;
 
 
   @override
@@ -161,6 +163,7 @@ class HomeController extends GetxController {
     }
     await getGalleries();
     getNotifications();
+    getEvents();
     Future.wait([getDueDate(), getGlPayDtoList(), getDeliveryPlaces(), getDelegators(), getInventories()]).whenComplete(() => isLoading(false));
   }
 
@@ -943,9 +946,33 @@ class HomeController extends GetxController {
      notificationsList.assignAll(newList);
      notificationsList.refresh();
   }
+  getEvents(){
+     if(eventsStream != null){
+       eventsStream!.cancel();
+     }
+     List<NotificationResponseDTO> newList = [] ;
+     eventsStream = Firestore.instance.collection('events').
+    document(UserManager().galleryId.toString()).collection('branchEvents').stream.listen((data){
+       newList = [] ;
+       data.forEach((element) {
+         NotificationResponseDTO notification = NotificationResponseDTO.fromJson(element.map) ;
+         notification.id = element.id ;
+         newList.add(notification);
+       });
+       eventsList.assignAll(newList);
+       eventsList.refresh();
+     }) ;
+     eventsList.assignAll(newList);
+     eventsList.refresh();
+  }
 
  Future deleteNotification(id) async{
    await Firestore.instance.collection('notifications').
     document(UserManager().galleryId.toString()).collection('branchNotification').document(id).delete();
+  }
+
+  Future deleteEvent(id) async{
+   await Firestore.instance.collection('events').
+    document(UserManager().galleryId.toString()).collection('branchEvents').document(id).delete();
   }
 }

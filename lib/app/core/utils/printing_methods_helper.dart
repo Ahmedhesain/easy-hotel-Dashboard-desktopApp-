@@ -4772,32 +4772,38 @@ class PrintingHelper {
     final normalStyle = TextStyle(font: ttfLight, fontSize: 9);
     final boldStyle = TextStyle(font: ttfBold, fontSize: 11, fontBold: ttfBold);
     final boldStyle2 = TextStyle(font: ttfBold, fontSize: 9, fontBold: ttfBold);
-    doc.addPage(Page(
-        pageTheme: const PageTheme(pageFormat: PdfPageFormat(96, 70, marginAll: 1.0), textDirection: TextDirection.rtl , clip: true),
+    doc.addPage(
+        Page(
+        pageTheme: const PageTheme(
+            pageFormat: PdfPageFormat(96, 70),
+            orientation: PageOrientation.landscape,
+            textDirection: TextDirection.rtl),
         build: (Context context) {
-          return Column(
-            children: [
-              Text(name, style: normalStyle, textAlign: TextAlign.center),
-              BarcodeWidget(
-                height: 10,
-                width: 80,
-                color: PdfColor.fromHex("#000000"),
-                barcode: Barcode.fromType(BarcodeType.Codabar),
-                drawText: false,
-                data: item.code.toString(),
-              ),
-              Spacer(flex: 2),
-              Text(item.name.toString(), style: boldStyle2),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                Column(children: [
-                  Text("${cost?.toStringAsFixed(3)} SR",
-                      style: TextStyle(fontSize: 9, decoration: costAfterDiscount != null ? TextDecoration.lineThrough : null)),
-                  if (costAfterDiscount != null) Text("${costAfterDiscount.toStringAsFixed(3)} SR", style: TextStyle(fontSize: 9)),
+          return Center(
+            child: Column(
+              children: [
+                Text(name, style: normalStyle, textAlign: TextAlign.center),
+                BarcodeWidget(
+                  height: 10,
+                  width: 80,
+                  color: PdfColor.fromHex("#000000"),
+                  barcode: Barcode.fromType(BarcodeType.Codabar),
+                  drawText: false,
+                  data: item.code.toString(),
+                ),
+                Spacer(flex: 2),
+                Text(item.name.toString(), style: boldStyle2),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                  Column(children: [
+                    Text("${cost?.toStringAsFixed(3)} SR",
+                        style: TextStyle(fontSize: 9, decoration: costAfterDiscount != null ? TextDecoration.lineThrough : null)),
+                    if (costAfterDiscount != null) Text("${costAfterDiscount.toStringAsFixed(3)} SR", style: TextStyle(fontSize: 9)),
+                  ]),
+                  Text(item.code.toString(), style: TextStyle(fontSize: 9)),
                 ]),
-                Text(item.code.toString(), style: TextStyle(fontSize: 9)),
-              ]),
-              Spacer(),
-            ],
+                Spacer(),
+              ],
+            )
           );
         }));
 

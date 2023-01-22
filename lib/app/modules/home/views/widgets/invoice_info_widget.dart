@@ -250,6 +250,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                       UserManager().changeGallery(g);
                       controller.selectedGallery(g);
                      controller.getNotifications();
+                     controller.getEvents();
                     },
                     itemAsString: (gallery) => gallery.name ?? "",
                     dropdownDecoratorProps: const DropDownDecoratorProps(
