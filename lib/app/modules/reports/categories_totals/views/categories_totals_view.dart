@@ -17,12 +17,13 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size ;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         foregroundColor: Colors.black,
-        titleTextStyle: const TextStyle(fontSize: 14,fontWeight: FontWeight.normal,color: Colors.black),
+        titleTextStyle: const TextStyle(fontSize: 12,fontWeight: FontWeight.w600,color: Colors.black),
         title: Row(
           children: [
             const Center(
@@ -33,7 +34,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
             ),
             Obx(() {
               return SizedBox(
-                width: 200,
+                width: size.width * 0.15,
                 child: Directionality(
                   textDirection: TextDirection.rtl,
                   child: DropDownMultiSelect(
@@ -62,40 +63,38 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                 ),
               );
             }),
-            const SizedBox(width: 10),
+            const SizedBox(width: 5),
             const Center(
                 child: Text(
                   'نوع الفاتوره:',
                   textDirection: TextDirection.rtl,
                 )),
             const SizedBox(width: 5),
-            Center(
-              child: SizedBox(
-                width: 150,
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: DropdownSearch<String>(
-                    items: AppConstants.invoiceTypeList,
-                    selectedItem: AppConstants.invoiceTypeList[controller.invoiceTypeSelected == null? 0 : controller.invoiceTypeSelected!+1],
-                    onChanged: (value) {
-                      if (value == AppConstants.invoiceTypeList.first) {
-                        controller.invoiceTypeSelected = null;
-                      } else {
-                        controller.invoiceTypeSelected = AppConstants.invoiceTypeList.indexOf(value!) - 1;
-                      }
-                    },
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.all(10),
-                        isDense: true,
-                      ),
+            SizedBox(
+              width: size.width * 0.1,
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: DropdownSearch<String>(
+                  items: AppConstants.invoiceTypeList,
+                  selectedItem: AppConstants.invoiceTypeList[controller.invoiceTypeSelected == null? 0 : controller.invoiceTypeSelected!+1],
+                  onChanged: (value) {
+                    if (value == AppConstants.invoiceTypeList.first) {
+                      controller.invoiceTypeSelected = null;
+                    } else {
+                      controller.invoiceTypeSelected = AppConstants.invoiceTypeList.indexOf(value!) - 1;
+                    }
+                  },
+                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.all(10),
+                      isDense: true,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 5 ),
             const Center(
                 child: Text(
                   'المعرض :',
@@ -103,7 +102,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                 )),
             Center(
               child: SizedBox(
-                width: 190,
+                width: size.width * 0.13,
                 child: Directionality(
                   textDirection: TextDirection.rtl,
                   child:
@@ -139,7 +138,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 5),
             const Center(
               child: Text(
                 "من تاريخ: ",
@@ -147,7 +146,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               ),
             ),
             SizedBox(
-              width: 110,
+              width: size.width * 0.075,
               child: DateFieldWidget(
                 onComplete: (date){
                   controller.dateFrom(date);
@@ -170,7 +169,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
             //         })),
             //   ),
             // ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 5),
             const Center(
               child: Text(
                 "الى تاريخ: ",
@@ -178,7 +177,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               ),
             ),
             SizedBox(
-              width: 110,
+              width: size.width * 0.075,
               child: DateFieldWidget(
                 onComplete: (date){
                   controller.dateTo(date);
@@ -210,7 +209,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               onPressed: () => controller.getReports(),
             ),
           ),
-          const SizedBox(width: 5),
+          const SizedBox(width: 2),
           UnconstrainedBox(
             child: Obx(() {
               return ElevatedButton(
@@ -219,7 +218,7 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               );
             }),
           ),
-          const SizedBox(width: 5),
+          const SizedBox(width: 2),
           UnconstrainedBox(
             child: Obx(() {
               return ElevatedButton(
@@ -228,14 +227,14 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
               );
             }),
           ),
-          const SizedBox(width: 5),
+          const SizedBox(width: 2),
           UnconstrainedBox(
             child: ElevatedButton(
               child: const Text("رجوع"),
               onPressed: () => Get.back(),
             ),
           ),
-          const SizedBox(width: 5),
+          const SizedBox(width: 2),
         ],
       ),
       body: Obx(() {

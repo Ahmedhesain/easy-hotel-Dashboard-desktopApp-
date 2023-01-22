@@ -136,79 +136,51 @@ class SideWidget extends GetView<HomeController> {
             ),
           ),
           const SizedBox(height: 10),
-          TypeAheadFormField<FindCustomerResponse>(
-            key: UniqueKey(),
-            itemBuilder: (context, client) {
-              return Center(
-                child: Text(client.name.toString(), textAlign: TextAlign.center),
-              );
-            },
-            onSuggestionSelected: (FindCustomerResponse client) => controller.getInvoiceListForCustomer(client),
-            suggestionsCallback: (filter) => controller.customers,
-            textFieldConfiguration: TextFieldConfiguration(
-                focusNode: controller.findSideCustomerFieldFocusNode,
-                controller: controller.findSideCustomerController,
-                onSubmitted: (value) => controller.getCustomersByCode(),
-                decoration: InputDecoration(border: OutlineInputBorder(), hintText: "ابحث عن عميل", isDense: true)),
-            noItemFoundText: "لايوجد بيانات",
-          ),
-          // TypeAheadFormField<FindCustomerResponse>(
-          //     itemBuilder: (context, client) {
-          //       return SizedBox(
-          //         height: 50,
-          //         child: Center(
-          //           child: Text("${client.name} ${client.code}"),
-          //         ),
-          //       );
-          //     },
-          //     suggestionsCallback: (filter) => controller.customers,
-          //     onSuggestionSelected: controller.getInvoiceListForCustomer,
-          //     textFieldConfiguration: TextFieldConfiguration(
-          //       textInputAction: TextInputAction.next,
-          //       controller: controller.findSideCustomerController,
-          //       focusNode: controller.findSideCustomerFieldFocusNode,
-          //       onEditingComplete: () => controller.getCustomersByCode(),
-          //       decoration: InputDecoration(
-          //           border: const OutlineInputBorder(),
-          //           // disabledBorder: InputBorder.none,
-          //           // enabledBorder: InputBorder.none,
-          //           // focusedBorder: InputBorder.none,
-          //           hintText: "ابحث عن فاتورة لعميل معين",
-          //           isDense: true,
-          //           hintMaxLines: 2,
-          //           contentPadding: const EdgeInsets.all(5),
-          //           suffixIconConstraints: const BoxConstraints(maxWidth: 50),
-          //           suffixIcon: IconButtonWidget(
-          //             icon: Icons.search,
-          //             onPressed: () {
-          //               controller.getCustomersByCode();
-          //             },
-          //           )),
-          //     )),
-          const SizedBox(height: 10),
-            TypeAheadFormField<InvoiceList>(
-              suggestionsCallback: (filter) => (controller.findCustomerBalanceResponse != null)
-                  ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null).toList()
-                  : [],
-              onSuggestionSelected: (value) {
-                controller.searchForInvoiceById(value.serial.toString());
-              },
-              itemBuilder: (context, inv) {
-                return SizedBox(
-                  child: Text(inv.serial.toString(), textAlign: TextAlign.center),
+          SizedBox(
+            height: size.height * 0.05,
+            child: TypeAheadFormField<FindCustomerResponse>(
+              key: UniqueKey(),
+              itemBuilder: (context, client) {
+                return Center(
+                  child: Text(client.name.toString(), textAlign: TextAlign.center),
                 );
               },
+              onSuggestionSelected: (FindCustomerResponse client) => controller.getInvoiceListForCustomer(client),
+              suggestionsCallback: (filter) => controller.customers,
               textFieldConfiguration: TextFieldConfiguration(
-                controller: controller.searchedInvoiceController,
-                onSubmitted: controller.searchForInvoiceById,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "ابحث عن فاتورة",
-                  isDense: true,
+                  focusNode: controller.findSideCustomerFieldFocusNode,
+                  controller: controller.findSideCustomerController,
+                  onSubmitted: (value) => controller.getCustomersByCode(),
+                  decoration: InputDecoration(border: OutlineInputBorder(), hintText: "ابحث عن عميل", isDense: true)),
+              noItemFoundText: "لايوجد بيانات",
+            ),
+          ),
+          const SizedBox(height: 10),
+            SizedBox(
+              height: size.height * 0.05,
+              child: TypeAheadFormField<InvoiceList>(
+                suggestionsCallback: (filter) => (controller.findCustomerBalanceResponse != null)
+                    ? controller.findCustomerBalanceResponse!.invoicesList.where((element) => element.serial != null).toList()
+                    : [],
+                onSuggestionSelected: (value) {
+                  controller.searchForInvoiceById(value.serial.toString());
+                },
+                itemBuilder: (context, inv) {
+                  return SizedBox(
+                    child: Text(inv.serial.toString(), textAlign: TextAlign.center),
+                  );
+                },
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: controller.searchedInvoiceController,
+                  onSubmitted: controller.searchForInvoiceById,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "ابحث عن فاتورة",
+                    isDense: true,
+                  ),
                 ),
               ),
             ),
-          const SizedBox(height: 10),
           // ButtonWidget(
           //   text: "بحث",
           //   expanded: true,
@@ -234,7 +206,7 @@ class _TitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
+      padding: const EdgeInsets.only(top: 5, left: 5, right: 5),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

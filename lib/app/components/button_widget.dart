@@ -76,7 +76,7 @@ class ButtonWidget extends StatelessWidget {
                             borderRadius: BorderRadius.circular(radius)
                         ),
                         shadowColor: Colors.transparent,
-                        padding: contentPadding ?? const EdgeInsets.all(15)
+                        padding: contentPadding ?? const EdgeInsets.all(10)
                     ),
                     child: child
                 );
@@ -90,7 +90,7 @@ class ButtonWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(radius)
                       ),
                       shadowColor: Colors.transparent,
-                      padding: contentPadding ?? const EdgeInsets.all(15)
+                      padding: contentPadding ?? const EdgeInsets.all(10)
                   ),
                   child: child
               );
