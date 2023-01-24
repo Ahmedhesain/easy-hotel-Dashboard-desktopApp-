@@ -11,6 +11,7 @@ import '../../../../../components/text_widget.dart';
 import '../../../../../core/utils/show_popup_text.dart';
 import '../../../../../data/model/customer/dto/response/find_customer_response.dart';
 import '../../controllers/offers_controller.dart';
+import 'add_offer_buttons_widget.dart';
 
 class AddOfferWidget extends GetView<OffersController> {
   const AddOfferWidget({Key? key}) : super(key: key);
@@ -39,7 +40,6 @@ class AddOfferWidget extends GetView<OffersController> {
               ),
               SizedBox(
                 height: size.height * 0.07,
-
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -182,13 +182,49 @@ class AddOfferWidget extends GetView<OffersController> {
                         )
                       ],
                     ),
+                    Row(
+                      children: [
+                        const TextWidget("الاصناف", size: 15, weight: FontWeight.w600,),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                          child: Container(
+                            width: size.width * 0.16,
+                            height: size.height * 0.06,
+                            decoration: BoxDecoration(color: AppColors.appGreyLight, borderRadius: BorderRadius.circular(15)),
+                            child: DropDownMultiSelect(
+                              key: UniqueKey(),
+                              options: controller.items.map((e) => e.name??"").toList(),
+                              selectedValues: controller.selectedItems.map((e) => e.name ?? "").toList(),
+                              onChanged: controller.selectNewItems,
+                              decoration: const InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                border: InputBorder.none,
+                              ),
 
+                              childBuilder: (List<String> values) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      values.isEmpty ? "يرجى تحديد صنف على الاقل" : values.where((element) => element != "تحديد الكل").join(', '),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
 
-              // space,
-              // const AddCouponsButtonWidget()
+              space,
+              const AddOffersButtonWidget()
             ],
           ),
         ),
