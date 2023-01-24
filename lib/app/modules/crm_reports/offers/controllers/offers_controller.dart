@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../data/model/invoice/dto/response/gallery_response.dart';
+import '../../../../data/model/item/dto/response/item_response.dart';
 import '../../../home/controllers/home_controller.dart';
 
 class OffersController extends GetxController {
   final isLoading = false.obs ;
   final selectedOfferType = 0.obs;
   final galleries = <GalleryResponse>[].obs;
+  final items = <ItemResponse>[].obs;
   RxList <GalleryResponse> selectedGalleries = RxList();
   Rxn<DateTime> startDate = Rxn();
   Rxn<DateTime> endDate = Rxn();
@@ -22,6 +24,9 @@ class OffersController extends GetxController {
     selectNewDeliveryplace(["تحديد الكل"]);
     super.onInit();
   }
+
+
+
 
 
 
