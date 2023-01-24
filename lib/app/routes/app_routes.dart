@@ -50,6 +50,17 @@ abstract class Routes {
   static const INVOICE_DELIVERY = _Paths.INVOICE_DELIVERY;
   static const INVOICES_QUERY = _Paths.INVOICES_QUERY;
   static const CRM_EVENT = _Paths.CRM_EVENT;
+
+
+  //crm reports
+  static const CRM_EVENTS_REPORT = _Paths.CRM_EVENTS_REPORT;
+
+
+
+
+
+  static const coupons = _Paths.coupons;
+  static const offers = _Paths.offers;
 }
 
 abstract class _Paths {
@@ -98,4 +109,16 @@ abstract class _Paths {
   static const INVOICE_DELIVERY = '/invoice-delivery';
   static const INVOICES_QUERY = '/invoices-query';
   static const CRM_EVENT = '/crm-event';
+
+
+  //crmreports
+  static const CRM_EVENTS_REPORT = '/crm-events-report';
+
+
+
+
+  static const coupons = '/coupons';
+  static const offers = '/offers';
+
+
 }

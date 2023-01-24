@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class DateFieldWidget extends StatefulWidget {
-  const DateFieldWidget({Key? key, required this.onComplete, this.date, this.fillColor}) : super(key: key);
+  const DateFieldWidget({Key? key, required this.onComplete, this.date, this.fillColor , this.hideBorder}) : super(key: key);
   final Function(DateTime date) onComplete;
   final DateTime? date;
   final Color? fillColor;
+  final bool? hideBorder;
 
   @override
   State<DateFieldWidget> createState() => _DateFieldWidgetState();
@@ -83,7 +84,7 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.right,
       decoration: InputDecoration(
-        border: const OutlineInputBorder(),
+        border: widget.hideBorder == true ? InputBorder.none  : const OutlineInputBorder(),
         counterText: "",
         counterStyle: const TextStyle(height: 0),
         isDense: true,

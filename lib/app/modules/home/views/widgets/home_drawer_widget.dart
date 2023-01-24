@@ -206,6 +206,20 @@ class HomeDrawerWidget extends GetView<HomeController> {
       ),
 
     ];
+    final list6 = [
+      HomeDrawerTileWidget(
+        title: "الشكاوي و المقترحات",
+        onTap: () => goTo(Routes.CRM_EVENTS_REPORT,"الشكاوي و المقترحات"),
+      ),
+      HomeDrawerTileWidget(
+        title: "كوبونات الخصم",
+        onTap: () => goTo(Routes.coupons,"كوبونات الخصم"),
+      ),
+      HomeDrawerTileWidget(
+        title: "العروض",
+        onTap: () => goTo(Routes.offers,"العروض"),
+      ),
+    ];
     return Drawer(
       child: Directionality(
         textDirection: TextDirection.ltr,
@@ -260,6 +274,11 @@ class HomeDrawerWidget extends GetView<HomeController> {
             HomeDrawerSectionWidget(
               title: "تقارير الحسابات",
               children: list5,
+            ),
+            if(list6.isNotEmpty)
+            HomeDrawerSectionWidget(
+              title: "CRM",
+              children: list6,
             ),
             Container(
               clipBehavior: Clip.antiAlias,

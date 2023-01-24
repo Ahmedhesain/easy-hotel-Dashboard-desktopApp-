@@ -10,6 +10,12 @@ import '../modules/catch_receipt_another_gallery/views/catch_receipt_another_gal
 import '../modules/catch_receipt_another_gallery_new/bindings/catch_receipt_another_gallery_new_binding.dart';
 import '../modules/catch_receipt_another_gallery_new/views/catch_receipt_another_gallery_new_view.dart';
 import '../modules/crm/bindings/crm_event_binding.dart';
+import '../modules/crm_reports/coupons/bindings/coupons_binding.dart';
+import '../modules/crm_reports/coupons/views/coupons_view.dart';
+import '../modules/crm_reports/crm_events_report/bindings/crm_events_report_binding.dart';
+import '../modules/crm_reports/crm_events_report/views/crm_events_report_view.dart';
+import '../modules/crm_reports/offers/bindings/offers_binding.dart';
+import '../modules/crm_reports/offers/views/offers_view.dart';
 import '../modules/customer_account_statement/bindings/customer_account_statement_binding.dart';
 import '../modules/customer_account_statement/views/customer_account_statement_view.dart';
 import '../modules/edit_bills/bindings/edit_bills_binding.dart';
@@ -292,10 +298,26 @@ class AppPages {
       name: _Paths.INVOICES_QUERY,
       page: () => const InvoicesQueryView(),
       binding: InvoicesQueryBinding(),
-    ),  GetPage(
+    ),
+    GetPage(
       name: _Paths.CRM_EVENT,
       page: () => const CrmEventView(),
       binding: CrmEventBinding(),
+    ),
+    GetPage(
+      name: _Paths.CRM_EVENTS_REPORT,
+      page: () => const CrmEventsReportView(),
+      binding: CrmEventsReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.coupons,
+      page: () => const CouponsView(),
+      binding: CouponsBinding(),
+    ),
+    GetPage(
+      name: _Paths.offers,
+      page: () => const OffersView(),
+      binding: OffersBinding(),
     ),
   ];
 }
