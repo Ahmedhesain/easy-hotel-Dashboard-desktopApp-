@@ -14,19 +14,19 @@ class AddOffersButtonWidget extends GetView<OffersController> {
     Size size = MediaQuery.of(context).size;
     return Center(
       child: SizedBox(
-        width: size.width * 0.3,
+        width: size.width * 0.15,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ButtonWidget(
               text: "حفظ",
               contentPadding: EdgeInsets.all(5),
               buttonColor: Colors.green,
-              // onPressed: ()=> controller.saveCoupon(),
+              onPressed: (){},
               ),
             ButtonWidget(
               text: "رجوع",
-              contentPadding: EdgeInsets.all(5),
+              contentPadding: const EdgeInsets.all(5),
               buttonColor: Colors.red,
               onPressed: () => Get.back(),
               ),

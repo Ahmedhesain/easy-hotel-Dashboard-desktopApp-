@@ -10,6 +10,8 @@ import '../modules/catch_receipt_another_gallery/views/catch_receipt_another_gal
 import '../modules/catch_receipt_another_gallery_new/bindings/catch_receipt_another_gallery_new_binding.dart';
 import '../modules/catch_receipt_another_gallery_new/views/catch_receipt_another_gallery_new_view.dart';
 import '../modules/crm/bindings/crm_event_binding.dart';
+import '../modules/crm_reports/black_list_customers/bindings/black_list_binding.dart';
+import '../modules/crm_reports/black_list_customers/views/black_list_view.dart';
 import '../modules/crm_reports/coupons/bindings/coupons_binding.dart';
 import '../modules/crm_reports/coupons/views/coupons_view.dart';
 import '../modules/crm_reports/crm_events_report/bindings/crm_events_report_binding.dart';
@@ -318,6 +320,11 @@ class AppPages {
       name: _Paths.offers,
       page: () => const OffersView(),
       binding: OffersBinding(),
+    ),
+    GetPage(
+      name: _Paths.CRMBlackListCustomers,
+      page: () => const BlackListView(),
+      binding: BlackListBinding(),
     ),
   ];
 }

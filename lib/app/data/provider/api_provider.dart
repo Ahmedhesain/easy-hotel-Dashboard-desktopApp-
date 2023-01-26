@@ -38,13 +38,13 @@ class ApiProvider {
       // return "http://134.122.57.181:8080/test19/rest/";
       // return "http://134.122.57.181:8080/test20/rest/";
       // return  "http://192.168.1.13:9090/toby/rest/";
-      return "http://www.thobesa.com:8080/test20/rest/";
+      // return "http://www.thobesa.com:8080/test20/rest/";
     } else {
       // return "http://192.168.0.111:9090/toby/rest/";
       // return "http://192.168.1.22:9090/toby/rest/";
-      // return "http://134.122.57.181:8080/debug/rest/";
+      return "http://134.122.57.181:8080/test20/rest/";
      // return "http://www.thobesa.com:8080/test20/rest/";
-      return  "http://localhost:9090/toby/rest/";
+     //  return  "http://localhost:9090/toby/rest/";
     }
   }
 
@@ -55,9 +55,9 @@ class ApiProvider {
       // return "http://134.122.57.181:8080/test19/tobyImages/";
       return  "http://192.168.1.13:9090/toby/tobyImages/";
     } else {
-      return "http://www.thobesa.com:8080/test20/tobyImages/";
+      // return "http://www.thobesa.com:8080/test20/tobyImages/";
       // return "http://192.168.1.22:9090/toby/tobyImages/";
-      // return "http://134.122.57.181:8080/debug/tobyImages/";
+      return "http://134.122.57.181:8080/test20/tobyImages/";
      // return "http://134.122.57.181:8080/test19/tobyImages/";
     }
   }
