@@ -22,7 +22,7 @@ class AddOffersButtonWidget extends GetView<OffersController> {
               text: "حفظ",
               contentPadding: EdgeInsets.all(5),
               buttonColor: Colors.green,
-              onPressed: (){},
+              onPressed: () => controller.saveOffer(),
               ),
             ButtonWidget(
               text: "رجوع",

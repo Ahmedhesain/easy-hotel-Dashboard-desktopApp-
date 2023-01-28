@@ -12,6 +12,7 @@ import '../../../../../components/text_widget.dart';
 import '../../../../../core/utils/show_popup_text.dart';
 import '../../../../../data/model/customer/dto/response/find_customer_response.dart';
 import '../../../../../data/model/item/dto/response/item_response.dart';
+import '../../../../../data/model/reports/dto/response/group_list_response.dart';
 import '../../controllers/offers_controller.dart';
 import 'add_offer_buttons_widget.dart';
 
@@ -112,9 +113,9 @@ class AddOfferHeadWidget extends GetView<OffersController> {
                               child: DateFieldWidget(
                                 hideBorder: true,
                                 onComplete: (date) {
-                                  controller.endDate(date);
+                                  controller.startDate(date);
                                 },
-                                date: controller.endDate.value,
+                                date: controller.startDate.value,
                               )
                           ),
                         )
@@ -135,9 +136,9 @@ class AddOfferHeadWidget extends GetView<OffersController> {
                                 child: DateFieldWidget(
                                   hideBorder: true,
                                   onComplete: (date) {
-                                    controller.startDate(date);
+                                    controller.endDate(date);
                                   },
-                                  date: controller.startDate.value,
+                                  date: controller.endDate.value,
                                 )
                             ),
                           );
@@ -155,36 +156,20 @@ class AddOfferHeadWidget extends GetView<OffersController> {
                   children: [
                     Row(
                       children: [
-                        const TextWidget("الفئات", size: 15, weight: FontWeight.w600,),
+                        const TextWidget("الفئة", size: 15, weight: FontWeight.w600,),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                           child: Container(
-                            width: size.width * 0.16,
+                            width: size.width * 0.18,
                             height: size.height * 0.06,
                             decoration: BoxDecoration(color: AppColors.appGreyLight, borderRadius: BorderRadius.circular(15)),
                             child: Obx(() {
-                              return DropDownMultiSelect(
+                              return DropDownWidget<GroupListResponse>(
                                 key: UniqueKey(),
-                                options: controller.symbols.map((e) => e.name ?? "").toList(),
-                                selectedValues: controller.selectedSymbols.map((e) => e.name ?? "").toList(),
-                                onChanged: controller.selectNewSymbols,
-                                decoration: const InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
-                                  border: InputBorder.none,
-                                ),
-                                childBuilder: (List<String> values) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Text(
-                                        values.isEmpty ? "يرجى تحديد فئة على الاقل" : values.where((element) => element != "تحديد الكل").join(', '),
-                                        maxLines: 1,
-                                      ),
-                                    ),
-                                  );
-                                },
+                                hideBorder: true,
+                                items: controller.groups.map((e) => DropdownMenuItem<GroupListResponse>(value: e,child: Text(e.name!) ,)).toList(),
+                                onChanged: (val) => controller.selectedGroup.value = val,
+
                               );
                             }),
                           ),
@@ -250,6 +235,34 @@ class AddOfferHeadWidget extends GetView<OffersController> {
                                   enabledBorder: InputBorder.none
                               ),
                             ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              space,
+              SizedBox(
+                height: size.height * 0.07,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const TextWidget("اسم العرض", size: 15, weight: FontWeight.w600,),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                          child: Container(
+                              width: size.width * 0.1,
+                              height: size.height * 0.06,
+                              decoration: BoxDecoration(color: AppColors.appGreyLight, borderRadius: BorderRadius.circular(15)),
+                              child: TextFormField(
+                                controller: controller.offerNameController,
+                                decoration:const InputDecoration(
+                                  border: InputBorder.none
+                                ),
+                              )
                           ),
                         )
                       ],
@@ -351,6 +364,8 @@ class AddOfferHeadWidget extends GetView<OffersController> {
                   ],
                 ),
               ),
+
+
             ],
           ),
         ),

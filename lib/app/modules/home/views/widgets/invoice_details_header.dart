@@ -222,6 +222,7 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                               },
                               controller: controller.itemPriceController,
                               onEditingComplete: () {
+                                controller.itemPriceListener();
                                 if(controller.canEdit) {
                                   controller.itemDiscountFocusNode.requestFocus();
                                 } else {

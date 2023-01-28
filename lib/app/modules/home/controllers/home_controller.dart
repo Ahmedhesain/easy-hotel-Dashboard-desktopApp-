@@ -741,13 +741,13 @@ class HomeController extends GetxController {
   _addItemFieldsListener() {
     itemNumberFocusNode.addListener(_itemNumberListener);
     itemQuantityFocusNode.addListener(_itemQuantityListener);
-    itemPriceFocusNode.addListener(_itemPriceListener);
+    // itemPriceFocusNode.addListener(_itemPriceListener);
   }
 
   _removeItemFieldsListener() {
     itemNumberFocusNode.removeListener(_itemNumberListener);
     itemQuantityFocusNode.removeListener(_itemQuantityListener);
-    itemPriceFocusNode.removeListener(_itemPriceListener);
+    // itemPriceFocusNode.removeListener(_itemPriceListener);
   }
 
   bool _isQuantityValid() {
@@ -792,15 +792,15 @@ class HomeController extends GetxController {
     }
   }
 
-  _itemPriceListener() {
-    if (!itemPriceFocusNode.hasFocus) {
+  itemPriceListener() {
+    // if (!itemPriceFocusNode.hasFocus) {
       final price = itemPriceController.text.tryToParseToNum;
       if (price == null) return;
       final item = selectedItem.value!;
       if (UserManager().galleryType == 0) {
         if (selectedPriceType.value == 1 && price < item.minPriceMen!) {
           showPopupText(text: "السعر غير ممكن");
-          itemPriceController.text = item.minPriceMen.toString();
+          itemPriceController.text =  item.minPriceMen.toString();
         } else if (selectedPriceType.value == 0 && price < item.minPriceYoung!) {
           showPopupText(text: "السعر غير ممكن");
           itemPriceController.text = item.minPriceYoung.toString();
@@ -815,7 +815,7 @@ class HomeController extends GetxController {
         }
       }
       calcItemData();
-    }
+    // }
   }
 
   @override

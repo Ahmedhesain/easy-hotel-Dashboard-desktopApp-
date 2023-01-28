@@ -16,6 +16,7 @@ class DropDownWidget<T> extends StatelessWidget {
   final double? topPadding;
   final bool isDense;
   final bool expanded;
+  final bool? hideBorder;
   final bool hideErrorText;
   final String? Function(dynamic)? validator;
 
@@ -32,14 +33,15 @@ class DropDownWidget<T> extends StatelessWidget {
     this.isDense = false,
     this.expanded = false,
     this.hideErrorText = false,
+    this.hideBorder = false
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final border = OutlineInputBorder(
+    final border = hideBorder == false ? OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppConstants.radius/2),
       borderSide: BorderSide(color: Colors.grey , width: 1),
-    );
+    ) : InputBorder.none;
     final decoration = InputDecoration(
       border: border,
       isDense: isDense,
