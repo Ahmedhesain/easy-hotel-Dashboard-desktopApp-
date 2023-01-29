@@ -14,6 +14,7 @@ abstract class AppColors {
   static const appHallsRedDark = Color(0xFFC84C40);
   static const colorYellow =  Color(0x80fcba03);
   static const appRedLight = Color(0x80f1e0e0);
+  static const backGround = Color(0xfffafafa);
 
   static Color get primary => appHallsRedDark;
 }

@@ -10,12 +10,12 @@ import '../modules/catch_receipt_another_gallery/views/catch_receipt_another_gal
 import '../modules/catch_receipt_another_gallery_new/bindings/catch_receipt_another_gallery_new_binding.dart';
 import '../modules/catch_receipt_another_gallery_new/views/catch_receipt_another_gallery_new_view.dart';
 import '../modules/crm/bindings/crm_event_binding.dart';
-import '../modules/crm_reports/black_list_customers/bindings/black_list_binding.dart';
-import '../modules/crm_reports/black_list_customers/views/black_list_view.dart';
 import '../modules/crm_reports/coupons/bindings/coupons_binding.dart';
 import '../modules/crm_reports/coupons/views/coupons_view.dart';
 import '../modules/crm_reports/crm_events_report/bindings/crm_events_report_binding.dart';
 import '../modules/crm_reports/crm_events_report/views/crm_events_report_view.dart';
+import '../modules/crm_reports/customers/bindings/customers_binding.dart';
+import '../modules/crm_reports/customers/views/customers_view.dart';
 import '../modules/crm_reports/offers/bindings/offers_binding.dart';
 import '../modules/crm_reports/offers/views/offers_view.dart';
 import '../modules/customer_account_statement/bindings/customer_account_statement_binding.dart';
@@ -322,9 +322,9 @@ class AppPages {
       binding: OffersBinding(),
     ),
     GetPage(
-      name: _Paths.CRMBlackListCustomers,
-      page: () => const BlackListView(),
-      binding: BlackListBinding(),
+      name: _Paths.CRMCustomers,
+      page: () => const CustomersView(),
+      binding: CustomersBinding(),
     ),
   ];
 }

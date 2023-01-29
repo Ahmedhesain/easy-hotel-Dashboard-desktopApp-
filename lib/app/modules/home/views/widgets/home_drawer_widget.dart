@@ -220,8 +220,8 @@ class HomeDrawerWidget extends GetView<HomeController> {
         onTap: () => goTo(Routes.offers,"العروض"),
       ),
       HomeDrawerTileWidget(
-        title: "العملاء المحظورين",
-        onTap: () => goTo(Routes.CRMBlackListCustomers,"العملاء المحظورين"),
+        title: "عملاء الشركات",
+        onTap: () => goTo(Routes.CRMCustomers,"عملاء الشركات"),
       ),
     ];
     return Drawer(
