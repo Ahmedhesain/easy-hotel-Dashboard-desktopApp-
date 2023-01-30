@@ -1,4 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:firedart/firestore/firestore.dart';
+import 'package:firedart/firestore/models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -13,6 +18,7 @@ import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_bal
 import 'package:toby_bills/app/data/model/customer/dto/request/find_customer_request.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_balance_response.dart';
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
+import 'package:toby_bills/app/data/model/fcm/dto/request/send_fcm_request.dart';
 import 'package:toby_bills/app/data/model/general_journal/dto/request/find_general_journal_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/request/get_inventories_request.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
@@ -37,30 +43,35 @@ import 'package:toby_bills/app/data/model/item/dto/response/item_data_response.d
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/data/model/reports/dto/request/edit_bills_request.dart';
 import 'package:toby_bills/app/data/repository/customer/customer_repository.dart';
+import 'package:toby_bills/app/data/repository/fcm/fcm_repository.dart';
 import 'package:toby_bills/app/data/repository/general_journal/general_journal_repository.dart';
 import 'package:toby_bills/app/data/repository/inventory/inventory_repository.dart';
 import 'package:toby_bills/app/data/repository/invoice/invoice_repository.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
-// import 'package:window_manager/window_manager.dart';
+import 'package:window_manager/window_manager.dart';
 import '../../../core/enums/toast_msg_type.dart';
+import '../../../core/utils/firebase_storage_manager.dart';
 import '../../../core/values/app_constants.dart';
+import '../../../data/model/customer/dto/request/upload_customer_photo_request.dart';
+import '../../../data/model/fcm/dto/response/notification_response_dto.dart';
+import '../../../data/model/invoice/dto/request/gallary_show_request.dart';
 import '../../../data/model/invoice/dto/response/get_delivery_place_response.dart';
 
 class HomeController extends GetxController {
-
   final isLoading = false.obs;
   final isProof = false.obs;
-  final checkSendSms = false.obs;
+  final checkSendSms = true.obs;
   final isItemProof = false.obs;
   final isItemRemains = false.obs;
-  final totalNet = RxNum(0.0);
   final discountHalala = RxNum(0.0);
   final totalAfterDiscount = RxNum(0.0);
+  final totalNet = RxNum(0.0);
   final tax = RxNum(0.0);
   final finalNet = RxNum(0.0);
   final remain = RxNum(0.0);
   final payed = RxNum(0.0);
+  final invoiceNoticeValue = RxNum(0.0);
   final itemAvailableQuantity = RxnNum();
   final itemNet = RxnNum();
   final itemTotalQuantity = RxnNum();
@@ -86,6 +97,7 @@ class HomeController extends GetxController {
   final invoiceRemarkController = TextEditingController();
   final itemNameController = TextEditingController();
   final itemNotesController = TextEditingController();
+  final itemNoticeController = TextEditingController();
   final itemPriceController = TextEditingController();
   final itemQuantityController = TextEditingController();
   final itemNumberController = TextEditingController();
@@ -98,6 +110,7 @@ class HomeController extends GetxController {
   final invoiceDiscountFieldFocusNode = FocusNode();
   final itemNameFocusNode = FocusNode();
   final itemNotesFocusNode = FocusNode();
+  final itemNoticeFocusNode = FocusNode();
   final itemPriceFocusNode = FocusNode();
   final itemQuantityFocusNode = FocusNode();
   final itemNumberFocusNode = FocusNode();
@@ -111,7 +124,11 @@ class HomeController extends GetxController {
   final items = <ItemResponse>[];
   final galleries = <GalleryResponse>[];
   final glPayDtoList = <GlPayDTO>[];
+  final notificationsList = <NotificationResponseDTO>[].obs;
+  final eventsList = <NotificationResponseDTO>[].obs;
   final invoiceDetails = <Rx<InvoiceDetailsModel>>[].obs;
+  final notificationsSelectedIndex = 0.obs ;
+
   Rxn<GetDueDateResponse> dueDate = Rxn();
   Rx<DateTime> date = Rx(DateTime.now());
   Rxn<InvoiceModel> invoice = Rxn();
@@ -128,12 +145,16 @@ class HomeController extends GetxController {
 
   static const getBuilderSerial = "getBuilderSerial";
 
-  bool get canEdit => UserManager().user.userScreens["proworkorder"]?.edit??false;
+  bool get canEdit => UserManager().user.userScreens["proworkorder"]?.edit ?? false;
+
+  StreamSubscription<List<Document>>? stream ;
+  StreamSubscription<List<Document>>? eventsStream ;
+
 
   @override
   void onInit() async {
     super.onInit();
-    // windowManager.setTitle("Toby Bills -> شاشة المبيعات");
+    windowManager.setTitle("Toby Bills -> شاشة المبيعات");
     isLoading(true);
     _addItemFieldsListener();
     items.addAll(_getItemsFromStorage());
@@ -141,13 +162,16 @@ class HomeController extends GetxController {
       getItems();
     }
     await getGalleries();
+    getNotifications();
+    getEvents();
     Future.wait([getDueDate(), getGlPayDtoList(), getDeliveryPlaces(), getDelegators(), getInventories()]).whenComplete(() => isLoading(false));
   }
 
   getCustomersByCode() {
     isLoading(true);
     findSideCustomerFieldFocusNode.unfocus();
-    final request = FindCustomerRequest(code: findSideCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
+    final request =
+        FindCustomerRequest(code: findSideCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
@@ -160,7 +184,8 @@ class HomeController extends GetxController {
   getCustomersByCodeForInvoice() {
     isLoading(true);
     invoiceCustomerFieldFocusNode.unfocus();
-    final request = FindCustomerRequest(code: invoiceCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
+    final request =
+        FindCustomerRequest(code: invoiceCustomerController.text, branchId: UserManager().branchId, gallaryIdAPI: UserManager().galleryId);
     CustomerRepository().findCustomerByCode(request,
         onSuccess: (data) {
           customers.assignAll(data);
@@ -171,19 +196,19 @@ class HomeController extends GetxController {
   }
 
   Future<void> getDueDate({bool withLoading = false}) {
-    if(withLoading) isLoading(true);
-    return InvoiceRepository().findDueDateDTOAPI(
-      GetDueDateRequest(branchId: UserManager().branchId, id: selectedGallery.value?.id),
-      onSuccess: (data) => dueDate(data),
-      onError: (error) => showPopupText(text: error.toString()),
-      onComplete: (){
-        if(withLoading) {
+    if (withLoading) isLoading(true);
+    return InvoiceRepository().findDueDateDTOAPI(GetDueDateRequest(branchId: UserManager().branchId, id: selectedGallery.value?.id),
+        onSuccess: (data) {
+          dueDate(data);
+          date(DateTime.now());
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () {
+          if (withLoading) {
             isLoading(false);
           }
-        }
-    );
+        });
   }
-
 
   Future<void> getGlPayDtoList() {
     return ReportsRepository().getAllGlPay(
@@ -264,28 +289,30 @@ class HomeController extends GetxController {
   }
 
   getInvoiceListForCustomer(FindCustomerResponse value) {
-    findSideCustomerController.text = "${value.name} ${value.code}";
+    findSideCustomerController.text = "${value.name}";
     isLoading(true);
     CustomerRepository().findCustomerInvoicesData(FindCustomerBalanceRequest(id: value.id),
-        onSuccess: (data) => findCustomerBalanceResponse = data, onError: (error) => showPopupText(text: error.toString()), onComplete: () => isLoading(false));
+        onSuccess: (data) => findCustomerBalanceResponse = data,
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
   }
 
   printInvoice(BuildContext context) {
     isLoading(true);
-    InvoiceRepository()
-        .findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
-            onSuccess: (data) {
-              PrintingHelper().printInvoice(context, data,
-                  dariba: data.taxvalue,
-                  total: data.totalNetAfterDiscount,
-                  discount: data.discount,
-                  value: data.totalNet,
-                  net: data.finalNet,
-                  payed: data.payed,
-                  remain: data.remain);
-            },
-            onError: (error) => showPopupText(text: error.toString()),
-            onComplete: () => isLoading(false));
+    InvoiceRepository().findInvPurchaseInvoiceBySerialNew(
+        GetInvoiceRequest(serial: invoice.value!.serial.toString(), branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
+        onSuccess: (data) {
+          PrintingHelper().printInvoice(context, data,
+              dariba: data.taxvalue,
+              total: data.totalNetAfterDiscount,
+              discount: data.discount,
+              value: data.totalNet,
+              net: data.finalNet,
+              payed: data.payed,
+              remain: data.remain);
+        },
+        onError: (error) => showPopupText(text: error.toString()),
+        onComplete: () => isLoading(false));
   }
 
   printGeneralJournal(BuildContext context) {
@@ -302,72 +329,76 @@ class HomeController extends GetxController {
     newInvoice(resetDueDate: false);
     isLoading(true);
     searchedInvoiceFocusNode.unfocus();
-    await InvoiceRepository().findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
-        onSuccess: (data) {
-          invoice(data);
-          selectedPriceType(data.pricetype);
-          if (galleries.any((element) => element.id == data.gallaryId)) {
-            selectedGallery(galleries.singleWhere((element) => element.id == data.gallaryId));
-            UserManager().changeGallery(selectedGallery.value);
-          } else {
-            selectedGallery.value = null;
-          }
-          date(data.date);
-          dueDate.value!.dueDate = data.dueDate;
-          dueDate.value!.dayNumber = data.dueperiod;
-          selectedDeliveryPlace(deliveryPlaces.singleWhere((element) => element.name == data.deliveryPlaceName));
-          selectedInvoiceType(AppConstants.invoiceTypeList[data.invoiceType == null ? 0 : data.invoiceType! + 1]);
-          if (delegators.any((element) => element.id == data.invDelegatorId)) {
-            selectedDelegator(delegators.singleWhere((element) => element.id == data.invDelegatorId));
-          } else {
-            selectedDelegator(null);
-          }
-          isProof(data.proof == 1);
-          invoiceDiscountController.text = data.discount.toString();
-          selectedDiscountType(data.discountType);
-          checkSendSms(data.checkSendSms == 1);
-          invoiceRemarkController.text = data.remarks ?? '';
-          for (final detail in data.invoiceDetailApiList!) {
-            if (!items.any((element) => element.id == detail.itemId)) {
-              showPopupText(text: "يرجى عمل تحديث ثم البحث عن الفاتورة مرة اخرى");
-              return;
-            }
-            final item = items.singleWhere((element) => element.id == detail.itemId);
-            detail.maxPriceMen = item.maxPriceMen;
-            detail.maxPriceYoung = item.maxPriceYoung;
-            detail.minPriceMen = item.minPriceMen;
-            detail.minPriceYoung = item.minPriceYoung;
-            detail.typeInv = data.typeInv;
-          }
-          invoiceDetails.assignAll((data.invoiceDetailApiList ?? []).map((e) => Rx(e)).toList().obs);
-          selectedCustomer(FindCustomerResponse(
-            id: data.customerId,
-            mobile: data.customerMobile,
-            name: data.customerName,
-            code: data.customerCode,
-            balanceLimit: data.customerBalance,
-            email: data.customerEmail,
-            shoulder: data.shoulder,
-            step: data.step,
-            length: data.length,
-          ));
-          invoiceCustomerController.text = "${data.customerName} ${data.customerCode}";
-          discountHalala(data.discHalala);
-          calcInvoiceValues();
-        },
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
+    await InvoiceRepository()
+        .findInvPurchaseInvoiceBySerialNew(GetInvoiceRequest(serial: id, branchId: UserManager().branchId, gallaryId: null, typeInv: 4),
+            onSuccess: (data) {
+              invoice(data);
+              selectedPriceType(data.pricetype);
+              if (galleries.any((element) => element.id == data.gallaryId)) {
+                selectedGallery(galleries.singleWhere((element) => element.id == data.gallaryId));
+                UserManager().changeGallery(selectedGallery.value);
+              } else {
+                selectedGallery.value = null;
+              }
+              date(data.date);
+              dueDate.value!.dueDate = data.dueDate;
+              dueDate.value!.dayNumber = data.dueperiod;
+              selectedDeliveryPlace(deliveryPlaces.singleWhere((element) => element.name == data.deliveryPlaceName));
+              selectedInvoiceType(AppConstants.invoiceTypeList[data.invoiceType == null ? 0 : data.invoiceType! + 1]);
+              if (delegators.any((element) => element.id == data.invDelegatorId)) {
+                selectedDelegator(delegators.singleWhere((element) => element.id == data.invDelegatorId));
+              } else {
+                selectedDelegator(null);
+              }
+              isProof(data.proof == 1);
+              invoiceDiscountController.text = data.discount.toString();
+              selectedDiscountType(data.discountType);
+              checkSendSms(data.checkSendSms == 1);
+              invoiceRemarkController.text = data.remarks ?? '';
+              for (final detail in data.invoiceDetailApiList!) {
+                if (!items.any((element) => element.id == detail.itemId)) {
+                  showPopupText(text: "يرجى عمل تحديث ثم البحث عن الفاتورة مرة اخرى");
+                  return;
+                }
+                final item = items.singleWhere((element) => element.id == detail.itemId);
+                detail.maxPriceMen = item.maxPriceMen;
+                detail.maxPriceYoung = item.maxPriceYoung;
+                detail.minPriceMen = item.minPriceMen;
+                detail.minPriceYoung = item.minPriceYoung;
+                detail.typeInv = data.typeInv;
+              }
+              invoiceDetails.assignAll((data.invoiceDetailApiList ?? []).map((e) => Rx(e)).toList().obs);
+              selectedCustomer(FindCustomerResponse(
+                id: data.customerId,
+                mobile: data.customerMobile,
+                name: data.customerName,
+                code: data.customerCode,
+                balanceLimit: data.customerBalance,
+                email: data.customerEmail,
+                shoulder: data.shoulder,
+                step: data.step,
+                length: data.length,
+              ));
+              invoiceCustomerController.text = "${data.customerName} ${data.customerCode}";
+              discountHalala(data.discHalala);
+              calcInvoiceValues();
+              remain(data.remain);
+              payed(data.payed);
+            },
+            onError: (error) => showPopupText(text: error.toString()),
+            onComplete: () => isLoading(false));
   }
 
-  getCustomerBalance(int id) {
-    isLoading(true);
-    CustomerRepository().getCustomerBalance(FindCustomerBalanceRequest(id: id),
-        onSuccess: (data) {
-          selectedCustomer.value!.balanceLimit = data;
-        },
-        onError: (error) => showPopupText(text: error.toString()),
-        onComplete: () => isLoading(false));
-  }
+    getCustomerBalance(int id) {
+      isLoading(true);
+      CustomerRepository().getCustomerBalance(FindCustomerBalanceRequest(id: id),
+          onSuccess: (data) {
+            selectedCustomer.value!.balanceLimit = data;
+            selectedCustomer.refresh();
+          },
+          onError: (error) => showPopupText(text: error.toString()),
+          onComplete: () => isLoading(false));
+    }
 
   List<ItemResponse> _getItemsFromStorage() {
     List<dynamic> items = AppStorage.read("items") ?? [];
@@ -397,14 +428,17 @@ class HomeController extends GetxController {
     itemQuantityController.clear();
     itemPriceController.clear();
     itemNotesController.clear();
+    itemNoticeController.clear();
     itemDiscountController.clear();
     itemDiscountValueController.clear();
+    findSideCustomerController.clear();
+    searchedInvoiceController.clear();
     isItemProof(false);
     isItemRemains(false);
     itemAvailableQuantity.value = null;
     itemNet.value = null;
     itemTotalQuantity.value = null;
-    if(inventories.isNotEmpty) {
+    if (inventories.isNotEmpty) {
       selectedInventory(inventories.first);
     }
   }
@@ -422,11 +456,12 @@ class HomeController extends GetxController {
     getItemData(
         itemId: item.id!,
         onSuccess: (data) {
-          if (data.availableQuantity != null && data.availableQuantity! <= 0) {
+          if (data.availableQuantity != null && (data.availableQuantity! <= 0 || data.availableQuantity! < data.quantityOfUnit)) {
             if (noQuantity != null) {
               noQuantity();
             } else {
               showPopupText(text: "لا يوجد كمية متاحة");
+              itemAvailableQuantity(data.availableQuantity);
               itemNameController.clear();
               itemNameFocusNode.requestFocus();
             }
@@ -446,7 +481,6 @@ class HomeController extends GetxController {
           selectedItem(item..itemData = data);
           calcItemData();
           Future.delayed(const Duration(milliseconds: 50)).whenComplete(() => itemNumberFocusNode.requestFocus());
-
         });
   }
 
@@ -464,8 +498,8 @@ class HomeController extends GetxController {
         priceType: selectedPriceType.value!,
         inventoryId: inventoryId ?? selectedInventory.value!.id,
         invNameGallary: manager.galleryType);
-    await ItemRepository()
-        .getItemData(request, onSuccess: onSuccess, onError: (error) => {showPopupText(text: error.toString()), _clearItemFields()}, onComplete: () => isLoading(false));
+    await ItemRepository().getItemData(request,
+        onSuccess: onSuccess, onError: (error) => {showPopupText(text: error.toString()), _clearItemFields()}, onComplete: () => isLoading(false));
   }
 
   calcItemData() {
@@ -505,6 +539,7 @@ class HomeController extends GetxController {
             name: item.name!,
             number: itemNumberController.text.parseToNum,
             quantityOfOneUnit: itemQuantityController.text.parseToNum,
+            invNoticeValue: itemNoticeController.text.tryToParseToNum,
             code: item.code,
             minPriceMen: item.minPriceMen,
             minPriceYoung: item.minPriceYoung,
@@ -569,6 +604,8 @@ class HomeController extends GetxController {
     final request = CreateInvoiceRequest(
       id: invoice.value?.id,
       payed: payed.value,
+      invNoticeValueTotal: invoiceNoticeValue.value,
+      generalJournalId: invoice.value?.generalJournalId,
       customerId: selectedCustomer.value!.id,
       customerCode: selectedCustomer.value!.code,
       customerMobile: selectedCustomer.value!.mobile,
@@ -584,7 +621,7 @@ class HomeController extends GetxController {
       branchId: UserManager().branchId,
       gallaryId: UserManager().galleryId,
       date: date.value,
-      checkSendSms: checkSendSms.value ? 1 : 0,
+      checkSendSms: checkSendSms.value,
       companyId: UserManager().companyId,
       createdBy: UserManager().id,
       createdDate: DateTime.now(),
@@ -592,7 +629,9 @@ class HomeController extends GetxController {
       invDelegatorId: selectedDelegator.value?.id,
       invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(),
       invoiceDetailApiListDeleted: invoice.value?.invoiceDetailApiListDeleted!.map((element) => element).toList(),
-      invoiceType: AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0 ? null : AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
+      invoiceType: AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) == 0
+          ? null
+          : AppConstants.invoiceTypeList.indexOf(selectedInvoiceType.value!) - 1,
       pricetype: selectedPriceType.value,
       typeInv: 4,
       proof: isProof.value ? 1 : 0,
@@ -609,7 +648,13 @@ class HomeController extends GetxController {
     InvoiceRepository().saveInvoice(request,
         onSuccess: (data) async {
           invoice(data);
-          invoiceDetails.assignAll((data.invoiceDetailApiList??[]).map((e) => e.obs).toList());
+          if ((data.invNoticeValueTotal ?? 0) > 0 && data.invNoticeOrderId != null) {
+            FCMRepository().send(
+              SendFcmRequest(title: "إشعار خاص", body: "${data.gallaryName} بقيمة:${data.invNoticeValueTotal}", invoiceId: data.invNoticeOrderId),
+              onSuccess: (_) => showPopupText(text: "تم إرسال اشعار"),
+            );
+          }
+          invoiceDetails.assignAll((data.invoiceDetailApiList ?? []).map((e) => e.obs).toList());
           for (var element in glPayDtoList) {
             element.value = 0;
           }
@@ -643,7 +688,7 @@ class HomeController extends GetxController {
     invoiceDiscountController.clear();
     selectedInvoiceType(AppConstants.invoiceTypeList.first);
     isProof(false);
-    checkSendSms(false);
+    checkSendSms(true);
     invoiceRemarkController.clear();
     selectedCustomer.value = null;
     invoiceDetails.clear();
@@ -654,16 +699,19 @@ class HomeController extends GetxController {
     for (var element in glPayDtoList) {
       element.value = 0;
     }
-    if(resetDueDate) {
+    if (resetDueDate) {
       getDueDate(withLoading: true);
     }
   }
 
   calcInvoiceValues() {
     num net = 0;
+    num notice = 0;
     for (final invoiceDetailsModel in invoiceDetails) {
       net += invoiceDetailsModel.value.net!;
+      notice += invoiceDetailsModel.value.invNoticeValue ?? 0;
     }
+    invoiceNoticeValue(notice);
     totalNet(net);
     num discount = 0;
     if (selectedDiscountType.value == 0) {
@@ -674,7 +722,7 @@ class HomeController extends GetxController {
     totalAfterDiscount(net - discountHalala.value - discount);
     tax(totalAfterDiscount.value * 0.15);
     finalNet((totalAfterDiscount.value + tax.value).fixed(2));
-    payed(glPayDtoList.fold<num>(0, (p, e) => p+(e.value??0)));
+    payed(glPayDtoList.fold<num>(0, (p, e) => p + (e.value ?? 0)));
     remain(finalNet.value - payed.value);
   }
 
@@ -693,13 +741,13 @@ class HomeController extends GetxController {
   _addItemFieldsListener() {
     itemNumberFocusNode.addListener(_itemNumberListener);
     itemQuantityFocusNode.addListener(_itemQuantityListener);
-    itemPriceFocusNode.addListener(_itemPriceListener);
+    // itemPriceFocusNode.addListener(_itemPriceListener);
   }
 
   _removeItemFieldsListener() {
     itemNumberFocusNode.removeListener(_itemNumberListener);
     itemQuantityFocusNode.removeListener(_itemQuantityListener);
-    itemPriceFocusNode.removeListener(_itemPriceListener);
+    // itemPriceFocusNode.removeListener(_itemPriceListener);
   }
 
   bool _isQuantityValid() {
@@ -744,32 +792,30 @@ class HomeController extends GetxController {
     }
   }
 
-  _itemPriceListener() {
-    if (!itemPriceFocusNode.hasFocus) {
+  itemPriceListener() {
+    // if (!itemPriceFocusNode.hasFocus) {
       final price = itemPriceController.text.tryToParseToNum;
       if (price == null) return;
       final item = selectedItem.value!;
-      if(UserManager().galleryType == 0){
+      if (UserManager().galleryType == 0) {
         if (selectedPriceType.value == 1 && price < item.minPriceMen!) {
           showPopupText(text: "السعر غير ممكن");
-          itemPriceController.text = item.minPriceMen.toString();
-        }
-        else if (selectedPriceType.value == 0 && price < item.minPriceYoung!) {
+          itemPriceController.text =  item.minPriceMen.toString();
+        } else if (selectedPriceType.value == 0 && price < item.minPriceYoung!) {
           showPopupText(text: "السعر غير ممكن");
           itemPriceController.text = item.minPriceYoung.toString();
         }
-      } else if(UserManager().galleryType == 1){
+      } else if (UserManager().galleryType == 1) {
         if (selectedPriceType.value == 1 && price < (item.minPriceMen! * 0.85)) {
           showPopupText(text: "السعر غير ممكن");
           itemPriceController.text = item.minPriceMen.toString();
-        }
-        else if (selectedPriceType.value == 0 && price < (item.minPriceYoung! * 0.85)) {
+        } else if (selectedPriceType.value == 0 && price < (item.minPriceYoung! * 0.85)) {
           showPopupText(text: "السعر غير ممكن");
           itemPriceController.text = item.minPriceYoung.toString();
         }
-
       }
-    }
+      calcItemData();
+    // }
   }
 
   @override
@@ -807,28 +853,26 @@ class HomeController extends GetxController {
 
   deleteInvoice() {
     isLoading(true);
-    InvoiceRepository().deleteInvoice(
-        DeleteInvoiceRequest(invoice.value?.id),
-      onSuccess: (_){
-        showPopupText(text: "تم الحذف بنجاح",type: MsgType.success);
-        newInvoice();
-      },
-      onError: (e)=>showPopupText(text: e.toString()),
-      onComplete: () => isLoading(false)
-    );
+    InvoiceRepository().deleteInvoice(DeleteInvoiceRequest(invoice.value?.id),
+        onSuccess: (_) {
+          showPopupText(text: "تم الحذف بنجاح", type: MsgType.success);
+          newInvoice();
+        },
+        onError: (e) => showPopupText(text: e.toString()),
+        onComplete: () => isLoading(false));
   }
 
   offerOne() {
-    final request = OfferOneRequest(invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(), galleryType: UserManager().galleryType);
+    final request =
+        OfferOneRequest(invoiceDetailApiList: invoiceDetails.map((element) => element.value).toList(), galleryType: UserManager().galleryType);
     isLoading(true);
     InvoiceRepository().offerOne(request,
-      onSuccess: (data){
-        invoiceDetails.assignAll(data.map((e) => e.obs));
-        calcInvoiceValues();
-      },
-      onError: (e) => showPopupText(text: e.toString()),
-      onComplete: ()=> isLoading(false)
-    );
+        onSuccess: (data) {
+          invoiceDetails.assignAll(data.map((e) => e.obs));
+          calcInvoiceValues();
+        },
+        onError: (e) => showPopupText(text: e.toString()),
+        onComplete: () => isLoading(false));
   }
 
   void updateCustomer() {
@@ -841,5 +885,94 @@ class HomeController extends GetxController {
       onError: (error) => showPopupText(text: error.toString()),
       onComplete: () => isLoading(false),
     );
+  }
+
+  void updateGallaryDeliveryShow() {
+    if (invoice.value?.gallaryDeliveryShow == 2) {
+      showPopupText(text: "تم الحفظ من قبل");
+      return;
+    }
+    isLoading(true);
+    final request = GallaryDeliveryShowRequest(invoice.value!.id!);
+    InvoiceRepository().invoiceGallaryDeliveryShow(request,
+        onSuccess: (_) => showPopupText(text: "تم الحفظ بنجاح", type: MsgType.success),
+        onError: (_) => showPopupText(text: "حدثت مشكله اثناء الحفظ"),
+        onComplete: () => isLoading(false));
+  }
+
+  uploadCustomerPhoto() async {
+    {
+      if (selectedCustomer.value == null) {
+        showPopupText(text: 'يجب اختيار عميل');
+        return;
+      }
+      isLoading(true);
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+      if (result != null) {
+        File file = File(result.files.single.path!);
+        final request = UploadCustomerPhotoRequest(
+            source: base64Encode(file.readAsBytesSync()),
+            name: '${result.files.single.name.split(".")[0]}_');
+        CustomerRepository().uploadCustomerPhoto(
+          request,
+          onSuccess: (data){
+            selectedCustomer.value!.imgMeasure = data.name ;
+            showPopupText(text: 'تم رفع الصوره بنجاح'  , type: MsgType.success);
+          },
+          onError: (e) => showPopupText(text: e),
+          onComplete: () => isLoading(false)
+        );
+      }
+    }
+  }
+
+
+  getNotifications(){
+     if(stream != null){
+       stream!.cancel();
+     }
+     List<NotificationResponseDTO> newList = [] ;
+     stream = Firestore.instance.collection('notifications').
+    document(UserManager().galleryId.toString()).collection('branchNotification').stream.listen((data){
+       newList = [] ;
+       data.forEach((element) {
+         NotificationResponseDTO notification = NotificationResponseDTO.fromJson(element.map) ;
+         notification.id = element.id ;
+         newList.add(notification);
+       });
+       notificationsList.assignAll(newList);
+       notificationsList.refresh();
+     }) ;
+     notificationsList.assignAll(newList);
+     notificationsList.refresh();
+  }
+  getEvents(){
+     if(eventsStream != null){
+       eventsStream!.cancel();
+     }
+     List<NotificationResponseDTO> newList = [] ;
+     eventsStream = Firestore.instance.collection('events').
+    document(UserManager().galleryId.toString()).collection('branchEvents').stream.listen((data){
+       newList = [] ;
+       data.forEach((element) {
+         NotificationResponseDTO notification = NotificationResponseDTO.fromJson(element.map) ;
+         notification.id = element.id ;
+         newList.add(notification);
+       });
+       eventsList.assignAll(newList);
+       eventsList.refresh();
+     }) ;
+     eventsList.assignAll(newList);
+     eventsList.refresh();
+  }
+
+ Future deleteNotification(id) async{
+   await Firestore.instance.collection('notifications').
+    document(UserManager().galleryId.toString()).collection('branchNotification').document(id).delete();
+  }
+
+  Future deleteEvent(id) async{
+   await Firestore.instance.collection('events').
+    document(UserManager().galleryId.toString()).collection('branchEvents').document(id).delete();
   }
 }

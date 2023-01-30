@@ -21,7 +21,8 @@ class ApiProvider {
       ),
     );
     _dio.interceptors.add(
-      LogInterceptor(responseBody: true,
+      LogInterceptor(
+          responseBody: true,
           requestBody: true,
           responseHeader: true,
           requestHeader: true,
@@ -32,15 +33,32 @@ class ApiProvider {
 
   static String get apiUrl {
     if (kDebugMode) {
-      // return  "http://localhost:9090/toby/rest/";
+      return  "http://localhost:9090/toby/rest/";
       // return "http://134.122.57.181:8080/debug/rest/";
-      return "http://134.122.57.181:8080/test13/rest/";
+      // return "http://134.122.57.181:8080/test19/rest/";
+      // return "http://134.122.57.181:8080/test20/rest/";
       // return  "http://192.168.1.13:9090/toby/rest/";
+      // return "http://www.thobesa.com:8080/test20/rest/";
     } else {
-      // return "http://localhost:9090/toby/rest/";
+      // return "http://192.168.0.111:9090/toby/rest/";
       // return "http://192.168.1.22:9090/toby/rest/";
-      // return "http://134.122.57.181:8080/debug/rest/";
-      return "http://134.122.57.181:8080/test13/rest/";
+      return "http://134.122.57.181:8080/test20/rest/";
+     // return "http://www.thobesa.com:8080/test20/rest/";
+     //  return  "http://localhost:9090/toby/rest/";
+    }
+  }
+
+  static String get apiUrlImage {
+    if (kDebugMode) {
+      return  "http://192.168.1.5:9090/toby/tobyImages/" ;
+      return "http://134.122.57.181:8080/debug/tobyImages/";
+      // return "http://134.122.57.181:8080/test19/tobyImages/";
+      return  "http://192.168.1.13:9090/toby/tobyImages/";
+    } else {
+      // return "http://www.thobesa.com:8080/test20/tobyImages/";
+      // return "http://192.168.1.22:9090/toby/tobyImages/";
+      return "http://134.122.57.181:8080/test20/tobyImages/";
+     // return "http://134.122.57.181:8080/test19/tobyImages/";
     }
   }
 
@@ -59,7 +77,9 @@ class ApiProvider {
       Function(int progress)? onSendProgress,
       bool ignoreToken) async {
     (headers ?? {}).forEach((key, value) => _dio.options.headers[key] = value);
-    _dio.options.headers["Authorization"] = token.isEmpty ? "" : "Bearer $token";
+    if(token.isNotEmpty) {
+      _dio.options.headers["Authorization"] = token.isEmpty ? "" : "Bearer $token";
+    }
     try {
       late Response response;
       if (method == 'get') {

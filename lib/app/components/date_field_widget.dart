@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class DateFieldWidget extends StatefulWidget {
-  const DateFieldWidget({Key? key, required this.onComplete, this.date, this.fillColor}) : super(key: key);
+  const DateFieldWidget({Key? key, required this.onComplete, this.date, this.fillColor , this.hideBorder}) : super(key: key);
   final Function(DateTime date) onComplete;
   final DateTime? date;
   final Color? fillColor;
+  final bool? hideBorder;
 
   @override
   State<DateFieldWidget> createState() => _DateFieldWidgetState();
@@ -35,7 +36,7 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
   }
 
   bool isDaysInMonthValid(int days, int month, int year){
-    return ([1,3,5,7,8,10,12].contains(month) && days <= 31
+    return ([0,1,3,5,7,8,10,12].contains(month) && days <= 31
     || [4,6,8,11].contains(month) && days <=30
     || month == 2 && (days <= 28 || (year%4==0 && days == 29)));
   }
@@ -58,7 +59,7 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
       if(i == 0 && sections[i].length > 4){
         return false;
       }
-      if(i == 2 && (sections[i].length > 2 || int.parse(sections[i]) > 30)){
+      if(i == 2 && (sections[i].length > 2 || int.parse(sections[i]) > 31)){
         return false;
       }
       if(i == 1 && (sections[i].length > 2 || int.parse(sections[i]) > 12)){
@@ -83,7 +84,7 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.right,
       decoration: InputDecoration(
-        border: const OutlineInputBorder(),
+        border: widget.hideBorder == true ? InputBorder.none  : const OutlineInputBorder(),
         counterText: "",
         counterStyle: const TextStyle(height: 0),
         isDense: true,
