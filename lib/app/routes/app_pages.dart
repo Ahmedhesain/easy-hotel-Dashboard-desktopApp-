@@ -16,6 +16,8 @@ import '../modules/crm_reports/crm_events_report/bindings/crm_events_report_bind
 import '../modules/crm_reports/crm_events_report/views/crm_events_report_view.dart';
 import '../modules/crm_reports/customers/bindings/customers_binding.dart';
 import '../modules/crm_reports/customers/views/customers_view.dart';
+import '../modules/crm_reports/customers_report_by_invoice/bindings/customer_report_by_value_binding.dart';
+import '../modules/crm_reports/customers_report_by_invoice/views/customer_report_by_invoice_view.dart';
 import '../modules/crm_reports/offers/bindings/offers_binding.dart';
 import '../modules/crm_reports/offers/views/offers_view.dart';
 import '../modules/customer_account_statement/bindings/customer_account_statement_binding.dart';
@@ -325,6 +327,11 @@ class AppPages {
       name: _Paths.CRMCustomers,
       page: () => const CustomersView(),
       binding: CustomersBinding(),
+    ),
+    GetPage(
+      name: _Paths.CRMCustomersReportByInvoice,
+      page: () => const CustomersReportByInvoiceView(),
+      binding: CustomersReportByInvoiceBinding(),
     ),
   ];
 }

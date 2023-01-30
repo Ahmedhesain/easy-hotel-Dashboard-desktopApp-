@@ -92,9 +92,8 @@ class CustomersReportTable extends GetView<CustomersController> {
                     source: MyData(
                         data :controller.reportList.value ,
                         onSelectChanged: (selected , index) => controller.onSelect(selected, controller.reportList[index]),
-                      selectable: true,
+                        selectable: true,
                         isSelected : (index) => controller.selectedReportList.contains(controller.reportList[index])
-
                     ),
                     rowsPerPage: 8,
                     columnSpacing: 0,

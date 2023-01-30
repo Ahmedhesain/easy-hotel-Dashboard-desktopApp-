@@ -457,6 +457,10 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                                               width: size.width * 0.2 ,
                                               child: TextFieldWidget(label: "country_subentity", onChanged: (value) => {newCustomer.countrySubentity = value})),
                                           const SizedBox(width: 15),
+                                          SizedBox(
+                                              width: size.width * 0.2 ,
+                                              child: TextFieldWidget(label: "الرقم الضريبي للعميل", onChanged: (value) => {newCustomer.taxNumber = value})),
+                                          const SizedBox(width: 15),
 
                                         ],
                                       ),

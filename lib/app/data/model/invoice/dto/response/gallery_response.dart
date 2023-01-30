@@ -27,9 +27,11 @@ class GalleryResponse {
     this.runningAccount,
     this.segilValue,
     this.sellerName,
+    this.city
   });
 
   final String? type;
+  final String? city;
   final int? branchId;
   final int? companyId;
   final int? createdBy;
@@ -75,6 +77,7 @@ class GalleryResponse {
     runningAccount: json["costAccount"] == null?null:AccountId.fromJson(json["runningAccount"]),
     segilValue: json["segilValue"],
     sellerName: json["sellerName"],
+    city: json["city"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -99,6 +102,7 @@ class GalleryResponse {
     "runningAccount": runningAccount?.toJson(),
     "segilValue": segilValue,
     "sellerName": sellerName,
+    "city": city,
   };
 
   @override

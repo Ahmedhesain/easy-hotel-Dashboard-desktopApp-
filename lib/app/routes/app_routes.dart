@@ -55,6 +55,7 @@ abstract class Routes {
   //crm reports
   static const CRM_EVENTS_REPORT = _Paths.CRM_EVENTS_REPORT;
   static const CRMCustomers = _Paths.CRMCustomers;
+  static const CRMCustomersReportByInvoice = _Paths.CRMCustomersReportByInvoice;
 
 
 
@@ -115,6 +116,7 @@ abstract class _Paths {
   //crmreports
   static const CRM_EVENTS_REPORT = '/crm-events-report';
   static const CRMCustomers = '/CRMBlackListCustomers';
+  static const CRMCustomersReportByInvoice = '/CRMCustomersReportByInvoice';
 
 
 

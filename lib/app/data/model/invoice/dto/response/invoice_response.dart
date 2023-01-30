@@ -71,8 +71,11 @@ class InvoiceModel {
       this.msg,
       this.gallaryDeliveryShow,
       this.invoiceStatus,
-      this.numberOfToob
-
+      this.numberOfToob,
+  this.CustomerCitySubdivisionName,
+        this.CustomerSegil,
+        this.segilName,
+        this.CityName
 
       });
 
@@ -103,6 +106,7 @@ class InvoiceModel {
   String? qrCode;
   String? remarks;
   String? segilValue;
+  String? segilName;
   num? taxvalue;
   num? totalNetAfterDiscount;
   List<InvoiceDetailsModel>? invoiceDetailApiList = [];
@@ -118,6 +122,8 @@ class InvoiceModel {
   String? customerMobile;
   String? customerName;
   String? customerOfferCompanyId;
+  String? CustomerCitySubdivisionName;
+  String? CustomerSegil;
   String? deliveryPlaceName;
   double? discHalala;
   DateTime? dueDate;
@@ -153,6 +159,7 @@ class InvoiceModel {
   String? offerCopoun;
   int? proFactoryDeliveryId;
   String? msg;
+  String? CityName;
 
   int? gallaryDeliveryShow;
 
@@ -229,6 +236,10 @@ class InvoiceModel {
         gallaryDeliveryShow: json["gallaryDeliveryShow"],
         invoiceStatus: json["invoiceStatus"],
         numberOfToob: json["numberOfToob"],
+        CustomerCitySubdivisionName: json["CustomerCitySubdivisionName"],
+    CustomerSegil: json["customerSegil"],
+        segilName: json["segilName"],
+    CityName: json["CityName"],
       );
 
   Map<String, dynamic> toJson() => {

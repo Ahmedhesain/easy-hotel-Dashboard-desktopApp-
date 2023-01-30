@@ -15,7 +15,9 @@ class FindCustomerResponse {
     this.step,
     this.balanceLimit,
     this.imgMeasure,
-    this.blackList
+    this.blackList,
+    this.taxNumber,
+    this.citySubdivisionName
   });
 
   String? type;
@@ -32,6 +34,8 @@ class FindCustomerResponse {
   num? shoulder;
   num? step;
   num? balanceLimit;
+  String? taxNumber;
+  String? citySubdivisionName;
   String? imgMeasure;
   bool? blackList;
   factory FindCustomerResponse.fromJson(Map<String, dynamic> json) => FindCustomerResponse(
@@ -51,6 +55,8 @@ class FindCustomerResponse {
     balanceLimit: json["balanceLimit"],
     imgMeasure: json["imgMeasure"],
     blackList: json["blackList"],
+    taxNumber: json["taxNumber"],
+    citySubdivisionName: json["citySubdivisionName"],
   );
 
   static List<FindCustomerResponse> getList(List<dynamic> json) => List<FindCustomerResponse>.from(json.map((e) => FindCustomerResponse.fromJson(e)));
@@ -71,6 +77,8 @@ class FindCustomerResponse {
     "step": step,
     "balanceLimit": balanceLimit,
     "imgMeasure": imgMeasure,
+    "taxNumber": taxNumber,
+    "citySubdivisionName": citySubdivisionName,
   };
 
 
