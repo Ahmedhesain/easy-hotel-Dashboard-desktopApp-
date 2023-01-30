@@ -56,9 +56,9 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
       if (focusNode.hasFocus) {
         showOverlay();
       } else {
-        // if(!isHovering) {
+        if(!isHovering) {
           hideOverlay();
-        // }
+        }
       }
     });
   }
@@ -92,10 +92,8 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
   }
 
   void hideOverlay() {
-    if(entry?.mounted ?? false) {
-      entry?.remove();
-      entry = null;
-    }
+    entry?.remove();
+    entry = null;
   }
 
   Widget buildOverlay() {
@@ -114,19 +112,18 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
                       controller: scrollController,
                       itemBuilder: (context, index) {
                         return Listener(
-                          onPointerDown: (d){
-                            hideOverlay();
-                            widget.onSuggestionSelected(items[index]);
-                          },
-
+                          // onPointerUp: (d){
+                          //   focusNode.unfocus();
+                          //   widget.onSuggestionSelected(items[index]);
+                          // },
                           child: ListTile(
                             title: Text(items[index].toString()),
                             contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             hoverColor: Colors.grey.shade100,
                             tileColor: index == _selectedItem ? (Colors.grey.shade200) : Colors.transparent,
                             onTap: () {
-                              // hideOverlay();
-                              // widget.onSuggestionSelected(items[index]);
+                              focusNode.unfocus();
+                              widget.onSuggestionSelected(items[index]);
                             },
                           ),
                         );

@@ -173,7 +173,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersLate(request,
+    AppRepository().getNumberOrdersDelivered(request,
         onSuccess: (data) {
           numberOrdersLate(data.data.length);
           },

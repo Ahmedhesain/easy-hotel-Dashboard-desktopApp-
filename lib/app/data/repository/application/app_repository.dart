@@ -65,7 +65,7 @@ class AppRepository {
         SuccessFunc<List<AppResponse>> onSuccess,
         Function(dynamic error)? onError,
       }) async =>
-      await  ApiProvider().post<List<AppResponse>>('salesCarReport/TheNumberOrdersLate',
+      await  ApiProvider().post<List<AppResponse>>('salesCarReport/NumberOrdersLate',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: request.toJson(),
