@@ -33,7 +33,7 @@ class ApiProvider {
 
   static String get apiUrl {
     if (kDebugMode) {
-      return  "http://localhost:9090/toby/rest/";
+      return  "http://192.168.1.8:9090/toby/rest/";
       // return "http://134.122.57.181:8080/debug/rest/";
       // return "http://134.122.57.181:8080/test19/rest/";
       // return "http://134.122.57.181:8080/test20/rest/";

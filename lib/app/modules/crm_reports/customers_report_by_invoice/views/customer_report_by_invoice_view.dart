@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
 import 'package:toby_bills/app/modules/crm_reports/customers_report_by_invoice/views/widgets/customers_report_by_invoice_head_widget.dart';
+import 'package:toby_bills/app/modules/crm_reports/customers_report_by_invoice/views/widgets/report_table.dart';
 
 import '../../../../components/text_widget.dart';
 import '../../../../core/values/app_colors.dart';
@@ -27,8 +28,10 @@ class CustomersReportByInvoiceView extends GetView<CustomersReportByInvoiceContr
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
-                children: [
-                   CustomersReportByInvoiceHeadWidget()
+                children: const [
+                   CustomersReportByInvoiceHeadWidget(),
+                   SizedBox(height: 10,),
+                   CustomersReportByInvoiceTable()
                 ],
               ),
             ),
