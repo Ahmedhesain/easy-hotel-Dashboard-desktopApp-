@@ -1,7 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/cupertino.dart';
-import 'package:toby_bills/app/data/model/invoice/dto/response/gl_account_response.dart';
 
 abstract class AppConstants {
   static const double BUTTON_TEXT_SIZE = 20.0;
@@ -21,12 +20,5 @@ abstract class AppConstants {
     "اخري"
   ];
 
-  static final List<GlAccountResponse> accounts = [
-    GlAccountResponse(name: "مخزون القماش", id: 11619),
-    GlAccountResponse(name: "مخزون الاشمغة والغتر", id: 11620),
-    GlAccountResponse(name: "مخزون العود", id: 11621),
-    GlAccountResponse(name: "مخزون الأحذية", id: 11622),
-    GlAccountResponse(name: "لوجو", id: 13282),
-    GlAccountResponse(name: "طقطق وازرار خارجية هاروت", id: 13343),
-  ];
+
 }

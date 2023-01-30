@@ -1,5 +1,6 @@
-import 'package:easy_hotel/app/core/transitions/size_transitions.dart';
-import 'package:easy_hotel/app/data/provider/api_provider.dart';
+
+
+import 'package:hotel_manger/app/data/provider/api_provider.dart';
 
 class GenericResponse<T> {
 

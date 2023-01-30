@@ -1,15 +1,17 @@
-class AppResponse {
-  AppResponse({
-    required this.number,
+import 'dart:ffi';
+
+class AppValueResponse {
+  AppValueResponse({
+     this.value,
   });
 
-  int number;
+  double? value;
 
-  factory AppResponse.fromJson( dynamic json) => AppResponse(
-    number: json["number"],
+  factory AppValueResponse.fromJson( dynamic json) => AppValueResponse(
+    value: json["value"].toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
-    "number": number,
+    "value": value,
   };
 }

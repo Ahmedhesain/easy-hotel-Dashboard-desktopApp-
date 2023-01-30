@@ -1,44 +1,37 @@
 // To parse this JSON data, do
 //
-//     final bestSellingResponse = bestSellingResponseFromJson(jsonString);
+//     final mostBuingClientsResponse = mostBuingClientsResponseFromJson(jsonString);
 
 import 'dart:convert';
 
-class BestSellingResponse {
-  BestSellingResponse({
+import 'package:get/get.dart';
+
+class MostBuingClientsResponse {
+  MostBuingClientsResponse({
     this.id,
     this.name,
-    this.image,
-    this.amount,
-    this.count,
+    this.numbers,
   });
 
   int? id;
   String? name;
-  String? image;
-  double? amount;
-  dynamic count;
+  int? numbers;
+  RxInt added=0.obs;
+  static List<MostBuingClientsResponse> fromList(dynamic json) => List.from(json.map((e)=> MostBuingClientsResponse.fromJson(e)));
 
-  static List<BestSellingResponse> fromList(dynamic json) => List.from(json.map((e)=> BestSellingResponse.fromJson(e)));
-
-
-  factory BestSellingResponse.fromRawJson(String str) => BestSellingResponse.fromJson(json.decode(str));
+  factory MostBuingClientsResponse.fromRawJson(String str) => MostBuingClientsResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory BestSellingResponse.fromJson( dynamic json) => BestSellingResponse(
+  factory MostBuingClientsResponse.fromJson(Map<String, dynamic> json) => MostBuingClientsResponse(
     id: json["id"],
     name: json["name"],
-    image: json["image"],
-    amount: json["amount"].toDouble(),
-    count: json["count"],
+    numbers: json["numbers"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
-    "image": image,
-    "amount": amount,
-    "count": count,
+    "numbers": numbers,
   };
 }

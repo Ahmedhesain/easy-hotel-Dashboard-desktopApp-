@@ -1,15 +1,15 @@
-class AllHousekeepingRequest {
-  AllHousekeepingRequest({
-    required this.appId,
+class AppRequest {
+  AppRequest({
+    required this.branchId,
   });
 
-  int appId;
+  int branchId;
 
-  factory AllHousekeepingRequest.fromJson(Map<String, dynamic> json) => AllHousekeepingRequest(
-    appId: json["appId"],
+  factory AppRequest.fromJson(Map<String, dynamic> json) => AppRequest(
+    branchId: json["branchId"],
   );
 
   Map<String, dynamic> toJson() => {
-    "appId": appId,
+    "branchId": branchId,
   };
 }

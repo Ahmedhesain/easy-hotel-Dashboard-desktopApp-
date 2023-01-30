@@ -1,15 +1,29 @@
-class AppResponse {
-  AppResponse({
-    required this.number,
+// To parse this JSON data, do
+//
+//     final listPurchaseResponse = listPurchaseResponseFromJson(jsonString);
+
+import 'dart:convert';
+
+class ListPurchaseResponse {
+  ListPurchaseResponse({
+    this.totalOrders,
+    this.lateOrders,
   });
 
-  int number;
+  int? totalOrders;
+  int? lateOrders;
 
-  factory AppResponse.fromJson( dynamic json) => AppResponse(
-    number: json["number"],
+  factory ListPurchaseResponse.fromRawJson(String str) => ListPurchaseResponse.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory ListPurchaseResponse.fromJson( dynamic json) => ListPurchaseResponse(
+    totalOrders: json["totalOrders"],
+    lateOrders: json["lateOrders"],
   );
 
   Map<String, dynamic> toJson() => {
-    "number": number,
+    "totalOrders": totalOrders,
+    "lateOrders": lateOrders,
   };
 }
