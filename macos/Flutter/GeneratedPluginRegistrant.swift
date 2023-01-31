@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import desktop_multi_window
-import path_provider_macos
+import path_provider_foundation
 import printing
 import screen_retriever
 import window_manager

@@ -87,7 +87,7 @@ class _DropdownTextSearch<T> extends State<TypeAheadFormField<T>> {
           width: size.width, child: CompositedTransformFollower(link: layerLink, showWhenUnlinked: true, offset: Offset(0, size.height + 10), child: buildOverlay())),
     );
 
-    overlay.insert(entry!);
+    overlay!.insert(entry!);
     entries.add(entry!);
   }
 

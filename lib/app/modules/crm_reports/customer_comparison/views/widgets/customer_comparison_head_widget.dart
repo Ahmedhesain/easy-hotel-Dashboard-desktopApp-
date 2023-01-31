@@ -52,7 +52,7 @@ class CustomerComparisonHeadWidget extends GetView<CustomerComparisonController>
                          ),
                        ),
                        Container(
-                         width: size.width * .18,
+                         width: size.width * .21,
                          height: size.height * 0.06,
                          decoration: const BoxDecoration(
                            borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -205,9 +205,9 @@ class CustomerComparisonHeadWidget extends GetView<CustomerComparisonController>
                    space,
                    Container(
                      width: size.width * 0.1,
-                     height: size.height * 0.06,
+                     height: size.height * 0.07,
                      decoration: BoxDecoration(
-                       borderRadius: BorderRadius.circular(15),
+                       borderRadius: BorderRadius.circular(5),
                        color: AppColors.appGreyLight,
                      ),
                      child: DateFieldWidget(
@@ -222,9 +222,9 @@ class CustomerComparisonHeadWidget extends GetView<CustomerComparisonController>
                    space,
                    Container(
                      width: size.width * 0.1,
-                     height: size.height * 0.06,
+                     height: size.height * 0.07,
                      decoration: BoxDecoration(
-                       borderRadius: BorderRadius.circular(15),
+                       borderRadius: BorderRadius.circular(5),
                        color: AppColors.appGreyLight,
                      ),
                      child: DateFieldWidget(
@@ -259,9 +259,9 @@ class CustomerComparisonHeadWidget extends GetView<CustomerComparisonController>
                    space,
                    Container(
                      width: size.width * 0.1,
-                     height: size.height * 0.06,
+                     height: size.height * 0.07,
                      decoration: BoxDecoration(
-                       borderRadius: BorderRadius.circular(15),
+                       borderRadius: BorderRadius.circular(5),
                        color: AppColors.appGreyLight,
                      ),
                      child: DateFieldWidget(
@@ -276,9 +276,9 @@ class CustomerComparisonHeadWidget extends GetView<CustomerComparisonController>
                    space,
                    Container(
                      width: size.width * 0.1,
-                     height: size.height * 0.06,
+                     height: size.height * 0.07,
                      decoration: BoxDecoration(
-                       borderRadius: BorderRadius.circular(15),
+                       borderRadius: BorderRadius.circular(5),
                        color: AppColors.appGreyLight,
                      ),
                      child: DateFieldWidget(
@@ -301,10 +301,10 @@ class CustomerComparisonHeadWidget extends GetView<CustomerComparisonController>
                  children: [
                    ButtonWidget(
                      text: "بحث", onPressed: () => controller.search(), buttonColor: Colors.green, contentPadding: const EdgeInsets.all(15),),
-                   space,
-                   ButtonWidget(text: "طباعة",
-                     onPressed: (){},
-                     contentPadding: const EdgeInsets.all(15),),
+                   // space,
+                   // ButtonWidget(text: "طباعة",
+                   //   onPressed: (){},
+                   //   contentPadding: const EdgeInsets.all(15),),
                    space,
                    ButtonWidget(
                      text: "رجوع", onPressed: () => Get.back(), buttonColor: Colors.redAccent, contentPadding: const EdgeInsets.all(15),)

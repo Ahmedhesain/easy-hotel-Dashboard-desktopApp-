@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
+import 'package:toby_bills/app/modules/crm_reports/customer_comparison/views/widgets/comarison_widget.dart';
+import 'package:toby_bills/app/modules/crm_reports/customer_comparison/views/widgets/comparison_percent_widget.dart';
 import 'package:toby_bills/app/modules/crm_reports/customer_comparison/views/widgets/customer_comparison_head_widget.dart';
 
 import '../../../../components/text_widget.dart';
@@ -12,6 +15,8 @@ class CustomerComparisonView extends GetView<CustomerComparisonController> {
 
   @override
   Widget build(BuildContext context) {
+    const space = SizedBox(height: 10,);
+
     return Obx(() {
       return AppLoadingOverlay(
         isLoading: controller.isLoading.value,
@@ -25,10 +30,16 @@ class CustomerComparisonView extends GetView<CustomerComparisonController> {
           backgroundColor: AppColors.appGreyLight,
           body: Padding(
             padding: const EdgeInsets.all(15),
-            child: Column(
-              children: const [
-                CustomerComparisonHeadWidget()
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children:   const [
+                  CustomerComparisonHeadWidget(),
+                  space,
+                  ComparisonWidget(),
+                  space,
+                  ComparisonPercentWidget()
+                ],
+              ),
             ),
           ),
         ),
