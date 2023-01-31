@@ -1716,7 +1716,7 @@ class PrintingHelper {
                 ),
               ),
             ),
-            SizedBox(height: 50.5),
+            SizedBox(height: 20.5),
             SizedBox(
                 child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Padding(
@@ -1730,7 +1730,7 @@ class PrintingHelper {
               Padding(
                 padding: EdgeInsets.all(2),
                 child: Text(
-                  invoiceModel.CustomerSegil != null ? "فاتورة ضريبيه" : "فاتورة ضريبيه مبسطة",
+                  invoiceModel.customerSegil != null ? "فاتورة ضريبيه" : "فاتورة ضريبيه مبسطة",
                   style: boldStyle,
                   textDirection: TextDirection.rtl,
                 ),
@@ -1794,7 +1794,7 @@ class PrintingHelper {
                     ]),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(
-                        invoiceModel.CustomerCitySubdivisionName?.toString() ?? "",
+                        invoiceModel.customerCityName?.toString() ?? "",
                         style: boldStyle,
                         textDirection: TextDirection.rtl,
                       ),
@@ -1806,7 +1806,7 @@ class PrintingHelper {
                     ]),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(
-                        invoiceModel.CustomerSegil?.toString() ?? "",
+                        invoiceModel.customerSegil?.toString() ?? "",
                         style: boldStyle,
                         textDirection: TextDirection.rtl,
                       ),
@@ -1905,7 +1905,7 @@ class PrintingHelper {
                     ]),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(
-                        invoiceModel.CityName ?? "",
+                        invoiceModel.cityName ?? "",
                         style: boldStyle,
                         textDirection: TextDirection.rtl,
                       ),
@@ -2174,7 +2174,7 @@ class PrintingHelper {
             SizedBox(
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
               SizedBox(
-                  width: 120,
+                  width: 300,
                   child: Table(tableWidth: TableWidth.max, border: TableBorder.all(width: 0.5), children: [
 
                     TableRow(children: [

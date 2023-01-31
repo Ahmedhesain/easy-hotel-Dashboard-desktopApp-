@@ -72,11 +72,12 @@ class InvoiceModel {
       this.gallaryDeliveryShow,
       this.invoiceStatus,
       this.numberOfToob,
-  this.CustomerCitySubdivisionName,
-        this.CustomerSegil,
+  this.customerCitySubdivisionName,
+        this.customerSegil,
         this.segilName,
-        this.CityName
-
+        this.cityName,
+        this.customerCityName,
+        this.gallaryPhone
       });
 
   String? type;
@@ -122,8 +123,9 @@ class InvoiceModel {
   String? customerMobile;
   String? customerName;
   String? customerOfferCompanyId;
-  String? CustomerCitySubdivisionName;
-  String? CustomerSegil;
+  String? customerCitySubdivisionName;
+  String? customerSegil;
+  String? customerCityName;
   String? deliveryPlaceName;
   double? discHalala;
   DateTime? dueDate;
@@ -159,7 +161,7 @@ class InvoiceModel {
   String? offerCopoun;
   int? proFactoryDeliveryId;
   String? msg;
-  String? CityName;
+  String? cityName;
 
   int? gallaryDeliveryShow;
 
@@ -236,10 +238,12 @@ class InvoiceModel {
         gallaryDeliveryShow: json["gallaryDeliveryShow"],
         invoiceStatus: json["invoiceStatus"],
         numberOfToob: json["numberOfToob"],
-        CustomerCitySubdivisionName: json["CustomerCitySubdivisionName"],
-    CustomerSegil: json["customerSegil"],
+        customerCitySubdivisionName: json["customerCitySubdivisionName"],
+         customerCityName: json["customerCityName"],
+         customerSegil: json["customerSegil"],
         segilName: json["segilName"],
-    CityName: json["CityName"],
+        cityName: json["cityName"],
+        gallaryPhone: json["gallaryPhone"],
       );
 
   Map<String, dynamic> toJson() => {

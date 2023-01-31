@@ -14,6 +14,8 @@ import '../modules/crm_reports/coupons/bindings/coupons_binding.dart';
 import '../modules/crm_reports/coupons/views/coupons_view.dart';
 import '../modules/crm_reports/crm_events_report/bindings/crm_events_report_binding.dart';
 import '../modules/crm_reports/crm_events_report/views/crm_events_report_view.dart';
+import '../modules/crm_reports/customer_comparison/bindings/customer_comparison_binding.dart';
+import '../modules/crm_reports/customer_comparison/views/customer_comparison_view.dart';
 import '../modules/crm_reports/customers/bindings/customers_binding.dart';
 import '../modules/crm_reports/customers/views/customers_view.dart';
 import '../modules/crm_reports/customers_report_by_invoice/bindings/customer_report_by_value_binding.dart';
@@ -332,6 +334,11 @@ class AppPages {
       name: _Paths.CRMCustomersReportByInvoice,
       page: () => const CustomersReportByInvoiceView(),
       binding: CustomersReportByInvoiceBinding(),
+    ),
+    GetPage(
+      name: _Paths.CRMCustomersComparison,
+      page: () => const CustomerComparisonView(),
+      binding: CustomerComparisonBinding(),
     ),
   ];
 }
