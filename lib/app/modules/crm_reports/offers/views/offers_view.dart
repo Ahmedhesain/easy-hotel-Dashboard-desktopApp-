@@ -6,6 +6,7 @@ import 'package:toby_bills/app/modules/crm_reports/offers/views/widgets/add_offe
 import 'package:toby_bills/app/modules/crm_reports/offers/views/widgets/add_offer_head_widget.dart';
 import 'package:toby_bills/app/modules/crm_reports/offers/views/widgets/added_items_table.dart';
 import 'package:toby_bills/app/modules/crm_reports/offers/views/widgets/excluded_items_table.dart';
+import 'package:toby_bills/app/modules/crm_reports/offers/views/widgets/perivous_offers.dart';
 import '../../../../components/text_widget.dart';
 import '../controllers/offers_controller.dart';
 
@@ -14,6 +15,7 @@ class OffersView extends GetView<OffersController> {
 
   @override
   Widget build(BuildContext context) {
+    const space = SizedBox(height: 20,);
     return Obx(() {
       return AppLoadingOverlay(
         isLoading: controller.isLoading.value,
@@ -38,11 +40,13 @@ class OffersView extends GetView<OffersController> {
                 child: Center(
                   child: Column(
                     children: const [
+                      PreviousOffers(),
+                      space,
                       AddOfferHeadWidget(),
-                      SizedBox(height: 20,),
+                      space,
                       AddedItemsTable(),
                       ExcludedItemsTable(),
-                      SizedBox(height: 20,),
+                      space,
                     ],
                   ),
                 ),

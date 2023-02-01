@@ -158,9 +158,9 @@ class AddOfferHeadWidget extends GetView<OffersController> {
                       children: [
                         const TextWidget("الفئة", size: 15, weight: FontWeight.w600,),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0.0, 0, 10.0, 0),
                           child: Container(
-                            width: size.width * 0.18,
+                            width: size.width * 0.19,
                             height: size.height * 0.06,
                             decoration: BoxDecoration(color: AppColors.appGreyLight, borderRadius: BorderRadius.circular(15)),
                             child: Obx(() {
@@ -169,7 +169,6 @@ class AddOfferHeadWidget extends GetView<OffersController> {
                                 hideBorder: true,
                                 items: controller.groups.map((e) => DropdownMenuItem<GroupListResponse>(value: e,child: Text(e.name!) ,)).toList(),
                                 onChanged: (val) => controller.selectedGroup.value = val,
-
                               );
                             }),
                           ),
@@ -264,9 +263,44 @@ class AddOfferHeadWidget extends GetView<OffersController> {
                                 ),
                               )
                           ),
-                        )
+                        ),
                       ],
                     ),
+                    Obx(
+                            () =>
+                                Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                          child: SizedBox(
+                              width: size.width * 0.1,
+                              height: size.height * 0.06,
+                              // decoration: BoxDecoration(color: AppColors.appGreyLight, borderRadius: BorderRadius.circular(15)),
+                              child: RadioListTile(
+                                value: 0,
+                                title: const TextWidget("فعال"  ,size: 15 , weight: FontWeight.bold,),
+                                groupValue: controller.active.value,
+                                onChanged: (int? value) =>controller.active.value=value!,
+                              )
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                          child: SizedBox(
+                              width: size.width * 0.15,
+                              height: size.height * 0.06,
+                              // decoration: BoxDecoration(color: AppColors.appGreyLight, borderRadius: BorderRadius.circular(15)),
+                              child: RadioListTile(
+                                value: 1,
+                                title: const TextWidget("غير فعال"  ,size: 15 , weight: FontWeight.bold,),
+                                groupValue: controller.active.value,
+                                onChanged: (int? value) =>controller.active.value=value!,
+                              )
+                          ),
+                        ),
+                      ],
+                    ))
+
                   ],
                 ),
               ),

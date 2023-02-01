@@ -14,6 +14,9 @@ import '../../../../data/model/invoice/dto/response/gallery_response.dart';
 import '../../../../data/model/item/dto/response/item_response.dart';
 import '../../../../data/model/offers/dto/request/add_offer_detail_request.dart';
 import '../../../../data/model/offers/dto/request/add_offer_request.dart';
+import '../../../../data/model/offers/dto/request/get_offers_request.dart';
+import '../../../../data/model/offers/offer_detail_dto.dart';
+import '../../../../data/model/offers/offer_dto.dart';
 import '../../../../data/model/reports/dto/request/group_list_request.dart';
 import '../../../../data/model/reports/dto/response/group_list_response.dart';
 import '../../../../data/repository/offers/offers_repository.dart';
@@ -23,6 +26,7 @@ import '../../../home/controllers/home_controller.dart';
 class OffersController extends GetxController {
   final isLoading = false.obs ;
   final selectedOfferType = 0.obs;
+  final active = 0.obs;
   final galleries = <GalleryResponse>[].obs;
   final items = <ItemResponse>[].obs;
   final filteredItems = <ItemResponse>[].obs;
@@ -30,8 +34,8 @@ class OffersController extends GetxController {
   RxList <ItemResponse> addedItems = RxList();
   RxList <ItemResponse> excludedItems = RxList();
   // RxList <ItemResponse> selectedFilteredItems = RxList();
-  Rxn<DateTime> startDate = Rxn();
-  Rxn<DateTime> endDate = Rxn();
+  Rxn<DateTime> startDate = Rxn(DateTime.now());
+  Rxn<DateTime> endDate = Rxn(DateTime.now());
   final offerValue = TextEditingController();
   final maxPrice = TextEditingController();
   final itemsFilterController = TextEditingController();
@@ -44,14 +48,18 @@ class OffersController extends GetxController {
   Rxn<ItemResponse> selectedItem = Rxn();
 
   final groups = <GroupListResponse>[].obs;
+  final offersList = <OfferDTO>[].obs;
+  Rxn<OfferDTO> selectedOffer = Rxn();
   Rxn<GroupListResponse> selectedGroup = Rxn();
   final addedOrExcluded = 0.obs ;
-
   final user = UserManager();
+
+
   @override
   onInit(){
     super.onInit();
     getGroupList();
+    getOffers();
     items.assignAll(Get.find<HomeController>().items);
     galleries.assignAll(Get.find<HomeController>().galleries);
     selectNewDeliveryplace(["تحديد الكل"]);
@@ -67,6 +75,17 @@ class OffersController extends GetxController {
       onComplete: () => isLoading(false)
     );
  }
+
+  getOffers(){
+    isLoading(true);
+    final request = GetOfferRequest(branchId: user.branchId , companyId: user.companyId);
+    OfferRepository().getAllOffer( request,
+        onSuccess: (data) {
+          offersList.assignAll(data);
+        },
+        onComplete: () => isLoading(false)
+    );
+  }
 
   List<ItemResponse> filterItems(String filter) {
     return items.where((element) => element.code.toString().contains(filter) || element.name.toString().contains(filter)).toList();
@@ -144,28 +163,32 @@ class OffersController extends GetxController {
       return ;
     }
     isLoading(true);
-    final detailsList = <AddOfferDetailRequest>[];
+    final detailsList = <OfferDetailDTO>[];
    for(ItemResponse item in addedItems){
-     final AddOfferDetailRequest added =
-     AddOfferDetailRequest(
+     final OfferDetailDTO added =
+     OfferDetailDTO(
          itemId: item.id!,
          addedOrExcluded: 0,
          branchId: user.branchId,
          companyId:  user.companyId,
-         createdBy: user.id);
+         createdBy: user.id,
+         parentOfferId: selectedOffer.value?.id ,
+     );
      detailsList.add(added);
    }
    for(ItemResponse item in excludedItems){
-     final AddOfferDetailRequest excluded =
-     AddOfferDetailRequest(
+     final OfferDetailDTO excluded =
+     OfferDetailDTO(
          itemId: item.id!,
          addedOrExcluded: 1,
          branchId: user.branchId,
          companyId:  user.companyId,
-         createdBy: user.id);
+         createdBy: user.id,
+         parentOfferId: selectedOffer.value?.id ,
+     );
      detailsList.add(excluded);
    }
-   final request = AddOfferRequest(
+   final request = OfferDTO(
      branchId: user.branchId,
      createdBy: user.id,
      name: offerNameController.text,
@@ -178,6 +201,7 @@ class OffersController extends GetxController {
      offerType: selectedOfferType.value,
      offerValue: double.tryParse(offerValue.text),
      sellPrice: double.tryParse(sellPrice.text),
+     id: selectedOffer.value?.id
    );
 
     OfferRepository().saveOffer(
@@ -189,9 +213,31 @@ class OffersController extends GetxController {
             return ;
           }
           showPopupText(text: "تم الحفظ بنجاح" , type: MsgType.success);
+          getOffers();
         },
       onError: (e) => showPopupText(text: e.toString())
     );
+  }
+
+
+  onSelectOffer(dynamic selectedOfferValue){
+     selectedOffer(selectedOfferValue);
+     offerNameController.text = selectedOffer.value?.name ?? "";
+     endDate(selectedOffer.value?.dateTo);
+     startDate(selectedOffer.value?.dateFrom);
+     final int groupIndex = groups.indexWhere((group) => group.id == (selectedOffer.value?.groupId ?? -1));
+     selectedGroup(groupIndex!= -1 ? groups[groupIndex] : null);
+     maxPrice.text = selectedOffer.value?.offerMax.toString() ?? "";
+     selectedOfferType(selectedOffer.value?.offerType);
+     offerValue.text = selectedOffer.value?.offerValue.toString() ?? "" ;
+     sellPrice.text=selectedOffer.value?.sellPrice.toString() ?? ""  ;
+     addedItems(items.where((item) =>
+         selectedOffer.value?.details?.indexWhere((detail) =>
+         detail.itemId == item.id && detail.addedOrExcluded == 0 ) != -1).toList());
+     excludedItems(items.where((item) =>
+         selectedOffer.value?.details?.indexWhere((detail) =>
+         detail.itemId == item.id && detail.addedOrExcluded == 1 ) != -1).toList());
+     active(selectedOffer.value?.active);
   }
 
 
