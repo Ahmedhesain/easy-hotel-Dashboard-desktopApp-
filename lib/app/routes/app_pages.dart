@@ -10,6 +10,8 @@ import '../modules/catch_receipt_another_gallery/views/catch_receipt_another_gal
 import '../modules/catch_receipt_another_gallery_new/bindings/catch_receipt_another_gallery_new_binding.dart';
 import '../modules/catch_receipt_another_gallery_new/views/catch_receipt_another_gallery_new_view.dart';
 import '../modules/crm/bindings/crm_event_binding.dart';
+import '../modules/crm_reports/branches_report/bindings/branches_report_binding.dart';
+import '../modules/crm_reports/branches_report/views/branches_report_view.dart';
 import '../modules/crm_reports/coupons/bindings/coupons_binding.dart';
 import '../modules/crm_reports/coupons/views/coupons_view.dart';
 import '../modules/crm_reports/crm_events_report/bindings/crm_events_report_binding.dart';
@@ -339,6 +341,11 @@ class AppPages {
       name: _Paths.CRMCustomersComparison,
       page: () => const CustomerComparisonView(),
       binding: CustomerComparisonBinding(),
+    ),
+    GetPage(
+      name: _Paths.CRMBranchesReport,
+      page: () => const BranchesReportView(),
+      binding: BranchesReportBinding(),
     ),
   ];
 }

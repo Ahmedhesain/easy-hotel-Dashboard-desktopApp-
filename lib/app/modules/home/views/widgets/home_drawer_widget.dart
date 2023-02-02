@@ -231,6 +231,10 @@ class HomeDrawerWidget extends GetView<HomeController> {
         title: "مقارنة العميل بالفترة",
         onTap: () => goTo(Routes.CRMCustomersComparison,"مقارنة العميل بالفترة"),
       ),
+      HomeDrawerTileWidget(
+        title: "الفروع",
+        onTap: () => goTo(Routes.CRMBranchesReport,"الفروع"),
+      ),
     ];
     return Drawer(
       child: Directionality(

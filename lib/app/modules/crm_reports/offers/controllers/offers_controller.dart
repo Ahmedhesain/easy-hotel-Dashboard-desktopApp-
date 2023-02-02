@@ -6,14 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
 import 'package:toby_bills/app/core/utils/user_manager.dart';
-import 'package:toby_bills/app/data/model/item/dto/request/get_items_request.dart';
 import 'package:toby_bills/app/data/repository/item/item_repository.dart';
-
 import '../../../../core/utils/show_popup_text.dart';
 import '../../../../data/model/invoice/dto/response/gallery_response.dart';
 import '../../../../data/model/item/dto/response/item_response.dart';
-import '../../../../data/model/offers/dto/request/add_offer_detail_request.dart';
-import '../../../../data/model/offers/dto/request/add_offer_request.dart';
 import '../../../../data/model/offers/dto/request/get_offers_request.dart';
 import '../../../../data/model/offers/offer_detail_dto.dart';
 import '../../../../data/model/offers/offer_dto.dart';
@@ -62,19 +58,10 @@ class OffersController extends GetxController {
     getOffers();
     items.assignAll(Get.find<HomeController>().items);
     galleries.assignAll(Get.find<HomeController>().galleries);
+    galleries.insert(0, GalleryResponse(name: "تحديد الكل" , id: -1));
     selectNewDeliveryplace(["تحديد الكل"]);
   }
 
-
- getItems(){
-    isLoading(true);
-    ItemRepository().getAllItemsLocal(
-      onSuccess: (data) {
-        items.assignAll(data);
-      },
-      onComplete: () => isLoading(false)
-    );
- }
 
   getOffers(){
     isLoading(true);

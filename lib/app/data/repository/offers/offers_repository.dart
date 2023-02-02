@@ -1,8 +1,6 @@
 
 
-import '../../model/offers/dto/request/add_offer_request.dart';
 import '../../model/offers/dto/request/get_offers_request.dart';
-import '../../model/offers/dto/response/add_offer_response.dart';
 import '../../model/offers/offer_dto.dart';
 import '../../provider/api_provider.dart';
 

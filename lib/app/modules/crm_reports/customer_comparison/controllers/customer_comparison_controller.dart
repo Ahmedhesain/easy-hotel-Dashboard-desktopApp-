@@ -77,7 +77,7 @@ class CustomerComparisonController extends GetxController {
        onError: (e) => showPopupText(text: e.toString()),
       onSuccess: (data){
         reportResponse(data);
-        totalThobeNumber(data.firstCustomer.totalThobeNumber ?? 0 + (data.secondCustomer.totalThobeNumber ?? 0));
+        totalThobeNumber((data.firstCustomer.totalThobeNumber?.toInt() ?? 0) + (data.secondCustomer.totalThobeNumber?.toInt() ?? 0));
         totalInvoiceNumber(data.firstCustomer.totalInvoiceNumber ?? 0 + (data.secondCustomer.totalInvoiceNumber ?? 0));
         totalValueNumber(data.firstCustomer.totalInvoiceValue ?? 0 + (data.secondCustomer.totalInvoiceValue ?? 0));
         invoicePercent(((data.secondCustomer.totalInvoiceNumber ?? 0.0) / totalInvoiceNumber.value));

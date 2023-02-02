@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class CategoriesTotalsResponse {
   CategoriesTotalsResponse({
@@ -17,8 +20,8 @@ class CategoriesTotalsResponse {
     this.sendNumber,
     this.gallaryName,
     this.gallaryCode,
+    this.color,
   });
-
   double? allAvarageCost;
   double? allCost;
   num? allQuantity;
@@ -34,6 +37,7 @@ class CategoriesTotalsResponse {
   num? sendNumber;
   String? gallaryName;
   String?gallaryCode;
+  Color? color;
 
   static List<CategoriesTotalsResponse> fromList(List<dynamic> json) => List<CategoriesTotalsResponse>.from(json.map((x) => CategoriesTotalsResponse.fromJson(x)));
 
@@ -53,8 +57,7 @@ class CategoriesTotalsResponse {
     sendNumber: json["sendNumber"],
     gallaryName: json["gallaryName"],
     gallaryCode: json["gallaryCode"],
-
-
+    color: Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0)
   );
 
   Map<String, dynamic> toJson() => {

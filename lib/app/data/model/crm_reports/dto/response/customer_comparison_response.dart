@@ -16,7 +16,7 @@ class CustomerComparisonResponse {
 
 class ClientPeriodDataDTO {
   final int? totalInvoiceNumber;
-  final int? totalThobeNumber;
+  final num? totalThobeNumber;
   final double? totalInvoiceValue;
 
   ClientPeriodDataDTO(

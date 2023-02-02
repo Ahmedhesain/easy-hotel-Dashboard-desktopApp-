@@ -5,10 +5,12 @@ import 'package:toby_bills/app/data/model/crm_reports/dto/request/customers_repo
 
 import '../../model/crm_reports/dto/company_dto.dart';
 import '../../model/crm_reports/dto/request/add_coupon_request.dart';
+import '../../model/crm_reports/dto/request/branches_report_request.dart';
 import '../../model/crm_reports/dto/request/crm_events_report_request.dart';
 import '../../model/crm_reports/dto/request/customer_comparison_request.dart';
 import '../../model/crm_reports/dto/request/customers_report_by_invoice_request.dart';
 import '../../model/crm_reports/dto/request/send_msg_request.dart';
+import '../../model/crm_reports/dto/response/branch_report_response.dart';
 import '../../model/crm_reports/dto/response/crm_event_dto.dart';
 import '../../model/crm_reports/dto/response/customer_comparison_response.dart';
 import '../../model/crm_reports/dto/response/customers_report_by_invoice_response.dart';
@@ -115,5 +117,19 @@ class CrmReportsRepository {
         data: request.toJson(),
         onError: onError,
         convertor: CustomerComparisonResponse.fromJson,
+      );
+
+  getBranchesReport(
+      BranchesReportRequest request, {
+        Function()? onComplete,
+        Function(BranchReportResponse data)? onSuccess,
+        Function(dynamic error)? onError,
+      }) =>
+      ApiProvider().post<BranchReportResponse,Map<String , dynamic>>('crmReportsRest/findCrmGallaryCompaireAPI',
+        onComplete: onComplete,
+        onSuccess: onSuccess,
+        data: request.toJson(),
+        onError: onError,
+        convertor: BranchReportResponse.fromJson,
       );
 }
