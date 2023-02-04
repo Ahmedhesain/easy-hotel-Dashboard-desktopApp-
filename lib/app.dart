@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hotel_manger/main.dart';
+import 'package:toby_bills/main.dart';
 import 'app/routes/app_pages.dart';
 
 class MyApp extends StatelessWidget{
@@ -9,9 +9,9 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "Easy Hotel",
+      title: "Topy Bills",
       debugShowCheckedModeBanner: false,
-      initialRoute: windowArgs["route"] ?? AppPages.INITIAL,
+      initialRoute: windowArgs["route"] ?? AppPages.initialRoute,
       getPages: AppPages.routes,
       locale: const Locale("ar"),
     );

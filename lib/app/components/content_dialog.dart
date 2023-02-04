@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toby_bills/app/components/text_widget.dart';
 
 class ContentDialog extends StatelessWidget {
   const ContentDialog({Key? key, required this.title, required this.content, required this.actions}) : super(key: key);

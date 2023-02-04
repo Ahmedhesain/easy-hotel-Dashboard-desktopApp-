@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
-import 'package:hotel_manger/app/core/enums/toast_msg_type.dart';
-import 'package:hotel_manger/app/core/values/app_colors.dart';
-
+import 'package:toby_bills/app/core/enums/toast_msg_type.dart';
+import 'package:toby_bills/app/core/values/app_colors.dart';
 
 
 abstract class Common {

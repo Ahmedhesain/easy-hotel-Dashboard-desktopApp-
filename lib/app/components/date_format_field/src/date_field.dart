@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_manger/app/components/date_format_field/src/formater.dart';
+import 'package:toby_bills/app/components/date_format_field/src/formater.dart';
 
 /// [DateFormatType] enum specifies the formating option for the date format
 /// field.
