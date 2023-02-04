@@ -8,6 +8,7 @@ import 'package:hotel_manger/app/data/model/housekeeping/dto/response/client_mas
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/group_value_for_day_and_month_response.dart';
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/list_purchase_response.dart';
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/most_buying_clients_response.dart';
+import 'package:hotel_manger/app/data/model/housekeeping/dto/response/sales_of_month_response.dart';
 import 'package:hotel_manger/app/data/provider/api_provider.dart';
 
 class AppRepository {
@@ -65,7 +66,7 @@ class AppRepository {
         SuccessFunc<List<AppResponse>> onSuccess,
         Function(dynamic error)? onError,
       }) async =>
-      await  ApiProvider().post<List<AppResponse>>('salesCarReport/NumberOrdersLate',
+      await  ApiProvider().post<List<AppResponse>>('salesCarReport/TheNumberOrdersLate',
         onComplete: onComplete,
         onSuccess: onSuccess,
         data: request.toJson(),
@@ -111,15 +112,15 @@ class AppRepository {
 
   getSalesOfTheWeek(
       AppRequest request, {
-        SuccessFunc<AppValueResponse> onSuccess,
+        SuccessFunc<SalesOfMonthResponse> onSuccess,
         Function(dynamic error)? onError,  Function()?onComplete,
       }) {
-    ApiProvider().post<AppValueResponse>(
-        'salesCarReport/salesOfTheWeek',
+    ApiProvider().post<SalesOfMonthResponse>(
+        'salesCarReport/salesOfTheMonth',
         onSuccess: onSuccess,
         data: request.toJson(),
         onError: onError,
-        convertor: AppValueResponse.fromJson,
+        convertor: SalesOfMonthResponse.fromJson,
         onComplete: onComplete
     );
   }

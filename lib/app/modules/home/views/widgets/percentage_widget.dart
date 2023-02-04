@@ -36,7 +36,7 @@ class PercentageWidget extends GetView<HomeController> {
               child: LinearPercentIndicator(
                 width: size.width * .28,
                 trailing: TextWidget(
-                  (value! + best!).toString(), size: 25, textColor: AppColors.font,),
+                  (value! + best!).toStringAsFixed(0), size: 25, textColor: AppColors.font,),
                 animation: true,
                 lineHeight: 11.0,
                 animationDuration: 2500,

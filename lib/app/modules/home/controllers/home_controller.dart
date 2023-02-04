@@ -15,6 +15,7 @@ import 'package:hotel_manger/app/data/model/housekeeping/dto/response/group_valu
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/list_purchase_response.dart';
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/most_buying_clients_response.dart';
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/order_response.dart';
+import 'package:hotel_manger/app/data/model/housekeeping/dto/response/review_response.dart';
 import 'package:hotel_manger/app/data/repository/application/app_repository.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -33,12 +34,18 @@ class HomeController extends GetxController {
 
   final isLoading = false.obs;
   final numOrders = 0.obs;
+  final numOrdersList = <AppResponse>[].obs;
   final numberOrdersUnderProcessing = 0.obs;
+  final numberOrdersUnderProcessingList = <AppResponse>[].obs;
   final numberOrdersDelivered = 0.obs;
+  final numberOrdersDeliveredList = <AppResponse>[].obs;
   final numberOrdersLate = 0.obs;
+  final numberOrdersLateList = <AppResponse>[].obs;
   final totalValueOrders = 0.0.obs;
   final best = 0.0.obs;
-  AppValueResponse? salesOfTheWeek ;
+  final salesOfTheLast = 0.0.obs;
+  final salesOfTheFirst = 0.0.obs;
+  final all = 0.0.obs;
   ListPurchaseResponse? listPurchase ;
   final bestSellingList = <BestSellingResponse>[].obs;
   final mostBuyingClientsList = <MostBuingClientsResponse>[].obs;
@@ -70,32 +77,80 @@ class HomeController extends GetxController {
       final orders =OrderResponse.fromJson(json.decode(event));
       numOrders(++numOrders.value);
       numberOrdersUnderProcessing(++numberOrdersUnderProcessing.value);
+      salesOfTheFirst.value=(orders.salePrice!+salesOfTheFirst.value);
       totalValueOrders(orders.salePrice!+totalValueOrders.value);
+
+
       for(int i=0;i<bestSellingList.length;i++) {
+        // if(orders.carId!=bestSellingList[i].id){
+        //   BestSellingResponse newBest =BestSellingResponse(
+        //     id:orders.carId!,
+        //     name:orders.carName,
+        //     image:"",
+        //     amount:1,
+        //     count:1,
+        //   );
+        //   bestSellingList.add(newBest);
+        //
+        // }
         if(orders.carId==bestSellingList[i].id){
           bestSellingList[i].best+1.0;
       }
-      }    for(int i=0;i<groupValueForDayAndMonth.length;i++) {
+      }
+
+      for(int i=0;i<groupValueForDayAndMonth.length;i++) {
+        // if(orders.groupId!=groupValueForDayAndMonth[i].id){
+        //   GroupValueForDayAndMonthResponse group =GroupValueForDayAndMonthResponse(
+        //     id: orders.groupId,
+        //     name: orders.groupName,
+        //     countOrderDay: 1,
+        //     countOrderMonth: 1,
+        //     valueOrderDay: orders.salePrice,
+        //     valueOrderMonth: orders.salePrice
+        //   );
+        //   groupValueForDayAndMonth.add(group);
+        // }
         if(orders.groupId==groupValueForDayAndMonth[i].id){
           ++groupValueForDayAndMonth[i].added;
-          groupValueForDayAndMonth[i].valueOrderMonth = totalValueOrders.value;
+          groupValueForDayAndMonth[i].valueOrderMonth =(groupValueForDayAndMonth[i].valueOrderMonth ??0 +totalValueOrders.value);
+          groupValueForDayAndMonth[i].valueOrderDay =(groupValueForDayAndMonth[i].valueOrderDay!+totalValueOrders.value);
 
         }
-      }for(int i=0;i<mostBuyingClientsList.length;i++) {
+      }
+
+      for(int i=0;i<mostBuyingClientsList.length;i++) {
+        // if(orders.customerId!=mostBuyingClientsList[i].id){
+        //   MostBuingClientsResponse mostBuying =MostBuingClientsResponse(
+        //     id: orders.customerId,
+        //     name: orders.customerName,
+        //     numbers: 1
+        //   );
+        //   mostBuyingClientsList.add(mostBuying);
+        // }
         if(orders.customerId==mostBuyingClientsList[i].id){
           ++mostBuyingClientsList[i].added;
 
         }
       }
 
-      numOrders.refresh();
-      numberOrdersUnderProcessing.refresh();
-      bestSellingList.refresh();
-      groupValueForDayAndMonth.refresh();
-      mostBuyingClientsList.refresh();
+      //
+      // for(int i=0;i<numberOrdersLateList.length;i++) {
+      //   if(orders.comingDate==mostBuyingClientsList[i].id){
+      //     ++mostBuyingClientsList[i].added;
+      //
+      //   }
+      // }
+      //
+      // numOrders.refresh();
+      // numberOrdersUnderProcessing.refresh();
+      // bestSellingList.refresh();
+      // salesOfTheFirst.refresh();
+      // groupValueForDayAndMonth.refresh();
+      // mostBuyingClientsList.refresh();
 
     },
-        onDone: () => print('done'));
+        onDone: () => print('done'),
+    cancelOnError: false);
 
     // final wsUrlFinish = Uri.parse('ws://localhost:8005/ws/updateFinishedCarDashboard?filterId=232');
     // final channelFinish = WebSocketChannel.connect(wsUrlFinish);
@@ -108,16 +163,20 @@ class HomeController extends GetxController {
     // },
     //     onDone: () => print('done'));
 
-    // final wsUrlReview = Uri.parse('ws://localhost:8005/ws/reviewCarDashboard?filterId=232');
-    // final channelReview = WebSocketChannel.connect(wsUrlReview);
-    // channelReview.stream.listen((event) {
-    //   numberOrdersDelivered(++numberOrdersDelivered.value);
-    //   numberOrdersUnderProcessing(--numberOrdersUnderProcessing.value);
-    //   numberOrdersDelivered.refresh();
-    //   numberOrdersUnderProcessing.refresh();
-    //
-    // },
-    //     onDone: () => print('done'));
+    final wsUrlReview = Uri.parse('ws://localhost:8005/ws/reviewSPaDashboard?filterId=232');
+    final channelReview = WebSocketChannel.connect(wsUrlReview);
+    channelReview.stream.listen((event) {
+      final comment =ReviewResponse.fromJson(json.decode(event));
+      ClientCommentsResponse review=ClientCommentsResponse(
+          id: comment.id,
+        comment: comment.reviewText
+      );
+
+      clientComments.add(review);
+      clientComments.refresh();
+
+    },
+        onDone: () => print('done'));
 
   }
 
@@ -131,6 +190,7 @@ class HomeController extends GetxController {
     AppRepository().getNumOrders(request,
         onSuccess: (data) {
           numOrders(data.data.length);
+          numOrdersList(data.data);
           },
         onError: (e) => showPopupText(  text: e.toString()),
         onComplete: () => isLoading(false)
@@ -145,6 +205,7 @@ class HomeController extends GetxController {
     AppRepository().getNumberOrdersUnderProcessing(request,
         onSuccess: (data) {
           numberOrdersUnderProcessing(data.data.length);
+          numberOrdersUnderProcessingList(data.data);
          },
         onError: (e) => showPopupText(  text: e.toString()),
         onComplete: () => isLoading(false)
@@ -161,7 +222,9 @@ class HomeController extends GetxController {
     AppRepository().getNumberOrdersDelivered(request,
         onSuccess: (data) {
           numberOrdersDelivered(data.data.length);
-          },
+          numberOrdersDeliveredList(data.data);
+
+        },
         onError: (e) => showPopupText(  text: e.toString()),
         onComplete: () => isLoading(false)
     );
@@ -173,10 +236,12 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersDelivered(request,
+    AppRepository().getNumberOrdersLate( request,
         onSuccess: (data) {
           numberOrdersLate(data.data.length);
-          },
+          numberOrdersLateList(data.data);
+
+        },
         onError: (e) => showPopupText(  text: e.toString()),
         onComplete: () => isLoading(false)
     );
@@ -207,7 +272,9 @@ class HomeController extends GetxController {
     );
     AppRepository().getSalesOfTheWeek(request,
         onSuccess: (data) {
-          salesOfTheWeek=data.data;
+          salesOfTheLast(data.data.valueLastMonth);
+          salesOfTheFirst(data.data.valueLastMonth);
+          all.value=salesOfTheLast.value-salesOfTheFirst.value;
         },
         onError: (e) => showPopupText(  text: e.toString()),
         onComplete: () => isLoading(false)

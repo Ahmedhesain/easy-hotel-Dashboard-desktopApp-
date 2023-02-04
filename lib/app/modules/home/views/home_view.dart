@@ -159,7 +159,7 @@ class HomeView extends GetView<HomeController> {
                         Column(
                           children: [
                             LeftTapWidget(
-                                "مبيعات الاسبوع", controller.salesOfTheWeek!.value??0, AppColors.greenOne),
+                                "مبيعات الشهر", controller.all.value, AppColors.greenOne),
 
                           ],
                         )
