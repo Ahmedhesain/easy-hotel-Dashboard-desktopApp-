@@ -9,6 +9,7 @@ LoginResponse({
     required this.id,
     required this.name,
     required this.userScreens,
+    required this.userItemsEditPirivlege
   });
 
   int accountIdApi;
@@ -20,10 +21,12 @@ LoginResponse({
   int id;
   String name;
   Map<String, ScreenPermission> userScreens;
+  final List<int> userItemsEditPirivlege;
 
   factory LoginResponse.fromJson(Map<String, dynamic> data) {
     Map<String, dynamic> json = data.containsKey("data")?data["data"]:data;
     json["userScreens"] = data["userScreens"];
+    json["userItemsEditPirivlege"] = data["userItemsEditPirivlege"];
     final screenPermission = <String, ScreenPermission>{};
     final screens = json["userScreens"];
     if(screens != null){
@@ -41,6 +44,7 @@ LoginResponse({
     galleryType: json["galleryType"],
     id: json["id"],
     name: json["name"],
+      userItemsEditPirivlege: List<int>.from(json["userItemsEditPirivlege"] ?? []) ,
     userScreens: screenPermission,
   );
   }
@@ -53,6 +57,7 @@ LoginResponse({
     "galleryName": galleryName,
     "galleryType": galleryType,
     "id": id,
+    "userItemsEditPirivlege": userItemsEditPirivlege ?? [],
     "name": name,
     "userScreens": {
       "entry": [

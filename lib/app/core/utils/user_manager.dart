@@ -25,6 +25,8 @@ class UserManager{
 
   int get accountIdAPI  => user.accountIdApi;
 
+  List<int> get itemsEditPerivilege => user.userItemsEditPirivlege ?? [] ;
+
   LoginResponse get user => LoginResponse.fromJson(AppStorage.read(AppStorage.USER));
 
   void changeGallery(GalleryResponse? galleryResponse){
@@ -37,7 +39,8 @@ class UserManager{
         galleryType: galleryResponse?.invName ?? user.galleryType,
         id: user.id,
         name: user.name,
-        userScreens: user.userScreens
+        userScreens: user.userScreens,
+        userItemsEditPirivlege: user.userItemsEditPirivlege
     );
     final userData = newUser.toJson();
     AppStorage.write(AppStorage.USER, userData);
