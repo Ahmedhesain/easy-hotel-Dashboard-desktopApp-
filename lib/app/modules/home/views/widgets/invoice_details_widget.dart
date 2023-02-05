@@ -379,7 +379,7 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                             controller.calcInvoiceValues();
                           });
                     },
-                    selectedItem: controller.inventories.singleWhere((element) => element.id == detail.value.inventoryId),
+                    selectedItem:  controller.inventories.isNotEmpty ? controller.inventories.singleWhere((element) => element.id == detail.value.inventoryId) : null,
                     dropdownDecoratorProps: const DropDownDecoratorProps(
                         dropdownSearchDecoration: InputDecoration(
                             isDense: true,

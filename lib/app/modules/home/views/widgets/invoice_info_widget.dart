@@ -24,7 +24,9 @@ class InvoiceInfoWidget extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size ;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     const space = SizedBox(height: 15);
     return Column(
       children: [
@@ -62,10 +64,11 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                       // style: smallTextStyleNormal(size, color: Colors.black),
                       elevation: 0,
                       items: controller.priceTypes.entries
-                          .map((e) => DropdownMenuItem<int>(
-                                value: e.key,
-                                child: Text(e.value),
-                              ))
+                          .map((e) =>
+                          DropdownMenuItem<int>(
+                            value: e.key,
+                            child: Text(e.value),
+                          ))
                           .toList(),
                       onChanged: controller.changePriceType,
                       // value: provider.priceTypeSelected,
@@ -104,13 +107,16 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                 // ),
                 Expanded(
                   flex: 2,
-                  child: DateFieldWidget(
-                    // key: UniqueKey(),
-                    onComplete: (date){
-                      controller.date(date);
-                    },
-                    date: controller.date.value,
-                  ),
+                  child: Obx(() {
+                    return DateFieldWidget(
+                      // key: UniqueKey(),
+                      isActive: (UserManager().user.userScreens["proworkorder"]?.edit ?? false),
+                      onComplete: (date) {
+                        controller.date(date);
+                      },
+                      date: controller.date.value,
+                    );
+                  }),
                 ),
                 const SizedBox(width: 10),
                 const Text('تاريخ التسليم:'),
@@ -246,11 +252,11 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                   return DropdownSearch<GalleryResponse>(
                     items: controller.galleries,
                     selectedItem: controller.selectedGallery.value,
-                    onChanged: (g){
+                    onChanged: (g) {
                       UserManager().changeGallery(g);
                       controller.selectedGallery(g);
-                     controller.getNotifications();
-                     controller.getEvents();
+                      controller.getNotifications();
+                      controller.getEvents();
                     },
                     itemAsString: (gallery) => gallery.name ?? "",
                     dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -290,7 +296,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                       },
                       suggestionsCallback: (filter) => controller.customers,
                       onSuggestionSelected: (value) async {
-                        if(value.blackList == true){
+                        if (value.blackList == true) {
                           showPopupText(text: 'هذا العميل محظور');
                           return;
                         }
@@ -314,7 +320,7 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                         textInputAction: TextInputAction.next,
                         controller: controller.invoiceCustomerController,
                         focusNode: controller.invoiceCustomerFieldFocusNode,
-                        onSubmitted :(_) => controller.getCustomersByCodeForInvoice(),
+                        onSubmitted: (_) => controller.getCustomersByCodeForInvoice(),
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             // disabledBorder: InputBorder.none,
@@ -353,15 +359,21 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                        width: size.width * 0.2 ,
-                                        child: TextFieldWidget(label: "اسم العميل", onChanged: (value) => newCustomer.name = value, validator: AppValidator.forceValue)),
+                                        width: size.width * 0.2,
+                                        child: TextFieldWidget(
+                                            label: "اسم العميل", onChanged: (value) => newCustomer.name = value, validator: AppValidator.forceValue)),
                                     const SizedBox(width: 15),
                                     SizedBox(
-                                        width: size.width * 0.2 ,
-                                        child: TextFieldWidget(label: "هاتف العميل", onChanged: (value) => newCustomer.mobile = value, validator: AppValidator.forceValue,textAlign: TextAlign.left,textDirection: TextDirection.ltr,maxLength: 12,)),
+                                        width: size.width * 0.2,
+                                        child: TextFieldWidget(label: "هاتف العميل",
+                                          onChanged: (value) => newCustomer.mobile = value,
+                                          validator: AppValidator.forceValue,
+                                          textAlign: TextAlign.left,
+                                          textDirection: TextDirection.ltr,
+                                          maxLength: 12,)),
                                     const SizedBox(width: 15),
                                     SizedBox(
-                                        width: size.width * 0.2 ,
+                                        width: size.width * 0.2,
                                         child: TextFieldWidget(label: "إيميل العميل", onChanged: (value) => newCustomer.email = value)),
                                   ],
                                 ),
@@ -372,24 +384,24 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                        width: size.width * 0.2 ,
+                                        width: size.width * 0.2,
                                         child: TextFieldWidget(label: "الطول", onChanged: (value) => newCustomer.length = double.tryParse(value))),
                                     const SizedBox(width: 15),
                                     SizedBox(
-                                        width: size.width * 0.2 ,
+                                        width: size.width * 0.2,
                                         child: TextFieldWidget(label: "الكتف", onChanged: (value) => newCustomer.shoulder = double.tryParse(value))),
                                     const SizedBox(width: 15),
                                     SizedBox(
-                                        width: size.width * 0.2 ,
+                                        width: size.width * 0.2,
                                         child: TextFieldWidget(label: "الخطوة", onChanged: (value) => newCustomer.step = double.tryParse(value))),
                                   ],
                                 ),
                               ),
                               space,
                               SizedBox(
-                                width: size.width *0.7,
+                                width: size.width * 0.7,
                                 child: ExpansionTile(
-                                  title: const Text("معلومات اضافية") , collapsedBackgroundColor: Colors.grey[200],
+                                  title: const Text("معلومات اضافية"), collapsedBackgroundColor: Colors.grey[200],
                                   childrenPadding: const EdgeInsets.all(4),
                                   children: [
                                     SizedBox(
@@ -397,15 +409,17 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                                       child: Row(
                                         children: [
                                           SizedBox(
-                                              width: size.width * 0.2 ,
+                                              width: size.width * 0.2,
                                               child: TextFieldWidget(label: "مصدر العميل", onChanged: (value) {})),
                                           const SizedBox(width: 15),
                                           SizedBox(
-                                              width: size.width * 0.2 ,
-                                              child: TextFieldWidget(label: "الرقم القومي", onChanged: (value) {newCustomer.nationId = value;},textAlign: TextAlign.left,textDirection: TextDirection.ltr,)),
+                                              width: size.width * 0.2,
+                                              child: TextFieldWidget(label: "الرقم القومي", onChanged: (value) {
+                                                newCustomer.nationId = value;
+                                              }, textAlign: TextAlign.left, textDirection: TextDirection.ltr,)),
                                           const SizedBox(width: 15),
                                           SizedBox(
-                                              width: size.width * 0.2 ,
+                                              width: size.width * 0.2,
                                               child: TextFieldWidget(label: "باسبور", onChanged: (value) => {newCustomer.passport = value})),
                                         ],
                                       ),
@@ -416,16 +430,21 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                                       child: Row(
                                         children: [
                                           SizedBox(
-                                              width: size.width * 0.2 ,
+                                              width: size.width * 0.2,
                                               child: TextFieldWidget(label: "اسم الشارع", onChanged: (value) => {newCustomer.streeName = value})),
                                           const SizedBox(width: 15),
                                           SizedBox(
-                                              width: size.width * 0.2 ,
-                                              child: TextFieldWidget(label: "اسم الشارع اضافي", onChanged: (value) => {newCustomer.additionalStreetName = value},textAlign: TextAlign.left,textDirection: TextDirection.ltr,)),
+                                              width: size.width * 0.2,
+                                              child: TextFieldWidget(label: "اسم الشارع اضافي",
+                                                onChanged: (value) => {newCustomer.additionalStreetName = value},
+                                                textAlign: TextAlign.left,
+                                                textDirection: TextDirection.ltr,)),
                                           const SizedBox(width: 15),
                                           SizedBox(
-                                              width: size.width * 0.2 ,
-                                              child: TextFieldWidget(label: "رقم البنايه", onChanged: (value) {newCustomer.buildingNumber = value;})),
+                                              width: size.width * 0.2,
+                                              child: TextFieldWidget(label: "رقم البنايه", onChanged: (value) {
+                                                newCustomer.buildingNumber = value;
+                                              })),
                                         ],
                                       ),
                                     ),
@@ -435,16 +454,22 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                                       child: Row(
                                         children: [
                                           SizedBox(
-                                              width: size.width * 0.2 ,
-                                              child: TextFieldWidget(label: "plot_identification", onChanged: (value) => {newCustomer.plotIdentification = value})),
+                                              width: size.width * 0.2,
+                                              child: TextFieldWidget(
+                                                  label: "plot_identification", onChanged: (value) => {newCustomer.plotIdentification = value})),
                                           const SizedBox(width: 15),
                                           SizedBox(
-                                              width: size.width * 0.2 ,
-                                              child: TextFieldWidget(label: "city_subdivision_name", onChanged: (value) => {newCustomer.citySubdivisionName = value},textAlign: TextAlign.left,textDirection: TextDirection.ltr,)),
+                                              width: size.width * 0.2,
+                                              child: TextFieldWidget(label: "city_subdivision_name",
+                                                onChanged: (value) => {newCustomer.citySubdivisionName = value},
+                                                textAlign: TextAlign.left,
+                                                textDirection: TextDirection.ltr,)),
                                           const SizedBox(width: 15),
                                           SizedBox(
-                                              width: size.width * 0.2 ,
-                                              child: TextFieldWidget(label: "postal_zone", onChanged: (value) {newCustomer.postalZone = value;})),
+                                              width: size.width * 0.2,
+                                              child: TextFieldWidget(label: "postal_zone", onChanged: (value) {
+                                                newCustomer.postalZone = value;
+                                              })),
                                         ],
                                       ),
                                     ),
@@ -454,12 +479,14 @@ class InvoiceInfoWidget extends GetView<HomeController> {
                                       child: Row(
                                         children: [
                                           SizedBox(
-                                              width: size.width * 0.2 ,
-                                              child: TextFieldWidget(label: "country_subentity", onChanged: (value) => {newCustomer.countrySubentity = value})),
+                                              width: size.width * 0.2,
+                                              child: TextFieldWidget(
+                                                  label: "country_subentity", onChanged: (value) => {newCustomer.countrySubentity = value})),
                                           const SizedBox(width: 15),
                                           SizedBox(
-                                              width: size.width * 0.2 ,
-                                              child: TextFieldWidget(label: "الرقم الضريبي للعميل", onChanged: (value) => {newCustomer.taxNumber = value})),
+                                              width: size.width * 0.2,
+                                              child: TextFieldWidget(
+                                                  label: "الرقم الضريبي للعميل", onChanged: (value) => {newCustomer.taxNumber = value})),
                                           const SizedBox(width: 15),
 
                                         ],
