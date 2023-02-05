@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
 
 class DateFieldWidget extends StatefulWidget {
-  const DateFieldWidget({Key? key, required this.onComplete, this.date, this.fillColor , this.hideBorder , this.label , this.formKey , this.validate}) : super(key: key);
+  const DateFieldWidget({Key? key, required this.onComplete, this.date, this.fillColor , this.hideBorder , this.label , this.formKey , this.validate , this.isActive = true}) : super(key: key);
   final Function(DateTime date) onComplete;
   final DateTime? date;
   final Color? fillColor;
@@ -11,6 +11,7 @@ class DateFieldWidget extends StatefulWidget {
   final String? label;
   final GlobalKey? formKey ;
   final String? Function(String? value)? validate;
+  final bool? isActive ;
   @override
   State<DateFieldWidget> createState() => _DateFieldWidgetState();
 }
@@ -85,6 +86,7 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
     return TextFormField(
       controller: controller,
       textDirection: TextDirection.ltr,
+      enabled: (widget.isActive) ?? true,
       key: widget.formKey,
       textAlign: TextAlign.right,
       decoration: InputDecoration(

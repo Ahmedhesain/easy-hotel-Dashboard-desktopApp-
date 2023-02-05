@@ -1890,19 +1890,19 @@ class PrintingHelper {
                         textDirection: TextDirection.rtl,
                       ),
                     ]),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                      Text(
-                        invoiceModel.dueDate == null ? "--" : DateFormat("dd/MM/yyyy").format(invoiceModel.dueDate!),
-                        style: boldStyle,
-                        textDirection: TextDirection.rtl,
-                      ),
-                      Spacer(),
-                      Text(
-                        "تاريخ التسليم",
-                        style: boldStyle,
-                        textDirection: TextDirection.rtl,
-                      ),
-                    ]),
+                    // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    //   Text(
+                    //     invoiceModel.dueDate == null ? "--" : DateFormat("dd/MM/yyyy").format(invoiceModel.dueDate!),
+                    //     style: boldStyle,
+                    //     textDirection: TextDirection.rtl,
+                    //   ),
+                    //   Spacer(),
+                    //   Text(
+                    //     "تاريخ التسليم",
+                    //     style: boldStyle,
+                    //     textDirection: TextDirection.rtl,
+                    //   ),
+                    // ]),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(
                         invoiceModel.cityName ?? "",
@@ -2190,10 +2190,28 @@ class PrintingHelper {
                           width: 30,
                           child: Center(
                               child: Text(
-                            "القيمه",
+                            "الاجمالي قبل الضريبة",
                             style: boldStyle,
                             textDirection: TextDirection.rtl,
                           ))),
+                    ]),
+                    TableRow(children: [
+                      SizedBox(
+                          width: 60,
+                          child: Center(
+                              child: Text(
+                                "${discount?.toStringAsFixed(2) ?? "--"} ريال ",
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                              ))),
+                      SizedBox(
+                          width: 100,
+                          child: Center(
+                              child: Text(
+                                "الخصم",
+                                style: boldStyle,
+                                textDirection: TextDirection.rtl,
+                              ))),
                     ]),
                     TableRow(children: [
                       SizedBox(
@@ -2208,7 +2226,7 @@ class PrintingHelper {
                           width: 30,
                           child: Center(
                               child: Text(
-                            "الاجمالي",
+                            "الصافي",
                             style: boldStyle,
                             textDirection: TextDirection.rtl,
                           ))),
@@ -2236,24 +2254,6 @@ class PrintingHelper {
                           width: 60,
                           child: Center(
                               child: Text(
-                            "${discount?.toStringAsFixed(2) ?? "--"} ريال ",
-                            style: boldStyle,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                      SizedBox(
-                          width: 100,
-                          child: Center(
-                              child: Text(
-                            "الخصم",
-                            style: boldStyle,
-                            textDirection: TextDirection.rtl,
-                          ))),
-                    ]),
-                    TableRow(children: [
-                      SizedBox(
-                          width: 60,
-                          child: Center(
-                              child: Text(
                             "${net?.toStringAsFixed(2) ?? "--"} ريال ",
                             style: boldStyle,
                             textDirection: TextDirection.rtl,
@@ -2262,7 +2262,7 @@ class PrintingHelper {
                           width: 30,
                           child: Center(
                               child: Text(
-                            "الصافي",
+                            "الاجمالي بعد الضريبة",
                             style: boldStyle,
                             textDirection: TextDirection.rtl,
                           ))),

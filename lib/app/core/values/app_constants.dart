@@ -11,14 +11,15 @@ abstract class AppConstants {
   static const Duration ANIMATION_DURATION = Duration(milliseconds: 400);
   static const appName = "";
   static const List<String> invoiceTypeList = [
-    "مبيعات",
+    "الكل",
     "مانيكنات الفروع",
     "مانيكنات القماشين",
     "علاقات عامه",
     "تفصيل القماشين",
     "موظفي الفروع",
     "تعديلات",
-    "اخري"
+    "اخري",
+    "مبيعات"
   ];
 
   static final List<GlAccountResponse> accounts = [

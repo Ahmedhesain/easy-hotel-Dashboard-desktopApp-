@@ -79,6 +79,8 @@ class CategoriesTotalsView extends GetView<CategoriesTotalsController> {
                   selectedItem: AppConstants.invoiceTypeList[controller.invoiceTypeSelected == null? 0 : controller.invoiceTypeSelected!+1],
                   onChanged: (value) {
                     if (value == AppConstants.invoiceTypeList.first) {
+                      controller.invoiceTypeSelected = -1;
+                    } else  if (value == AppConstants.invoiceTypeList.last) {
                       controller.invoiceTypeSelected = null;
                     } else {
                       controller.invoiceTypeSelected = AppConstants.invoiceTypeList.indexOf(value!) - 1;
