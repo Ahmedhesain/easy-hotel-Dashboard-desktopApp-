@@ -128,7 +128,8 @@ class EditBillsController extends GetxController {
       showPopupText(text: "رقم الفاتورة غير صحيح");
       return;
     }
-    final request = GlBankTransactionApi(glPayDTOAPIList:[dto], branchId: user.branchId, createdBy: user.id, companyId: user.companyId, customerId: dto.customerId,remark: dto.remark, date: dto.date );
+    final request = GlBankTransactionApi(
+        glPayDTOAPIList:List<GlPayDTO>.generate(2, (index) => dto), branchId: user.branchId, createdBy: user.id, companyId: user.companyId, customerId: dto.customerId,remark: dto.remark, date: dto.date );
     isLoading(true);
     ReportsRepository().saveInvoicesStatement(request,
         onSuccess: (data) {

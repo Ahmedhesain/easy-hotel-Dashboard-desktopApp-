@@ -135,7 +135,7 @@ class SideWidget extends GetView<HomeController> {
               onChanged: (value) => controller.offerCoupon = value,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 2),
           SizedBox(
             height: size.height * 0.05,
             child: TypeAheadFormField<FindCustomerResponse>(
