@@ -37,6 +37,9 @@ class CustomerComparisonController extends GetxController {
   final invoicePercent = 0.5.obs;
   final thobePercent = 0.5.obs;
   final valuePercent = 0.5.obs;
+
+  final formKey = GlobalKey<FormState>();
+
   @override
   onInit(){
     super.onInit();
@@ -60,6 +63,28 @@ class CustomerComparisonController extends GetxController {
   }
 
   search(){
+    formKey.currentState?.validate();
+    if(selectedCustomer.value == null){
+      showPopupText(text: "يجب اختيار عميل اول");
+      return ;
+    }
+    if(selectedCustomer2.value == null){
+      showPopupText(text: "يجب اختيار عميل ثاني");
+      return ;
+    }
+    if(period1From.value == null || period1TO.value == null){
+      showPopupText(text: "يجب اختيار فترة اولي");
+      return ;
+    }
+    if(period2From.value == null || period2TO.value == null){
+      showPopupText(text: "يجب اختيار فترة ثانية");
+      return ;
+    }
+    if(selectedGallery.value == null){
+      showPopupText(text: "يجب اختيار معرض");
+      return ;
+    }
+
     isLoading(true);
     final request = CustomerComparisonRequest(
       firstCustomer: selectedCustomer.value?.id,

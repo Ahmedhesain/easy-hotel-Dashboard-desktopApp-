@@ -17,6 +17,7 @@ import 'package:toby_bills/app/data/repository/general_journal/general_journal_r
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
+import '../../../data/model/common/bank_machine.dart';
 import '../../../data/model/customer/dto/response/find_customer_response.dart';
 
 class CatchReceiptAnotherGalleryNewController extends GetxController {
@@ -37,6 +38,9 @@ class CatchReceiptAnotherGalleryNewController extends GetxController {
   final itemRemainFocus = FocusNode();
   final itemPayFocus = FocusNode();
   final itemBankFocus = FocusNode();
+  final machines = <BankMachineDTO>[].obs;
+  Rxn<BankMachineDTO> selectedMachine = Rxn();
+  final bankMachineController = TextEditingController();
   InvoiceList? itemInvoice;
   GlPayDTO? itemBank;
   Rxn<FindCustomerResponse> selectedCustomer = Rxn();
@@ -77,6 +81,7 @@ class CatchReceiptAnotherGalleryNewController extends GetxController {
           if(banks.isNotEmpty) {
             itemBank = banks.first;
             itemBankController.text = itemBank!.bankName ?? "";
+            machines(itemBank?.bankMachineList ?? []);
           }
         },
         onError: (error) => showPopupText(text: error.toString()),
@@ -98,10 +103,10 @@ class CatchReceiptAnotherGalleryNewController extends GetxController {
   }
 
   void addNewDetail() {
-    if(itemPayController.text == "0"){
-      showPopupText(text: "لا يمكن اضافة هذا العنصر");
-      return ;
-    }
+      if(itemPayController.text == "0.0" || itemPayController.text == "0" ||itemPayController.text.isEmpty){
+        showPopupText(text: "لا يمكن اضافة هذا العنصر");
+        return ;
+      }
     banksToPay.add(GlPayDTO(
       bankName: itemBank!.bankName,
       bankId: itemBank!.bankId,
@@ -109,6 +114,8 @@ class CatchReceiptAnotherGalleryNewController extends GetxController {
       value: itemPayController.text.tryToParseToNum,
       invoiceId: itemInvoice!.id,
       invoiceSerial: itemInvoice!.serial,
+        machineId: selectedMachine.value?.id,
+        machineName: selectedMachine.value?.name
     ));
     clearItemFields();
     itemInvoiceFocus.requestFocus();
@@ -183,6 +190,15 @@ class CatchReceiptAnotherGalleryNewController extends GetxController {
     itemInvoiceController.text = invoice.serial.toString();
     itemPayFocus.requestFocus();
     itemInvoice = invoice;
+  }
+
+  onSelectBank(GlPayDTO value){
+    selectedMachine(null);
+    bankMachineController.text = "";
+    itemBank = value;
+    itemBankController.text = value.bankName ?? "";
+    machines(value.bankMachineList ?? []);
+    machines.refresh();
   }
 
 }

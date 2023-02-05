@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:multiselect/multiselect.dart';
 
 import '../../../../../components/button_widget.dart';
 import '../../../../../components/date_field_widget.dart';
@@ -62,6 +63,105 @@ class BranchesReportSearchWidget extends GetView<BranchesReportController> {
                                         value : controller.selectedGallery.value,
                                         hideBorder: true ,
                                         onChanged: (val) => controller.selectedGallery.value = val,
+                                      );
+                                    }),
+                                  ),
+
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        spaceV,
+                        SizedBox(
+                          width: size.width,
+                          child: Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: SizedBox(
+                                      width: size.width * 0.06,
+                                      child: const TextWidget(
+                                        'المعرض الثاني', size: 15 , weight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: size.width * .21,
+                                    height: size.height * 0.06,
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      color: AppColors.appGreyLight,
+                                      // border: Border.all(color: Colors.grey)
+                                    ),
+                                    child: Obx(() {
+                                      return DropDownWidget<GalleryResponse>(
+                                        items: controller.galleries.map((e) =>
+                                            DropdownMenuItem<GalleryResponse>(value: e,child: TextWidget(e.name!) ,)).toList(),
+                                        value : controller.selectedGallery2.value,
+                                        hideBorder: true ,
+                                        onChanged: (val) => controller.selectedGallery2.value = val,
+                                      );
+                                    }),
+                                  ),
+
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        spaceV,
+                        SizedBox(
+                          width: size.width,
+                          child: Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: SizedBox(
+                                      width: size.width * 0.06,
+                                      child: const TextWidget(
+                                        'الفئات', size: 15 , weight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: size.width * .21,
+                                    height: size.height * 0.06,
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      color: AppColors.appGreyLight,
+                                      // border: Border.all(color: Colors.grey)
+                                    ),
+                                    child: Obx(() {
+                                      return SizedBox(
+                                        width: size.width * 0.15,
+                                        child: DropDownMultiSelect(
+                                          key: UniqueKey(),
+                                          options: controller.groups.map((e) => e.name ?? "").toList(),
+                                          selectedValues: controller.selectedGroups.map((e) => e.name ?? "").toList(),
+                                          onChanged: controller.selectNewGroups,
+                                          decoration: const InputDecoration(
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                            border: InputBorder.none
+                                          ),
+                                          childBuilder: (List<String> values) {
+                                            return Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Align(
+                                                alignment: Alignment.centerRight,
+                                                child: Text(
+                                                  values.isEmpty ? "يرجى تحديد فئة على الاقل" : values.where((element) => element != "تحديد الكل").join(', '),
+                                                  maxLines: 1,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       );
                                     }),
                                   ),

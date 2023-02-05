@@ -3,13 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:toby_bills/app/components/text_widget.dart';
 
 class DateFieldWidget extends StatefulWidget {
-  const DateFieldWidget({Key? key, required this.onComplete, this.date, this.fillColor , this.hideBorder , this.label}) : super(key: key);
+  const DateFieldWidget({Key? key, required this.onComplete, this.date, this.fillColor , this.hideBorder , this.label , this.formKey , this.validate}) : super(key: key);
   final Function(DateTime date) onComplete;
   final DateTime? date;
   final Color? fillColor;
   final bool? hideBorder;
   final String? label;
-
+  final GlobalKey? formKey ;
+  final String? Function(String? value)? validate;
   @override
   State<DateFieldWidget> createState() => _DateFieldWidgetState();
 }
@@ -84,6 +85,7 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
     return TextFormField(
       controller: controller,
       textDirection: TextDirection.ltr,
+      key: widget.formKey,
       textAlign: TextAlign.right,
       decoration: InputDecoration(
         border: widget.hideBorder == true ? InputBorder.none  : const OutlineInputBorder(),
@@ -97,6 +99,7 @@ class _DateFieldWidgetState extends State<DateFieldWidget> {
       ),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]|/'))],
       maxLength: 10,
+      validator: widget.validate,
       onChanged: (value){
         if(value.length > 10) return;
         if((value.length == 2 || value.length == 5) && value.characters.last != "/" && value.characters.where((p) => p =="/").length < 2){

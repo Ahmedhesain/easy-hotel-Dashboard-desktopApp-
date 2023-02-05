@@ -1,6 +1,8 @@
 
 
 
+import 'package:toby_bills/app/data/model/reports/dto/request/categories_totals_request.dart';
+
 class BranchesReportRequest {
   final int? invoiceStatus;
   final int? gallaryFrom;
@@ -8,6 +10,9 @@ class BranchesReportRequest {
   final DateTime? toDate;
   final int? dayNumbers;
   final int? branchId;
+  final List<SymbolDtoapiList>? selectedGroups;
+
+
 
   BranchesReportRequest(
       {this.invoiceStatus,
@@ -15,7 +20,9 @@ class BranchesReportRequest {
       this.fromDate,
       this.toDate,
       this.dayNumbers,
-      this.branchId});
+      this.branchId,
+        this.selectedGroups,
+      });
 
   Map<String,dynamic> toJson () => {
     "invoiceStatus" : invoiceStatus,
@@ -24,5 +31,6 @@ class BranchesReportRequest {
     "toDate" : toDate?.toIso8601String(),
     "dayNumbers" : dayNumbers,
     "branchId" : branchId,
+    "selectedGroups" :List<dynamic>.from(selectedGroups!.map((e) => e.toJson()))
   };
 }

@@ -69,7 +69,7 @@ class ComparisonWidget extends GetView<CustomerComparisonController> {
                           child: SizedBox(
                             width: size.width * 0.06,
                             child: TextWidget(
-                              controller.reportResponse.value?.firstCustomer.totalInvoiceNumber.toString() ?? "",
+                              controller.reportResponse.value?.firstCustomer.totalInvoiceNumber?.toString() ?? "0",
                               size: 15,
                               weight: FontWeight.bold,
                             ),
@@ -97,7 +97,7 @@ class ComparisonWidget extends GetView<CustomerComparisonController> {
                           child: SizedBox(
                             width: size.width * 0.06,
                             child: TextWidget(
-                              controller.reportResponse.value?.firstCustomer.totalThobeNumber.toString() ?? "",
+                              controller.reportResponse.value?.firstCustomer.totalThobeNumber?.toString() ?? "0",
                               size: 15,
                               weight: FontWeight.bold,
                             ),
@@ -125,7 +125,7 @@ class ComparisonWidget extends GetView<CustomerComparisonController> {
                           child: SizedBox(
                             width: size.width * 0.06,
                             child: TextWidget(
-                              controller.reportResponse.value?.firstCustomer.totalInvoiceValue.toString() ?? "",
+                              controller.reportResponse.value?.firstCustomer.totalInvoiceValue?.toString() ?? "0",
                               size: 15,
                               weight: FontWeight.bold,
                             ),
@@ -179,7 +179,7 @@ class ComparisonWidget extends GetView<CustomerComparisonController> {
                           child: SizedBox(
                             width: size.width * 0.06,
                             child: TextWidget(
-                              controller.reportResponse.value?.secondCustomer.totalInvoiceNumber.toString() ?? "",
+                              controller.reportResponse.value?.secondCustomer.totalInvoiceNumber?.toString() ?? "0",
                               size: 15,
                               weight: FontWeight.bold,
                             ),
@@ -206,7 +206,7 @@ class ComparisonWidget extends GetView<CustomerComparisonController> {
                           child: SizedBox(
                             width: size.width * 0.06,
                             child: TextWidget(
-                              controller.reportResponse.value?.secondCustomer.totalThobeNumber.toString() ?? "",
+                              controller.reportResponse.value?.secondCustomer.totalThobeNumber?.toString() ?? "0",
                               size: 15,
                               weight: FontWeight.bold,
                             ),
@@ -233,7 +233,7 @@ class ComparisonWidget extends GetView<CustomerComparisonController> {
                           child: SizedBox(
                             width: size.width * 0.06,
                             child: TextWidget(
-                              controller.reportResponse.value?.secondCustomer.totalInvoiceValue.toString() ?? "",
+                              controller.reportResponse.value?.secondCustomer.totalInvoiceValue?.toString() ?? "0",
                               size: 15,
                               weight: FontWeight.bold,
                             ),

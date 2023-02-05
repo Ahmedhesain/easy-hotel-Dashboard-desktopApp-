@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toby_bills/app/components/app_loading_overlay.dart';
+import 'package:toby_bills/app/data/model/crm_reports/dto/response/branch_report_response.dart';
 import 'package:toby_bills/app/modules/crm_reports/branches_report/views/widgets/gallery_info_widget.dart';
 import 'package:toby_bills/app/modules/crm_reports/branches_report/views/widgets/search_widget.dart';
 
@@ -29,9 +30,14 @@ class BranchesReportView extends GetView<BranchesReportController> {
             padding: const EdgeInsets.all(10),
             child: SingleChildScrollView(
               child: Column(
-                children: const [
-                  BranchesReportSearchWidget(),
-                  GalleryInfoWidget()
+                children:  [
+                  const BranchesReportSearchWidget(),
+                  Column(
+                    children: [
+                      for(BranchReportResponse reportResponse in controller.reportResponse)
+                        GalleryInfoWidget(reportResponse: reportResponse)
+                    ],
+                  )
                 ],
               ),
             ),

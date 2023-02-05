@@ -14,6 +14,7 @@ import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_ba
 import 'package:toby_bills/app/data/model/customer/dto/response/find_customer_response.dart';
 import 'package:toby_bills/app/data/model/invoice/dto/gl_pay_dto.dart';
 import 'package:toby_bills/app/modules/catch_receipt_another_gallery_new/views/widgets/catch_receipt_buttons_widget.dart';
+import '../../../data/model/common/bank_machine.dart';
 import '../../../data/model/invoice/dto/response/gallery_response.dart';
 import '../controllers/catch_receipt_another_gallery_new_controller.dart';
 
@@ -354,18 +355,56 @@ class CatchReceiptAnotherGalleryNewView extends GetView<CatchReceiptAnotherGalle
                                       },
                                         suggestionsCallback: (filter) =>
                                             controller.banks.where((element) => element.bankName.toString().trim().contains(filter.trim())),
-                                        onSuggestionSelected: (value) {
-                                          controller.itemBank = value;
-                                          controller.itemBankController.text = value.bankName ?? "";
-                                          if (controller.itemInvoice != null) {
-                                            controller.addNewDetail();
-                                          }
-                                        },
+                                      onSuggestionSelected: controller.onSelectBank,
                                       textFieldConfiguration: TextFieldConfiguration(
                                         controller: controller.itemBankController,
                                         focusNode: controller.itemBankFocus,
                                       ),
                                         ),
+                                  ),
+                                ]),
+                              ),
+                              const SizedBox(width: 15),
+                              Expanded(
+                                flex: 2,
+                                child: Column(children: [
+                                  const Center(
+                                    child: Text(
+                                      "ماكينة الدفع",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white70,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: TypeAheadFormField<BankMachineDTO>(
+                                      itemBuilder: (context, machine) {
+                                        return SizedBox(
+                                          height: 50,
+                                          child: Center(
+                                            child: Text(machine.name.toString()),
+                                          ),
+                                        );
+                                      },
+                                      suggestionsCallback: (filter) =>
+                                          controller.machines.where((element) => element.name.toString().trim().contains(filter.trim())),
+                                      onSuggestionSelected: (value) {
+                                        controller.selectedMachine.value = value;
+                                        controller.bankMachineController.text = value.name ?? "";
+                                        if (controller.itemInvoice != null) {
+                                          controller.addNewDetail();
+                                        }
+                                      },
+                                      textFieldConfiguration: TextFieldConfiguration(
+                                        controller: controller.bankMachineController,
+                                      ),
+                                    ),
                                   ),
                                 ]),
                               ),
@@ -425,6 +464,11 @@ class CatchReceiptAnotherGalleryNewView extends GetView<CatchReceiptAnotherGalle
                                             textAlign: TextAlign.center,
                                           ),
                                           Text(
+                                            'ماكينة الدفع',
+                                            style: TextStyle(fontSize: 20.0),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
                                             'حذف',
                                             style: TextStyle(fontSize: 20.0),
                                             textAlign: TextAlign.center,
@@ -441,6 +485,7 @@ class CatchReceiptAnotherGalleryNewView extends GetView<CatchReceiptAnotherGalle
                                             Column(children: [Text(kha.remain!.toString(), style: const TextStyle(fontSize: 20.0))]),
                                             Column(children: [Text(kha.value!.toString(), style: const TextStyle(fontSize: 20.0))]),
                                             Column(children: [Text(kha.bankName!, style: const TextStyle(fontSize: 20.0))]),
+                                            Column(children: [Text(kha.machineName!, style: const TextStyle(fontSize: 20.0))]),
                                             Column(children: [
                                               Center(
                                                 child: Padding(

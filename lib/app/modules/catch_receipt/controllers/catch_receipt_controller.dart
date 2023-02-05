@@ -17,12 +17,14 @@ import 'package:toby_bills/app/data/repository/general_journal/general_journal_r
 import 'package:toby_bills/app/data/repository/reports/reports_repository.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
+import '../../../data/model/common/bank_machine.dart';
 import '../../../data/model/customer/dto/response/find_customer_response.dart';
 
 class CatchReceiptController extends GetxController {
   final isLoading = false.obs;
   final customers = <FindCustomerResponse>[];
   final banks = <GlPayDTO>[];
+  final machines = <BankMachineDTO>[].obs;
   final banksToPay = <GlPayDTO>[].obs;
   final galleries = <GalleryResponse>[].obs;
   final user = UserManager();
@@ -33,6 +35,7 @@ class CatchReceiptController extends GetxController {
   final itemRemainController = TextEditingController();
   final itemPayController = TextEditingController();
   final itemBankController = TextEditingController();
+  final bankMachineController = TextEditingController();
   final itemInvoiceFocus = FocusNode();
   final itemRemainFocus = FocusNode();
   final itemPayFocus = FocusNode();
@@ -41,6 +44,7 @@ class CatchReceiptController extends GetxController {
   GlPayDTO? itemBank;
   Rxn<FindCustomerResponse> selectedCustomer = Rxn();
   Rxn<GalleryResponse> selectedGallery = Rxn();
+  Rxn<BankMachineDTO> selectedMachine = Rxn();
   Rxn<GlBankTransactionApi> glBankTransactionApi = Rxn();
   Rxn<FindCustomerBalanceResponse> customerBalance = Rxn();
   final isPayedEnabled = true.obs ;
@@ -77,6 +81,7 @@ class CatchReceiptController extends GetxController {
           if(banks.isNotEmpty) {
             itemBank = banks.first;
             itemBankController.text = itemBank!.bankName ?? "";
+            machines(itemBank?.bankMachineList ?? []);
           }
         },
         onError: (error) => showPopupText(text: error.toString()),
@@ -98,7 +103,7 @@ class CatchReceiptController extends GetxController {
   }
 
   void addNewDetail() {
-    if(itemPayController.text == "0"){
+    if(itemPayController.text == "0.0" || itemPayController.text == "0" ||itemPayController.text.isEmpty){
       showPopupText(text: "لا يمكن اضافة هذا العنصر");
       return ;
     }
@@ -109,6 +114,8 @@ class CatchReceiptController extends GetxController {
       value: itemPayController.text.tryToParseToNum,
       invoiceId: itemInvoice!.id,
       invoiceSerial: itemInvoice!.serial,
+      machineId: selectedMachine.value?.id,
+      machineName: selectedMachine.value?.name
     ));
     clearItemFields();
     itemInvoiceFocus.requestFocus();
@@ -183,6 +190,15 @@ class CatchReceiptController extends GetxController {
     itemInvoiceController.text = invoice.serial.toString();
     itemPayFocus.requestFocus();
     itemInvoice = invoice;
+  }
+
+  onSelectBank(GlPayDTO value){
+    selectedMachine(null);
+    bankMachineController.text = "";
+    itemBank = value;
+      itemBankController.text = value.bankName ?? "";
+      machines(value.bankMachineList ?? []);
+      machines.refresh();
   }
 
 }

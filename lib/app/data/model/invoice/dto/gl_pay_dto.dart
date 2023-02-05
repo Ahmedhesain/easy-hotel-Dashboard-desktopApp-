@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:toby_bills/app/core/mixins/form_mixin.dart';
 
+import '../../common/bank_machine.dart';
+
 class GlPayDTO with FormMixin{
   GlPayDTO({
     this.bank,
@@ -19,7 +21,10 @@ class GlPayDTO with FormMixin{
     this.generalJournalId,
     this.movementType,
     this.serial,
-    this.name
+    this.name ,
+    this.bankMachineList,
+    this.machineId,
+    this.machineName
   }){
     textFieldController1.text = customerName??"";
     textFieldController2.text = invoiceSerial?.toString()??"";
@@ -45,8 +50,9 @@ class GlPayDTO with FormMixin{
   String? remark;
   DateTime? date;
   int?serial;
-
-
+  final List<BankMachineDTO>? bankMachineList;
+ final int? machineId ;
+ final String? machineName ;
   static List<GlPayDTO> fromList(List<dynamic> json) => List.from(json.map((e) => GlPayDTO.fromJson(e)));
 
   factory GlPayDTO.fromJson(Map<String, dynamic> json) => GlPayDTO(
@@ -67,7 +73,8 @@ class GlPayDTO with FormMixin{
     remark: json["remark"],
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
     serial: json["serial"],
-
+    machineId: json["machineId"],
+    bankMachineList : BankMachineDTO.fromList(json["bank"] != null ? json["bank"]["bankMachineList"] : []),
   );
 
   Map<String, dynamic> toJson() => {
@@ -88,6 +95,7 @@ class GlPayDTO with FormMixin{
     "serial": serial,
     "generalJournalId": generalJournalId,
     "gallaryId": gallaryId,
+    "machineId": machineId,
 
   };
 

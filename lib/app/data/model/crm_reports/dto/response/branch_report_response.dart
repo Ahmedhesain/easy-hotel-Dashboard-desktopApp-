@@ -10,6 +10,7 @@ class BranchReportResponse {
   final num? invoiceValue;
   final num? allCustomer;
   final num? allNewCustomer;
+   num? allCostAverage;
   final List<CategoriesTotalsResponse>? summitionItemsViewList ;
 
   BranchReportResponse(
@@ -19,7 +20,9 @@ class BranchReportResponse {
       this.invoiceValue,
       this.allCustomer,
       this.allNewCustomer,
-      this.summitionItemsViewList});
+      this.summitionItemsViewList,
+        this.allCostAverage = 0.0
+      });
 
 
   factory BranchReportResponse.fromJson(Map<String , dynamic> json) =>BranchReportResponse(
@@ -28,6 +31,7 @@ class BranchReportResponse {
     invoiceNumber: json["invoiceNumber"],
     invoiceValue: json["invoiceValue"],
     allCustomer: json["allCustomer"],
+    allCostAverage: json["allCostAverage"],
     allNewCustomer: json["allNewCustomer"],
     summitionItemsViewList: CategoriesTotalsResponse.fromList(json["summitionItemsViewList"]),
   );
