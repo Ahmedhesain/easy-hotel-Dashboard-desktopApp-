@@ -32,6 +32,7 @@ class ItemResponse {
     this.variationsList,
     this.typeShow,
     this.lastCost,
+    this.isRequiredEditPrivilege
   });
 
   List<dynamic>? atrributesList;
@@ -67,6 +68,7 @@ class ItemResponse {
   ItemDataResponse? itemData;
   num tempQuantity = 1;
   num tempNumber = 1;
+  num? isRequiredEditPrivilege;
 
   static List<ItemResponse> getList(List<dynamic> json) => List<ItemResponse>.from(json.map((e) => ItemResponse.fromJson(e)));
 
@@ -100,6 +102,7 @@ class ItemResponse {
     unitName: json["unitName"],
     typeShow: json["typeShow"],
     lastCost: json["lastCost"],
+    isRequiredEditPrivilege: json["isRequiredEditPrivilege"] ?? 0,
     variationsList: json["variationsList"] == null ? null : List<dynamic>.from(json["variationsList"].map((x) => x)),
   );
 

@@ -10,6 +10,7 @@ import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
 
 import '../../../../components/icon_button_widget.dart';
 import '../../../../core/utils/double_filter.dart';
+import '../../../../core/utils/user_manager.dart';
 import '../../../../data/model/inventory/dto/response/inventory_response.dart';
 
 class InvoiceDetailsWidget extends GetView<HomeController> {
@@ -189,6 +190,9 @@ class InvoiceDetailsWidget extends GetView<HomeController> {
                         controller: TextEditingController(text: detail.value.price?.toStringAsFixed(2)),
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.ltr,
+                        enabled: (detail.value.isRequiredEditPrivilege != 1
+                            || UserManager().itemsEditPerivilege.contains(detail.value.itemId)
+                        ),
                         onChanged: (value) => detail.value.price = value.tryToParseToNum ?? 0,
                         focusNode: detail.value.priceFocus
                           ..addListener(() {

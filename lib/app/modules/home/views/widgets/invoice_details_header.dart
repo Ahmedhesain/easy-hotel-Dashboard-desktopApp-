@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:toby_bills/app/components/icon_button_widget.dart';
 import 'package:toby_bills/app/core/extensions/string_ext.dart';
 import 'package:toby_bills/app/core/utils/double_filter.dart';
+import 'package:toby_bills/app/core/utils/user_manager.dart';
 import 'package:toby_bills/app/data/model/inventory/dto/response/inventory_response.dart';
 import 'package:toby_bills/app/data/model/item/dto/response/item_response.dart';
 import 'package:toby_bills/app/modules/home/controllers/home_controller.dart';
@@ -207,7 +208,7 @@ class InvoiceDetailsHeaderWidget extends GetView<HomeController> {
                               focusNode: controller.itemPriceFocusNode,
                               textAlign: TextAlign.center,
                               textDirection: TextDirection.ltr,
-                              enabled: controller.selectedItem.value != null,
+                              enabled: (controller.selectedItem.value != null && (controller.selectedItem.value?.isRequiredEditPrivilege != 1 || UserManager().itemsEditPerivilege.contains(controller.selectedItem.value?.id))),
                               inputFormatters: [doubleInputFilter],
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),

@@ -46,6 +46,7 @@ class InvoiceDetailsModel {
     this.account,
     this.accountName,
     this.isPurchaseInvoice = false,
+    this.isRequiredEditPrivilege = 0
   })  : numberFocus = FocusNode(),
         quantityFocus = FocusNode(),
         priceFocus = FocusNode(),
@@ -96,6 +97,7 @@ class InvoiceDetailsModel {
   num? invNoticeValue;
   int? createdBy;
   DateTime? createdDate;
+  int? isRequiredEditPrivilege;
 
   bool isValidPrice(int priceType) {
     if (priceType == 1 && price! < minPriceMen!) {
@@ -124,7 +126,9 @@ class InvoiceDetailsModel {
         price: item.itemData?.sellPrice ?? price,
         unitName: item.unitName,
         discount: item.itemData?.discountRow,
-        itemId: item.id);
+        itemId: item.id,
+        isRequiredEditPrivilege : item.isRequiredEditPrivilege ?? 0
+    );
 
     instance.calcData();
     return instance;
@@ -182,6 +186,7 @@ class InvoiceDetailsModel {
     int? typeInv,
     bool? isPurchaseInvoice,
     String? accountName,
+    num? isRequiredEditPrivilege = 0
   }) {
     final instance = InvoiceDetailsModel(
       name: name ?? this.name,
@@ -223,6 +228,7 @@ class InvoiceDetailsModel {
       typeShow: typeShow ?? this.typeShow,
       unitId: unitId ?? this.unitId,
       unitName: unitName ?? this.unitName,
+      isRequiredEditPrivilege: this.isRequiredEditPrivilege ?? 0
     );
     instance.calcData();
     return instance;

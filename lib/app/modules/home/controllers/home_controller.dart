@@ -366,6 +366,7 @@ class HomeController extends GetxController {
                 detail.minPriceMen = item.minPriceMen;
                 detail.minPriceYoung = item.minPriceYoung;
                 detail.typeInv = data.typeInv;
+                detail.isRequiredEditPrivilege = item.isRequiredEditPrivilege?.toInt() ?? 0;
               }
               invoiceDetails.assignAll((data.invoiceDetailApiList ?? []).map((e) => Rx(e)).toList().obs);
               selectedCustomer(FindCustomerResponse(
@@ -558,7 +559,9 @@ class HomeController extends GetxController {
             itemId: item.id,
             proof: isItemProof.value ? 1 : 0,
             netWithoutDiscount: itemNetWithoutDiscount,
-            remnants: isItemRemains.value ? 1 : 0)
+            remnants: isItemRemains.value ? 1 : 0 ,
+            isRequiredEditPrivilege: item.isRequiredEditPrivilege?.toInt() ?? 0
+            )
         .obs;
 
     invoiceDetails.add(detail);
@@ -653,6 +656,10 @@ class HomeController extends GetxController {
               SendFcmRequest(title: "إشعار خاص", body: "${data.gallaryName} بقيمة:${data.invNoticeValueTotal}", invoiceId: data.invNoticeOrderId),
               onSuccess: (_) => showPopupText(text: "تم إرسال اشعار"),
             );
+          }
+          for(InvoiceDetailsModel detail in data.invoiceDetailApiList ?? []){
+          final item = items.singleWhere((element) => element.id == detail.itemId);
+          detail.isRequiredEditPrivilege = item.isRequiredEditPrivilege?.toInt() ?? 0;
           }
           invoiceDetails.assignAll((data.invoiceDetailApiList ?? []).map((e) => e.obs).toList());
           for (var element in glPayDtoList) {
