@@ -309,6 +309,32 @@ class HomeDrawerWidget extends GetView<HomeController> {
               child: Material(
                 color: Colors.transparent,
                 child: ListTile(
+                  onTap: () => Get.toNamed(Routes.DAILYATTACH),
+                  leading: const SizedBox(
+                      width: 20,
+                      child: Center(
+                          child: Icon(
+                            Icons.photo,
+                            size: 15,
+                            color: Colors.black,
+                          ))),
+                  title: const Text("مرفقات اليوميه"),
+                ),
+              ),
+            ),
+            Container(
+              clipBehavior: Clip.antiAlias,
+              margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(spreadRadius: 2,blurRadius: 5,color: Colors.black12)
+                  ]
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: ListTile(
                   onTap: () => Get.offAllNamed(Routes.LOGIN),
                   leading: const SizedBox(
                       width: 20,

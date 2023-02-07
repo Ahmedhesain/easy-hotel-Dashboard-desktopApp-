@@ -52,7 +52,7 @@ class ApiProvider {
 
   static String get apiUrlImage {
     if (kDebugMode) {
-      return  "http://192.168.1.5:9090/toby/tobyImages/" ;
+      return  "http://localhost:9090/toby/tobyImages/" ;
       return "http://134.122.57.181:8080/debug/tobyImages/";
       // return "http://134.122.57.181:8080/test19/tobyImages/";
       return  "http://192.168.1.13:9090/toby/tobyImages/";

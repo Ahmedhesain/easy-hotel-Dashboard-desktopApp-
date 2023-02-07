@@ -65,6 +65,7 @@ abstract class Routes {
 
   static const coupons = _Paths.coupons;
   static const offers = _Paths.offers;
+  static const DAILYATTACH = _Paths.DAILYATTACH;
 }
 
 abstract class _Paths {
@@ -127,6 +128,7 @@ abstract class _Paths {
 
   static const coupons = '/coupons';
   static const offers = '/offers';
+  static const DAILYATTACH = '/daily_attach';
 
 
 }

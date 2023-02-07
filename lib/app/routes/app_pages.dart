@@ -1,12 +1,9 @@
 import 'package:get/get.dart';
 import 'package:toby_bills/app/modules/crm/views/add_crm_event_view.dart';
-
 import '../modules/account_statement/bindings/account_statement_binding.dart';
 import '../modules/account_statement/views/account_statement_view.dart';
 import '../modules/catch_receipt/bindings/catch_receipt_binding.dart';
 import '../modules/catch_receipt/views/catch_receipt_view.dart';
-import '../modules/catch_receipt_another_gallery/bindings/catch_receipt_another_gallery_binding.dart';
-import '../modules/catch_receipt_another_gallery/views/catch_receipt_another_gallery_view.dart';
 import '../modules/catch_receipt_another_gallery_new/bindings/catch_receipt_another_gallery_new_binding.dart';
 import '../modules/catch_receipt_another_gallery_new/views/catch_receipt_another_gallery_new_view.dart';
 import '../modules/crm/bindings/crm_event_binding.dart';
@@ -26,6 +23,8 @@ import '../modules/crm_reports/offers/bindings/offers_binding.dart';
 import '../modules/crm_reports/offers/views/offers_view.dart';
 import '../modules/customer_account_statement/bindings/customer_account_statement_binding.dart';
 import '../modules/customer_account_statement/views/customer_account_statement_view.dart';
+import '../modules/daily_attach/bindings/daily_attach_binding.dart';
+import '../modules/daily_attach/views/daily_attach_view.dart';
 import '../modules/edit_bills/bindings/edit_bills_binding.dart';
 import '../modules/edit_bills/views/edit_bills_view.dart';
 import '../modules/faseh_details/bindings/faseh_details_binding.dart';
@@ -346,6 +345,11 @@ class AppPages {
       name: _Paths.CRMBranchesReport,
       page: () => const BranchesReportView(),
       binding: BranchesReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAILYATTACH,
+      page: () => const DailyAttachView(),
+      binding: DailyAttachBinding(),
     ),
   ];
 }
