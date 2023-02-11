@@ -25,6 +25,8 @@ import '../modules/customer_account_statement/bindings/customer_account_statemen
 import '../modules/customer_account_statement/views/customer_account_statement_view.dart';
 import '../modules/daily_attach/bindings/daily_attach_binding.dart';
 import '../modules/daily_attach/views/daily_attach_view.dart';
+import '../modules/daily_attach_search/bindings/daily_attach_search_binding.dart';
+import '../modules/daily_attach_search/views/daily_attach_search_view.dart';
 import '../modules/edit_bills/bindings/edit_bills_binding.dart';
 import '../modules/edit_bills/views/edit_bills_view.dart';
 import '../modules/faseh_details/bindings/faseh_details_binding.dart';
@@ -350,6 +352,11 @@ class AppPages {
       name: _Paths.DAILYATTACH,
       page: () => const DailyAttachView(),
       binding: DailyAttachBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAILYATTACHSEARCH,
+      page: () => const DailyAttachSearchView(),
+      binding: DailyAttachSearchBinding(),
     ),
   ];
 }

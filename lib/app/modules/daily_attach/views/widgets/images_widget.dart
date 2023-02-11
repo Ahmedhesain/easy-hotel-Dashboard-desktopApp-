@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../components/button_widget.dart';
+import '../../../../components/content_dialog.dart';
 import '../../../../components/date_field_widget.dart';
 import '../../../../components/dropdown_widget.dart';
 import '../../../../components/text_widget.dart';
@@ -38,7 +39,8 @@ class ImagesWidget extends GetView<DailyAttachController> {
                     itemCount: controller.images.length,
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: size.width * 0.3,
-                      crossAxisSpacing: 10
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10
                     ),
                     itemBuilder: (BuildContext context, i) {
                       return Stack(
@@ -49,13 +51,33 @@ class ImagesWidget extends GetView<DailyAttachController> {
                               ApiProvider.apiUrlImage + controller.images[i].image!,
                               fit: BoxFit.cover,
                               errorBuilder: (context, obj, _) {
-                                return const SizedBox(child: Text(
-                                    "error loading image"),);
+                                return const SizedBox(child: Center(
+                                  child: Text(
+                                      "loading image"),
+                                ),);
                               },
                             ),
                           ),
                           Positioned(top: 5, left: 5,
-                            child: Container( width : 40 , decoration : BoxDecoration(color: Colors.red , shape: BoxShape.circle),child: Center(child: IconButton(onPressed: (){}, icon: const Icon(Icons.clear , size: 20 ,)))),)
+                            child: Container( width : size.width * 0.04 ,
+                                decoration : BoxDecoration(color: Colors.red , shape: BoxShape.circle),
+                                child: Center(child: IconButton(
+                                    onPressed: (){
+                                      Get.dialog(ContentDialog(
+                                        title: TextWidget("تأكيد" , size: 18, weight: FontWeight.bold,),
+                                        content: TextWidget("هل تريد حذف هذا العنصر؟", size: 18, weight: FontWeight.bold,),
+                                        actions: [
+                                          ButtonWidget(text: "نعم", onPressed: (){
+                                            Get.back();
+                                            controller.delete(controller.images[i].id! , i);
+                                          }),
+                                          SizedBox(width: 10,),
+                                          ButtonWidget(text: "لا", onPressed: () => Get.back()),
+
+                                        ],));
+
+                                    },
+                                    icon: const Icon(Icons.clear , size: 20 ,)))),)
                         ],
                       );
                     });

@@ -14,6 +14,7 @@ import '../../../core/utils/user_manager.dart';
 import '../../../data/model/daily_attach/dto/daily_attach_detail_dto.dart';
 import '../../../data/model/daily_attach/dto/daily_attach_detail_image_dto.dart';
 import '../../../data/model/daily_attach/dto/daily_attach_dto.dart';
+import '../../../data/model/daily_attach/dto/request/delete_daily_request.dart';
 import '../../../data/model/invoice/dto/response/gallery_response.dart';
 import '../../../data/repository/daily_attach_repository/daily_attach_repository.dart';
 import '../../home/controllers/home_controller.dart';
@@ -26,6 +27,7 @@ class DailyAttachController extends GetxController {
   final galleries = <GalleryResponse>[].obs;
   final user = UserManager();
   final images = <DailyAttachDetailImageDTO>[].obs;
+  final DailyAttachDTO? arg = Get.arguments;
   @override
   void onInit() {
     super.onInit();
@@ -33,6 +35,9 @@ class DailyAttachController extends GetxController {
     if (galleries.any((element) => element.id == user.galleryId)) {
       selectedGallery(
           galleries.singleWhere((element) => element.id == user.galleryId));
+    }
+    if(arg != null && arg?.id != null){
+      setData(arg!);
     }
   }
 
@@ -63,6 +68,8 @@ class DailyAttachController extends GetxController {
         dailyAttachDetailDTOList: List<DailyAttachDetailDTO>.generate(1,
            (index) => DailyAttachDetailDTO(
           id: daily.value?.dailyAttachDetailDTOList?.first.id,
+          createdBy: daily.value?.dailyAttachDetailDTOList?.first.createdBy ,
+          createdDate: daily.value?.dailyAttachDetailDTOList?.first.createdDate ,
           dailyAttachId: daily.value?.id ,
           dailyAttachDetailDetailDTOList: images,
         )),
@@ -74,10 +81,7 @@ class DailyAttachController extends GetxController {
           onComplete: () => isLoading(false),
         onError: (e) => showPopupText(text: e.toString()),
         onSuccess: (data) {
-          daily(data);
-          date(daily.value?.date);
-          selectedGallery(galleries.firstWhereOrNull((gal) => gal.id == daily.value?.id));
-          images(daily.value?.dailyAttachDetailDTOList?.first.dailyAttachDetailDetailDTOList);
+            setData(data);
           showPopupText(text: "تم الحفظ بنجاح" , type: MsgType.success) ;
         }
       );
@@ -87,5 +91,34 @@ class DailyAttachController extends GetxController {
     }
 
 }
+
+
+setData(DailyAttachDTO data){
+  daily(data);
+  date(daily.value?.date);
+  selectedGallery(galleries.firstWhereOrNull((gal) => gal.id == daily.value?.id));
+  images(daily.value?.dailyAttachDetailDTOList?.first.dailyAttachDetailDetailDTOList);
+}
+
+
+reset(){
+  daily(null);
+  date(DateTime.now());
+  selectedGallery(galleries.singleWhere((element) => element.id == user.galleryId));
+  images.clear();
+}
+
+
+  delete(int id  ,int index) async {
+    isLoading(true);
+    final request = DeleteDailyRequest(id: id );
+    DailyAttachRepository().deleteDailyImage(request,
+        onSuccess: (data){
+          showPopupText(text: "تم الحذف بنجاح" , type: MsgType.success);
+          images.removeAt(index);
+        },
+        onError: (e) => showPopupText(text: e.toString()),
+        onComplete: () => isLoading(false));
+  }
 
 }

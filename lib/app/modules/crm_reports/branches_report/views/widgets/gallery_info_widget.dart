@@ -30,7 +30,6 @@ class GalleryInfoWidget extends StatelessWidget {
             child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ExpansionTile(
-
                   title: Center(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),

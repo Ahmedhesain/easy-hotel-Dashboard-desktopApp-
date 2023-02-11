@@ -19,6 +19,9 @@ class DailyAttachDTO {
       this.date,
       this.dailyAttachDetailDTOList,this.branchId,this.createdBy});
 
+
+   static List<DailyAttachDTO> fromList(dynamic json) => List.from(json.map((e) => DailyAttachDTO.fromJson(e)));
+
    factory DailyAttachDTO.fromJson(Map<String , dynamic> json) => DailyAttachDTO(
      id : json["id"],
      gallaryId:json["gallaryId"],

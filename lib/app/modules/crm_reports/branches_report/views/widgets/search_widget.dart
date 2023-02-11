@@ -226,7 +226,6 @@ class BranchesReportSearchWidget extends GetView<BranchesReportController> {
                           ),
                         ),
                         spaceV,
-                        spaceV,
                         SizedBox(
                           width: size.width,
                           child: Row(

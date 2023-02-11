@@ -6,11 +6,11 @@ import '../../../../components/dropdown_widget.dart';
 import '../../../../components/text_widget.dart';
 import '../../../../core/values/app_colors.dart';
 import '../../../../data/model/invoice/dto/response/gallery_response.dart';
-import '../../controllers/daily_attach_controller.dart';
+import '../../controllers/daily_attach_search_controller.dart';
 
 
-class DailySearchWidget extends GetView<DailyAttachController> {
-  const DailySearchWidget({Key? key}) : super(key: key);
+class DailySearchSearchWidget extends GetView<DailyAttachSearchController> {
+  const DailySearchSearchWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class DailySearchWidget extends GetView<DailyAttachController> {
                                 child: SizedBox(
                                   width: size.width * 0.06,
                                   child: const TextWidget(
-                                    "التاريخ",
+                                    "الفتره",
                                     size: 15,
                                     weight: FontWeight.bold,
                                   ),
@@ -97,17 +97,34 @@ class DailySearchWidget extends GetView<DailyAttachController> {
                                   color: AppColors.appGreyLight,
                                 ),
                                 child: DateFieldWidget(
-                                  date: controller.date.value,
+                                  date: controller.dateFrom.value,
+                                  label: "من",
                                   hideBorder: true,
                                   onComplete: (DateTime date) {
-                                    controller.date.value = date;
+                                    controller.dateFrom.value = date;
                                   },
                                 ),
                               ),
+                              space,
+                              Container(
+                                width: size.width * 0.1,
+                                height: size.height * 0.07,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: AppColors.appGreyLight,
+                                ),
+                                child: DateFieldWidget(
+                                  date: controller.dateTo.value,
+                                  label: "الي",
+                                  hideBorder: true,
+                                  onComplete: (DateTime date) {
+                                    controller.dateTo.value = date;
+                                  },
+                                ),
+                              )
                             ],
                           ),
                         ),
-                        spaceV,
                         spaceV,
                         SizedBox(
                           width: size.width,
@@ -115,13 +132,7 @@ class DailySearchWidget extends GetView<DailyAttachController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ButtonWidget(
-                                text: "رفع صور",
-                                onPressed: () =>  controller.addPhotos(),
-                                buttonColor: Colors.blueAccent,
-                                contentPadding: const EdgeInsets.all(15),),
-                              space,
-                              ButtonWidget(
-                                text: "جديد", onPressed: () => controller.reset(),  contentPadding: const EdgeInsets.all(15),),
+                                text: "بحث", onPressed: () => controller.search(),  contentPadding: const EdgeInsets.all(15),),
                               space,
                               ButtonWidget(
                                 text: "رجوع", onPressed: () => Get.back(), buttonColor: Colors.redAccent, contentPadding: const EdgeInsets.all(15),)
