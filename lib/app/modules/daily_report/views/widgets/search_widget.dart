@@ -5,6 +5,7 @@ import 'package:multiselect/multiselect.dart';
 import '../../../../components/button_widget.dart';
 import '../../../../components/date_field_widget.dart';
 import '../../../../components/text_widget.dart';
+import '../../../../core/utils/daily_printing_helper.dart';
 import '../../../../core/values/app_colors.dart';
 import '../../controllers/daily_report_controller.dart';
 
@@ -67,11 +68,10 @@ class DailyReportSearchWidget extends GetView<DailyReportController> {
                                     selectedValues: controller.selectedGalleries
                                         .map((e) => e.name ?? "")
                                         .toList(),
-                                    onChanged:(values){
+                                    onChanged: (values) {
                                       Get.back();
                                       controller.selectNewDeliveryplace(values);
                                     },
-
                                     decoration: const InputDecoration(
                                         border: InputBorder.none),
                                     isDense: true,
@@ -128,15 +128,13 @@ class DailyReportSearchWidget extends GetView<DailyReportController> {
                                 selectedValues: controller.selectedBanks
                                     .map((e) => e.name ?? "")
                                     .toList(),
-                                onChanged: (values){
+                                onChanged: (values) {
                                   Get.back();
                                   controller.selectNewBank(values);
                                 },
                                 isDense: true,
                                 decoration: const InputDecoration(
-
                                     border: InputBorder.none),
-
                                 childBuilder: (List<String> values) {
                                   return Align(
                                     alignment: Alignment.centerRight,
@@ -220,7 +218,26 @@ class DailyReportSearchWidget extends GetView<DailyReportController> {
                         children: [
                           ButtonWidget(
                             text: "بحث",
-                            onPressed: () => controller.getReport(),
+                            onPressed: () => controller.getReport(false),
+                            contentPadding: const EdgeInsets.all(15),
+                          ),
+                          space,
+                          ButtonWidget(
+                            text: "طباعة",
+                            onPressed: () => DailyPrintingHelper().dailyReport(
+                                context: context,
+                                treasuries: controller.treasuries,
+                                expenses: controller.expenses,
+                                date: controller.dateFrom.value,
+                                actualNet: controller.treasuriesNetTotal.value,
+                                netBank: controller.netBank.value,
+                                tamara: controller.netTamaraBank.value,
+                                totalExpenses: controller.expensesTotal.value,
+                                totalTreasuries:
+                                    controller.treasuriesTotal.value,
+                                totalTreasuriesPreviousDay:
+                                    controller.treasuriesPreviousTotal.value,
+                                transfers: controller.transfersBank.value),
                             contentPadding: const EdgeInsets.all(15),
                           ),
                           space,

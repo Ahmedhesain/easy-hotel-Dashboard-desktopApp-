@@ -31,6 +31,7 @@ class BankStatement {
     required this.totalCredit,
     required this.totalDebit,
     required this.transactionType,
+    required this.cash,
   });
 
   final num? balance;
@@ -45,6 +46,7 @@ class BankStatement {
   final DateTime? date;
   final num? debitAmount;
   final int? invoiceNumber;
+  final int? cash;
   final num? openingBalance;
   final String? remark;
   final String? remark2;
@@ -61,6 +63,7 @@ class BankStatement {
     bankId: json["bankId"],
     bankName: json["bankName"],
     code: json["code"],
+    cash: json["cash"],
     createdBy: json["createdBy"],
     currencyCode: json["currencyCode"],
     currencyName: json["currencyName"],
@@ -83,6 +86,7 @@ class BankStatement {
     "bankId": bankId,
     "bankName": bankName,
     "code": code,
+    "cash": cash,
     "createdBy": createdBy,
     "currencyCode": currencyCode,
     "currencyName": currencyName,
