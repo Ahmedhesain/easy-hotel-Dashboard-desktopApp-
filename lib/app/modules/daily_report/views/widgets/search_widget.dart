@@ -38,56 +38,116 @@ class DailyReportSearchWidget extends GetView<DailyReportController> {
                         children: [
                           Row(
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                child: SizedBox(
-                                  width: size.width * 0.06,
-                                  child: const TextWidget(
-                                    'المعرض',
-                                    size: 15,
-                                    weight: FontWeight.bold,
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: SizedBox(
+                                      width: size.width * 0.06,
+                                      child: const TextWidget(
+                                        'المعرض',
+                                        size: 15,
+                                        weight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  space,
+                                  Container(
+                                    width: size.width * 0.2,
+                                    height: size.height * 0.06,
+                                    decoration: const BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                      color: AppColors.appGreyLight,
+                                      // border: Border.all(color: Colors.grey)
+                                    ),
+                                    child: Obx(() {
+                                      return DropDownMultiSelect(
+                                        options: controller.galleries
+                                            .map((e) => e.name ?? "")
+                                            .toList(),
+                                        selectedValues: controller.selectedGalleries
+                                            .map((e) => e.name ?? "")
+                                            .toList(),
+                                        onChanged: (values) {
+                                          Get.back();
+                                          controller.selectNewDeliveryplace(values);
+                                        },
+                                        decoration: const InputDecoration(
+                                            border: InputBorder.none),
+                                        isDense: true,
+                                        childBuilder: (List<String> values) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Center(
+                                              child: Text(
+                                                values.isEmpty
+                                                    ? "يرجى تحديد معرض على الاقل"
+                                                    : values.join(', '),
+                                                maxLines: 1,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                                  ),
+                                ],
                               ),
                               space,
-                              Container(
-                                width: size.width * 0.2,
-                                height: size.height * 0.06,
-                                decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                  color: AppColors.appGreyLight,
-                                  // border: Border.all(color: Colors.grey)
-                                ),
-                                child: Obx(() {
-                                  return DropDownMultiSelect(
-                                    options: controller.galleries
-                                        .map((e) => e.name ?? "")
-                                        .toList(),
-                                    selectedValues: controller.selectedGalleries
-                                        .map((e) => e.name ?? "")
-                                        .toList(),
-                                    onChanged: (values) {
-                                      Get.back();
-                                      controller.selectNewDeliveryplace(values);
-                                    },
-                                    decoration: const InputDecoration(
-                                        border: InputBorder.none),
-                                    isDense: true,
-                                    childBuilder: (List<String> values) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          values.isEmpty
-                                              ? "يرجى تحديد معرض على الاقل"
-                                              : values.join(', '),
-                                          maxLines: 1,
+                              SizedBox(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      child: SizedBox(
+                                        width: size.width * 0.06,
+                                        child: const TextWidget(
+                                          "الفتره",
+                                          size: 15,
+                                          weight: FontWeight.bold,
                                         ),
-                                      );
-                                    },
-                                  );
-                                }),
+                                      ),
+                                    ),
+                                    space,
+                                    Container(
+                                      width: size.width * 0.1,
+                                      height: size.height * 0.07,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: AppColors.appGreyLight,
+                                      ),
+                                      child: DateFieldWidget(
+                                        date: controller.dateFrom.value,
+                                        label: "من",
+                                        hideBorder: true,
+                                        onComplete: (DateTime date) {
+                                          controller.dateFrom.value = date;
+                                        },
+                                      ),
+                                    ),
+                                    space,
+                                    Container(
+                                      width: size.width * 0.1,
+                                      height: size.height * 0.07,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: AppColors.appGreyLight,
+                                      ),
+                                      child: DateFieldWidget(
+                                        date: controller.dateTo.value,
+                                        label: "الي",
+                                        hideBorder: true,
+                                        onComplete: (DateTime date) {
+                                          controller.dateTo.value = date;
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -153,60 +213,6 @@ class DailyReportSearchWidget extends GetView<DailyReportController> {
                               );
                             }),
                           ),
-                        ],
-                      ),
-                    ),
-                    spaceV,
-                    SizedBox(
-                      width: size.width,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: size.width * 0.06,
-                              child: const TextWidget(
-                                "الفتره",
-                                size: 15,
-                                weight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          space,
-                          Container(
-                            width: size.width * 0.1,
-                            height: size.height * 0.07,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: AppColors.appGreyLight,
-                            ),
-                            child: DateFieldWidget(
-                              date: controller.dateFrom.value,
-                              label: "من",
-                              hideBorder: true,
-                              onComplete: (DateTime date) {
-                                controller.dateFrom.value = date;
-                              },
-                            ),
-                          ),
-                          space,
-                          Container(
-                            width: size.width * 0.1,
-                            height: size.height * 0.07,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: AppColors.appGreyLight,
-                            ),
-                            child: DateFieldWidget(
-                              date: controller.dateTo.value,
-                              label: "الي",
-                              hideBorder: true,
-                              onComplete: (DateTime date) {
-                                controller.dateTo.value = date;
-                              },
-                            ),
-                          )
                         ],
                       ),
                     ),

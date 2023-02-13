@@ -53,7 +53,7 @@ class DailyReportTable extends GetView<DailyReportController> {
                 Container(
                   decoration:
                       BoxDecoration(border: Border.all(color: Colors.black)),
-                  height: size.height * 0.52,
+                  height: size.height * 0.6,
                   child: Obx(() {
                     return TableWidget(
                       header: ["السندات", "المنصرف", "بيان", "م"]
