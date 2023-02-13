@@ -34,6 +34,7 @@ class DailyReportView extends GetView<DailyReportController> {
                 child: Column(
                   children: const [
                     DailyReportSearchWidget(),
+                    SizedBox(height: 5,),
                     DailyReportTable()
                   ],
                 ),
