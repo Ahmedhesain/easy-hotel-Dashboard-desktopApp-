@@ -17,6 +17,7 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Obx((){
       return AppLoadingOverlay(
         isLoading: controller.isLoading.value,
@@ -25,7 +26,7 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
           body: Column(
         children: [
         ScrollableRow(
-        minimumWidth: 800,
+        minimumWidth: size.width,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           textDirection: TextDirection.rtl,
           children: (isScrollable) {
@@ -36,7 +37,7 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
               ),
               Obx( () {
                     return SizedBox(
-                      width: 300,
+                      width: size.width *0.2,
                       height: 35,
                       child: DropDownMultiSelect(
                         options: controller.deliveryPlaces.map((e) => e.name??"").toList(),
@@ -62,7 +63,7 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
               ),
               Obx( () {
                     return SizedBox(
-                      width: 300,
+                      width: size.width * 0.2,
                       height: 35,
                       child: DropDownMultiSelect(
                         options: controller.banks.map((e) => e.name??"").toList(),
@@ -84,13 +85,12 @@ class SafeAccountStatementView extends GetView<SafeAccountStatementController>{
                       ),
                     );
                   }),
-              const SizedBox(width: 15),
               const Text(
                 "من تاريخ: ",
                 textDirection: TextDirection.rtl,
               ),
               SizedBox(
-                width: 100,
+                width: size.width * 0.08,
                 child: DateFieldWidget(
                   onComplete: controller.dateFrom,
                   date: controller.dateFrom.value,

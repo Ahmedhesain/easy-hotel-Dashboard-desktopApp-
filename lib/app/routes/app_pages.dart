@@ -27,6 +27,10 @@ import '../modules/daily_attach/bindings/daily_attach_binding.dart';
 import '../modules/daily_attach/views/daily_attach_view.dart';
 import '../modules/daily_attach_search/bindings/daily_attach_search_binding.dart';
 import '../modules/daily_attach_search/views/daily_attach_search_view.dart';
+import '../modules/daily_expenses/bindings/daily_expenses_bindings.dart';
+import '../modules/daily_expenses/views/daily_expenses_view.dart';
+import '../modules/daily_report/bindings/daily_report_binding.dart';
+import '../modules/daily_report/views/daily_report_view.dart';
 import '../modules/edit_bills/bindings/edit_bills_binding.dart';
 import '../modules/edit_bills/views/edit_bills_view.dart';
 import '../modules/faseh_details/bindings/faseh_details_binding.dart';
@@ -357,6 +361,16 @@ class AppPages {
       name: _Paths.DAILYATTACHSEARCH,
       page: () => const DailyAttachSearchView(),
       binding: DailyAttachSearchBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAILYEXPENSES,
+      page: () => const DailyExpensesView(),
+      binding: DailyExpensesBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAILYREPORT,
+      page: () => const DailyReportView(),
+      binding: DailyReportBinding(),
     ),
   ];
 }

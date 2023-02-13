@@ -32,8 +32,9 @@ class SafeAccountStatementController extends GetxController{
 
   @override
   onInit(){
+    isLoading(true);
     super.onInit();
-    getDeliveryPlaces();
+    Future.wait([ getDeliveryPlaces()]).whenComplete(() => isLoading(false));
   }
 
   getBanks() async {
@@ -45,9 +46,9 @@ class SafeAccountStatementController extends GetxController{
         invInventoryDtoList: selectedDeliveryPlace.map((e) => DtoList(id: e.id)).toList(),
     ),
       onSuccess: (data){
-        banks.assignAll([GlPayDTO(bankName: "تحديد الكل")]);
-        banks.addAll(data);
-        selectedBanks.assignAll(data);
+        data.insert(0, GlPayDTO(name: "تحديد الكل"));
+        banks.assignAll(data);
+        selectNewBank(["تحديد الكل"]);
       },
       onError: (e) => error = e,
       onComplete: () => isLoading(false),
@@ -86,26 +87,26 @@ class SafeAccountStatementController extends GetxController{
   }
 
   selectNewBank(List<String> values) {
-    if (!values.contains("تحديد الكل") && selectedBanks.any((element) => element.bankName == "تحديد الكل")) {
+    if (!values.contains("تحديد الكل") && selectedBanks.any((element) => element.name == "تحديد الكل")) {
       selectedBanks.clear();
-    } else if (!selectedBanks.any((element) => element.bankName == "تحديد الكل") && values.contains("تحديد الكل")) {
+    } else if (!selectedBanks.any((element) => element.name == "تحديد الكل") && values.contains("تحديد الكل")) {
       selectedBanks.assignAll(banks);
     } else {
       if (values.length < selectedBanks.length && values.contains("تحديد الكل")) {
         values.remove("تحديد الكل");
       }
-      selectedBanks.assignAll(banks.where((element) => values.contains(element.bankName)));
+      selectedBanks.assignAll(banks.where((element) => values.any((e)=> e == element.name)));
     }
   }
-  Future<void> getDeliveryPlaces() {
+  Future<void> getDeliveryPlaces() async{
     return InvoiceRepository().getGalleries(
       GalleryRequest(branchId: UserManager().branchId, id: UserManager().id),
-      onSuccess: (data) {
+      onSuccess: (data) async{
         data.insert(0, GalleryResponse(name: "تحديد الكل"));
         deliveryPlaces.assignAll(data);
         if (deliveryPlaces.isNotEmpty) {
           selectNewDeliveryplace([ "تحديد الكل"]);
-          getBanks();
+          await getBanks();
         }
       },
       onError: (error) => showPopupText(text: error.toString()),

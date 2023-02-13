@@ -67,6 +67,8 @@ abstract class Routes {
   static const offers = _Paths.offers;
   static const DAILYATTACH = _Paths.DAILYATTACH;
   static const DAILYATTACHSEARCH = _Paths.DAILYATTACHSEARCH;
+  static const DAILYEXPENSES= _Paths.DAILYEXPENSES;
+  static const DAILYREPORT= _Paths.DAILYREPORT;
 }
 
 abstract class _Paths {
@@ -131,6 +133,8 @@ abstract class _Paths {
   static const offers = '/offers';
   static const DAILYATTACH = '/daily_attach';
   static const DAILYATTACHSEARCH = '/daily_attach_search';
+  static const DAILYEXPENSES = '/daily_expenses';
+  static const DAILYREPORT = '/daily_report';
 
 
 }
