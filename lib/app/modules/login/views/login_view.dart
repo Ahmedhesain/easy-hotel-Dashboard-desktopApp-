@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:toby_bills/app/core/utils/validator.dart';
-import 'package:toby_bills/app/core/values/app_colors.dart';
-
+import 'package:hotel_manger/app/components/image_widget.dart';
+import 'package:hotel_manger/app/components/text_widget.dart';
+import 'package:hotel_manger/app/core/utils/validator.dart';
+import 'package:hotel_manger/app/core/values/app_assets.dart';
+import 'package:hotel_manger/app/core/values/app_colors.dart';
+import 'package:hotel_manger/app/core/values/app_strings.dart';
+import 'package:hotel_manger/app/routes/app_pages.dart';
 import '../../../components/app_loading_overlay.dart';
 import '../controllers/login_controller.dart';
 
@@ -16,7 +20,7 @@ class LoginView extends GetView<LoginController> {
       appBar: AppBar(
         backgroundColor: AppColors.appHallsRedDark,
         title: const Text(
-          "toby",
+          "Easy Hotel",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -36,13 +40,19 @@ class LoginView extends GetView<LoginController> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Container(
+
+                        margin: EdgeInsets.only(top: 40),
+                        child: ImageWidget(
+                          path: AppAssets.logoImg, width: 100, height: 110,),),
+                      Padding(
+                        padding: EdgeInsets.only(top:0),
+                        child: TextWidget(
+                            'Login', textColor: AppColors.appHallsRedDark,
+                          weight: FontWeight.bold,
+                          size: 40),
                       ),
+
                       const SizedBox(
                         height: 40.0,
                       ),
@@ -80,7 +90,7 @@ class LoginView extends GetView<LoginController> {
                             border: OutlineInputBorder(),
                           ),
                           validator: AppValidator.forceValue,
-                          onFieldSubmitted: (_) => controller.login(),
+                          // onFieldSubmitted: (_) => controller.login(),
                           onChanged: (value) => controller.requestDto.password = value,
                         ),
                       ),
@@ -90,10 +100,11 @@ class LoginView extends GetView<LoginController> {
                       Container(
                         width: 300,
                         height: 40,
-                        color: AppColors.appHallsRedDark,
+                        color: AppColors.appHallsRed,
                         child: MaterialButton(
                           onPressed: () {
-                            controller.login();
+                            Get.toNamed(Routes.HOME);
+                            // controller.login();
                           },
                           child: const Text(
                             'LOGIN',

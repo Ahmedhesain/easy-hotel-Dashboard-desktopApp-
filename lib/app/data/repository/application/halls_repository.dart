@@ -1,17 +1,17 @@
 
-import 'package:hotel_manger/app/data/model/housekeeping/dto/request/app_request_dto.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/app_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/app_value_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/best_selling_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/client_comments_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/client_masseges_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/group_value_for_day_and_month_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/list_purchase_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/most_buying_clients_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/sales_of_month_response.dart';
+import 'package:hotel_manger/app/data/model/halls/dto/request/app_request_dto.dart';
+import 'package:hotel_manger/app/data/model/halls/dto/response/app_response.dart';
+import 'package:hotel_manger/app/data/model/halls/dto/response/app_value_response.dart';
+import 'package:hotel_manger/app/data/model/halls/dto/response/best_selling_response.dart';
+import 'package:hotel_manger/app/data/model/halls/dto/response/client_comments_response.dart';
+import 'package:hotel_manger/app/data/model/halls/dto/response/client_masseges_response.dart';
+import 'package:hotel_manger/app/data/model/halls/dto/response/group_value_for_day_and_month_response.dart';
+import 'package:hotel_manger/app/data/model/halls/dto/response/list_purchase_response.dart';
+import 'package:hotel_manger/app/data/model/halls/dto/response/most_buying_clients_response.dart';
+import 'package:hotel_manger/app/data/model/halls/dto/response/sales_of_month_response.dart';
 import 'package:hotel_manger/app/data/provider/api_provider.dart';
 
-class AppRepository {
+class HallsAppRepository {
   getNumOrders(
       AppRequest request, {
         Function()? onComplete,

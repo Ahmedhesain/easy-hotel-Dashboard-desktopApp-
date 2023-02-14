@@ -5,18 +5,18 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hotel_manger/app/core/utils/show_popup_text.dart';
 import 'package:hotel_manger/app/core/values/app_colors.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/request/app_request_dto.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/app_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/app_value_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/best_selling_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/client_comments_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/client_masseges_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/group_value_for_day_and_month_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/list_purchase_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/most_buying_clients_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/order_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/review_response.dart';
-import 'package:hotel_manger/app/data/repository/application/app_repository.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/request/app_request_dto.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/response/app_response.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/response/app_value_response.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/response/best_selling_response.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/response/client_comments_response.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/response/client_masseges_response.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/response/group_value_for_day_and_month_response.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/response/list_purchase_response.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/response/most_buying_clients_response.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/response/order_response.dart';
+import 'package:hotel_manger/app/data/model/polman/dto/response/review_response.dart';
+import 'package:hotel_manger/app/data/repository/application/polman_repository.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 
@@ -24,7 +24,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
 
-class HomeController extends GetxController {
+class PolmanHomeController extends GetxController {
 
   final List <Color>gradientList =
   [
@@ -187,7 +187,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumOrders(request,
+    PolmanAppRepository().getNumOrders(request,
         onSuccess: (data) {
           numOrders(data.data.length);
           numOrdersList(data.data);
@@ -202,7 +202,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersUnderProcessing(request,
+    PolmanAppRepository().getNumberOrdersUnderProcessing(request,
         onSuccess: (data) {
           numberOrdersUnderProcessing(data.data.length);
           numberOrdersUnderProcessingList(data.data);
@@ -219,7 +219,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersDelivered(request,
+    PolmanAppRepository().getNumberOrdersDelivered(request,
         onSuccess: (data) {
           numberOrdersDelivered(data.data.length);
           numberOrdersDeliveredList(data.data);
@@ -236,7 +236,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersLate( request,
+    PolmanAppRepository().getNumberOrdersLate( request,
         onSuccess: (data) {
           numberOrdersLate(data.data.length);
           numberOrdersLateList(data.data);
@@ -254,7 +254,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getTotalValueOrders(request,
+    PolmanAppRepository().getTotalValueOrders(request,
         onSuccess: (data) {
           totalValueOrders(data.data.value);
 
@@ -270,7 +270,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getSalesOfTheWeek(request,
+    PolmanAppRepository().getSalesOfTheWeek(request,
         onSuccess: (data) {
           salesOfTheLast(data.data.valueLastMonth);
           salesOfTheFirst(data.data.valueLastMonth);
@@ -285,7 +285,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getBestSelling(
+    PolmanAppRepository().getBestSelling(
       request,
       onSuccess: (data)async{
         bestSellingList.assignAll(data.data);
@@ -301,7 +301,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getMostBuyingClients(
+    PolmanAppRepository().getMostBuyingClients(
       request,
       onSuccess: (data)async{
         mostBuyingClientsList.assignAll(data.data);
@@ -318,7 +318,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getGroupValueForDayAndMonth(
+    PolmanAppRepository().getGroupValueForDayAndMonth(
       request,
       onSuccess: (data)async{
         groupValueForDayAndMonth.assignAll(data.data);
@@ -335,7 +335,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getClientMasseges(
+    PolmanAppRepository().getClientMasseges(
       request,
       onSuccess: (data)async{
         groupClientMasseges.assignAll(data.data);
@@ -351,7 +351,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getClientComments(
+    PolmanAppRepository().getClientComments(
       request,
       onSuccess: (data)async{
         clientComments.assignAll(data.data);

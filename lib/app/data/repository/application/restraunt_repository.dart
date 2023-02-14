@@ -1,16 +1,16 @@
 
-import 'package:hotel_manger/app/data/model/housekeeping/dto/request/app_request_dto.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/app_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/app_value_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/best_selling_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/client_comments_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/client_masseges_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/group_value_for_day_and_month_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/list_purchase_response.dart';
-import 'package:hotel_manger/app/data/model/housekeeping/dto/response/most_buying_clients_response.dart';
+import 'package:hotel_manger/app/data/model/restraunt/dto/request/app_request_dto.dart';
+import 'package:hotel_manger/app/data/model/restraunt/dto/response/app_response.dart';
+import 'package:hotel_manger/app/data/model/restraunt/dto/response/app_value_response.dart';
+import 'package:hotel_manger/app/data/model/restraunt/dto/response/best_selling_response.dart';
+import 'package:hotel_manger/app/data/model/restraunt/dto/response/client_comments_response.dart';
+import 'package:hotel_manger/app/data/model/restraunt/dto/response/client_masseges_response.dart';
+import 'package:hotel_manger/app/data/model/restraunt/dto/response/group_value_for_day_and_month_response.dart';
+import 'package:hotel_manger/app/data/model/restraunt/dto/response/list_purchase_response.dart';
+import 'package:hotel_manger/app/data/model/restraunt/dto/response/most_buying_clients_response.dart';
 import 'package:hotel_manger/app/data/provider/api_provider.dart';
 
-class AppRepository {
+class RestrauntAppRepository {
 
   getNumOrders(
       AppRequest request, {

@@ -16,7 +16,7 @@ import 'package:hotel_manger/app/data/model/housekeeping/dto/response/list_purch
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/most_buying_clients_response.dart';
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/order_response.dart';
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/review_response.dart';
-import 'package:hotel_manger/app/data/repository/application/app_repository.dart';
+import 'package:hotel_manger/app/data/repository/application/housekeeping_repository.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 
@@ -24,7 +24,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
 
-class HomeController extends GetxController {
+class HousekeepingHomeController extends GetxController {
 
   final List <Color>gradientList =
   [
@@ -187,7 +187,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumOrders(request,
+    HouseKeepingAppRepository().getNumOrders(request,
         onSuccess: (data) {
           numOrders(data.data.length);
           numOrdersList(data.data);
@@ -202,7 +202,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersUnderProcessing(request,
+    HouseKeepingAppRepository().getNumberOrdersUnderProcessing(request,
         onSuccess: (data) {
           numberOrdersUnderProcessing(data.data.length);
           numberOrdersUnderProcessingList(data.data);
@@ -219,7 +219,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersDelivered(request,
+    HouseKeepingAppRepository().getNumberOrdersDelivered(request,
         onSuccess: (data) {
           numberOrdersDelivered(data.data.length);
           numberOrdersDeliveredList(data.data);
@@ -236,7 +236,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersLate( request,
+    HouseKeepingAppRepository().getNumberOrdersLate( request,
         onSuccess: (data) {
           numberOrdersLate(data.data.length);
           numberOrdersLateList(data.data);
@@ -254,7 +254,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getTotalValueOrders(request,
+    HouseKeepingAppRepository().getTotalValueOrders(request,
         onSuccess: (data) {
           totalValueOrders(data.data.value);
 
@@ -270,7 +270,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getSalesOfTheWeek(request,
+    HouseKeepingAppRepository().getSalesOfTheWeek(request,
         onSuccess: (data) {
           salesOfTheLast(data.data.valueLastMonth);
           salesOfTheFirst(data.data.valueLastMonth);
@@ -285,7 +285,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getBestSelling(
+    HouseKeepingAppRepository().getBestSelling(
       request,
       onSuccess: (data)async{
         bestSellingList.assignAll(data.data);
@@ -301,7 +301,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getMostBuyingClients(
+    HouseKeepingAppRepository().getMostBuyingClients(
       request,
       onSuccess: (data)async{
         mostBuyingClientsList.assignAll(data.data);
@@ -318,7 +318,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getGroupValueForDayAndMonth(
+    HouseKeepingAppRepository().getGroupValueForDayAndMonth(
       request,
       onSuccess: (data)async{
         groupValueForDayAndMonth.assignAll(data.data);
@@ -335,7 +335,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getClientMasseges(
+    HouseKeepingAppRepository().getClientMasseges(
       request,
       onSuccess: (data)async{
         groupClientMasseges.assignAll(data.data);
@@ -351,7 +351,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getClientComments(
+    HouseKeepingAppRepository().getClientComments(
       request,
       onSuccess: (data)async{
         clientComments.assignAll(data.data);

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../controllers/home_controller.dart';
+import '../controllers/cars_controller.dart';
 
 class CarsHomeBinding extends Bindings {
   @override

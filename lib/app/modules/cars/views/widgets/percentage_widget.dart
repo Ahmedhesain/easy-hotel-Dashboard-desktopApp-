@@ -4,10 +4,10 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:hotel_manger/app/components/text_widget.dart';
 import 'package:hotel_manger/app/core/values/app_colors.dart';
-import 'package:hotel_manger/app/modules/home/controllers/home_controller.dart';
+import 'package:hotel_manger/app/modules/cars/controllers/cars_controller.dart';
 
 
-class PercentageWidget extends GetView<HomeController> {
+class PercentageWidget extends GetView<CarsHomeController> {
   const PercentageWidget(this.name, this.value, this.best, {Key? key}) : super(key: key);
   final String? name;
   final double? value;

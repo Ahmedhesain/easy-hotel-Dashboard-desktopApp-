@@ -1,12 +1,13 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_hotel/app/core/values/app_assets.dart';
-import 'package:easy_hotel/app/core/values/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hotel_manger/app/components/image_preview.dart';
+import 'package:hotel_manger/app/core/values/app_assets.dart';
+import 'package:hotel_manger/app/core/values/app_constants.dart';
 import '../core/values/app_colors.dart';
-import 'image_preview.dart';
 
 
 class ImageWidget extends StatelessWidget {
@@ -64,7 +65,7 @@ class ImageWidget extends StatelessWidget {
           return LayoutBuilder(
               builder: (context,c) {
                 disablePreview = true;
-                return Container(color: AppColors.grey.withOpacity(.5));
+                return Container(color: AppColors.appGreyLight.withOpacity(.5));
               }
           );
         }

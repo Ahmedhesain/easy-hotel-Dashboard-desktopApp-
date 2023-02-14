@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 
-import '../controllers/home_controller.dart';
+import '../controllers/polman_controller.dart';
 
-class HomeBinding extends Bindings {
+class PolmanHomeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<HomeController>(
-      () => HomeController(),
+    Get.lazyPut<PolmanHomeController>(
+      () => PolmanHomeController(),
     );
   }
 }

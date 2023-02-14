@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hotel_manger/app/modules/rooms/controllers/rooms_controller.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:hotel_manger/app/components/text_widget.dart';
 import 'package:hotel_manger/app/core/values/app_colors.dart';
 import 'package:hotel_manger/app/modules/home/controllers/home_controller.dart';
 
 
-class BranchWidget extends GetView<HomeController> {
+class BranchWidget extends GetView<RoomsHomeController> {
   const BranchWidget(this.name, this.index, this.valueOne, this.valueTwo,
       this.valueThree, this.valueFour, this.added, this.valueOrderMonthAdded, {Key? key}) : super(key: key);
   final String? name;

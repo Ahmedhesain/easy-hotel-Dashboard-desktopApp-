@@ -4,19 +4,20 @@ import 'package:hotel_manger/app/components/text_widget.dart';
 import 'package:hotel_manger/app/core/utils/common.dart';
 import 'package:hotel_manger/app/core/values/app_colors.dart';
 import 'package:hotel_manger/app/modules/home/controllers/home_controller.dart';
-import 'package:hotel_manger/app/modules/home/views/widgets/branch.dart';
-import 'package:hotel_manger/app/modules/home/views/widgets/buy_menu_widget.dart';
-import 'package:hotel_manger/app/modules/home/views/widgets/left_tap.dart';
-import 'package:hotel_manger/app/modules/home/views/widgets/percentage_widget.dart';
-import 'package:hotel_manger/app/modules/home/views/widgets/top_bar_widget.dart';
-import 'package:hotel_manger/app/modules/home/views/widgets/user_card.dart';
+import 'package:hotel_manger/app/modules/polman/controllers/polman_controller.dart';
+import 'package:hotel_manger/app/modules/polman/views/widgets/branch.dart';
+import 'package:hotel_manger/app/modules/polman/views/widgets/buy_menu_widget.dart';
+import 'package:hotel_manger/app/modules/polman/views/widgets/left_tap.dart';
+import 'package:hotel_manger/app/modules/polman/views/widgets/percentage_widget.dart';
+import 'package:hotel_manger/app/modules/polman/views/widgets/top_bar_widget.dart';
+import 'package:hotel_manger/app/modules/polman/views/widgets/user_card.dart';
 
 
 import 'widgets/complain_card.dart';
 
 
-class HomeView extends GetView<HomeController> {
-  const HomeView
+class PolmanHomeView extends GetView<PolmanHomeController> {
+  const PolmanHomeView
 
   ({super.key});
 
@@ -26,6 +27,17 @@ class HomeView extends GetView<HomeController> {
         .of(context)
         .size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.appHallsRedDark,
+        title: const Text(
+          "Polman Service",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
+
       body: Obx(() {
         if (controller.isLoading.value) {
           return Center(

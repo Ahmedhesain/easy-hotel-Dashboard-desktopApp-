@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hotel_manger/app/modules/spa/controllers/spa_controller.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:hotel_manger/app/components/text_widget.dart';
 import 'package:hotel_manger/app/core/values/app_colors.dart';
 import 'package:hotel_manger/app/modules/home/controllers/home_controller.dart';
 
 
-class LeftTapWidget extends GetView<HomeController> {
+class LeftTapWidget extends GetView<SpaHomeController> {
   const LeftTapWidget(this.name, this.value, this.color, {Key? key}) : super(key: key);
   final String? name;
   final double ?value;

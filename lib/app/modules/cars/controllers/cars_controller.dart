@@ -195,7 +195,7 @@ class CarsHomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumOrders(request,
+    CarsAppRepository().getNumOrders(request,
         onSuccess: (data) {
           numOrders(data.data.length);
           numOrdersList(data.data);
@@ -212,7 +212,7 @@ class CarsHomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersUnderProcessing(request,
+    CarsAppRepository().getNumberOrdersUnderProcessing(request,
         onSuccess: (data) {
           numberOrdersUnderProcessing(data.data.length);
           numberOrdersUnderProcessingList(data.data);
@@ -230,7 +230,7 @@ class CarsHomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersDelivered(request,
+    CarsAppRepository().getNumberOrdersDelivered(request,
         onSuccess: (data) {
           numberOrdersDelivered(data.data.length);
           numberOrdersDeliveredList(data.data);
@@ -248,7 +248,7 @@ class CarsHomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumberOrdersLate( request,
+    CarsAppRepository().getNumberOrdersLate( request,
         onSuccess: (data) {
           numberOrdersLate(data.data.length);
           numberOrdersLateList(data.data);
@@ -269,7 +269,7 @@ class CarsHomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getTotalValueOrders(request,
+    CarsAppRepository().getTotalValueOrders(request,
         onSuccess: (data) {
           totalValueOrders(data.data.value);
 
@@ -285,7 +285,7 @@ class CarsHomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getSalesOfTheWeek(request,
+    CarsAppRepository().getSalesOfTheWeek(request,
         onSuccess: (data) {
           salesOfTheLast(data.data.valueLastMonth);
           salesOfTheFirst(data.data.valueLastMonth);
@@ -300,7 +300,7 @@ class CarsHomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getBestSelling(
+    CarsAppRepository().getBestSelling(
       request,
       onSuccess: (data)async{
         bestSellingList.assignAll(data.data);
@@ -316,7 +316,7 @@ class CarsHomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getMostBuyingClients(
+    CarsAppRepository().getMostBuyingClients(
       request,
       onSuccess: (data)async{
         mostBuyingClientsList.assignAll(data.data);
@@ -333,7 +333,7 @@ class CarsHomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getGroupValueForDayAndMonth(
+    CarsAppRepository().getGroupValueForDayAndMonth(
       request,
       onSuccess: (data)async{
         groupValueForDayAndMonth.assignAll(data.data);
@@ -350,7 +350,7 @@ class CarsHomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getClientMasseges(
+    CarsAppRepository().getClientMasseges(
       request,
       onSuccess: (data)async{
         groupClientMasseges.assignAll(data.data);
@@ -366,7 +366,7 @@ class CarsHomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getClientComments(
+    CarsAppRepository().getClientComments(
       request,
       onSuccess: (data)async{
         clientComments.assignAll(data.data);

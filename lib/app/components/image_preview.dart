@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_hotel/app/components/icon_button_widget.dart';
-import 'package:easy_hotel/app/core/values/app_colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hotel_manger/app/components/icon_button_widget.dart';
+import 'package:hotel_manger/app/core/values/app_colors.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImagePreviewWidget extends StatefulWidget {
@@ -39,7 +40,7 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          leading: IconButtonWidget(icon: Icons.arrow_back_rounded,iconColor: AppColors.grey,onPressed: Get.back),
+          leading: IconButtonWidget(icon: Icons.arrow_back_rounded,iconColor: AppColors.appGreyLight,onPressed: Get.back),
           backgroundColor: Colors.transparent,
         ),
         body: ColoredBox(

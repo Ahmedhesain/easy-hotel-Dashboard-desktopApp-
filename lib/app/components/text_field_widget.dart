@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:toby_bills/app/components/icon_button_widget.dart';
-import 'package:toby_bills/app/components/text_widget.dart';
+import 'package:hotel_manger/app/components/icon_button_widget.dart';
+import 'package:hotel_manger/app/components/text_widget.dart';
+
 
 import '../core/values/app_colors.dart';
-import '../core/values/app_constants.dart';
 
 class TextFieldWidget extends StatelessWidget {
   const TextFieldWidget({Key? key,
@@ -135,9 +135,14 @@ class TextFieldWidget extends StatelessWidget {
                     constraints: BoxConstraints(minHeight: 30,maxHeight: 100),
                     contentPadding: contentPadding ?? EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                     // hintStyle: TextStyle(color: AppColors.textFieldHintColor,fontFamily: AppTheme.appFontFamily,height: 1.5,leadingDistribution: TextLeadingDistribution.even,),
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    border: InputBorder.none,
+                    border: OutlineInputBorder(
+                        // borderRadius: BorderRadius.circular(AppConstants.RADIUS),
+                        // borderSide: BorderSide(color: AppColors.fieldBorderColor)
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                        // borderRadius: BorderRadius.circular(AppConstants.RADIUS),
+                        // borderSide: BorderSide(color: AppColors.fieldBorderColor)
+                    ),
                     isDense: true,
                     prefix: prefix,
                     prefixIconConstraints: BoxConstraints(maxHeight: 40,minWidth: 40,minHeight: 20),

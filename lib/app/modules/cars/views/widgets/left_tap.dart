@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:hotel_manger/app/components/text_widget.dart';
 import 'package:hotel_manger/app/core/values/app_colors.dart';
-import 'package:hotel_manger/app/modules/home/controllers/home_controller.dart';
+import 'package:hotel_manger/app/modules/cars/controllers/cars_controller.dart';
 
 
-class LeftTapWidget extends GetView<HomeController> {
+class LeftTapWidget extends GetView<CarsHomeController> {
   const LeftTapWidget(this.name, this.value, this.color, {Key? key}) : super(key: key);
   final String? name;
   final double ?value;

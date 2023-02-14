@@ -16,7 +16,7 @@ import 'package:hotel_manger/app/data/model/housekeeping/dto/response/list_purch
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/most_buying_clients_response.dart';
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/order_response.dart';
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/review_response.dart';
-import 'package:hotel_manger/app/data/repository/application/app_repository.dart';
+import 'package:hotel_manger/app/data/repository/application/rooms_repository.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 
@@ -24,7 +24,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/values/app_constants.dart';
 
-class HomeController extends GetxController {
+class RoomsHomeController extends GetxController {
 
   final List <Color>gradientList =
   [
@@ -187,7 +187,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getNumOrders(request,
+    RoomsAppRepository().getNumOrders(request,
         onSuccess: (data) {
           numOrders(data.data.length);
           numOrdersList(data.data);
@@ -254,7 +254,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getTotalValueOrders(request,
+    RoomsAppRepository().getTotalValueOrders(request,
         onSuccess: (data) {
           totalValueOrders(data.data.value);
 
@@ -270,7 +270,7 @@ class HomeController extends GetxController {
       branchId: 232,
 
     );
-    AppRepository().getSalesOfTheWeek(request,
+    RoomsAppRepository().getSalesOfTheWeek(request,
         onSuccess: (data) {
           salesOfTheLast(data.data.valueLastMonth);
           salesOfTheFirst(data.data.valueLastMonth);
@@ -285,7 +285,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getBestSelling(
+    RoomsAppRepository().getBestSelling(
       request,
       onSuccess: (data)async{
         bestSellingList.assignAll(data.data);
@@ -301,7 +301,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getMostBuyingClients(
+    RoomsAppRepository().getMostBuyingClients(
       request,
       onSuccess: (data)async{
         mostBuyingClientsList.assignAll(data.data);
@@ -318,7 +318,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getGroupValueForDayAndMonth(
+    RoomsAppRepository().getGroupValueForDayAndMonth(
       request,
       onSuccess: (data)async{
         groupValueForDayAndMonth.assignAll(data.data);
@@ -335,7 +335,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getClientMasseges(
+    RoomsAppRepository().getClientMasseges(
       request,
       onSuccess: (data)async{
         groupClientMasseges.assignAll(data.data);
@@ -351,7 +351,7 @@ class HomeController extends GetxController {
     isLoading(true);
     final request = AppRequest(
         branchId: 232,);
-    AppRepository().getClientComments(
+    RoomsAppRepository().getClientComments(
       request,
       onSuccess: (data)async{
         clientComments.assignAll(data.data);

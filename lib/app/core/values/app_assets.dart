@@ -15,6 +15,7 @@ abstract class AppAssets {
   static const spa = '$_images/spa.jpeg';
   static const housekeeping = '$_images/housekeeping.jpeg';
   static const salon = '$_images/salon.jpeg';
+  static const bar = '$_images/bar.jpeg';
 
 
 }

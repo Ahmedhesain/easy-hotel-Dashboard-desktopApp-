@@ -11,7 +11,7 @@ import 'package:hotel_manger/app/data/model/housekeeping/dto/response/most_buyin
 import 'package:hotel_manger/app/data/model/housekeeping/dto/response/sales_of_month_response.dart';
 import 'package:hotel_manger/app/data/provider/api_provider.dart';
 
-class AppRepository {
+class RoomsAppRepository {
   getNumOrders(
       AppRequest request, {
         Function()? onComplete,
