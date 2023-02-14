@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:toby_bills/app/modules/daily_expenses/controllers/daily_expenses_controller.dart';
 import '../../../../components/button_widget.dart';
+import '../../../../components/date_field_widget.dart';
 import '../../../../components/dropdown_widget.dart';
 import '../../../../components/text_widget.dart';
 import '../../../../core/values/app_colors.dart';
 import '../../../../data/model/invoice/dto/response/gallery_response.dart';
+import '../../controllers/daily_expenses_search_controller.dart';
 
-class DailyExpensesAddWidget extends GetView<DailyExpensesController> {
-  const DailyExpensesAddWidget({Key? key}) : super(key: key);
+class DailyExpensesSearchWidget extends GetView<DailyExpensesSearchController> {
+  const DailyExpensesSearchWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     const space = SizedBox(
       width: 20,
     );
@@ -41,7 +39,7 @@ class DailyExpensesAddWidget extends GetView<DailyExpensesController> {
                             children: [
                               Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: SizedBox(
                                   width: size.width * 0.06,
                                   child: const TextWidget(
@@ -57,7 +55,7 @@ class DailyExpensesAddWidget extends GetView<DailyExpensesController> {
                                 height: size.height * 0.06,
                                 decoration: const BoxDecoration(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
+                                      BorderRadius.all(Radius.circular(5)),
                                   color: AppColors.appGreyLight,
                                   // border: Border.all(color: Colors.grey)
                                 ),
@@ -65,15 +63,15 @@ class DailyExpensesAddWidget extends GetView<DailyExpensesController> {
                                   return DropDownWidget<GalleryResponse>(
                                     items: controller.galleries
                                         .map((e) =>
-                                        DropdownMenuItem<GalleryResponse>(
-                                          value: e,
-                                          child: TextWidget(e.name!),
-                                        ))
+                                            DropdownMenuItem<GalleryResponse>(
+                                              value: e,
+                                              child: TextWidget(e.name!),
+                                            ))
                                         .toList(),
                                     value: controller.selectedGallery.value,
                                     hideBorder: true,
                                     onChanged: (val) =>
-                                    controller.selectedGallery.value = val,
+                                        controller.selectedGallery.value = val,
                                   );
                                 }),
                               ),
@@ -93,7 +91,7 @@ class DailyExpensesAddWidget extends GetView<DailyExpensesController> {
                             child: SizedBox(
                               width: size.width * 0.06,
                               child: const TextWidget(
-                                "قيمة المصروف",
+                                "الفتره",
                                 size: 15,
                                 weight: FontWeight.bold,
                               ),
@@ -107,53 +105,32 @@ class DailyExpensesAddWidget extends GetView<DailyExpensesController> {
                               borderRadius: BorderRadius.circular(5),
                               color: AppColors.appGreyLight,
                             ),
-                            child: TextFormField(
-                              controller: controller.valueController,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(
-                                    r'[.0-9]'))
-                              ],
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    spaceV,
-                    SizedBox(
-                      width: size.width,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: size.width * 0.06,
-                              child: const TextWidget(
-                                "بيان المصروف",
-                                size: 15,
-                                weight: FontWeight.bold,
-                              ),
+                            child: DateFieldWidget(
+                              date: controller.dateFrom.value,
+                              label: "من",
+                              hideBorder: true,
+                              onComplete: (DateTime date) {
+                                controller.dateFrom.value = date;
+                              },
                             ),
                           ),
                           space,
                           Container(
-                            width: size.width * 0.2,
-                            height: size.height * 0.1,
+                            width: size.width * 0.1,
+                            height: size.height * 0.07,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: AppColors.appGreyLight,
                             ),
-                            child: TextFormField(
-                              controller: controller.remarksController,
-                              maxLines: 2,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                              ),
+                            child: DateFieldWidget(
+                              date: controller.dateTo.value,
+                              label: "الي",
+                              hideBorder: true,
+                              onComplete: (DateTime date) {
+                                controller.dateTo.value = date;
+                              },
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),
@@ -163,18 +140,9 @@ class DailyExpensesAddWidget extends GetView<DailyExpensesController> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Obx(() {
-                            return ButtonWidget(
-                              text: controller.galleryExpensesDto.value?.id == null ? "حفظ" : "تعديل",
-                              onPressed: () => controller.add(),
-                              buttonColor: controller.galleryExpensesDto.value?.id == null ? null : Colors.orangeAccent,
-                              contentPadding: const EdgeInsets.all(15),
-                            );
-                          }),
-                          space,
                           ButtonWidget(
-                            text: "جديد",
-                            onPressed: () => controller.reset(),
+                            text: "بحث",
+                            onPressed: () => controller.search(),
                             contentPadding: const EdgeInsets.all(15),
                           ),
                           space,

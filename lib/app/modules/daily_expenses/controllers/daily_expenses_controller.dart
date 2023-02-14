@@ -15,16 +15,23 @@ class DailyExpensesController extends GetxController {
   Rxn<GalleryResponse> selectedGallery = Rxn();
   final galleries = <GalleryResponse>[].obs;
   final user = UserManager();
-  final valueController = TextEditingController();
-  final remarksController = TextEditingController();
+  var valueController = TextEditingController();
+  var remarksController = TextEditingController();
+  final Rxn<GalleryExpensesDTO> galleryExpensesDto = Rxn() ;
   @override
   void onInit() {
     super.onInit();
     galleries.assignAll(Get.find<HomeController>().galleries);
-    if (galleries.any((element) => element.id == user.galleryId)) {
+    galleryExpensesDto(Get.arguments);
+    if (galleryExpensesDto.value == null && galleries.any((element) => element.id == user.galleryId)) {
+      selectedGallery(
+          galleries.singleWhere((element) => element.id == user.galleryId));
+    }else if(galleries.any((element) => element.id == user.galleryId)){
       selectedGallery(
           galleries.singleWhere((element) => element.id == user.galleryId));
     }
+    valueController.text = galleryExpensesDto.value?.value?.toString() ?? ""  ;
+    remarksController.text = galleryExpensesDto.value?.remarks?.toString() ?? ""  ;
   }
 
   add(){
@@ -34,6 +41,9 @@ class DailyExpensesController extends GetxController {
       value: double.tryParse(valueController.text) ?? 0.0 ,
       remarks: remarksController.text,
       galleryId: selectedGallery.value?.id,
+      id: galleryExpensesDto.value?.id,
+      modifiedBy: galleryExpensesDto != null ? user.id : null,
+      createdDate: galleryExpensesDto.value?.createdDate
     );
 
     GalleryExpensesRepository().save(request,
@@ -41,5 +51,14 @@ class DailyExpensesController extends GetxController {
       onError: (e) => showPopupText(text: e.toString()),
       onComplete: () => isLoading(false)
     );
+  }
+
+  reset(){
+    selectedGallery(
+        galleries.singleWhere((element) => element.id == user.galleryId));
+    valueController.clear();
+    remarksController.clear();
+    galleryExpensesDto.value = null;
+    galleryExpensesDto.refresh();
   }
 }

@@ -245,6 +245,7 @@ bool handleRemoteError(Response response) {
   }
   if (statusCode >= 200 && statusCode < 300) {
     if(response.data is List) return true;
+    if(response.data is String) return true;
     if((response.data as Map<String,dynamic>).containsKey("success")){
       if((response.data as Map<String,dynamic>)["success"]) {
         return true;

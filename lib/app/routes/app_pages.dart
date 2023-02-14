@@ -29,6 +29,8 @@ import '../modules/daily_attach_search/bindings/daily_attach_search_binding.dart
 import '../modules/daily_attach_search/views/daily_attach_search_view.dart';
 import '../modules/daily_expenses/bindings/daily_expenses_bindings.dart';
 import '../modules/daily_expenses/views/daily_expenses_view.dart';
+import '../modules/daily_expenses_search/bindings/daily_expenses_search_bindings.dart';
+import '../modules/daily_expenses_search/views/daily_expenses_search_view.dart';
 import '../modules/daily_report/bindings/daily_report_binding.dart';
 import '../modules/daily_report/views/daily_report_view.dart';
 import '../modules/edit_bills/bindings/edit_bills_binding.dart';
@@ -366,6 +368,11 @@ class AppPages {
       name: _Paths.DAILYEXPENSES,
       page: () => const DailyExpensesView(),
       binding: DailyExpensesBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAILYEXPENSESSEARCH,
+      page: () => const DailyExpensesSearchView(),
+      binding: DailyExpensesSearchBinding(),
     ),
     GetPage(
       name: _Paths.DAILYREPORT,

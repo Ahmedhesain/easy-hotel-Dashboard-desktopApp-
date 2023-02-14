@@ -754,7 +754,6 @@ class HomeController extends GetxController {
   _removeItemFieldsListener() {
     itemNumberFocusNode.removeListener(_itemNumberListener);
     itemQuantityFocusNode.removeListener(_itemQuantityListener);
-    // itemPriceFocusNode.removeListener(_itemPriceListener);
   }
 
   bool _isQuantityValid() {

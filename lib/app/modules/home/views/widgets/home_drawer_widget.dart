@@ -247,8 +247,12 @@ class HomeDrawerWidget extends GetView<HomeController> {
         onTap: () => goTo(Routes.DAILYATTACHSEARCH ,"بحث مرفقات اليوميه"),
       ),
       HomeDrawerTileWidget(
-        title: "مصروفات اليوميه",
-        onTap: () => goTo(Routes.DAILYEXPENSES ,"مصروفات اليوميه"),
+        title: "اضافة مصروفات اليوميه",
+        onTap: () => goTo(Routes.DAILYEXPENSES ,"اضافة مصروفات اليوميه"),
+      ),
+      HomeDrawerTileWidget(
+        title: "تقرير مصروفات اليوميه",
+        onTap: () => goTo(Routes.DAILYEXPENSESSEARCH ,"تقرير مصروفات اليوميه"),
       ),
       HomeDrawerTileWidget(
         title: "تقرير اليوميه",

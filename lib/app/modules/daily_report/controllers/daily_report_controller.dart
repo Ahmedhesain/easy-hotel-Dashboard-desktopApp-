@@ -128,8 +128,8 @@ class DailyReportController extends GetxController {
     for (int i = 0; i < selectedGalleries.length; i++) {
       final request = GetGalleryExpensesListRequest(
           galleryId: selectedGalleries[i].id!,
-          dateFrom: dateFrom.value.getDayFromBegin,
-          dateto: dateTo.value.setDayToEnd);
+          dateFrom: dateFrom.value.dayFromStart,
+          dateto: dateTo.value.dayToEnd);
       GalleryExpensesRepository().getExpensesList(request,
           onComplete:
               i == selectedGalleries.length - 1 ? () => isLoading(false) : null,

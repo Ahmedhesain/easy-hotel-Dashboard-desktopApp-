@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:toby_bills/app/core/extensions/date_ext.dart';
 import '../../../core/enums/toast_msg_type.dart';
 import '../../../core/utils/show_popup_text.dart';
 import '../../../core/utils/user_manager.dart';
@@ -43,8 +44,8 @@ class DailyAttachSearchController extends GetxController {
     final request = DailyAttachSearchRequest(
         gallaryId: selectedGallery.value?.id,
         branchId: user.branchId,
-        dateFrom: dateFrom.value,
-        dateTo: dateTo.value);
+        dateFrom: dateFrom.value.dayFromStart,
+        dateTo: dateTo.value.dayToEnd);
 
     DailyAttachRepository().search(request,
         onSuccess: (data) => dailyList.assignAll(data),
