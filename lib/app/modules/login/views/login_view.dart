@@ -6,7 +6,6 @@ import 'package:hotel_manger/app/components/text_widget.dart';
 import 'package:hotel_manger/app/core/utils/validator.dart';
 import 'package:hotel_manger/app/core/values/app_assets.dart';
 import 'package:hotel_manger/app/core/values/app_colors.dart';
-import 'package:hotel_manger/app/core/values/app_strings.dart';
 import 'package:hotel_manger/app/routes/app_pages.dart';
 import '../../../components/app_loading_overlay.dart';
 import '../controllers/login_controller.dart';
@@ -42,10 +41,10 @@ class LoginView extends GetView<LoginController> {
                     children: [
                       Container(
 
-                        margin: EdgeInsets.only(top: 40),
+                        margin: const EdgeInsets.only(top: 40),
                         child: ImageWidget(
                           path: AppAssets.logoImg, width: 100, height: 110,),),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(top:0),
                         child: TextWidget(
                             'Login', textColor: AppColors.appHallsRedDark,
@@ -56,25 +55,25 @@ class LoginView extends GetView<LoginController> {
                       const SizedBox(
                         height: 40.0,
                       ),
-                      Container(
+                      SizedBox(
                         width: 300,
                         child: TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                             labelText: 'User Name',
-                            prefixIcon: const Icon(
+                            prefixIcon: Icon(
                               Icons.email,
                             ),
                             border: OutlineInputBorder(),
                           ),
                           validator: AppValidator.forceValue,
-                          onChanged: (value) => controller.requestDto.userName = value,
+                          onChanged: (value) => controller.requestDto.userCode = value,
                         ),
                       ),
                       const SizedBox(
                         height: 15.0,
                       ),
-                      Container(
+                      SizedBox(
                         width: 300,
                         child: TextFormField(
                           keyboardType: TextInputType.visiblePassword,
@@ -90,7 +89,7 @@ class LoginView extends GetView<LoginController> {
                             border: OutlineInputBorder(),
                           ),
                           validator: AppValidator.forceValue,
-                          // onFieldSubmitted: (_) => controller.login(),
+                          onFieldSubmitted: (_) => controller.login(),
                           onChanged: (value) => controller.requestDto.password = value,
                         ),
                       ),
@@ -103,12 +102,11 @@ class LoginView extends GetView<LoginController> {
                         color: AppColors.appHallsRed,
                         child: MaterialButton(
                           onPressed: () {
-                            Get.toNamed(Routes.HOME);
-                            // controller.login();
+                            controller.login();
                           },
                           child: const Text(
                             'LOGIN',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                             ),
                           ),

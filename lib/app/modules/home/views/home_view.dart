@@ -50,7 +50,7 @@ class HomeView extends GetView<CarsHomeController> {
                 weight: FontWeight.bold,
               ),
               TextWidget(
-                "احمد صلاح",
+               UserManager().user.name!,
                 // UserManager().user!.name!,
                 size: 30,
                 textColor: AppColors.appHallsRedDark,
@@ -90,84 +90,85 @@ class HomeView extends GetView<CarsHomeController> {
           ],
         ),
 
-        body:Column(
-          children: [
-            SizedBox(height: size.height*.4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                ServiceCard(
-                      name:"Cars",
-                      image: AppAssets.cars,
-                      appId:1 ,
-                      imageIn:AppAssets.cars,
-                    ), ServiceCard(
-                      name:"Housekeeping",
-                      image: AppAssets.housekeeping,
-                      appId:2 ,
-                      imageIn:AppAssets.housekeeping,
-                    ), ServiceCard(
-                      name:"Polman",
-                      image: AppAssets.polman,
-                      appId:3 ,
-                      imageIn:AppAssets.polman,
-                    ), ServiceCard(
-                      name:"Spa",
-                      image: AppAssets.spa,
-                      appId:4 ,
-                      imageIn:AppAssets.spa,
-                    ),
-                ],
-              ),
-            ),
-            SizedBox(height: size.height*.4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                ServiceCard(
-                      name:"Rooms",
-                      image: AppAssets.rooms,
-                      appId:5 ,
-                      imageIn:AppAssets.rooms,
-                    ), ServiceCard(
-                      name:"Halls",
-                      image: AppAssets.halls,
-                      appId:6 ,
-                      imageIn:AppAssets.rooms,
-                    ), ServiceCard(
-                      name:"Restraunt",
-                      image: AppAssets.restraunt,
-                      appId:7 ,
-                      imageIn:AppAssets.restraunt,
-                    ), ServiceCard(
-                      name:"Bar",
-                      image: AppAssets.bar,
-                      appId:8 ,
-                      imageIn:AppAssets.bar,
-                    ),
-                ],
-              ),
-            ),
-          ],
-        )
-      //   GridView.builder(
-      //   padding: const EdgeInsets.all(20.0),
-      //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      //     crossAxisCount: 4,
-      //     mainAxisSpacing: 50,
-      //     crossAxisSpacing: 25,
-      //   ),
-      //   itemCount: 8,
-      //   itemBuilder: (context, index) {
-      //     return ServiceCard(
-      //       name:"Cars",
-      //       image: AppAssets.rooms,
-      //       appId:7 ,
-      //       imageIn:AppAssets.rooms,
-      //     );
-      //   },
-      //
-      // )
+        body:
+        // Column(
+        //   children: [
+        //     SizedBox(height: size.height*.4,
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //         children: [
+        //         ServiceCard(
+        //               name:"Cars",
+        //               image: AppAssets.cars,
+        //               appId:1 ,
+        //               imageIn:AppAssets.cars,
+        //             ), ServiceCard(
+        //               name:"Housekeeping",
+        //               image: AppAssets.housekeeping,
+        //               appId:2 ,
+        //               imageIn:AppAssets.housekeeping,
+        //             ), ServiceCard(
+        //               name:"Polman",
+        //               image: AppAssets.polman,
+        //               appId:3 ,
+        //               imageIn:AppAssets.polman,
+        //             ), ServiceCard(
+        //               name:"Spa",
+        //               image: AppAssets.spa,
+        //               appId:4 ,
+        //               imageIn:AppAssets.spa,
+        //             ),
+        //         ],
+        //       ),
+        //     ),
+        //     SizedBox(height: size.height*.4,
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //         children: [
+        //         ServiceCard(
+        //               name:"Rooms",
+        //               image: AppAssets.rooms,
+        //               appId:5 ,
+        //               imageIn:AppAssets.rooms,
+        //             ), ServiceCard(
+        //               name:"Halls",
+        //               image: AppAssets.halls,
+        //               appId:6 ,
+        //               imageIn:AppAssets.rooms,
+        //             ), ServiceCard(
+        //               name:"Restraunt",
+        //               image: AppAssets.restraunt,
+        //               appId:7 ,
+        //               imageIn:AppAssets.restraunt,
+        //             ), ServiceCard(
+        //               name:"Bar",
+        //               image: AppAssets.bar,
+        //               appId:8 ,
+        //               imageIn:AppAssets.bar,
+        //             ),
+        //         ],
+        //       ),
+        //     ),
+        //   ],
+        // )
+        GridView.builder(
+        padding: const EdgeInsets.all(40.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          mainAxisSpacing: 50,
+          crossAxisSpacing: 25,
+        ),
+        itemCount: UserManager().list.length,
+        itemBuilder: (context, index) {
+          return ServiceCard(
+            name:UserManager().list[index].applicationName,
+            image: UserManager().list[index].imgOut??"",
+            appId:UserManager().list[index].applications ,
+            imageIn:UserManager().list[index].imgOut??"",
+          );
+        },
+
+      )
     );
   }
 }

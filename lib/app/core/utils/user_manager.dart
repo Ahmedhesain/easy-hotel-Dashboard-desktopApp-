@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hotel_manger/app/routes/app_pages.dart';
 
 import '../../data/model/login/dto/response/login_response.dart';
 import 'app_storage.dart';
@@ -11,17 +12,15 @@ class UserManager{
   bool get isLoggedIn => AppStorage.read(AppStorage.IS_LOGGED_IN) ?? false;
   int get id => user.id;
 
-  int get companyId => user.companySelected;
+  int get companyId => user.companyId??159;
 
-  int get branchId => user.branchSelected;
+  int get branchId => user.branchId??232;
 
-  int get galleryId => user.galleryId;
+  List <BranchApplicationsDtoList> get list => user.branchApplicationsDtoList??[];
 
-  String get galleryName => user.galleryName;
 
-  int get galleryType => user.galleryType;
 
-  int get accountIdAPI  => user.accountIdApi;
+
 
   LoginResponse get user => LoginResponse.fromJson(AppStorage.read(AppStorage.USER));
 
@@ -46,9 +45,9 @@ class UserManager{
     AppStorage.write(AppStorage.USER, data.toJson());
   }
 
-  logout(){
-    AppStorage.removeAll();
-    Get.forceAppUpdate();
+  Future logout() async{
+    await AppStorage.removeAll();
+    Get.toNamed(Routes.LOGIN);
   }
 
 }

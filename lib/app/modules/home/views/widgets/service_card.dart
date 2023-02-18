@@ -18,29 +18,29 @@ class ServiceCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if(appId==1){
-          Get.toNamed(Routes.CARS);
+          Get.toNamed(Routes.RESTRAUNT);
         }
           else if(appId==2){
-          Get.toNamed(Routes.HOUSEKEEPING);
+          Get.toNamed(Routes.RESTRAUNT);
         }
         else if(appId==3){
-          Get.toNamed(Routes.POLMAN);
+          Get.toNamed(Routes.CARS);
         }
         else if(appId==4){
           Get.toNamed(Routes.SPA);
         }
         else if(appId==5){
-          Get.toNamed(Routes.ROOMS);
+          Get.toNamed(Routes.HOUSEKEEPING);
         }
         else if(appId==6){
           Get.toNamed(Routes.HALLS);
         }
-        // else if(appId==7){
-        //   Get.toNamed(Routes.RESTRAUNT);
-        // }
-        // else if(appId==8){
-        //   Get.toNamed(Routes.POLMAN,arguments: [imageIn,appId]);
-        // }
+        else if(appId==7){
+          Get.toNamed(Routes.ROOMS);
+        }
+        else if(appId==8){
+          Get.toNamed(Routes.POLMAN);
+        }
       } ,
       child: Container(
         height: 300,
